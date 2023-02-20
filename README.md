@@ -1,6 +1,6 @@
-# divine
+# Divine
 
-A new Flutter project.
+A Flutter Project.
 
 ## Getting Started
 
