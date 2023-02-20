@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "156367738713",
+    "project_id": "divine-1f0a1",
+    "storage_bucket": "divine-1f0a1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:156367738713:android:7b6fc6010d729b952d9e48",
+        "android_client_info": {
+          "package_name": "com.armankhantech.divine"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "156367738713-2opad41ievroad41j3j2fhpkeg6djojb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.armankhantech.divine",
+            "certificate_hash": "1577767c8e492d4827981321131132ae1cf0825c"
+          }
+        },
+        {
+          "client_id": "156367738713-hmst6upvqm0dhe0eja38c9h4p2e6meeq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2qt9We3g5QOa_dW4WkSql717bRPkdI9I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "156367738713-hmst6upvqm0dhe0eja38c9h4p2e6meeq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
