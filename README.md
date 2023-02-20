@@ -1,4 +1,4 @@
-# divine
+# Divine
 
 A new Flutter project.
 
