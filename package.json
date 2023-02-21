@@ -12,7 +12,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "build": "npm build"
+    "build": "npm start"
   },
   "repository": {
     "type": "git",
