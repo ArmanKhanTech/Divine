@@ -32,10 +32,19 @@
   <title>Divine</title>
   <link rel="manifest" href="manifest.json">
 
+  <script src="https://www.google.com/recaptcha/enterprise.js?render=6LcTMp4kAAAAAIw3kA-0ntDzbDY5wOWd5-QHi5Py"></script>
+  <script>
+      grecaptcha.enterprise.ready(function() {
+          grecaptcha.enterprise.execute('6LcTMp4kAAAAAIw3kA-0ntDzbDY5wOWd5-QHi5Py', {action: 'login'}).then(function(token) {
+              console.log(token);
+          });
+      });
+  </script>
+
   <script type="module">
     // Import the functions you need from the SDKs you need
-    import { initializeApp } from "firebase/app";
-    import { getAnalytics } from "firebase/analytics";
+    import { initializeApp } from "../firebase/app";
+    import { getAnalytics } from "../firebase/analytics";
     // TODO: Add SDKs for Firebase products that you want to use
     // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -62,22 +71,24 @@
   </script>
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
-</head>
-<body>
-  <script>
-    window.addEventListener('load', function(ev) {
-      // Download main.dart.js
-      _flutter.loader.loadEntrypoint({
-        serviceWorker: {
-          serviceWorkerVersion: serviceWorkerVersion,
-        },
-        onEntrypointLoaded: function(engineInitializer) {
-          engineInitializer.initializeEngine().then(function(appRunner) {
-            appRunner.runApp();
-          });
-        }
+
+  </head>
+
+  <body>
+    <script>
+      window.addEventListener('load', function(ev) {
+        // Download main.dart.js
+        _flutter.loader.loadEntrypoint({
+          serviceWorker: {
+            serviceWorkerVersion: serviceWorkerVersion,
+          },
+          onEntrypointLoaded: function(engineInitializer) {
+            engineInitializer.initializeEngine().then(function(appRunner) {
+              appRunner.runApp();
+            });
+          }
+        });
       });
-    });
-  </script>
-</body>
+    </script>
+  </body>
 </html>
