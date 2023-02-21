@@ -1,5 +1,27 @@
 {
   "dependencies": {
     "firebase": "^9.17.1"
-  }
+  },
+  "name": "divine",
+  "description": "A Flutter Project.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArmanKhanTech/Divine.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ArmanKhanTech/Divine/issues"
+  },
+  "homepage": "https://github.com/ArmanKhanTech/Divine#readme"
 }
