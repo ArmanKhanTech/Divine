@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:g_recaptcha_v3/g_recaptcha_v3.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -9,6 +10,9 @@ void main() async {
           appId: "1:156367738713:web:d87121ae6da1027e2d9e48",
           messagingSenderId: "156367738713",
           projectId: "divine-1f0a1"));
+
+  await GRecaptchaV3.ready('6LcTMp4kAAAAAIw3kA-0ntDzbDY5wOWd5-QHi5Py');
+
   runApp(const MyApp());
 }
 
