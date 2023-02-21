@@ -4,6 +4,7 @@ import 'package:g_recaptcha_v3/g_recaptcha_v3.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
       options: const FirebaseOptions(
           apiKey: "AIzaSyApBPjdW6toGe1rXsKgoGzQwxLkn9D7R5A",
