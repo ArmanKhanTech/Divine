@@ -27,9 +27,7 @@
 .packages
 .pub-cache/
 .pub/
-/build/app
-/build/768badff4a727e4ea49948f2dd6225f4
-/build/c075001b96339384a97db4862b8ab8db.cache.dill.track.dill
+/build
 
 # Android related
 **/android/**/gradle-wrapper.jar
