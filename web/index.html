@@ -37,6 +37,8 @@
     var serviceWorkerVersion = null;
   </script>
   <!-- This script adds the flutter initialization JS code -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+
   <script src="flutter.js" defer></script>
 </head>
 <body>
@@ -54,6 +56,19 @@
         }
       });
     });
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyA2TAAmEZkFTpcEpJw7e8kv3nYnZXaP4DU",
+      authDomain: "divine-1676975414906.firebaseapp.com",
+      databaseURL: "https://divine-1676975414906-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "divine-1676975414906",
+      storageBucket: "divine-1676975414906.appspot.com",
+      messagingSenderId: "261797289611",
+      appId: "1:261797289611:web:3f3b57e6c36157d90bbe8e",
+      measurementId: "G-H6D4MWWEWJ"
+    };
+
+    firebase.initializeApp(firebaseConfig);
   </script>
 </body>
 </html>
