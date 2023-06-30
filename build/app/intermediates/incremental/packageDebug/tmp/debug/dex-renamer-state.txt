@@ -1,0 +1,4 @@
+#Fri Jun 30 12:24:12 IST 2023
+base.0=C\:\\Users\\Shana\\OneDrive\\Desktop\\My Projects\\Divine\\divine\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
