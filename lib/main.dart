@@ -1,7 +1,10 @@
 import 'package:divine/utilities/config.dart';
+import 'package:divine/utilities/constants.dart';
+import 'package:divine/utilities/providers.dart';
+import 'package:divine/view_models/theme/theme_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 import 'auth/login.dart';
 
 void main() async {
@@ -10,66 +13,56 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Divine',
-      theme: ThemeData(
-        primarySwatch: Colors.amber,
-      ),
-      home: const SplashScreen(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
+  _MyAppState createState() => _MyAppState();
 }
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
-
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen>
-    with TickerProviderStateMixin {
-  late AnimationController _controller;
-
+class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      duration: const Duration(seconds: (5)),
-      vsync: this,
-    );
-  }
-
-  void navigateUser() async {
-    if (FirebaseAuth.instance.currentUser != null) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => LoginPage()));
-    } else {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => LoginPage()));
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await FirebaseAuth.instance.authStateChanges().listen((User? user) {
+        if (user == null) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginPage()),
+          );
+        }
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Lottie.asset(
-        'assets/lottie/splash_screen.json',
-        controller: _controller,
-        height: MediaQuery.of(context).size.height * 1,
-        animate: true,
-        onLoaded: (composition) {
-          _controller
-            ..duration = composition.duration
-            ..forward().whenComplete(() => navigateUser());
-        },
-      ),
-    );
+    return MultiProvider(
+        providers: providers,
+        child: Consumer<ThemeProvider>(
+          builder: (context, ThemeProvider themeProvider, Widget? child) {
+            return MaterialApp(
+              title: Constants.appName,
+              debugShowCheckedModeBanner: false,
+              theme: ThemeData(
+                primarySwatch: Colors.blue,
+                visualDensity: VisualDensity.adaptivePlatformDensity,
+                brightness:
+                    themeProvider.dark ? Brightness.dark : Brightness.light,
+              ),
+              home: StreamBuilder(
+                stream: FirebaseAuth.instance.authStateChanges(),
+                builder: ((BuildContext context, snapShot) {
+                  if (snapShot.hasData) {
+                    return const LoginPage();
+                  } else {
+                    return const LoginPage();
+                  }
+                }),
+              ),
+            );
+          },
+        ));
   }
 }

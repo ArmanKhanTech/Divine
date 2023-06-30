@@ -41,7 +41,8 @@ dependencies:
   google_sign_in: ^5.0.0
   cloud_firestore: ^4.8.2
 
-  flutter_native_splash: ^2.3.1
+  provider: ^6.0.3
+  shared_preferences: ^2.1.2
 
   lottie: ^2.4.0
 
