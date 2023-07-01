@@ -6,37 +6,37 @@ class ThemeProvider extends ChangeNotifier {
   // This key is an unique identifier of the any value stored in SharedPreferance.
   final String key = "theme";
   SharedPreferences? _prefs;
-  bool _darkTheme = false;
-  bool get dark => _darkTheme;
+  bool darkTheme = false;
+  bool get dark => darkTheme;
 
   appProvider() {
-    _darkTheme = true;
-    _loadFromPrefs();
+    darkTheme = true;
+    loadFromPrefs();
   }
 
   // Toggle between light & dark.
   toggleTheme() {
-    _darkTheme = !_darkTheme;
-    _saveToPrefs();
+    darkTheme = !darkTheme;
+    saveToPrefs();
     notifyListeners();
   }
 
   // Initialize the _prefs obejct.
-  _initPrefs() async {
+  initPrefs() async {
     _prefs ??= await SharedPreferences.getInstance();
   }
 
   // Get state of theme from SharedPreferance using key defined above.
-  _loadFromPrefs() async {
-    await _initPrefs();
-    _darkTheme = _prefs!.getBool(key) ?? true;
+  loadFromPrefs() async {
+    await initPrefs();
+    darkTheme = _prefs!.getBool(key) ?? true;
     notifyListeners();
   }
 
   // Store state of theme from SharedPreferance using key defined above.
-  _saveToPrefs() async {
-    await _initPrefs();
-    _prefs!.setBool(key, _darkTheme);
+  saveToPrefs() async {
+    await initPrefs();
+    _prefs!.setBool(key, darkTheme);
     notifyListeners();
   }
 }

@@ -3,11 +3,10 @@ import 'package:divine/utilities/config.dart';
 import 'package:divine/utilities/constants.dart';
 import 'package:divine/utilities/providers.dart';
 import 'package:divine/view_models/theme/theme_view_model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'auth/login.dart';
+import 'auth/login_page.dart';
 import 'event_handlers/app_life_cycle_event_handler.dart';
 
 void main() async {
@@ -58,7 +57,8 @@ class _MyAppState extends State<MyApp> {
             ),
             // Check whether user is logged in or not, redirect to LoginPage if not, MainPage otherwise.
             // https://api.flutter.dev/flutter/widgets/StreamBuilder-class.html
-            home: StreamBuilder(
+            home: const LoginPage(),
+            /*StreamBuilder(
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: ((BuildContext context, snapshot) {
                 if (snapshot.hasData) {
@@ -69,7 +69,7 @@ class _MyAppState extends State<MyApp> {
                   return const LoginPage();
                 }
               }),
-            ),
+            ), */
           );
         },
       ),
