@@ -46,6 +46,8 @@ dependencies:
 
   lottie: ^2.4.0
 
+  google_fonts: ^5.1.0
+
 
 dev_dependencies:
   flutter_test:
@@ -57,7 +59,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
-  
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -70,7 +72,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/lottie/splash_screen.json
+    - assets/lottie/
     - assets/images/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

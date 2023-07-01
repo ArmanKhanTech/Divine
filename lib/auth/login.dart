@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../view_models/auth/login_view_model.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -13,6 +15,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    LoginViewModel viewModel = Provider.of<LoginViewModel>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
