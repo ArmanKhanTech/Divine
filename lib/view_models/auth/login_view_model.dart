@@ -1,11 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../../regex/regex.dart';
+import '../../screens/landing_screeen.dart';
 import '../../services/auth_service.dart';
 
+// ViewModel of LoginPage.
 class LoginViewModel extends ChangeNotifier {
-  // Maintain state of childs.
+  // Maintain state of child widgets.
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+  // bool flags.
   bool validate = false;
   bool loading = false;
 
@@ -29,28 +34,60 @@ class LoginViewModel extends ChangeNotifier {
       loading = true;
       notifyListeners();
       try {
-        bool confirm = await authService.loginUser(
+        bool success = await authService.loginUser(
           email: email,
           password: password,
         );
-        if (confirm) {
-          //Navigator.of(context).pushReplacement(newRoute)
+        if (success) {
+          Navigator.of(context).pushReplacement(
+              CupertinoPageRoute(builder: (_) => LandingScreen()));
         }
       } catch (e) {
         loading = false;
         notifyListeners();
-        showSnackBar("...", context);
+        //showSnackBar('${authService.handleFirebaseAuthError(e.toString())}', context);
       }
     }
     loading = false;
     notifyListeners();
   }
 
+  setEmail(val) {
+    email = val;
+    notifyListeners();
+  }
+
+  setPassword(val) {
+    password = val;
+    notifyListeners();
+  }
+
   // If user forgets the password.
-  forgotPassword(BuildContext conetext) async {
-    //
+  forgotPassword(BuildContext context) async {
+    loading = true;
+    notifyListeners();
+    FormState form = formKey.currentState!;
+    form.save();
+    if (Regex.validateEmail(email) != null) {
+      showSnackBar(
+          'Please input a valid email to reset your password.', context);
+    } else {
+      try {
+        //await authService.forgotPassword(email!);
+        showSnackBar(
+            'Please check your email for instructions to reset your password',
+            context);
+      } catch (e) {
+        showSnackBar(e.toString(), context);
+      }
+    }
+    loading = false;
+    notifyListeners();
   }
 
   // Show temporary text message on screen.
-  showSnackBar(String msg, context) {}
+  showSnackBar(String msg, context) {
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+  }
 }

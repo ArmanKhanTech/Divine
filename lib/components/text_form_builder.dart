@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../utilities/constants.dart';
 import 'custom_card.dart';
 
@@ -52,7 +51,7 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           CustomCard(
             borderRadius: BorderRadius.circular(20.0),
@@ -115,23 +114,17 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
                     border: border(context),
                     enabledBorder: border(context),
                     focusedBorder: focusBorder(context),
-                    errorStyle: const TextStyle(
-                      color: Colors.red,
-                    ),
+                    errorStyle: TextStyle(height: 0.0, fontSize: 0.0),
                   )),
             ),
           ),
-          const SizedBox(height: 5.0),
           Visibility(
             visible: error != null,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: Text(
-                '$error',
-                style: TextStyle(
-                  color: Colors.red[700],
-                  fontSize: 12.0,
-                ),
+            child: Text(
+              '$error',
+              style: TextStyle(
+                color: Colors.red[700],
+                fontSize: 12.0,
               ),
             ),
           ),

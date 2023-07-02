@@ -2,8 +2,10 @@ import 'package:divine/utilities/constants.dart';
 import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
+import '../components/pass_form_builder.dart';
 import '../components/text_form_builder.dart';
 import '../regex/regex.dart';
 import '../utilities/system_ui.dart';
@@ -38,12 +40,70 @@ class _LoginPageState extends State<LoginPage> {
             textInputAction: TextInputAction.next,
             validateFunction: Regex.validateEmail,
             onSaved: (String value) {
-              viewModel.email = value;
+              viewModel.setEmail(value);
             },
             focusNode: viewModel.emailFocusNode,
             nextFocusNode: viewModel.passwordFocusNode,
           ),
           const SizedBox(height: 10.0),
+          PasswordFormBuilder(
+            enabled: !viewModel.loading,
+            prefix: Ionicons.lock_closed,
+            suffix: Ionicons.eye_outline,
+            hintText: "Password",
+            textInputAction: TextInputAction.done,
+            validateFunction: Regex.validatePassword,
+            submitAction: () => viewModel.loginUser(context),
+            obscureText: true,
+            onSaved: (String val) {
+              viewModel.setPassword(val);
+            },
+            focusNode: viewModel.passwordFocusNode,
+          ),
+          const SizedBox(
+            height: 10.0,
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 50.0),
+              child: InkWell(
+                onTap: () => viewModel.forgotPassword(context),
+                child: const Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    'Forgot Password?',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20.0,
+          ),
+          Container(
+            height: 40.0,
+            width: 200.0,
+            child: FloatingActionButton(
+              elevation: 1.0,
+              backgroundColor: Constants.orange,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              child: const Text(
+                'Login',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              onPressed: () => viewModel.loginUser(context),
+            ),
+          ),
         ]),
       );
     }
@@ -57,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
         body: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
           children: [
-            SizedBox(height: MediaQuery.of(context).size.height / 20),
+            SizedBox(height: MediaQuery.of(context).size.height / 10),
             SizedBox(
               height: 400.0,
               width: MediaQuery.of(context).size.width,
@@ -91,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text('Don\'t have an account yet?',
-                    style: TextStyle(fontSize: 18.0)),
+                    style: TextStyle(fontSize: 15.0)),
                 const SizedBox(width: 5.0),
                 GestureDetector(
                   onTap: () {
@@ -104,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: const Text(
                     'Sign Up.',
                     style: TextStyle(
-                      fontSize: 18.0,
+                      fontSize: 15.0,
                       fontWeight: FontWeight.bold,
                       color: Constants.orange,
                     ),

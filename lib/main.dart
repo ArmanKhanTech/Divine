@@ -1,3 +1,4 @@
+import 'package:divine/screens/landing_screeen.dart';
 import 'package:divine/services/user_service.dart';
 import 'package:divine/utilities/config.dart';
 import 'package:divine/utilities/constants.dart';
@@ -57,7 +58,7 @@ class _MyAppState extends State<MyApp> {
             ),
             // Check whether user is logged in or not, redirect to LoginPage if not, MainPage otherwise.
             // https://api.flutter.dev/flutter/widgets/StreamBuilder-class.html
-            home: const LoginPage(),
+            home: const LandingScreen(),
             /*StreamBuilder(
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: ((BuildContext context, snapshot) {
