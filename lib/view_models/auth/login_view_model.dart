@@ -11,8 +11,8 @@ class LoginViewModel extends ChangeNotifier {
 
   String? email, password;
 
-  FocusNode emailFN = FocusNode();
-  FocusNode passwordFN = FocusNode();
+  FocusNode emailFocusNode = FocusNode();
+  FocusNode passwordFocusNode = FocusNode();
 
   AuthService authService = AuthService();
 

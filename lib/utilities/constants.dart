@@ -15,6 +15,9 @@ class Constants {
   static const Color lightBG = Color.fromARGB(255, 255, 255, 255);
   static const Color darkBG = Color.fromARGB(255, 0, 0, 0);
 
+  // Custom colors.
+  static const Color orange = Colors.orange;
+
   // Light Theme
   static ThemeData lightTheme = ThemeData(
     // backgroundColor is deprecated

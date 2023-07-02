@@ -1,8 +1,11 @@
+import 'package:divine/utilities/constants.dart';
 import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
+import '../components/text_form_builder.dart';
+import '../regex/regex.dart';
 import '../utilities/system_ui.dart';
 import '../view_models/auth/login_view_model.dart';
 
@@ -14,11 +17,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  static String hexColor = "#278aff";
-  // Custom text colour.s
-  Color color =
-      Color(int.parse(hexColor.substring(1, 7), radix: 16) + 0xFF000000);
-
   @override
   Widget build(BuildContext context) {
     // ViewModel(backend basically) of LoginPage.
@@ -28,6 +26,28 @@ class _LoginPageState extends State<LoginPage> {
     SystemUI.lightSystemUI();
 
     // UI of LoginPage.
+    buildForm(BuildContext context, LoginViewModel viewModel) {
+      return Form(
+        key: viewModel.formKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        child: Column(children: [
+          TextFormBuilder(
+            enabled: !viewModel.loading,
+            prefix: CupertinoIcons.mail_solid,
+            hintText: 'Email',
+            textInputAction: TextInputAction.next,
+            validateFunction: Regex.validateEmail,
+            onSaved: (String value) {
+              viewModel.email = value;
+            },
+            focusNode: viewModel.emailFocusNode,
+            nextFocusNode: viewModel.passwordFocusNode,
+          ),
+          const SizedBox(height: 10.0),
+        ]),
+      );
+    }
+
     return LoadingOverlay(
       progressIndicator: circularProgress(context),
       isLoading: viewModel.loading,
@@ -42,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
               height: 400.0,
               width: MediaQuery.of(context).size.width,
               child: Image.asset(
-                'assets/images/login_img.jpg',
+                'assets/images/login_img.png',
               ),
             ),
             const Center(
@@ -50,22 +70,22 @@ class _LoginPageState extends State<LoginPage> {
                 'Welcome back!',
                 style: TextStyle(
                   fontSize: 30.0,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
             ),
-            Center(
+            const Center(
               child: Text(
-                'Login. Your fun awaits!',
+                'Login. Your fun awaits you!',
                 style: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.w300,
-                  color: color,
+                  color: Constants.orange,
                 ),
               ),
             ),
             const SizedBox(height: 25.0),
-            //buildForm(context, viewModel),
+            buildForm(context, viewModel),
             const SizedBox(height: 10.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -77,16 +97,16 @@ class _LoginPageState extends State<LoginPage> {
                   onTap: () {
                     Navigator.of(context).push(
                       CupertinoPageRoute(
-                        builder: (_) => LoginPage(),
+                        builder: (_) => const LoginPage(),
                       ),
                     );
                   },
-                  child: Text(
+                  child: const Text(
                     'Sign Up.',
                     style: TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
-                      color: color,
+                      color: Constants.orange,
                     ),
                   ),
                 ),

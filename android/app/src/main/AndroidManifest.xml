@@ -5,7 +5,7 @@
    <application
         android:label="Divine"
         android:name="${applicationName}"
-        android:icon="@drawable/app_icon">
+        android:icon="@mipmap/app_icon">
         <activity
             android:name=".MainActivity"
             android:exported="true"
