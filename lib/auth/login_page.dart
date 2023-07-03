@@ -84,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
           const SizedBox(
             height: 20.0,
           ),
-          Container(
+          SizedBox(
             height: 40.0,
             width: 200.0,
             child: FloatingActionButton(
@@ -112,12 +112,12 @@ class _LoginPageState extends State<LoginPage> {
       progressIndicator: circularProgress(context),
       isLoading: viewModel.loading,
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.background,
         key: viewModel.scaffoldKey,
         body: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
           children: [
-            SizedBox(height: MediaQuery.of(context).size.height / 10),
+            SizedBox(height: MediaQuery.of(context).size.height / 30),
             SizedBox(
               height: 400.0,
               width: MediaQuery.of(context).size.width,
