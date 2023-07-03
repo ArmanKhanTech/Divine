@@ -20,8 +20,6 @@ class Constants {
 
   // Light Theme
   static ThemeData lightTheme = ThemeData(
-    // backgroundColor is deprecated
-    backgroundColor: lightBG,
     primaryColor: lightPrimary,
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: lightAccent,
@@ -53,23 +51,14 @@ class Constants {
         statusBarIconBrightness: Brightness.dark,
         statusBarBrightness: Brightness.dark,
       ),
-    ),
-    colorScheme: ColorScheme.fromSwatch().copyWith(
+    ), colorScheme: ColorScheme.fromSwatch().copyWith(
       secondary: lightAccent,
-    ),
+    ).copyWith(background: lightBG),
   );
 
   //Dark Theme
   static ThemeData darkTheme = ThemeData(
     iconTheme: const IconThemeData(color: Colors.white),
-    colorScheme: ColorScheme.fromSwatch(
-      accentColor: darkAccent,
-    ).copyWith(
-      secondary: darkAccent,
-      brightness: Brightness.dark,
-    ),
-    // backgroundColor is deprecated
-    backgroundColor: darkBG,
     primaryColor: darkPrimary,
     scaffoldBackgroundColor: darkBG,
     textSelectionTheme: const TextSelectionThemeData(
@@ -101,6 +90,11 @@ class Constants {
         statusBarIconBrightness: Brightness.light,
         statusBarBrightness: Brightness.light,
       ),
-    ),
+    ), colorScheme: ColorScheme.fromSwatch(
+      accentColor: darkAccent,
+    ).copyWith(
+      secondary: darkAccent,
+      brightness: Brightness.dark,
+    ).copyWith(background: darkBG),
   );
 }

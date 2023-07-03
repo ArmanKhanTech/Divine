@@ -3,6 +3,7 @@ import 'package:divine/auth/login_page.dart';
 import 'package:divine/utilities/system_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import '../auth/register_page.dart';
 
 // Welcome Screen of the app.
 class LandingScreen extends StatefulWidget {
@@ -15,7 +16,7 @@ class LandingScreen extends StatefulWidget {
 class _LandingScreenState extends State<LandingScreen> {
   final Duration duration = const Duration(milliseconds: 800);
   final Shader linearGradient = const LinearGradient(
-    colors: <Color>[Color(0xffDA44bb), Color(0xff8921aa)],
+    colors: <Color>[Colors.pink, Colors.blue],
   ).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
 
   @override
@@ -55,7 +56,7 @@ class _LandingScreenState extends State<LandingScreen> {
               child: Text(
                 "Welcome to Divine",
                 style: TextStyle(
-                    fontSize: 30,
+                    fontSize: 35,
                     fontWeight: FontWeight.w700,
                     fontFamily: "NunitoSans",
                     foreground: Paint()..shader = linearGradient),
@@ -70,7 +71,7 @@ class _LandingScreenState extends State<LandingScreen> {
               duration: duration,
               delay: const Duration(milliseconds: 500),
               child: const Text(
-                "Let your fun begin!",
+                "Let the fun begin!",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: Colors.orange,
@@ -142,7 +143,7 @@ class SButton extends StatelessWidget {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: ((context) => const LoginPage()),
+            builder: ((context) => text == "Login" ? const LoginPage() : const RegisterPage()),
           ),
         );
       },
@@ -155,9 +156,6 @@ class SButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(
-              width: 10,
-            ),
             Text(
               text,
               style: textStyle,
