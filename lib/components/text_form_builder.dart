@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../utilities/constants.dart';
 import 'custom_card.dart';
 
-// This class will build text input feilds for our forms.
+// This class will build text input fields for our forms.
 class TextFormBuilder extends StatefulWidget {
   final String? initialValue;
   final bool? enabled;
@@ -114,7 +114,7 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
                     border: border(context),
                     enabledBorder: border(context),
                     focusedBorder: focusBorder(context),
-                    errorStyle: TextStyle(height: 0.0, fontSize: 0.0),
+                    errorStyle: const TextStyle(height: 10.0, fontSize: 0.0),
                   )),
             ),
           ),

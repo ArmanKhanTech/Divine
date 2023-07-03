@@ -118,7 +118,7 @@ class _PasswordFormBuilderState extends State<PasswordFormBuilder> {
                     border: border(context),
                     enabledBorder: border(context),
                     focusedBorder: focusBorder(context),
-                    errorStyle: const TextStyle(height: 0.0, fontSize: 0.0),
+                    errorStyle: const TextStyle(height: 10.0, fontSize: 0.0),
                   ))),
         ),
         Visibility(
