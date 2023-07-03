@@ -7,11 +7,10 @@ import 'package:divine/view_models/theme/theme_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'auth/login_page.dart';
 import 'event_handlers/app_life_cycle_event_handler.dart';
 
 void main() async {
-  // Initiliaze the app depending on the platform.
+  // Initialize the app depending on the platform.
   WidgetsFlutterBinding.ensureInitialized();
   await Config.initFirebase();
   runApp(const MyApp());
@@ -28,7 +27,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    // Listening to app lifecyle event changes.
+    // Listening to app lifecycle event changes.
     WidgetsBinding.instance.addObserver(
       AppLifeCycleEventHandler(
         // The user exited the app.
@@ -41,7 +40,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    // Making use of MultiProvder to avoid writing boilerplate code.
+    // Making use of MultiProvider to avoid writing boilerplate code.
     // https://pub.dev/documentation/provider/latest/provider/MultiProvider-class.html
     return MultiProvider(
       providers: providers,
