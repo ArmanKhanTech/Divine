@@ -12,6 +12,7 @@ import '../components/pass_form_builder.dart';
 import '../regex/regex.dart';
 import '../utilities/system_ui.dart';
 import '../view_models/auth/register_view_model.dart';
+import 'login_page.dart';
 
 // Register Page of the app.
 class RegisterPage extends StatefulWidget {
@@ -172,7 +173,10 @@ class _RegisterPageState extends State<RegisterPage>{
                           ),
                         ),
                         GestureDetector(
-                          onTap: () => Navigator.pop(context),
+                          onTap: () => Navigator.of(context).pop(
+                            CupertinoPageRoute(
+                              builder: (_) => const LoginPage(),
+                            )),
                           child: const Text(
                             ' Log In.',
                             style: TextStyle(

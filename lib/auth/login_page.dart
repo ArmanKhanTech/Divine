@@ -1,4 +1,3 @@
-import 'package:divine/auth/register_page.dart';
 import 'package:divine/utilities/constants.dart';
 import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/cupertino.dart';
@@ -164,11 +163,7 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(width: 5.0),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(
-                          CupertinoPageRoute(
-                            builder: (_) => const RegisterPage(),
-                          ),
-                        );
+                        Navigator.of(context).pop();
                       },
                       child: const Text(
                         'Sign Up.',
