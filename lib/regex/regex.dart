@@ -10,13 +10,13 @@ class Regex {
     return null;
   }
 
-  static String? validateEmail(String? value, [bool isRequried = true]) {
-    if (value!.isEmpty && isRequried) {
+  static String? validateEmail(String? value, [bool isRequired = true]) {
+    if (value!.isEmpty && isRequired) {
       return 'Your email is required.';
     }
     final RegExp nameExp = RegExp(
         r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
-    if (!nameExp.hasMatch(value) && isRequried) {
+    if (!nameExp.hasMatch(value) && isRequired) {
       return 'Invalid email address.';
     }
     return null;
@@ -25,6 +25,13 @@ class Regex {
   static String? validatePassword(String? value) {
     if (value!.isEmpty || value.length < 6) {
       return 'Please enter a valid password.';
+    }
+    return null;
+  }
+
+  static String? validateCountry(String? value){
+    if (value!.isEmpty) {
+      return 'Please enter your country.';
     }
     return null;
   }

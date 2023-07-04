@@ -1,8 +1,9 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:divine/auth/login_page.dart';
 import 'package:divine/utilities/system_ui.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../auth/register_page.dart';
 
 // Welcome Screen of the app.
@@ -14,7 +15,7 @@ class LandingScreen extends StatefulWidget {
 }
 
 class _LandingScreenState extends State<LandingScreen> {
-  final Duration duration = const Duration(milliseconds: 800);
+  final Duration duration = const Duration(milliseconds: 1000);
   final Shader linearGradient = const LinearGradient(
     colors: <Color>[Colors.pink, Colors.blue],
   ).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
@@ -35,86 +36,66 @@ class _LandingScreenState extends State<LandingScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            FadeInUp(
-              duration: duration,
-              delay: const Duration(milliseconds: 500),
-              child: Container(
-                margin: const EdgeInsets.only(
-                  top: 50,
-                  left: 5,
-                  right: 5,
-                ),
-                width: size.width,
-                height: size.height / 2,
-                child: Lottie.asset("assets/lottie/welcome.json", fit: BoxFit.fitWidth),
-              ),
+            SizedBox(
+              width: size.width,
+              height: size.height / 2,
+              child: Lottie.asset("assets/lottie/welcome.json", fit: BoxFit.fitWidth),
             ),
 
-            FadeInUp(
-              duration: duration,
-              delay: const Duration(milliseconds: 500),
-              child: Text(
-                "Welcome to Divine",
-                style: TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.w700,
-                    fontFamily: "NunitoSans",
-                    foreground: Paint()..shader = linearGradient),
+            GradientText(
+              'Welcome to Divine',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 40.0,
+                fontWeight: FontWeight.w400,
               ),
+              colors: const [
+                Colors.blue,
+                Colors.pink
+              ],
             ),
 
             const SizedBox(
               height: 10,
             ),
 
-            FadeInUp(
-              duration: duration,
-              delay: const Duration(milliseconds: 500),
-              child: const Text(
-                "Let the fun begin!",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Colors.orange,
-                    fontSize: 20,
-                    fontFamily: "NunitoSans",
-                    fontWeight: FontWeight.w300),
-              ),
+            const Text(
+              "Let the fun begin!",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Colors.orange,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w300),
             ),
 
-            ///
-            Expanded(child: Container()),
-
-            FadeInUp(
-              duration: duration,
-              delay: const Duration(milliseconds: 500),
-              child: SButton(
-                size: size,
-                color: Colors.blue,
-                text: "Login",
-                textStyle: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
-
-            ///
             const SizedBox(
-              height: 20,
+              height: 50,
             ),
 
-            FadeInUp(
-              duration: duration,
-              delay: const Duration(milliseconds: 800),
-              child: SButton(
-                size: size,
-                color: Colors.pink,
-                text: "Register",
-                textStyle: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Column(
+                children: [
+                  SButton(
+                    size: size,
+                    color: Colors.blue,
+                    text: "Login",
+                    textStyle: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+
+                  const SizedBox(
+                    height: 20,
+                  ),
+
+                  SButton(
+                    size: size,
+                    color: Colors.pink,
+                    text: "Register",
+                    textStyle: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
-            ),
-
-            ///
-            const SizedBox(
-              height: 40,
-            ),
+            )
           ],
         ),
       ),
@@ -140,28 +121,31 @@ class SButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
+        Navigator.of(context).push(
+          CupertinoPageRoute(
             builder: ((context) => text == "Login" ? const LoginPage() : const RegisterPage()),
           ),
         );
       },
-      child: Container(
-        width: size.width / 1.2,
-        height: size.height / 15,
-        decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(40)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              text,
-              style: textStyle,
-            ),
-          ],
-        ),
+      child: Material(
+        borderRadius: BorderRadius.circular(40),
+        elevation: 5,
+        child: Container(
+          width: size.width / 1.4,
+          height: size.height / 20,
+          decoration: BoxDecoration(
+              color: color,
+              borderRadius: BorderRadius.circular(40)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                text,
+                style: textStyle,
+              ),
+            ],
+          ),
+        )
       ),
     );
   }

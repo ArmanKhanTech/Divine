@@ -13,6 +13,7 @@ class TextFormBuilder extends StatefulWidget {
   final bool obscureText;
   final FocusNode? focusNode, nextFocusNode;
   final VoidCallback? submitAction;
+  final String? whichPage;
   final FormFieldValidator<String>? validateFunction;
   final void Function(String)? onSaved, onChange;
   // ignore: overridden_fields
@@ -37,6 +38,7 @@ class TextFormBuilder extends StatefulWidget {
       this.validateFunction,
       this.onSaved,
       this.onChange,
+        required this.whichPage,
       this.key});
 
   @override
@@ -98,12 +100,12 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
                     prefixIcon: Icon(
                       widget.prefix,
                       size: 20.0,
-                      color: Constants.orange,
+                      color: widget.whichPage == "login" ? Constants.orange : Colors.blue,
                     ),
                     suffixIcon: Icon(
                       widget.suffix,
                       size: 20.0,
-                      color: Constants.orange,
+                      color: widget.whichPage == "login" ? Constants.orange : Colors.blue,
                     ),
                     filled: true,
                     hintText: widget.hintText,

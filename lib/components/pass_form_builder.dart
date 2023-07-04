@@ -3,7 +3,7 @@ import 'package:divine/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
-// This class will build password input feilds for our forms.
+// This class will build password input fields for our forms.
 class PasswordFormBuilder extends StatefulWidget {
   final String? initialValue;
   final bool? enabled;
@@ -16,6 +16,7 @@ class PasswordFormBuilder extends StatefulWidget {
   final VoidCallback? submitAction;
   final FormFieldValidator<String>? validateFunction;
   final void Function(String)? onSaved, onChange;
+  final String? whichPage;
   // ignore: overridden_fields
   @override
   final Key? key;
@@ -38,6 +39,7 @@ class PasswordFormBuilder extends StatefulWidget {
       this.validateFunction,
       this.onSaved,
       this.onChange,
+        required this.whichPage,
       this.key});
 
   @override
@@ -96,7 +98,7 @@ class _PasswordFormBuilderState extends State<PasswordFormBuilder> {
                     prefixIcon: Icon(
                       widget.prefix,
                       size: 20.0,
-                      color: Constants.orange,
+                      color: widget.whichPage == 'login' ? Constants.orange : Colors.blue
                     ),
                     suffixIcon: GestureDetector(
                       onTap: () {
@@ -105,7 +107,7 @@ class _PasswordFormBuilderState extends State<PasswordFormBuilder> {
                       child: Icon(
                         obscureText ? widget.suffix : Ionicons.eye_off_outline,
                         size: 20.0,
-                        color: Constants.orange,
+                          color: widget.whichPage == 'login' ? Constants.orange : Colors.blue
                       ),
                     ),
                     filled: true,

@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:divine/utilities/system_ui.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'landing_screeen.dart';
@@ -23,8 +25,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
     Timer(
         const Duration(seconds: 2),
-            () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) => const LandingScreen())));
+            () => Navigator.of(context).pushReplacement(
+                CupertinoPageRoute(
+                    builder: (_) => const LandingScreen())));
                 /*StreamBuilder(
                   stream: FirebaseAuth.instance.authStateChanges(),
                   builder: ((BuildContext context, snapshot) {
@@ -56,20 +59,24 @@ class _SplashScreenState extends State<SplashScreen> {
                     width: 10,
                   ),
                   Container(
-                    color: Colors.black,
+                    color: Colors.blue,
                     height: 70,
                     width: 1,
                   ),
                   const SizedBox(
                     width: 12,
                   ),
-                  Text(
-                    "Divine",
-                    style: TextStyle(
-                        fontSize: 50,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: "NunitoSans",
-                        foreground: Paint()..shader = linearGradient),
+                  GradientText(
+                    'Divine',
+                    style: const TextStyle(
+                      fontSize: 50.0,
+                      fontFamily: "NunitoSans",
+                      fontWeight: FontWeight.w400,
+                    ),
+                    colors: const [
+                      Colors.blue,
+                      Colors.pink
+                    ],
                   ),
                 ],
 

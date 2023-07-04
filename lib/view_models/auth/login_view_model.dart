@@ -40,7 +40,7 @@ class LoginViewModel extends ChangeNotifier {
         );
         if (success) {
           Navigator.of(context).pushReplacement(
-              CupertinoPageRoute(builder: (_) => LandingScreen()));
+              CupertinoPageRoute(builder: (_) => const LandingScreen()));
         }
       } catch (e) {
         loading = false;
@@ -52,6 +52,7 @@ class LoginViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Setters for email and password.
   setEmail(val) {
     email = val;
     notifyListeners();

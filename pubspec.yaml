@@ -47,6 +47,7 @@ dependencies:
   flutter_spinkit: ^5.2.0
   ionicons: ^0.2.2
   animate_do: any
+  simple_gradient_text: 1.2.4
 
 
 dev_dependencies:

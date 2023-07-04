@@ -1,3 +1,4 @@
+import 'package:divine/auth/register_page.dart';
 import 'package:divine/utilities/constants.dart';
 import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
     // Setup system UI.
     SystemUI.lightSystemUI();
 
-    // UI of LoginPage.
+    // Login Form.
     buildForm(BuildContext context, LoginViewModel viewModel) {
       return Form(
         key: viewModel.formKey,
@@ -45,6 +46,7 @@ class _LoginPageState extends State<LoginPage> {
             },
             focusNode: viewModel.emailFocusNode,
             nextFocusNode: viewModel.passwordFocusNode,
+            whichPage: "login",
           ),
           const SizedBox(height: 10.0),
           PasswordFormBuilder(
@@ -60,6 +62,7 @@ class _LoginPageState extends State<LoginPage> {
               viewModel.setPassword(val);
             },
             focusNode: viewModel.passwordFocusNode,
+            whichPage: "login",
           ),
           const SizedBox(
             height: 10.0,
@@ -89,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
             height: 40.0,
             width: 200.0,
             child: FloatingActionButton(
-              elevation: 1.0,
+              elevation: 5.0,
               backgroundColor: Constants.orange,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
@@ -109,6 +112,7 @@ class _LoginPageState extends State<LoginPage> {
       );
     }
 
+    // UI of LoginPage
     return LoadingOverlay(
       progressIndicator: circularProgress(context),
       isLoading: viewModel.loading,
@@ -158,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
                   onTap: () {
                     Navigator.of(context).push(
                       CupertinoPageRoute(
-                        builder: (_) => const LoginPage(),
+                        builder: (_) => const RegisterPage(),
                       ),
                     );
                   },
