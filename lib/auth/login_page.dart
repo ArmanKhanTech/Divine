@@ -2,6 +2,7 @@ import 'package:divine/auth/register_page.dart';
 import 'package:divine/utilities/constants.dart';
 import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:loading_overlay/loading_overlay.dart';
@@ -11,6 +12,7 @@ import '../components/text_form_builder.dart';
 import '../regex/regex.dart';
 import '../utilities/system_ui.dart';
 import '../view_models/auth/login_view_model.dart';
+import 'package:flutter_web_frame/flutter_web_frame.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -113,73 +115,80 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     // UI of LoginPage
-    return LoadingOverlay(
-      progressIndicator: circularProgress(context),
-      isLoading: viewModel.loading,
-      child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
-        key: viewModel.scaffoldKey,
-        body: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
-          children: [
-            SizedBox(height: MediaQuery.of(context).size.height / 30),
-            SizedBox(
-              height: 400.0,
-              width: MediaQuery.of(context).size.width,
-              child: Image.asset(
-                'assets/images/login_img.png',
-              ),
-            ),
-            const Center(
-              child: Text(
-                'Welcome back!',
-                style: TextStyle(
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-            ),
-            const Center(
-              child: Text(
-                'Login. Your fun awaits you!',
-                style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.w300,
-                  color: Constants.orange,
-                ),
-              ),
-            ),
-            const SizedBox(height: 25.0),
-            buildForm(context, viewModel),
-            const SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+    return FlutterWebFrame(
+      builder: (context) {
+        return LoadingOverlay(
+          progressIndicator: circularProgress(context),
+          isLoading: viewModel.loading,
+          child: Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.background,
+            key: viewModel.scaffoldKey,
+            body: ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
               children: [
-                const Text('Don\'t have an account yet?',
-                    style: TextStyle(fontSize: 15.0)),
-                const SizedBox(width: 5.0),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      CupertinoPageRoute(
-                        builder: (_) => const RegisterPage(),
-                      ),
-                    );
-                  },
-                  child: const Text(
-                    'Sign Up.',
+                SizedBox(height: MediaQuery.of(context).size.height / 40),
+                SizedBox(
+                  height: 400.0,
+                  width: MediaQuery.of(context).size.width,
+                  child: Image.asset(
+                    'assets/images/login_img.png',
+                  ),
+                ),
+                const Center(
+                  child: Text(
+                    'Welcome back!',
                     style: TextStyle(
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+                const Center(
+                  child: Text(
+                    'Login. Your fun awaits you!',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w300,
                       color: Constants.orange,
                     ),
                   ),
                 ),
+                const SizedBox(height: 25.0),
+                buildForm(context, viewModel),
+                const SizedBox(height: 10.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Don\'t have an account yet?',
+                        style: TextStyle(fontSize: 15.0)),
+                    const SizedBox(width: 5.0),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          CupertinoPageRoute(
+                            builder: (_) => const RegisterPage(),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        'Sign Up.',
+                        style: TextStyle(
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.bold,
+                          color: Constants.orange,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
+      maximumSize: const Size(475.0, 812.0),
+      enabled: kIsWeb,
+      backgroundColor: Theme.of(context).colorScheme.background,
     );
   }
 }

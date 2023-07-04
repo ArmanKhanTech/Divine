@@ -5,7 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'landing_screeen.dart';
+
+import '../auth/register_page.dart';
 
 // Splash Screen of the app.
 class SplashScreen extends StatefulWidget{
@@ -33,10 +34,10 @@ class _SplashScreenState extends State<SplashScreen> {
                       builder: ((BuildContext context, snapshot) {
                         if (snapshot.hasData) {
                           // Goto MainPage(user is logged in.)
-                          return const LandingScreen();
+                          return const RegisterPage();
                         } else {
                           // Goto LoginPage(user is not logged in.)
-                          return const LandingScreen();
+                          return const RegisterPage();
                         }
                       }),
                     ),)));

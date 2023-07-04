@@ -1,7 +1,7 @@
+import 'package:divine/auth/login_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../regex/regex.dart';
-import '../../screens/landing_screeen.dart';
 import '../../services/auth_service.dart';
 
 // ViewModel of LoginPage.
@@ -40,7 +40,7 @@ class LoginViewModel extends ChangeNotifier {
         );
         if (success) {
           Navigator.of(context).pushReplacement(
-              CupertinoPageRoute(builder: (_) => const LandingScreen()));
+              CupertinoPageRoute(builder: (_) => const LoginPage()));
         }
       } catch (e) {
         loading = false;

@@ -50,6 +50,7 @@ dependencies:
   animate_do: any
   simple_gradient_text: 1.2.4
   uuid: ^3.0.7
+  flutter_web_frame: ^0.0.3
 
 
 dev_dependencies:

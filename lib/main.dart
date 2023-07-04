@@ -1,22 +1,25 @@
 import 'package:divine/screens/splash_screen.dart';
 import 'package:divine/services/user_service.dart';
 import 'package:divine/utilities/constants.dart';
+import 'package:divine/utilities/no_thumb_scrollbar.dart';
 import 'package:divine/utilities/providers.dart';
 import 'package:divine/view_models/theme/theme_view_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'event_handlers/app_life_cycle_event_handler.dart';
 import 'firebase_options.dart';
 
-// TODO: Fix LandingPage lag.
 void main() async {
-  // Initialize the app depending on the platform.
+  // Initialize the firebase depending on the platform.
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp]);
   runApp(const MyApp());
 }
 
@@ -62,6 +65,8 @@ class _MyAppState extends State<MyApp> {
             // Check whether user is logged in or not, redirect to LoginPage if not, MainPage otherwise.
             // https://api.flutter.dev/flutter/widgets/StreamBuilder-class.html
             home: const SplashScreen(),
+            // Disable scrollbars.
+            scrollBehavior: NoThumbScrollBehavior().copyWith(scrollbars: false),
           );
         },
       ),

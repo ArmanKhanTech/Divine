@@ -1,7 +1,9 @@
 import 'package:divine/components/text_form_builder.dart';
 import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_web_frame/flutter_web_frame.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
@@ -135,53 +137,60 @@ class _RegisterPageState extends State<RegisterPage>{
     }
 
     // UI of RegisterPage.
-    return LoadingOverlay(
-      isLoading: viewModel.loading,
-      progressIndicator: circularProgress(context),
-      child: Scaffold(
-        key: viewModel.scaffoldKey,
-        body: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
-          children: [
-            SizedBox(height: MediaQuery.of(context).size.height / 10,),
-            GradientText(
-              'Welcome to Divine.\nCreate a new account & connect with your friends.',
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 30.0,
-              ), colors: const [
-                  Colors.blue,
-                  Colors.purple,
-                  Colors.pink,
-              ],
-            ),
-            const SizedBox(height: 20.0),
-            buildForm(viewModel, context),
-            const SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Already have an account?',
-                  style: TextStyle(
-                    fontSize: 15.0,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: const Text(
-                    ' Log In.',
-                    style: TextStyle(
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue,
+    return FlutterWebFrame(
+      builder: (context) {
+        return LoadingOverlay(
+            isLoading: viewModel.loading,
+            progressIndicator: circularProgress(context),
+            child: Scaffold(
+                key: viewModel.scaffoldKey,
+                body: ListView(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
+                  children: [
+                    SizedBox(height: MediaQuery.of(context).size.height / 10,),
+                    GradientText(
+                      'Welcome to Divine.\nCreate a new account & connect with your friends.',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30.0,
+                      ), colors: const [
+                      Colors.blue,
+                      Colors.purple,
+                      Colors.pink,
+                    ],
                     ),
-                  ),
-                ),
-              ],
-            )
-          ],
-        )
-      ));
+                    const SizedBox(height: 20.0),
+                    buildForm(viewModel, context),
+                    const SizedBox(height: 10.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Already have an account?',
+                          style: TextStyle(
+                            fontSize: 15.0,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () => Navigator.pop(context),
+                          child: const Text(
+                            ' Log In.',
+                            style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                )
+            ));
+      },
+      maximumSize: const Size(475.0, 812.0),
+      enabled: kIsWeb,
+      backgroundColor: Theme.of(context).colorScheme.background,
+    );
   }
 }
