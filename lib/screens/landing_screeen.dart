@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
-import '../auth/register_page.dart';
 
 // Welcome Screen of the app.
 class LandingScreen extends StatefulWidget {
@@ -29,7 +28,7 @@ class _LandingScreenState extends State<LandingScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Container(
-        margin: const EdgeInsets.all(8),
+        margin: const EdgeInsets.all(10),
         width: size.width,
         height: size.height,
         child: Column(
@@ -37,65 +36,64 @@ class _LandingScreenState extends State<LandingScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
+              height: size.height / 10,
+            ),
+            SizedBox(
               width: size.width,
               height: size.height / 2,
-              child: Lottie.asset("assets/lottie/welcome.json", fit: BoxFit.fitWidth),
+              child: Lottie.asset("assets/lottie/welcome.json"),
             ),
 
             GradientText(
               'Welcome to Divine',
               textAlign: TextAlign.center,
               style: const TextStyle(
-                fontSize: 40.0,
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.bold,
+                fontSize: 30.0,
               ),
               colors: const [
                 Colors.blue,
-                Colors.pink
+                Colors.pink,
+                Colors.purple
               ],
             ),
 
             const SizedBox(
-              height: 10,
+              height: 5,
             ),
 
-            const Text(
+            GradientText(
               "Let the fun begin!",
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.orange,
                   fontSize: 20,
-                  fontWeight: FontWeight.w300),
+                  fontWeight: FontWeight.w500),
+              colors: const [
+                Colors.blue,
+                Colors.pink,
+                Colors.purple
+              ],
             ),
+
+            Expanded(
+              child: Align(
+                alignment: FractionalOffset.bottomCenter,
+                child: SButton(
+                  size: size,
+                  color: Colors.blue,
+                  text: "Get Started",
+                  textStyle: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              )),
 
             const SizedBox(
-              height: 50,
+              height: 20,
             ),
-
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Column(
-                children: [
-                  SButton(
-                    size: size,
-                    color: Colors.blue,
-                    text: "Login",
-                    textStyle: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-
-                  const SizedBox(
-                    height: 20,
-                  ),
-
-                  SButton(
-                    size: size,
-                    color: Colors.pink,
-                    text: "Register",
-                    textStyle: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            )
           ],
         ),
       ),
@@ -121,9 +119,9 @@ class SButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(
+        Navigator.of(context).pushReplacement(
           CupertinoPageRoute(
-            builder: ((context) => text == "Login" ? const LoginPage() : const RegisterPage()),
+            builder: ((context) => const LoginPage()),
           ),
         );
       },
@@ -131,8 +129,8 @@ class SButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(40),
         elevation: 5,
         child: Container(
-          width: size.width / 1.4,
-          height: size.height / 20,
+          width: 200.0,
+          height: 40.0,
           decoration: BoxDecoration(
               color: color,
               borderRadius: BorderRadius.circular(40)),

@@ -1,18 +1,22 @@
 import 'package:divine/screens/splash_screen.dart';
 import 'package:divine/services/user_service.dart';
-import 'package:divine/utilities/config.dart';
 import 'package:divine/utilities/constants.dart';
 import 'package:divine/utilities/providers.dart';
 import 'package:divine/view_models/theme/theme_view_model.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'event_handlers/app_life_cycle_event_handler.dart';
+import 'firebase_options.dart';
 
+// TODO: Fix LandingPage lag.
 void main() async {
   // Initialize the app depending on the platform.
   WidgetsFlutterBinding.ensureInitialized();
-  await Config.initFirebase();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 

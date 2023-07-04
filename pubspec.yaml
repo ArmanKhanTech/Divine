@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.5
   firebase_core: ^2.14.0
   firebase_auth: ^4.6.3
+  firebase_storage: ^11.2.4
   google_sign_in: ^6.1.4
   cloud_firestore: ^4.8.2
   provider: ^6.0.5
@@ -48,6 +49,7 @@ dependencies:
   ionicons: ^0.2.2
   animate_do: any
   simple_gradient_text: 1.2.4
+  uuid: ^3.0.7
 
 
 dev_dependencies:

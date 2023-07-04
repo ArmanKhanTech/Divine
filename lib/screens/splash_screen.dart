@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:divine/utilities/system_ui.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:flutter/material.dart';
@@ -27,18 +28,18 @@ class _SplashScreenState extends State<SplashScreen> {
         const Duration(seconds: 2),
             () => Navigator.of(context).pushReplacement(
                 CupertinoPageRoute(
-                    builder: (_) => const LandingScreen())));
-                /*StreamBuilder(
-                  stream: FirebaseAuth.instance.authStateChanges(),
-                  builder: ((BuildContext context, snapshot) {
-                    if (snapshot.hasData) {
-                      // Goto MainPage(user is logged in.)
-                      return const LoginPage();
-                    } else {
-                      // Goto LoginPage(user is not logged in.)
-                      return const LandingScreen();
-                    }
-                  })));*/
+                    builder: (_) => StreamBuilder(
+                      stream: FirebaseAuth.instance.authStateChanges(),
+                      builder: ((BuildContext context, snapshot) {
+                        if (snapshot.hasData) {
+                          // Goto MainPage(user is logged in.)
+                          return const LandingScreen();
+                        } else {
+                          // Goto LoginPage(user is not logged in.)
+                          return const LandingScreen();
+                        }
+                      }),
+                    ),)));
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -70,7 +71,6 @@ class _SplashScreenState extends State<SplashScreen> {
                     'Divine',
                     style: const TextStyle(
                       fontSize: 50.0,
-                      fontFamily: "NunitoSans",
                       fontWeight: FontWeight.w400,
                     ),
                     colors: const [

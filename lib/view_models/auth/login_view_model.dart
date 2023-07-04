@@ -29,7 +29,7 @@ class LoginViewModel extends ChangeNotifier {
     if (!form.validate()) {
       validate = true;
       notifyListeners();
-      showSnackBar("Please fix all the errors before continuing", context);
+      showSnackBar("Please fix all the errors before continuing.", context);
     } else {
       loading = true;
       notifyListeners();
@@ -45,7 +45,7 @@ class LoginViewModel extends ChangeNotifier {
       } catch (e) {
         loading = false;
         notifyListeners();
-        //showSnackBar('${authService.handleFirebaseAuthError(e.toString())}', context);
+        showSnackBar(authService.handleFirebaseAuthError(e.toString()), context);
       }
     }
     loading = false;
@@ -74,9 +74,9 @@ class LoginViewModel extends ChangeNotifier {
           'Please input a valid email to reset your password.', context);
     } else {
       try {
-        //await authService.forgotPassword(email!);
+        await authService.forgotPassword(email!);
         showSnackBar(
-            'Please check your email for instructions to reset your password',
+            'Please check your email for instructions to reset your password.',
             context);
       } catch (e) {
         showSnackBar(e.toString(), context);

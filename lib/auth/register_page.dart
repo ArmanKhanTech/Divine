@@ -2,7 +2,6 @@ import 'package:divine/components/text_form_builder.dart';
 import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +28,7 @@ class _RegisterPageState extends State<RegisterPage>{
     // Setup system UI.
     SystemUI.lightSystemUI();
 
-    // Registration Form
+    // Registration Form.
     buildForm(RegisterViewModel viewModel, BuildContext context){
       return Form(
         key: viewModel.formKey,
@@ -97,6 +96,7 @@ class _RegisterPageState extends State<RegisterPage>{
             PasswordFormBuilder(
               enabled: !viewModel.loading,
               prefix: Ionicons.lock_open,
+              suffix: Ionicons.eye_outline,
               hintText: "Confirm Password",
               textInputAction: TextInputAction.done,
               validateFunction: Regex.validatePassword,

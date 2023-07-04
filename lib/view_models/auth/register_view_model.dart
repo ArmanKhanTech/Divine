@@ -53,7 +53,7 @@ class RegisterViewModel extends ChangeNotifier {
         } catch (e) {
           loading = false;
           notifyListeners();
-          //showInSnackBar('${auth.handleFirebaseAuthError(e.toString())}', context);
+          showInSnackBar(auth.handleFirebaseAuthError(e.toString()), context);
         }
         loading = false;
         notifyListeners();
