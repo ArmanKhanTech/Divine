@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../regex/regex.dart';
 import '../../services/auth_service.dart';
+import '../../utilities/constants.dart';
 
 // ViewModel of LoginPage.
 class LoginViewModel extends ChangeNotifier {
@@ -89,6 +90,13 @@ class LoginViewModel extends ChangeNotifier {
   // Show temporary text message on screen.
   showSnackBar(String msg, context) {
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15),), backgroundColor: Constants.orange,
+      behavior: SnackBarBehavior.fixed, duration: const Duration(seconds: 2), padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        )));
   }
 }

@@ -121,9 +121,8 @@ class _LoginPageState extends State<LoginPage> {
             body: ListView(
               padding: const EdgeInsets.symmetric(vertical: 20.0),
               children: [
-                SizedBox(height: MediaQuery.of(context).size.height / 50),
                 SizedBox(
-                  height: 400.0,
+                  height: kIsWeb == false ? MediaQuery.of(context).size.height * 0.50 : MediaQuery.of(context).size.height * 0.40,
                   width: MediaQuery.of(context).size.width,
                   child: Image.asset(
                     'assets/images/login_img.png',

@@ -30,7 +30,7 @@ class RegisterViewModel extends ChangeNotifier {
     if (!form.validate()) {
       validate = true;
       notifyListeners();
-      showInSnackBar(
+      showSnackBar(
           'Kindly fix all the errors before proceeding.', context);
     } else {
       if (password == cPassword) {
@@ -53,12 +53,12 @@ class RegisterViewModel extends ChangeNotifier {
         } catch (e) {
           loading = false;
           notifyListeners();
-          showInSnackBar(auth.handleFirebaseAuthError(e.toString()), context);
+          showSnackBar(auth.handleFirebaseAuthError(e.toString()), context);
         }
         loading = false;
         notifyListeners();
       } else {
-        showInSnackBar('The passwords do not match.', context);
+        showSnackBar('The passwords do not match.', context);
       }
     }
   }
@@ -90,8 +90,15 @@ class RegisterViewModel extends ChangeNotifier {
   }
 
   // Show temporary text message on screen.
-  void showInSnackBar(String msg, context) {
+  showSnackBar(String msg, context) {
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15),), backgroundColor: Colors.blue,
+        behavior: SnackBarBehavior.fixed, duration: const Duration(seconds: 2), padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        )));
   }
 }

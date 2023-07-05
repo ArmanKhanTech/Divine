@@ -43,7 +43,7 @@ class PostsViewModel extends ChangeNotifier{
   // Upload profile picture to Firebase Storage & its link to user's collection.
   uploadProfilePicture(BuildContext context) async {
     if (mediaUrl == null) {
-      showInSnackBar('Kindly select an image.', context);
+      showSnackBar('Kindly select an image.', context);
     } else {
       try {
         loading = true;
@@ -56,7 +56,7 @@ class PostsViewModel extends ChangeNotifier{
         notifyListeners();
       } catch (e) {
         loading = false;
-        showInSnackBar('Uploaded successfully!', context);
+        showSnackBar('Uploaded successfully!', context);
         notifyListeners();
       }
     }
@@ -105,7 +105,7 @@ class PostsViewModel extends ChangeNotifier{
     } catch (e) {
       loading = false;
       notifyListeners();
-      showInSnackBar('Cancelled.', context);
+      showSnackBar('Cancelled.', context);
     }
   }
 
@@ -118,8 +118,15 @@ class PostsViewModel extends ChangeNotifier{
     notifyListeners();
   }
 
-  void showInSnackBar(String msg, context) {
+  showSnackBar(String msg, context) {
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15),), backgroundColor: Colors.pink,
+        behavior: SnackBarBehavior.fixed, duration: const Duration(seconds: 2), padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        )));
   }
 }
