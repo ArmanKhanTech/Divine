@@ -3,10 +3,10 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 // Progress bar widgets.
 Center circularProgress(context) {
-  return Center(
-    child: SpinKitFadingCircle(
-      size: 40.0,
-      color: Theme.of(context).colorScheme.secondary,
+  return const Center(
+    child: SpinKitSpinningLines(
+      size: 50.0,
+      color: Colors.blue,
     ),
   );
 }

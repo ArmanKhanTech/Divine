@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../components/pass_form_builder.dart';
 import '../regex/regex.dart';
-import '../utilities/system_ui.dart';
 import '../view_models/auth/register_view_model.dart';
 import 'login_page.dart';
 
@@ -27,9 +26,6 @@ class _RegisterPageState extends State<RegisterPage>{
   Widget build(BuildContext context) {
     // ViewModel(backend basically) of RegisterPage.
     RegisterViewModel viewModel = Provider.of<RegisterViewModel>(context);
-
-    // Setup system UI.
-    SystemUI.lightSystemUI();
 
     // Registration Form.
     buildForm(RegisterViewModel viewModel, BuildContext context){
@@ -111,6 +107,16 @@ class _RegisterPageState extends State<RegisterPage>{
               focusNode: viewModel.cPassFocusNode,
               whichPage: "signup",
             ),
+            const SizedBox(height: 10.0),
+            const Text(
+              textAlign: TextAlign.center,
+              'By signing up you agree to our Terms of Use \n& Privacy Policy.',
+              style: TextStyle(
+                fontSize: 15.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
+              ),
+            ),
             const SizedBox(height: 20.0),
             SizedBox(
               height: 40.0,
@@ -144,21 +150,29 @@ class _RegisterPageState extends State<RegisterPage>{
             isLoading: viewModel.loading,
             progressIndicator: circularProgress(context),
             child: Scaffold(
+                backgroundColor: Theme.of(context).colorScheme.background,
                 key: viewModel.scaffoldKey,
                 body: ListView(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
                   children: [
                     SizedBox(height: MediaQuery.of(context).size.height / 10,),
-                    GradientText(
-                      'Welcome to Divine.\nCreate a new account & connect with your friends.',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30.0,
-                      ), colors: const [
-                      Colors.blue,
-                      Colors.purple,
-                      Colors.pink,
-                    ],
+                    Row(
+                      children: [
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        GradientText(
+                          'Welcome to Divine.\nCreate a new account & \nconnect with your friends.',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 30.0,
+                          ), colors: const [
+                          Colors.blue,
+                          Colors.purple,
+                          Colors.pink,
+                        ],
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 20.0),
                     buildForm(viewModel, context),
@@ -173,7 +187,7 @@ class _RegisterPageState extends State<RegisterPage>{
                           ),
                         ),
                         GestureDetector(
-                          onTap: () => Navigator.of(context).pop(
+                          onTap: () => Navigator.of(context).push(
                             CupertinoPageRoute(
                               builder: (_) => const LoginPage(),
                             )),

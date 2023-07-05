@@ -1,9 +1,11 @@
 import 'package:divine/screens/splash_screen.dart';
+import 'package:divine/secret_keys.dart';
 import 'package:divine/services/user_service.dart';
 import 'package:divine/utilities/constants.dart';
 import 'package:divine/utilities/no_thumb_scrollbar.dart';
 import 'package:divine/utilities/providers.dart';
 import 'package:divine/view_models/theme/theme_view_model.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,13 +15,20 @@ import 'event_handlers/app_life_cycle_event_handler.dart';
 import 'firebase_options.dart';
 
 void main() async {
-  // Initialize the firebase depending on the platform.
   WidgetsFlutterBinding.ensureInitialized();
+  // Initialize Firebase depending on the platform.
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // Initialize Firebase App Check.
+  await FirebaseAppCheck.instance.activate(
+    webRecaptchaSiteKey: webRecaptchaSiteKey,
+    androidProvider: AndroidProvider.playIntegrity,
+  );
+  // Set the orientation to portrait only.
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp]);
+  // Run the app.
   runApp(const MyApp());
 }
 
@@ -67,6 +76,13 @@ class _MyAppState extends State<MyApp> {
             home: const SplashScreen(),
             // Disable scrollbars.
             scrollBehavior: NoThumbScrollBehavior().copyWith(scrollbars: false),
+            builder: (context, child) {
+              // Disable text scaling.
+              return MediaQuery(
+                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                child: child!,
+              );
+            },
           );
         },
       ),

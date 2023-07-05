@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 import '../components/pass_form_builder.dart';
 import '../components/text_form_builder.dart';
 import '../regex/regex.dart';
-import '../utilities/system_ui.dart';
 import '../view_models/auth/login_view_model.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
 
@@ -26,9 +25,6 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     // ViewModel(backend basically) of LoginPage.
     LoginViewModel viewModel = Provider.of<LoginViewModel>(context);
-
-    // Setup system UI.
-    SystemUI.lightSystemUI();
 
     // Login Form.
     buildForm(BuildContext context, LoginViewModel viewModel) {
@@ -123,9 +119,9 @@ class _LoginPageState extends State<LoginPage> {
             backgroundColor: Theme.of(context).colorScheme.background,
             key: viewModel.scaffoldKey,
             body: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
               children: [
-                SizedBox(height: MediaQuery.of(context).size.height / 40),
+                SizedBox(height: MediaQuery.of(context).size.height / 50),
                 SizedBox(
                   height: 400.0,
                   width: MediaQuery.of(context).size.width,

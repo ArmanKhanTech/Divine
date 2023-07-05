@@ -51,7 +51,12 @@ dependencies:
   simple_gradient_text: 1.2.4
   uuid: ^3.0.7
   flutter_web_frame: ^0.0.3
-
+  cached_network_image: ^3.2.3
+  image_picker: ^1.0.0
+  geolocator: ^9.0.2
+  geocoding: ^2.1.0
+  image_cropper: ^5.0.0
+  firebase_app_check: ^0.1.5
 
 dev_dependencies:
   flutter_test:
