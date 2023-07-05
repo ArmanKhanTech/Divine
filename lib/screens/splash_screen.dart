@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:divine/auth/register_page.dart';
 import 'package:divine/screens/profile_picture_screen.dart';
 import 'package:divine/utilities/system_ui.dart';
 import 'package:firebase_auth/firebase_auth.dart';
