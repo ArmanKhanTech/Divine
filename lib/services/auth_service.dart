@@ -48,6 +48,9 @@ class AuthService {
       'favorites': 0,
       'createdAt': Timestamp.now(),
       'gender': '',
+      'url': '',
+      'type': 'public',
+      'saved': 0
     });
   }
 

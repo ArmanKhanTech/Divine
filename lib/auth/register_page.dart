@@ -36,7 +36,7 @@ class _RegisterPageState extends State<RegisterPage>{
           children: [
             TextFormBuilder(
               enabled: !viewModel.loading,
-              prefix: CupertinoIcons.person_2_fill,
+              prefix: CupertinoIcons.person_fill,
               hintText: "Username",
               textInputAction: TextInputAction.next,
               validateFunction: Regex.validateName,
@@ -155,7 +155,7 @@ class _RegisterPageState extends State<RegisterPage>{
                 body: ListView(
                   padding: const EdgeInsets.symmetric(vertical: 20.0),
                   children: [
-                    SizedBox(height: MediaQuery.of(context).size.height / 10,),
+                    SizedBox(height: kIsWeb != true ? MediaQuery.of(context).size.height / 10 : MediaQuery.of(context).size.height / 15),
                     Row(
                       children: [
                         const SizedBox(

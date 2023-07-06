@@ -1,4 +1,4 @@
-import 'package:divine/view_models/auth/posts_view_model.dart';
+import 'package:divine/view_models/screens/posts_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -97,6 +97,7 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
             progressIndicator: circularProgress(context),
             isLoading: viewModel.loading,
             child: Scaffold(
+              resizeToAvoidBottomInset: false,
               key: viewModel.scaffoldKey,
               backgroundColor: Theme.of(context).colorScheme.background,
               appBar: AppBar(
@@ -109,7 +110,7 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                       height: 3.0,
                     ),
                     GradientText(
-                      'Upload a profile picture',
+                      'Profile picture',
                       style: const TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.w300,
@@ -145,38 +146,52 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                   InkWell(
                     onTap: () => showImageChoices(context, viewModel),
                     child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.4,
                       decoration: BoxDecoration(
+                        shape:BoxShape.circle,
                         color: Theme.of(context).colorScheme.background,
                         border: Border.all(
                           color: Colors.blue,
-                          width: 1.0,
+                          width: 2.0,
                         ),
                       ),
-                      child: viewModel.imgLink != null
-                          ? CustomImage(
-                        imageUrl: viewModel.imgLink,
+                      child: Container(
                         width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.width - 30,
-                        fit: BoxFit.cover,
-                      ) : viewModel.mediaUrl == null
-                          ? Center(
-                        child: Text(
-                          'Tap to add your profile picture',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.secondary,
-                            fontFamily: 'Raleway',
-                            fontSize: 15.0,
+                        height: MediaQuery.of(context).size.height * 0.4,
+                        decoration: BoxDecoration(
+                          shape:BoxShape.circle,
+                          color: Theme.of(context).colorScheme.background,
+                        ),
+                        clipBehavior: Clip.hardEdge,
+                        child: viewModel.imgLink != null
+                            ? CustomImage(
+                          imageUrl: viewModel.imgLink,
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.width - 30,
+                          fit: BoxFit.contain,
+                        ) : viewModel.mediaUrl == null
+                            ? Center(
+                          child: Text(
+                            kIsWeb != true ?
+                            'Tap to select your profile picture' : 'Click to select your profile picture',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary,
+                              fontFamily: 'Raleway',
+                              fontSize: 15.0,
+                            ),
                           ),
+                        ) : kIsWeb != true ? Image.file(
+                          viewModel.mediaUrl!,
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.width - 30,
+                          fit: BoxFit.contain,
+                        ) : Image.network(
+                          viewModel.mediaUrl!.path,
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.width - 30,
+                          fit: BoxFit.contain,
                         ),
-                      ) : Image.file(
-                        viewModel.mediaUrl!,
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.width - 30,
-                        fit: BoxFit.cover,
                       ),
-                    ),
+                    )
                   ),
                   const SizedBox(height: 20.0),
                   Center(

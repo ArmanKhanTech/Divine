@@ -1,9 +1,9 @@
-import 'package:divine/auth/login_page.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../regex/regex.dart';
+import '../../screens/main_screen.dart';
 import '../../services/auth_service.dart';
-import '../../utilities/constants.dart';
 
 // ViewModel of LoginPage.
 class LoginViewModel extends ChangeNotifier {
@@ -15,11 +15,14 @@ class LoginViewModel extends ChangeNotifier {
   bool validate = false;
   bool loading = false;
 
+  // Variables.
   String? email, password;
 
+  // FocusNodes.
   FocusNode emailFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
 
+  // Objects.
   AuthService authService = AuthService();
 
   // Login the user.
@@ -41,7 +44,7 @@ class LoginViewModel extends ChangeNotifier {
         );
         if (success) {
           Navigator.of(context).pushReplacement(
-              CupertinoPageRoute(builder: (_) => const LoginPage()));
+              CupertinoPageRoute(builder: (_) => const MainScreen()));
         }
       } catch (e) {
         loading = false;
@@ -90,13 +93,13 @@ class LoginViewModel extends ChangeNotifier {
   // Show temporary text message on screen.
   showSnackBar(String msg, context) {
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15),), backgroundColor: Constants.orange,
-      behavior: SnackBarBehavior.fixed, duration: const Duration(seconds: 2), padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15),), backgroundColor: Colors.orange,
+        behavior: kIsWeb == true ? SnackBarBehavior.fixed : SnackBarBehavior.floating, duration: const Duration(seconds: 2), padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
+          borderRadius: kIsWeb == true ? BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
-          ),
+          ) : BorderRadius.all(Radius.circular(30)),
         )));
   }
 }

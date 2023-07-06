@@ -1,16 +1,17 @@
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../auth/login_page.dart';
 import '../../services/post_service.dart';
 import '../../services/user_service.dart';
 import '../../utilities/constants.dart';
 import '../../utilities/firebase.dart';
 
+
+// Uploading Posts ViewModel.
 class PostsViewModel extends ChangeNotifier{
   // Services.
   UserService userService = UserService();
@@ -20,25 +21,19 @@ class PostsViewModel extends ChangeNotifier{
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  // Variables.
+  // Flags.
   bool loading = false;
-  String? username;
+  bool edit = false;
+
+  // Variables.
+  String? username, location, bio, description, email, commentData, ownerId, userId, type, imgLink, id;
+
+  // Objects.
   File? mediaUrl;
   final picker = ImagePicker();
-  String? location;
   Position? position;
   Placemark? placemark;
-  String? bio;
-  String? description;
-  String? email;
-  String? commentData;
-  String? ownerId;
-  String? userId;
-  String? type;
   File? userDp;
-  String? imgLink;
-  bool edit = false;
-  String? id;
 
   // Upload profile picture to Firebase Storage & its link to user's collection.
   uploadProfilePicture(BuildContext context) async {
@@ -51,8 +46,7 @@ class PostsViewModel extends ChangeNotifier{
         await postService.uploadProfilePicture(
             mediaUrl!, auth.currentUser!);
         loading = false;
-        Navigator.of(context)
-            .pushReplacement(CupertinoPageRoute(builder: (_) => const LoginPage()));
+        Navigator.pop(context);
         notifyListeners();
       } catch (e) {
         loading = false;
@@ -69,12 +63,13 @@ class PostsViewModel extends ChangeNotifier{
     try {
       XFile? pickedFile = await picker.pickImage(
         source: camera ? ImageSource.camera : ImageSource.gallery,
-        // Compression of image to 50% quality since it's a profile picture.
-        imageQuality: 50,
         preferredCameraDevice: CameraDevice.front,
       );
       CroppedFile? croppedFile = await ImageCropper().cropImage(
         sourcePath: pickedFile!.path,
+        // Compression of image to 50% quality since it's a profile picture.
+        compressFormat: ImageCompressFormat.png,
+        compressQuality: 50,
         aspectRatioPresets: [
           CropAspectRatioPreset.square,
           CropAspectRatioPreset.ratio3x2,
@@ -87,7 +82,7 @@ class PostsViewModel extends ChangeNotifier{
             toolbarTitle: 'Crop Profile Image',
             toolbarColor: Constants.lightAccent,
             toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.original,
+            initAspectRatio: CropAspectRatioPreset.square,
             lockAspectRatio: false,
           ),
           IOSUiSettings(
@@ -95,7 +90,17 @@ class PostsViewModel extends ChangeNotifier{
             title: 'Crop Profile Image',
           ),
           WebUiSettings(
-            context: context!,
+            context: scaffoldKey.currentContext!,
+            presentStyle: CropperPresentStyle.dialog,
+            enableZoom: true,
+            enableResize: true,
+            enableOrientation: true,
+            boundary: const CroppieBoundary(
+              height: 350
+            ),
+            viewPort: const CroppieViewPort(
+              type: 'circle'
+            ),
           ),
         ],
       );
@@ -121,12 +126,12 @@ class PostsViewModel extends ChangeNotifier{
   showSnackBar(String msg, context) {
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15),), backgroundColor: Colors.pink,
-        behavior: SnackBarBehavior.fixed, duration: const Duration(seconds: 2), padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        behavior: kIsWeb != true ? SnackBarBehavior.fixed : SnackBarBehavior.floating, duration: const Duration(seconds: 2), padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
+          borderRadius: kIsWeb != true ? BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
-          ),
+          ) : BorderRadius.all(Radius.circular(20)),
         )));
   }
 }

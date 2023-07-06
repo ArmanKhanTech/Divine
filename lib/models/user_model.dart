@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// Convert firebase JSON response to a Dart object & vice versa.
+// Convert firebase JSON response to a Dart object & vice versa & save to SharedPreference.
 class UserModel{
   String? username;
   String? email;
@@ -8,6 +8,8 @@ class UserModel{
   String? country;
   String? bio;
   String? id;
+  String? url;
+  String? type;
 
   Timestamp? signedUpAt;
   Timestamp? lastSeen;
@@ -23,7 +25,9 @@ class UserModel{
         this.isOnline,
         this.lastSeen,
         this.bio,
-        this.country});
+        this.country,
+        this.url,
+        this.type});
 
   UserModel.fromJson(Map<String, dynamic> json) {
     username = json['username'];
@@ -35,6 +39,8 @@ class UserModel{
     lastSeen = json['lastSeen'];
     bio = json['bio'];
     id = json['id'];
+    url = json['url'];
+    type = json['type'];
   }
 
   Map<String, dynamic> toJson() {
@@ -48,6 +54,8 @@ class UserModel{
     data['isOnline'] = isOnline;
     data['lastSeen'] = lastSeen;
     data['id'] = id;
+    data['url'] = url;
+    data['type'] = type;
     return data;
   }
 }

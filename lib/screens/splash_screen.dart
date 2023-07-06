@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:divine/auth/register_page.dart';
-import 'package:divine/screens/profile_picture_screen.dart';
 import 'package:divine/utilities/system_ui.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'main_screen.dart';
 
 // Splash Screen of the app.
 class SplashScreen extends StatefulWidget{
@@ -34,14 +34,15 @@ class _SplashScreenState extends State<SplashScreen> {
                       builder: ((BuildContext context, snapshot) {
                         if (snapshot.hasData) {
                           // Goto MainPage(user is logged in.)
-                          return const ProfilePictureScreen();
+                          return const MainScreen();
                         } else {
-                          // Goto LoginPage(user is not logged in.)
-                          return const ProfilePictureScreen();
+                          // Goto RegisterPage(user is not logged in.)
+                          return const RegisterPage();
                         }
                       }),
                     ),)));
 
+    // UI of SplashScreen
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Center(
@@ -72,11 +73,13 @@ class _SplashScreenState extends State<SplashScreen> {
                     'Divine',
                     style: const TextStyle(
                       fontSize: 50.0,
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'Montserrat'
                     ),
                     colors: const [
                       Colors.blue,
-                      Colors.pink
+                      Colors.pink,
+                      Colors.purple
                     ],
                   ),
                 ],

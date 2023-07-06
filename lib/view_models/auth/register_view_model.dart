@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import '../../screens/main_screen.dart';
 import '../../screens/profile_picture_screen.dart';
 import '../../services/auth_service.dart';
 
@@ -13,14 +15,17 @@ class RegisterViewModel extends ChangeNotifier {
   bool validate = false;
   bool loading = false;
 
+  // Variables.
   String? username, email, country, password, cPassword;
 
+  // FocusNodes.
   FocusNode usernameFocusNode = FocusNode();
   FocusNode emailFocusNode = FocusNode();
   FocusNode countryFocusNode = FocusNode();
   FocusNode passFocusNode = FocusNode();
   FocusNode cPassFocusNode = FocusNode();
 
+  // Objects.
   AuthService auth = AuthService();
 
   // Register the user.
@@ -46,7 +51,7 @@ class RegisterViewModel extends ChangeNotifier {
           if (success) {
             Navigator.of(context).pushReplacement(
               CupertinoPageRoute(
-                builder: (_) => const ProfilePictureScreen(),
+                builder: (_) => const MainScreen(),
               ),
             );
           }
@@ -93,12 +98,12 @@ class RegisterViewModel extends ChangeNotifier {
   showSnackBar(String msg, context) {
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15),), backgroundColor: Colors.blue,
-        behavior: SnackBarBehavior.fixed, duration: const Duration(seconds: 2), padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        behavior: kIsWeb != true ? SnackBarBehavior.fixed : SnackBarBehavior.floating, duration: const Duration(seconds: 2), padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
+          borderRadius: kIsWeb != true ? BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
-          ),
+          ) : BorderRadius.all(Radius.circular(20)),
         )));
   }
 }

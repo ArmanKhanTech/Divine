@@ -14,9 +14,9 @@ class Regex {
     if (value!.isEmpty && isRequired) {
       return 'Your email is required.';
     }
-    final RegExp nameExp = RegExp(
+    final RegExp emailExp = RegExp(
         r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
-    if (!nameExp.hasMatch(value) && isRequired) {
+    if (!emailExp.hasMatch(value) && isRequired) {
       return 'Invalid email address.';
     }
     return null;
@@ -32,6 +32,22 @@ class Regex {
   static String? validateCountry(String? value){
     if (value!.isEmpty) {
       return 'Please enter your country.';
+    }
+    return null;
+  }
+
+  static String? validateBio(String? value){
+    if (value!.length > 1000) {
+      return 'Bio must be short.';
+    }
+    return null;
+  }
+
+  static String? validateURL(String? value){
+    final urlRegExp = RegExp(
+        r"((https?:www\.)|(https?:\/\/)|(www\.))[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,6}(\/[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)?");
+    if (!urlRegExp.hasMatch(value!)) {
+      return 'Please enter a valid URL.';
     }
     return null;
   }
