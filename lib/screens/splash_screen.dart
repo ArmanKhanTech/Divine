@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'main_screen.dart';
 
-// Splash Screen of the app.
+// SplashScreen.
 class SplashScreen extends StatefulWidget{
   const SplashScreen({Key? key}) : super(key: key);
 
@@ -57,13 +57,13 @@ class _SplashScreenState extends State<SplashScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset("assets/images/app_icon.png", width: 65, height: 65),
+                  Image.asset("assets/images/app_icon.png", width: 60, height: 60),
                   const SizedBox(
                     width: 10,
                   ),
                   Container(
                     color: Colors.blue,
-                    height: 70,
+                    height: 65,
                     width: 1,
                   ),
                   const SizedBox(
@@ -73,8 +73,8 @@ class _SplashScreenState extends State<SplashScreen> {
                     'Divine',
                     style: const TextStyle(
                       fontSize: 50.0,
-                      fontWeight: FontWeight.w500,
-                      fontFamily: 'Montserrat'
+                      fontWeight: FontWeight.w400,
+                      fontFamily: 'Raleway'
                     ),
                     colors: const [
                       Colors.blue,
@@ -83,10 +83,8 @@ class _SplashScreenState extends State<SplashScreen> {
                     ],
                   ),
                 ],
-
               ),
             )
-
           ],
         ),
       ),

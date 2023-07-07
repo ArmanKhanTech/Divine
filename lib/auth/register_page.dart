@@ -13,7 +13,7 @@ import '../regex/regex.dart';
 import '../view_models/auth/register_view_model.dart';
 import 'login_page.dart';
 
-// Register Page of the app.
+// RegisterPage.
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 

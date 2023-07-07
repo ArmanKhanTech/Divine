@@ -42,15 +42,13 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 15.0),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15.0),
-                  child: Text(
-                    'Select from',
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue,
-                    ),
+                const Text(
+                  'Select from',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
                   ),
                 ),
                 const SizedBox(height: 15.0),

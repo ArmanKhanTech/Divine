@@ -89,12 +89,12 @@ class EditProfileViewModel extends ChangeNotifier{
   showSnackBar(String msg, context) {
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15),), backgroundColor: Colors.blue,
-        behavior: kIsWeb != true ? SnackBarBehavior.fixed : SnackBarBehavior.floating, duration: const Duration(seconds: 2), padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        behavior: kIsWeb == true ? SnackBarBehavior.fixed : SnackBarBehavior.floating, duration: const Duration(seconds: 2), padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
         shape: const RoundedRectangleBorder(
-          borderRadius: kIsWeb != true ? BorderRadius.only(
+          borderRadius: kIsWeb == true ? BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
-          ) : BorderRadius.all(Radius.circular(20)),
+          ) : BorderRadius.all(Radius.circular(30)),
         )));
   }
 }

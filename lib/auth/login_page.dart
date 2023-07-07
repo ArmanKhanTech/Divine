@@ -1,4 +1,3 @@
-import 'package:divine/utilities/constants.dart';
 import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -90,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
             width: 200.0,
             child: FloatingActionButton(
               elevation: 5.0,
-              backgroundColor: Constants.orange,
+              backgroundColor: Colors.orange,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),
@@ -143,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                     style: TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.w300,
-                      color: Constants.orange,
+                      color: Colors.orange,
                     ),
                   ),
                 ),
@@ -165,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                         style: TextStyle(
                           fontSize: 15.0,
                           fontWeight: FontWeight.bold,
-                          color: Constants.orange,
+                          color: Colors.orange,
                         ),
                       ),
                     ),

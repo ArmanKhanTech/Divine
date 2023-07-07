@@ -1,5 +1,4 @@
 import 'package:divine/components/custom_card.dart';
-import 'package:divine/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
@@ -98,7 +97,7 @@ class _PasswordFormBuilderState extends State<PasswordFormBuilder> {
                     prefixIcon: Icon(
                       widget.prefix,
                       size: 20.0,
-                      color: widget.whichPage == 'login' ? Constants.orange : Colors.blue
+                      color: widget.whichPage == 'login' ? Colors.orange : Colors.blue
                     ),
                     suffixIcon: GestureDetector(
                       onTap: () {
@@ -107,7 +106,7 @@ class _PasswordFormBuilderState extends State<PasswordFormBuilder> {
                       child: Icon(
                         obscureText ? widget.suffix : Ionicons.eye_off_outline,
                         size: 20.0,
-                          color: widget.whichPage == 'login' ? Constants.orange : Colors.blue
+                          color: widget.whichPage == 'login' ? Colors.orange : Colors.blue
                       ),
                     ),
                     filled: true,

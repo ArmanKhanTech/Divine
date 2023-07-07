@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../utilities/constants.dart';
 import 'custom_card.dart';
 
 // This class will build text input fields for our forms.
@@ -100,12 +99,12 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
                     prefixIcon: Icon(
                       widget.prefix,
                       size: 20.0,
-                      color: widget.whichPage == "login" ? Constants.orange : Colors.blue,
+                      color: widget.whichPage == "login" ? Colors.orange : Colors.blue,
                     ),
                     suffixIcon: Icon(
                       widget.suffix,
                       size: 20.0,
-                      color: widget.whichPage == "login" ? Constants.orange : Colors.blue,
+                      color: widget.whichPage == "login" ? Colors.orange : Colors.blue,
                     ),
                     filled: true,
                     hintText: widget.hintText,
