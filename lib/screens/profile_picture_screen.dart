@@ -92,7 +92,7 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
             return true;
           },
           child: LoadingOverlay(
-            progressIndicator: circularProgress(context),
+            progressIndicator: circularProgress(context, const Color(0XFF03A9F4)),
             isLoading: viewModel.loading,
             child: Scaffold(
               resizeToAvoidBottomInset: false,

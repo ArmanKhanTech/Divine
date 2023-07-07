@@ -1,14 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../screens/chat_screen.dart';
+import '../screens/confirm_story.dart';
+import '../stories_editor/stories_editor.dart';
 import '../utilities/constants.dart';
 import '../utilities/firebase.dart';
-import '../view_models/user/status_view_model.dart';
+import '../view_models/user/story_view_model.dart';
 import '../widgets/progress_indicators.dart';
+import '../widgets/story_widget.dart';
 
 // FeedsScreen.
 class FeedsPage extends StatefulWidget{
@@ -40,7 +44,7 @@ class _FeedsPageState extends State<FeedsPage>{
   }
 
   // Choose Dialog.
-  chooseUpload(BuildContext context, StatusViewModel viewModel) {
+  chooseUpload(BuildContext context, StoryViewModel viewModel) {
     return showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -72,20 +76,30 @@ class _FeedsPageState extends State<FeedsPage>{
                 height: 1.0,
                 color: Colors.blue,
               ),
-              ListTile(
+              Visibility(
+                visible: !kIsWeb,
+                child: ListTile(
                 leading: const Icon(
                     CupertinoIcons.photo_on_rectangle,
                     color: Colors.blue
                 ),
                 title: Text('Add to Stories', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
-                /*onTap: () {
-                  Navigator.pop(context);
-                  Navigator.of(context).push(
-                    CupertinoPageRoute(
-                      builder: (_) => CreatePost(),
-                    ),
-                  );
-                },*/
+                onTap: () {
+                  Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => StoriesEditor(
+                    giphyKey: 'C4dMA7Q19nqEGdpfj82T8ssbOeZIylD4',
+                    fontFamilyList: const ['Shizuru', 'Aladin'],
+                    galleryThumbnailQuality: 300,
+                    isCustomFontList: true,
+                    onDone: (uri) {
+                      Navigator.of(context).push(
+                        CupertinoPageRoute(
+                          builder: (_) => ConfirmStory(uri: uri),
+                        ),
+                      );
+                    },
+                  )));
+                },
+              ),
               ),
               ListTile(
                 leading: const Icon(
@@ -103,7 +117,7 @@ class _FeedsPageState extends State<FeedsPage>{
                     CupertinoIcons.chat_bubble_text,
                     color: Colors.blue
                 ),
-                title: Text('Write Something', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
+                title: Text('Write a Thread', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
                 /*onTap: () async {
                   // Navigator.pop(context);
                   await viewModel.pickImage(context: context);
@@ -114,7 +128,7 @@ class _FeedsPageState extends State<FeedsPage>{
                     CupertinoIcons.camera,
                     color: Colors.blue
                 ),
-                title: Text('New Reels', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
+                title: Text('Upload a new Reel', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
                 /*onTap: () async {
                   // Navigator.pop(context);
                   await viewModel.pickImage(context: context);
@@ -131,7 +145,7 @@ class _FeedsPageState extends State<FeedsPage>{
   @override
   Widget build(BuildContext context) {
     // ViewModel of Stories.
-    StatusViewModel viewModel = Provider.of<StatusViewModel>(context);
+    StoryViewModel viewModel = Provider.of<StoryViewModel>(context);
 
     return Scaffold(
       key: scaffoldKey,
@@ -188,7 +202,23 @@ class _FeedsPageState extends State<FeedsPage>{
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              //StoryWidget(),
+              const StoryWidget(),
+              SizedBox(
+                height: 1.0,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [
+                        Colors.purple,
+                        Colors.pink,
+                        Colors.blue,
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               SizedBox(
                 height: MediaQuery.of(context).size.height,
                 child: FutureBuilder(
@@ -216,7 +246,7 @@ class _FeedsPageState extends State<FeedsPage>{
                     } else if (snapshot.connectionState ==
                         ConnectionState.waiting) {
                       return Center(
-                        child: circularProgress(context),
+                        child: circularProgress(context, const Color(0XFF03A9F4)),
                       );
                     } else {
                       return const Center(

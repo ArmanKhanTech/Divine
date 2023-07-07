@@ -148,7 +148,7 @@ class _RegisterPageState extends State<RegisterPage>{
       builder: (context) {
         return LoadingOverlay(
             isLoading: viewModel.loading,
-            progressIndicator: circularProgress(context),
+            progressIndicator: circularProgress(context, const Color(0XFF03A9F4)),
             child: Scaffold(
                 backgroundColor: Theme.of(context).colorScheme.background,
                 key: viewModel.scaffoldKey,

@@ -104,7 +104,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
     return FlutterWebFrame(
       builder: (context) {
         return LoadingOverlay(
-          progressIndicator: circularProgress(context),
+          progressIndicator: circularProgress(context, const Color(0XFF03A9F4)),
           isLoading: viewModel.loading,
           child: Scaffold(
             key: viewModel.scaffoldKey,

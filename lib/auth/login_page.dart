@@ -112,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
     return FlutterWebFrame(
       builder: (context) {
         return LoadingOverlay(
-          progressIndicator: circularProgress(context),
+          progressIndicator: circularProgress(context, const Color(0xFFFF9800)),
           isLoading: viewModel.loading,
           child: Scaffold(
             backgroundColor: Theme.of(context).colorScheme.background,

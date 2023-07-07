@@ -50,7 +50,8 @@ class AuthService {
       'gender': '',
       'url': '',
       'type': 'public',
-      'saved': 0
+      'saved': 0,
+      'hashtags': '',
     });
   }
 

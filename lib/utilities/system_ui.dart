@@ -27,4 +27,17 @@ abstract class SystemUI {
       ),
     );
   }
+
+  static void darkSystemUIforStory() {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.black,
+        systemNavigationBarIconBrightness: Brightness.light,
+        systemNavigationBarDividerColor: null,
+        statusBarColor: Colors.black,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.dark,
+      ),
+    );
+  }
 }
