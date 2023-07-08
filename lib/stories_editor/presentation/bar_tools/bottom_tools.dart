@@ -12,6 +12,7 @@ import '../widgets/animated_on_tap_button.dart';
 class BottomTools extends StatelessWidget {
   final GlobalKey contentKey;
   final Function(String imageUri) onDone;
+  final Function(bool isLoading) onTapped;
   final Widget? onDoneButtonStyle;
 
   final Color? editorBackgroundColor;
@@ -20,7 +21,8 @@ class BottomTools extends StatelessWidget {
         required this.contentKey,
         required this.onDone,
         this.onDoneButtonStyle,
-        this.editorBackgroundColor})
+        this.editorBackgroundColor,
+        required this.onTapped})
       : super(key: key);
 
   @override
@@ -126,6 +128,7 @@ class BottomTools extends StatelessWidget {
                       child: AnimatedOnTapButton(
                           onTap: () async {
                             String pngUri;
+                            onTapped(true);
                             await takePicture(
                                 contentKey: contentKey,
                                 context: context,
@@ -134,6 +137,7 @@ class BottomTools extends StatelessWidget {
                               if (bytes != null) {
                                 pngUri = bytes;
                                 onDone(pngUri);
+                                onTapped(false);
                               }
                             });
                           },

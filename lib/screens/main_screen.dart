@@ -3,6 +3,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
 import '../nav_pages/activity_page.dart';
 import '../nav_pages/feeds_page.dart';
@@ -56,6 +57,21 @@ class _MainScreenState extends State<MainScreen>{
     return FlutterWebFrame(
       builder: (context) {
         return Scaffold(
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(0.0),
+            child: AppBar(
+              systemOverlayStyle: const SystemUiOverlayStyle(
+                statusBarColor: Colors.transparent,
+                statusBarIconBrightness: Brightness.dark,
+                statusBarBrightness: Brightness.dark,
+                systemNavigationBarColor: Colors.white,
+                systemNavigationBarIconBrightness: Brightness.dark,
+                systemNavigationBarDividerColor: null,
+              ),
+              automaticallyImplyLeading: false,
+              backgroundColor: Colors.transparent,
+            ),
+          ),
           body: PageTransitionSwitcher(
             transitionBuilder: (
                 Widget child,

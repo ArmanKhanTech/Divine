@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gallery_media_picker/gallery_media_picker.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
-import '../../../utilities/system_ui.dart';
 import '../../domain/models/editable_item.dart';
 import '../../domain/models/painting_model.dart';
 import '../../domain/notifiers/control_notifier.dart';
@@ -25,6 +25,7 @@ import '../utils/constants/app_enum.dart';
 import '../utils/model_sheets.dart';
 import '../widgets/animated_on_tap_button.dart';
 import '../widgets/scrollable_page_view.dart';
+import 'package:divine/widgets/progress_indicators.dart';
 
 // ignore_for_file: must_be_immutable
 class MainView extends StatefulWidget {
@@ -81,6 +82,7 @@ class _MainViewState extends State<MainView> {
 
   bool _isDeletePosition = false;
   bool _inAction = false;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -112,290 +114,315 @@ class _MainViewState extends State<MainView> {
   Widget build(BuildContext context) {
     final ScreenUtil screenUtil = ScreenUtil();
 
-    SystemUI.darkSystemUIforStory();
-
     return WillPopScope(
       onWillPop: _popScope,
-      child: Material(
-        color: widget.editorBackgroundColor == Colors.transparent
-            ? Colors.black
-            : widget.editorBackgroundColor ?? Colors.black,
-        child: Consumer6<
-            ControlNotifier,
-            DraggableWidgetNotifier,
-            ScrollNotifier,
-            GradientNotifier,
-            PaintingNotifier,
-            TextEditingNotifier>(
-          builder: (context, controlNotifier, itemProvider, scrollProvider,
-              colorProvider, paintingProvider, editingProvider, child) {
-            return SafeArea(
-              child: ScrollablePageView(
-                scrollPhysics: controlNotifier.mediaPath.isEmpty &&
-                    itemProvider.draggableWidget.isEmpty &&
-                    !controlNotifier.isPainting &&
-                    !controlNotifier.isTextEditing,
-                pageController: scrollProvider.pageController,
-                gridController: scrollProvider.gridController,
-                mainView: Column(
-                  children: [
-                    Expanded(
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          GestureDetector(
-                            onScaleStart: _onScaleStart,
-                            onScaleUpdate: _onScaleUpdate,
-                            onTap: () {
-                              controlNotifier.isTextEditing =
-                              !controlNotifier.isTextEditing;
-                            },
-                            child: Align(
-                              alignment: Alignment.topCenter,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(25),
-                                child: SizedBox(
-                                  width: screenUtil.screenWidth,
-                                  child: RepaintBoundary(
-                                    key: contentKey,
-                                    child: AnimatedContainer(
-                                      duration:
-                                      const Duration(milliseconds: 200),
-                                      decoration: BoxDecoration(
-                                          gradient: controlNotifier
-                                              .mediaPath.isEmpty
-                                              ? LinearGradient(
-                                            colors: controlNotifier
-                                                .gradientColors![
-                                            controlNotifier
-                                                .gradientIndex],
-                                            begin: Alignment.topLeft,
-                                            end: Alignment.bottomRight,
-                                          )
-                                              : LinearGradient(
-                                            colors: [
-                                              colorProvider.color1,
-                                              colorProvider.color2
-                                            ],
-                                            begin: Alignment.topCenter,
-                                            end: Alignment.bottomCenter,
-                                          )),
-                                      child: GestureDetector(
-                                        onScaleStart: _onScaleStart,
-                                        onScaleUpdate: _onScaleUpdate,
-                                        child: Stack(
-                                          alignment: Alignment.center,
-                                          children: [
-                                            PhotoView.customChild(
-                                              backgroundDecoration:
-                                              const BoxDecoration(
-                                                  color:
-                                                  Colors.transparent),
-                                              child: Container(),
-                                            ),
+      child: LoadingOverlay(
+        isLoading: _isLoading,
+        color: Colors.black,
+        progressIndicator: circularProgress(context, const Color(0XFF03A9F4)),
+        opacity: 0.5,
+        child: Scaffold(
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(5.0),
+            child: AppBar(
+              systemOverlayStyle: const SystemUiOverlayStyle(
+                statusBarColor: Colors.black,
+                statusBarIconBrightness: Brightness.light,
+                statusBarBrightness: Brightness.light,
+                systemNavigationBarColor: Colors.black,
+                systemNavigationBarIconBrightness: Brightness.light,
+                systemNavigationBarDividerColor: null,
+              ),
+              automaticallyImplyLeading: false,
+              backgroundColor: Colors.black,
+            ),
+          ),
+          body: Material(
+            color: widget.editorBackgroundColor == Colors.transparent
+                ? Colors.black
+                : widget.editorBackgroundColor ?? Colors.black,
+            child: Consumer6<
+                ControlNotifier,
+                DraggableWidgetNotifier,
+                ScrollNotifier,
+                GradientNotifier,
+                PaintingNotifier,
+                TextEditingNotifier>(
+              builder: (context, controlNotifier, itemProvider, scrollProvider,
+                  colorProvider, paintingProvider, editingProvider, child) {
+                return SafeArea(
+                  child: ScrollablePageView(
+                    scrollPhysics: controlNotifier.mediaPath.isEmpty &&
+                        itemProvider.draggableWidget.isEmpty &&
+                        !controlNotifier.isPainting &&
+                        !controlNotifier.isTextEditing,
+                    pageController: scrollProvider.pageController,
+                    gridController: scrollProvider.gridController,
+                    mainView: Column(
+                      children: [
+                        Expanded(
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              GestureDetector(
+                                onScaleStart: _onScaleStart,
+                                onScaleUpdate: _onScaleUpdate,
+                                onTap: () {
+                                  controlNotifier.isTextEditing =
+                                  !controlNotifier.isTextEditing;
+                                },
+                                child: Align(
+                                  alignment: Alignment.topCenter,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(25),
+                                    child: SizedBox(
+                                      width: screenUtil.screenWidth,
+                                      child: RepaintBoundary(
+                                        key: contentKey,
+                                        child: AnimatedContainer(
+                                          duration:
+                                          const Duration(milliseconds: 200),
+                                          decoration: BoxDecoration(
+                                              gradient: controlNotifier
+                                                  .mediaPath.isEmpty
+                                                  ? LinearGradient(
+                                                colors: controlNotifier
+                                                    .gradientColors![
+                                                controlNotifier
+                                                    .gradientIndex],
+                                                begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                              )
+                                                  : LinearGradient(
+                                                colors: [
+                                                  colorProvider.color1,
+                                                  colorProvider.color2
+                                                ],
+                                                begin: Alignment.topCenter,
+                                                end: Alignment.bottomCenter,
+                                              )),
+                                          child: GestureDetector(
+                                            onScaleStart: _onScaleStart,
+                                            onScaleUpdate: _onScaleUpdate,
+                                            child: Stack(
+                                              alignment: Alignment.center,
+                                              children: [
+                                                PhotoView.customChild(
+                                                  backgroundDecoration:
+                                                  const BoxDecoration(
+                                                      color:
+                                                      Colors.transparent),
+                                                  child: Container(),
+                                                ),
 
-                                            ...itemProvider.draggableWidget
-                                                .map((editableItem) {
-                                              return DraggableWidget(
-                                                context: context,
-                                                draggableWidget: editableItem,
-                                                onPointerDown: (details) {
-                                                  _updateItemPosition(
-                                                    editableItem,
-                                                    details,
+                                                ...itemProvider.draggableWidget
+                                                    .map((editableItem) {
+                                                  return DraggableWidget(
+                                                    context: context,
+                                                    draggableWidget: editableItem,
+                                                    onPointerDown: (details) {
+                                                      _updateItemPosition(
+                                                        editableItem,
+                                                        details,
+                                                      );
+                                                    },
+                                                    onPointerUp: (details) {
+                                                      _deleteItemOnCoordinates(
+                                                        editableItem,
+                                                        details,
+                                                      );
+                                                    },
+                                                    onPointerMove: (details) {
+                                                      _deletePosition(
+                                                        editableItem,
+                                                        details,
+                                                      );
+                                                    },
                                                   );
-                                                },
-                                                onPointerUp: (details) {
-                                                  _deleteItemOnCoordinates(
-                                                    editableItem,
-                                                    details,
-                                                  );
-                                                },
-                                                onPointerMove: (details) {
-                                                  _deletePosition(
-                                                    editableItem,
-                                                    details,
-                                                  );
-                                                },
-                                              );
-                                            }),
+                                                }),
 
-                                            IgnorePointer(
-                                              ignoring: true,
-                                              child: Align(
-                                                alignment: Alignment.topCenter,
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                    BorderRadius.circular(
-                                                        25),
-                                                  ),
-                                                  child: RepaintBoundary(
-                                                    child: SizedBox(
-                                                      width: screenUtil
-                                                          .screenWidth,
-                                                      child: StreamBuilder<
-                                                          List<PaintingModel>>(
-                                                        stream: paintingProvider
-                                                            .linesStreamController
-                                                            .stream,
-                                                        builder: (context,
-                                                            snapshot) {
-                                                          return CustomPaint(
-                                                            painter: Sketcher(
-                                                              lines:
-                                                              paintingProvider
-                                                                  .lines,
-                                                            ),
-                                                          );
-                                                        },
+                                                IgnorePointer(
+                                                  ignoring: true,
+                                                  child: Align(
+                                                    alignment: Alignment.topCenter,
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                        BorderRadius.circular(
+                                                            25),
+                                                      ),
+                                                      child: RepaintBoundary(
+                                                        child: SizedBox(
+                                                          width: screenUtil
+                                                              .screenWidth,
+                                                          child: StreamBuilder<
+                                                              List<PaintingModel>>(
+                                                            stream: paintingProvider
+                                                                .linesStreamController
+                                                                .stream,
+                                                            builder: (context,
+                                                                snapshot) {
+                                                              return CustomPaint(
+                                                                painter: Sketcher(
+                                                                  lines:
+                                                                  paintingProvider
+                                                                      .lines,
+                                                                ),
+                                                              );
+                                                            },
+                                                          ),
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
+                                              ],
                                             ),
-                                          ],
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
 
-                          if (itemProvider.draggableWidget.isEmpty &&
-                              !controlNotifier.isTextEditing &&
-                              paintingProvider.lines.isEmpty)
-                            IgnorePointer(
-                              ignoring: true,
-                              child: Align(
-                                alignment: const Alignment(0, -0.1),
-                                child: Text('Tap to type',
-                                    style: TextStyle(
-                                        fontFamily: 'Alegreya',
-                                        package: 'stories_editor',
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 30,
-                                        color: Colors.white.withOpacity(0.5),
-                                        shadows: <Shadow>[
-                                          Shadow(
-                                              offset: const Offset(1.0, 1.0),
-                                              blurRadius: 3.0,
-                                              color: Colors.black45
-                                                  .withOpacity(0.3))
-                                        ])),
+                              if (itemProvider.draggableWidget.isEmpty &&
+                                  !controlNotifier.isTextEditing &&
+                                  paintingProvider.lines.isEmpty)
+                                IgnorePointer(
+                                  ignoring: true,
+                                  child: Align(
+                                    alignment: const Alignment(0, -0.1),
+                                    child: Text('Tap to type',
+                                        style: TextStyle(
+                                            fontFamily: 'Alegreya',
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 30,
+                                            color: Colors.white.withOpacity(0.5),
+                                            shadows: <Shadow>[
+                                              Shadow(
+                                                  offset: const Offset(1.0, 1.0),
+                                                  blurRadius: 3.0,
+                                                  color: Colors.black45
+                                                      .withOpacity(0.3))
+                                            ])),
+                                  ),
+                                ),
+
+                              Visibility(
+                                visible: !controlNotifier.isTextEditing &&
+                                    !controlNotifier.isPainting,
+                                child: Align(
+                                    alignment: Alignment.topCenter,
+                                    child: TopTools(
+                                      contentKey: contentKey,
+                                      context: context,
+                                    )),
                               ),
-                            ),
 
-                          Visibility(
-                            visible: !controlNotifier.isTextEditing &&
-                                !controlNotifier.isPainting,
-                            child: Align(
-                                alignment: Alignment.topCenter,
-                                child: TopTools(
-                                  contentKey: contentKey,
+                              DeleteItem(
+                                activeItem: _activeItem,
+                                animationsDuration:
+                                const Duration(milliseconds: 300),
+                                isDeletePosition: _isDeletePosition,
+                              ),
+
+                              Visibility(
+                                visible: controlNotifier.isTextEditing,
+                                child: TextEditor(
                                   context: context,
-                                )),
-                          ),
+                                ),
+                              ),
 
-                          DeleteItem(
-                            activeItem: _activeItem,
-                            animationsDuration:
-                            const Duration(milliseconds: 300),
-                            isDeletePosition: _isDeletePosition,
+                              Visibility(
+                                visible: controlNotifier.isPainting,
+                                child: const Painting(),
+                              ),
+                            ],
                           ),
+                        ),
 
-                          Visibility(
-                            visible: controlNotifier.isTextEditing,
-                            child: TextEditor(
-                              context: context,
-                            ),
+                        if (!kIsWeb)
+                          BottomTools(
+                            contentKey: contentKey,
+                            onDone: (bytes) {
+                              setState(() {
+                                widget.onDone!(bytes);
+                              });
+                            },
+                            onTapped : (isLoading) {
+                              setState(() {
+                              _isLoading = isLoading;
+                              });
+                            },
+                            onDoneButtonStyle: widget.onDoneButtonStyle,
+                            editorBackgroundColor: widget.editorBackgroundColor,
                           ),
-
-                          Visibility(
-                            visible: controlNotifier.isPainting,
-                            child: const Painting(),
-                          ),
-                        ],
-                      ),
+                      ],
                     ),
-
-                    if (!kIsWeb)
-                      BottomTools(
-                        contentKey: contentKey,
-                        onDone: (bytes) {
-                          setState(() {
-                            widget.onDone!(bytes);
-                          });
-                        },
-                        onDoneButtonStyle: widget.onDoneButtonStyle,
-                        editorBackgroundColor: widget.editorBackgroundColor,
-                      ),
-                  ],
-                ),
-                gallery: GalleryMediaPicker(
-                  mediaPickerParams: MediaPickerParamsModel(
-                    gridViewController: scrollProvider.gridController,
-                    thumbnailQuality: 200,
-                    singlePick: true,
-                    onlyImages: true,
-                    appBarColor: widget.editorBackgroundColor ?? Colors.black,
-                    gridViewPhysics: itemProvider.draggableWidget.isEmpty
-                        ? const NeverScrollableScrollPhysics()
-                        : const ScrollPhysics(),
-                    appBarLeadingWidget: Padding(
-                      padding: const EdgeInsets.only(bottom: 15, right: 15),
-                      child: Align(
-                        alignment: Alignment.bottomRight,
-                        child: AnimatedOnTapButton(
-                          onTap: () {
-                            scrollProvider.pageController.animateToPage(0,
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeIn);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 2),
-                            decoration: BoxDecoration(
-                                color: Colors.transparent,
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                  color: Colors.white,
-                                  width: 1.2,
-                                )),
-                            child: const Text(
-                              'Cancel',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w400),
+                    gallery: GalleryMediaPicker(
+                      mediaPickerParams: MediaPickerParamsModel(
+                        gridViewController: scrollProvider.gridController,
+                        thumbnailQuality: 200,
+                        singlePick: false,
+                        onlyImages: true,
+                        appBarColor: widget.editorBackgroundColor ?? Colors.black,
+                        gridViewPhysics: itemProvider.draggableWidget.isEmpty
+                            ? const NeverScrollableScrollPhysics()
+                            : const ScrollPhysics(),
+                        appBarLeadingWidget: Padding(
+                          padding: const EdgeInsets.only(bottom: 15, right: 15),
+                          child: Align(
+                            alignment: Alignment.bottomRight,
+                            child: AnimatedOnTapButton(
+                              onTap: () {
+                                scrollProvider.pageController.animateToPage(0,
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeIn);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 2),
+                                decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      color: Colors.white,
+                                      width: 1.2,
+                                    )),
+                                child: const Text(
+                                  'Cancel',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
+                      pathList: (path) {
+                        controlNotifier.mediaPath = path.first.path.toString();
+                        if (controlNotifier.mediaPath.isNotEmpty) {
+                          itemProvider.draggableWidget.insert(
+                              0,
+                              EditableItem()
+                                ..type = ItemType.image
+                                ..position = const Offset(0.0, 0));
+                        }
+                        scrollProvider.pageController.animateToPage(0,
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeIn);
+                      },
                     ),
                   ),
-                  pathList: (path) {
-                    controlNotifier.mediaPath = path.first.path.toString();
-                    if (controlNotifier.mediaPath.isNotEmpty) {
-                      itemProvider.draggableWidget.insert(
-                          0,
-                          EditableItem()
-                            ..type = ItemType.image
-                            ..position = const Offset(0.0, 0));
-                    }
-                    scrollProvider.pageController.animateToPage(0,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeIn);
-                  },
-                ),
-              ),
-            );
-          },
+                );
+              },
+            ),
+          ),
         ),
-      ),
+      )
     );
   }
 

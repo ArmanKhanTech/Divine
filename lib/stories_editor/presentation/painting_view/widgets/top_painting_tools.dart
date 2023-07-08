@@ -23,8 +23,8 @@ class _TopPaintingToolsState extends State<TopPaintingTools> {
           child: Container(
             color: Colors.transparent,
             child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 if (paintingNotifier.lines.isNotEmpty)
                   ToolButton(

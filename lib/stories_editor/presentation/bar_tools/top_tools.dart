@@ -79,10 +79,10 @@ class _TopToolsState extends State<TopTools> {
                         }
                       }
                     },
-                    child: const ImageIcon(
-                      AssetImage('assets/icons/download.png'),
+                    child: const Icon(
+                      Icons.save,
                       color: Colors.white,
-                      size: 20,
+                      size: 35,
                     )),
                 ToolButton(
                     backGroundColor: Colors.black12,

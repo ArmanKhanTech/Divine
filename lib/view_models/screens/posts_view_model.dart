@@ -67,9 +67,9 @@ class PostsViewModel extends ChangeNotifier{
       );
       CroppedFile? croppedFile = await ImageCropper().cropImage(
         sourcePath: pickedFile!.path,
-        // Compression of image to 50% quality since it's a profile picture.
+        // Compression of image to 25% quality since it's a profile picture.
         compressFormat: ImageCompressFormat.png,
-        compressQuality: 50,
+        compressQuality: 25,
         aspectRatioPresets: [
           CropAspectRatioPreset.square,
           CropAspectRatioPreset.ratio3x2,

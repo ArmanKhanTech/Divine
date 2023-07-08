@@ -117,7 +117,7 @@ class _FeedsPageState extends State<FeedsPage>{
                     CupertinoIcons.chat_bubble_text,
                     color: Colors.blue
                 ),
-                title: Text('Write a Thread', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
+                title: Text('Write a new Thread', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
                 /*onTap: () async {
                   // Navigator.pop(context);
                   await viewModel.pickImage(context: context);
@@ -196,7 +196,6 @@ class _FeedsPageState extends State<FeedsPage>{
         onRefresh: () =>
             postRef.orderBy('timestamp', descending: true).limit(page).get(),
         child: SingleChildScrollView(
-          // controller: scrollController,
           physics: const NeverScrollableScrollPhysics(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -254,7 +253,7 @@ class _FeedsPageState extends State<FeedsPage>{
                           'Nothing to Show.',
                           style: TextStyle(
                             fontSize: 25.0,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       );

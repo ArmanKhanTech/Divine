@@ -9,7 +9,7 @@ import '../models/story_model.dart';
 import '../utilities/firebase.dart';
 
 class StatusService extends Service{
-  String statusId = const Uuid().v1();
+  String storyId = const Uuid().v1();
   UserService userService = UserService();
 
   // Show temporary text message on screen.
@@ -23,12 +23,12 @@ class StatusService extends Service{
   }
 
   // Send Story to DB.
-  sendStory(StoryModel status, String chatId) async {
+  sendStory(StoryModel story, String chatId) async {
     await statusRef
         .doc(chatId)
         .collection("statuses")
-        .doc(status.statusId)
-        .set(status.toJson());
+        .doc(story.storyId)
+        .set(story.toJson());
     await statusRef.doc(chatId).update({
       "userId": auth.currentUser!.uid,
     });
@@ -52,10 +52,11 @@ class StatusService extends Service{
 
   Future<String> uploadImage(File image) async {
     Reference storageReference =
-    storage.ref().child("chats").child(uuid.v1()).child(uuid.v4());
+    storage.ref().child("story").child(uuid.v1()).child(uuid.v4());
     UploadTask uploadTask = storageReference.putFile(image);
     await uploadTask.whenComplete(() => null);
     String imageUrl = await storageReference.getDownloadURL();
+
     return imageUrl;
   }
 }

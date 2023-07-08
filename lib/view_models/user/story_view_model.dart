@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import '../../models/story_model.dart';
 import '../../services/post_service.dart';
 import '../../services/story_service.dart';
@@ -18,7 +17,7 @@ class StoryViewModel extends ChangeNotifier {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   // Flags.
-  bool loading = false;
+  bool loading = true;
   bool edit = false;
 
   // Variables.
@@ -34,19 +33,19 @@ class StoryViewModel extends ChangeNotifier {
   // Objects.
   File? mediaUrl;
 
-  sendStory(StoryModel message, String chatId) {
+  sendStory(StoryModel story, String storyId) {
     statusService.sendStory(
-      message,
-      chatId,
+      story,
+      storyId,
     );
   }
 
-  Future<String> sendFirstStory(StoryModel message) async {
-    String newChatId = await statusService.sendFirstStory(
-      message,
+  Future<String> sendFirstStory(StoryModel story) async {
+    String newStoryId = await statusService.sendFirstStory(
+      story,
     );
 
-    return newChatId;
+    return newStoryId;
   }
 
   // Reset Post.
