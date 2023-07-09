@@ -10,6 +10,7 @@ class UserModel{
   String? id;
   String? url;
   String? type;
+  String? profession;
 
   Timestamp? signedUpAt;
   Timestamp? lastSeen;
@@ -27,7 +28,8 @@ class UserModel{
         this.bio,
         this.country,
         this.url,
-        this.type});
+        this.type,
+        this.profession,});
 
   UserModel.fromJson(Map<String, dynamic> json) {
     username = json['name'];
@@ -41,6 +43,7 @@ class UserModel{
     id = json['id'];
     url = json['url'];
     type = json['type'];
+    profession = json['profession'];
   }
 
   Map<String, dynamic> toJson() {
@@ -56,6 +59,7 @@ class UserModel{
     data['id'] = id;
     data['url'] = url;
     data['type'] = type;
+    data['profession'] = profession;
     return data;
   }
 }

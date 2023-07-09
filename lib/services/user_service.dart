@@ -14,20 +14,19 @@ class UserService extends Service {
   setUserStatus(bool isUserOnline) {
     var user = auth.currentUser;
     if (user != null) {
-      usersRef
-          .doc(user.uid)
-          .update({'isOnline': isUserOnline, 'lastSeen': Timestamp.now()});
+      usersRef.doc(user.uid).update({'isOnline': isUserOnline, 'lastSeen': Timestamp.now()});
     }
   }
 
   // Display the profile pic in ProfileScreen after update.
-  updateProfile(
-      {File? image, String? username, String? bio, String? country}) async {
+  updateProfile({File? image, String? username, String? bio, String? country, String? link, String? profession}) async {
     DocumentSnapshot doc = await usersRef.doc(currentUid()).get();
     var users = UserModel.fromJson(doc.data() as Map<String, dynamic>);
     users.username = username;
     users.bio = bio;
     users.country = country;
+    users.url = link;
+    users.profession = profession;
     if (image != null) {
       users.photoUrl = await uploadImage(profilePic, image);
     }
@@ -35,7 +34,9 @@ class UserService extends Service {
       'username': username,
       'bio': bio,
       'country': country,
-      "photoUrl": users.photoUrl ?? '',
+      'photoUrl': users.photoUrl ?? '',
+      'link': link,
+      'profession': profession,
     });
     return true;
   }

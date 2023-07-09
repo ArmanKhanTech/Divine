@@ -1,3 +1,4 @@
+import 'package:divine/screens/profile_picture_screen.dart';
 import 'package:divine/view_models/screens/posts_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../components/text_form_builder.dart';
 import '../models/user_model.dart';
 import '../regex/regex.dart';
@@ -83,6 +85,19 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
               ),
               const SizedBox(height: 10.0),
               TextFormBuilder(
+                  initialValue: widget.user!.profession,
+                  enabled: !viewModel.loading,
+                  prefix: CupertinoIcons.briefcase_fill,
+                  hintText: "Profession",
+                  textInputAction: TextInputAction.next,
+                  validateFunction: Regex.validateURL,
+                  onSaved: (String val) {
+                    viewModel.setProfession(val);
+                  },
+                  whichPage: 'signup'
+              ),
+              const SizedBox(height: 10.0),
+              TextFormBuilder(
                   initialValue: widget.user!.url,
                   enabled: !viewModel.loading,
                   prefix: CupertinoIcons.link_circle_fill,
@@ -90,7 +105,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                   textInputAction: TextInputAction.next,
                   validateFunction: Regex.validateURL,
                   onSaved: (String val) {
-                    viewModel.setBio(val);
+                    viewModel.setLink(val);
                   },
                   whichPage: 'signup'
               ),
@@ -109,32 +124,63 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
           child: Scaffold(
             key: viewModel.scaffoldKey,
             appBar: AppBar(
-              centerTitle: true,
-              title: const Text("Edit Profile"),
-              actions: [
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 25.0),
-                    child: GestureDetector(
-                      onTap: () => viewModel.editProfile(context),
-                      child: Text(
-                        'Save',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontSize: 15.0,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                      ),
-                    ),
+              backgroundColor: Theme.of(context).colorScheme.background,
+              title: Column(
+                children: [
+                  const SizedBox(
+                    height: 3.0,
                   ),
-                ),
+                  GradientText(
+                    'Edit profile',
+                    style: const TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.w300,
+                    ), colors: const [
+                    Colors.blue,
+                    Colors.purple,
+                  ],
+                  ),
+                ],
+              ),
+              centerTitle: true,
+              automaticallyImplyLeading: false,
+              leading: IconButton(
+                icon: const Icon(CupertinoIcons.chevron_back),
+                onPressed: () {
+                  // Reset post onBackPressed.
+                  viewModel.resetEditProfile();
+                  Navigator.of(context).pop();
+                },
+                iconSize: 30.0,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+             actions: [
+                Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(CupertinoIcons.checkmark_alt_circle),
+                      onPressed: () {
+                        viewModel.editProfile(context);
+                      },
+                      iconSize: 30.0,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    const SizedBox(
+                      width: 10.0,
+                    ),
+                  ],
+                )
               ],
             ),
             body: ListView(
               children: [
                 Center(
                   child: GestureDetector(
-                    onTap: () => postsViewModel.pickProfileImage(),
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilePictureScreen()))
+                        .then((value) => setState(() {
+                      viewModel.imgLink = value;
+                      viewModel.showSnackBar('Profile picture uploaded successfully.', context);
+                    })),
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -151,23 +197,26 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                           ),
                         ],
                       ),
-                      child: viewModel.imgLink != null
-                          ? Padding(
+                      child: widget.user!.photoUrl!.isEmpty ? const Padding(
+                        padding: EdgeInsets.all(1.0),
+                        child: CircleAvatar(
+                          radius: 65.0,
+                          backgroundImage: AssetImage('assets/images/profile_png.png'),
+                          backgroundColor: Colors.transparent,
+                        ),
+                      ) : viewModel.imgLink != null ? Padding(
                               padding: const EdgeInsets.all(1.0),
                               child: CircleAvatar(
                                 radius: 65.0,
                                 backgroundImage: NetworkImage(viewModel.imgLink!),
                               ),
-                            )
-                                : viewModel.image == null
-                                ? Padding(
+                            ) : viewModel.image == null ? Padding(
                               padding: const EdgeInsets.all(1.0),
                               child: CircleAvatar(
                                 radius: 65.0,
                                 backgroundImage: NetworkImage(widget.user!.photoUrl!),
                               ),
-                            )
-                                : Padding(
+                            ) : Padding(
                               padding: const EdgeInsets.all(1.0),
                               child: CircleAvatar(
                                 radius: 65.0,

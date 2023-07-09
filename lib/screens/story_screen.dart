@@ -56,14 +56,14 @@ class _StoryScreenState extends State<StoryScreen> {
             if (snapshot.hasData) {
               List story = snapshot.data!.docs;
               return StoryPageView(
-                backgroundColor: Colors.white,
+                backgroundColor: Colors.black,
                 indicatorPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
                 indicatorHeight: 15.0,
-                initialPage: 0,
+                initialPage: widget.initPage,
                 onPageLimitReached: () {
                   Navigator.pop(context);
                 },
-                indicatorVisitedColor: Theme.of(context).colorScheme.secondary,
+                indicatorVisitedColor: Colors.white,
                 indicatorDuration: const Duration(seconds: 20),
                 itemBuilder: (context, pageIndex, storyIndex) {
                   StoryModel stats = StoryModel.fromJson(story.toList()[storyIndex].data());
@@ -82,8 +82,7 @@ class _StoryScreenState extends State<StoryScreen> {
                     width: MediaQuery.of(context).size.width,
                     child: Stack(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 50.0),
+                       Center(
                           // load image from storage.
                           child: getImage(stats.url!)
                         ),
@@ -134,6 +133,7 @@ class _StoryScreenState extends State<StoryScreen> {
                                                 fontWeight: FontWeight.bold,
                                                 background: Paint()
                                                   ..color = Colors.transparent,
+                                                color: Colors.white,
                                               ),
                                             ),
                                             Text(
@@ -142,7 +142,7 @@ class _StoryScreenState extends State<StoryScreen> {
                                               style: TextStyle(
                                                 fontSize: 12.0,
                                                 fontWeight: FontWeight.bold,
-                                                color: Colors.grey,
+                                                color: Colors.white,
                                                 background: Paint()
                                                   ..color = Colors.transparent,
                                               ),
@@ -212,8 +212,12 @@ class _StoryScreenState extends State<StoryScreen> {
   }
 
   getImage(String url) {
-    return AspectRatio(
-      aspectRatio: 9 / 16,
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.black,
+      ),
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
       child: Image.network(
         url,
         fit: BoxFit.fill,

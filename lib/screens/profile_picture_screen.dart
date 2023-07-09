@@ -7,7 +7,6 @@ import 'package:flutter_web_frame/flutter_web_frame.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
-import '../auth/login_page.dart';
 import '../components/custom_image.dart';
 import '../widgets/progress_indicators.dart';
 
@@ -42,13 +41,15 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 15.0),
-                const Text(
-                  'Select from',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue,
+                const Center(
+                  child: Text(
+                    'Select from',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 15.0),
@@ -58,7 +59,7 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                 ),
                 ListTile(
                   leading: const Icon(CupertinoIcons.camera_fill, color: Colors.blue),
-                  title: Text('Camera', style: TextStyle(fontSize: 15.0, color: Theme.of(context).colorScheme.secondary)),
+                  title: Text('Camera', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
                   onTap: () {
                     Navigator.pop(context);
                     // Open in camera.
@@ -67,7 +68,7 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                 ),
                 ListTile(
                   leading: const Icon(CupertinoIcons.photo_fill, color: Colors.blue),
-                  title: Text('Gallery', style: TextStyle(fontSize: 15.0, color: Theme.of(context).colorScheme.secondary)),
+                  title: Text('Gallery', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
                   onTap: () {
                     Navigator.pop(context);
                     // Open in gallery.
@@ -126,10 +127,7 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                   onPressed: () {
                     // Reset post onBackPressed.
                     viewModel.resetPost();
-                    Navigator.of(context).pushReplacement(
-                        CupertinoPageRoute(
-                          builder: (_) => const LoginPage(),
-                        ));
+                    Navigator.of(context).pop();
                   },
                   iconSize: 30.0,
                   color: Theme.of(context).colorScheme.secondary,
@@ -160,14 +158,7 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                           color: Theme.of(context).colorScheme.background,
                         ),
                         clipBehavior: Clip.hardEdge,
-                        child: viewModel.imgLink != null
-                            ? CustomImage(
-                          imageUrl: viewModel.imgLink,
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.width - 30,
-                          fit: BoxFit.contain,
-                        ) : viewModel.mediaUrl == null
-                            ? Center(
+                        child: viewModel.mediaUrl == null ? Center(
                           child: Text(
                             kIsWeb != true ?
                             'Tap to select your profile picture' : 'Click to select your profile picture',

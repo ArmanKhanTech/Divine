@@ -1,8 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:divine/admobs/adHelper.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../screens/chat_screen.dart';
@@ -24,6 +27,7 @@ class FeedsPage extends StatefulWidget{
 
 class _FeedsPageState extends State<FeedsPage>{
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  NativeAd? nativeAd;
 
   int page = 5;
   bool loadingMore = false;
@@ -40,7 +44,31 @@ class _FeedsPageState extends State<FeedsPage>{
         });
       }
     });
+
+    NativeAd(
+        adUnitId: adHelper.nativeAdUnitId,
+        listener: NativeAdListener(
+          onAdLoaded: (Ad ad) {
+            setState(() {
+              nativeAd = ad as NativeAd?;
+            });
+          },
+          onAdFailedToLoad: (Ad ad, LoadAdError error) {
+            ad.dispose();
+            print('Ad load failed (code=${error.code} message=${error.message})');
+          },
+        ),
+        request: const AdRequest(),
+        factoryId: 'listTile',
+    ).load();
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    nativeAd?.dispose();
+    super.dispose();
   }
 
   // Choose Dialog.
@@ -202,6 +230,12 @@ class _FeedsPageState extends State<FeedsPage>{
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const StoryWidget(),
+             // TODO: Fix Native Ad & implement it for iOS.
+             /* if (nativeAd != null && Platform.isAndroid == true)
+                SizedBox(
+                  height: 100,
+                  child: AdWidget(ad: nativeAd!),
+                ),*/
               SizedBox(
                 height: 1.0,
                 child: Container(
@@ -221,10 +255,7 @@ class _FeedsPageState extends State<FeedsPage>{
               SizedBox(
                 height: MediaQuery.of(context).size.height,
                 child: FutureBuilder(
-                  future: postRef
-                      .orderBy('timestamp', descending: true)
-                      .limit(page)
-                      .get(),
+                  future: postRef.orderBy('timestamp', descending: true).limit(page).get(),
                   builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (snapshot.hasData) {
                       var snap = snapshot.data;
@@ -242,8 +273,7 @@ class _FeedsPageState extends State<FeedsPage>{
                           );
                         },
                       );
-                    } else if (snapshot.connectionState ==
-                        ConnectionState.waiting) {
+                    } else if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(
                         child: circularProgress(context, const Color(0XFF03A9F4)),
                       );

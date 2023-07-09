@@ -21,7 +21,7 @@ class EditProfileViewModel extends ChangeNotifier{
   File? image;
 
   // Variables.
-  String? country, username, bio, imgLink;
+  String? country, username, bio, imgLink, profession, link;
 
   // Edit Profile function.
   editProfile(BuildContext context) async {
@@ -41,6 +41,8 @@ class EditProfileViewModel extends ChangeNotifier{
           username: username,
           bio: bio,
           country: country,
+          link: link,
+          profession: profession,
         );
         if (success) {
           clear();
@@ -82,6 +84,21 @@ class EditProfileViewModel extends ChangeNotifier{
 
   setUsername(String val) {
     username = val;
+    notifyListeners();
+  }
+
+  setProfession(String val) {
+    profession = val;
+    notifyListeners();
+  }
+
+  setLink(String val) {
+    link = val;
+    notifyListeners();
+  }
+
+  resetEditProfile() {
+    image = username = bio = country = profession = link = null;
     notifyListeners();
   }
 

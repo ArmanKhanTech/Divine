@@ -10,6 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'event_handlers/app_life_cycle_event_handler.dart';
 import 'firebase_options.dart';
@@ -25,6 +26,8 @@ void main() async {
     webRecaptchaSiteKey: webRecaptchaSiteKey,
     androidProvider: AndroidProvider.playIntegrity,
   );
+  // Initialize Google Mobile Ads SDK.
+  MobileAds.instance.initialize();
   // Set the orientation to portrait only.
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp]);

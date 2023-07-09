@@ -1,10 +1,12 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../models/user_model.dart';
 import '../../services/post_service.dart';
 import '../../services/user_service.dart';
 import '../../utilities/constants.dart';
@@ -43,14 +45,16 @@ class PostsViewModel extends ChangeNotifier{
       try {
         loading = true;
         notifyListeners();
-        await postService.uploadProfilePicture(
-            mediaUrl!, auth.currentUser!);
+        await postService.uploadProfilePicture(mediaUrl!, auth.currentUser!);
         loading = false;
-        Navigator.pop(context);
+        DocumentSnapshot doc = await usersRef.doc(auth.currentUser!.uid).get();
+        var users = UserModel.fromJson(doc.data() as Map<String, dynamic>);
+        resetProfilePicture();
+        Navigator.pop(context, users.photoUrl);
         notifyListeners();
       } catch (e) {
         loading = false;
-        showSnackBar('Uploaded successfully!', context);
+        showSnackBar(e.toString(), context);
         notifyListeners();
       }
     }
@@ -114,6 +118,11 @@ class PostsViewModel extends ChangeNotifier{
     }
   }
 
+  resetProfilePicture() {
+    mediaUrl = null;
+    notifyListeners();
+  }
+
   // Reset function executed on back button pressed.
   resetPost() {
     mediaUrl = null;
@@ -125,7 +134,7 @@ class PostsViewModel extends ChangeNotifier{
 
   showSnackBar(String msg, context) {
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15),), backgroundColor: Colors.pink,
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15),), backgroundColor: Colors.blue,
         behavior: kIsWeb == true ? SnackBarBehavior.fixed : SnackBarBehavior.floating, duration: const Duration(seconds: 2), padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
         shape: const RoundedRectangleBorder(
           borderRadius: kIsWeb == true ? BorderRadius.only(

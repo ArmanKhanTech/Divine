@@ -15,6 +15,8 @@ class StoryWidget extends StatelessWidget {
   // TODO: Sort stories by time.
   @override
   Widget build(BuildContext context) {
+    int storyCounter = 0;
+
     return SizedBox(
       height: 110.0,
       child: Padding(
@@ -43,11 +45,35 @@ class StoryWidget extends StatelessWidget {
                           // if user is in the list of users who can see the story and the story is not uploaded by the current user.
                           if(users.contains(auth.currentUser!.uid) && uploadUserId != auth.currentUser!.uid){
                             users.remove(auth.currentUser!.uid);
+                            storyCounter++;
+
                             return _buildStatusAvatar(
                                 storyListSnapshot.get('userId'),
                                 storyListSnapshot.id,
                                 story.storyId!,
                                 index);
+                          }
+
+                          // if there is no story to show except for current user.
+                          if(storyCounter == 0){
+                            return Padding(
+                                padding: const EdgeInsets.only(bottom: 20),
+                                child: SizedBox(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 110.0,
+                                    child: const Center(
+                                      child: Text(
+                                        'No story to show.',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 20.0,
+                                          color: Colors.grey,
+                                          fontFamily: 'Pacifico',
+                                        ),
+                                      ),
+                                    )
+                                )
+                            );
                           }
                           return const SizedBox();
                         } else {
@@ -58,17 +84,30 @@ class StoryWidget extends StatelessWidget {
                   },
                 );
               } else {
-                return const Center(
-                  child: Text(
-                    'No story to show',
-                    style: TextStyle(
-                      fontSize: 20.0,
-                    ),
-                  ),
+                // if there is no story to show.
+                return Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: 110.0,
+                        child: const Center(
+                          child: Text(
+                            'No story to show.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              color: Colors.grey,
+                              fontFamily: 'Pacifico',
+                            ),
+                          ),
+                        )
+                    )
                 );
               }
             } else {
-              return circularProgress(context, const Color(0xFFE91E63));
+              return Center(
+                  child: circularProgress(context, const Color(0xFFE91E63))
+              );
             }
           },
         ),
@@ -95,85 +134,90 @@ class StoryWidget extends StatelessWidget {
             child: FutureBuilder<QuerySnapshot>(
               future: statusRef.doc(storiesId).collection('statuses').get(),
               builder: (context, snapshot){
-                List stories = snapshot.data!.docs;
-                // get list of users who viewed the story.
-                StoryModel stats = StoryModel.fromJson(stories.toList()[stories.length - 1].data());
-                List<dynamic>? allViewers = stats.viewers;
-                return Column(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => StoryScreen(
-                              storyId: storyId,
-                              storiesId: storiesId,
-                              userId: userId,
-                              initPage: index,
+                if(snapshot.hasData){
+                  List stories = snapshot.data!.docs;
+                  // get list of users who viewed the story.
+                  StoryModel stats = StoryModel.fromJson(stories.toList()[stories.length - 1].data());
+                  List<dynamic>? allViewers = stats.viewers;
+
+                  return Column(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => StoryScreen(
+                                storyId: storyId,
+                                storiesId: storiesId,
+                                userId: userId,
+                                initPage: index,
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        // set the border depending on whether user viewed the story.
-                        decoration: !allViewers!.contains(auth.currentUser!.uid) ? BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: const GradientBoxBorder(
-                            gradient: LinearGradient(colors: [Colors.blue, Colors.purple, Colors.pink]),
-                            width: 2,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.3),
-                              offset: const Offset(0.0, 0.0),
-                              blurRadius: 2.0,
-                              spreadRadius: 0.0,
+                          );
+                        },
+                        child: Container(
+                          // set the border depending on whether user viewed the story.
+                          decoration: !allViewers!.contains(auth.currentUser!.uid) ? BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: const GradientBoxBorder(
+                              gradient: LinearGradient(colors: [Colors.blue, Colors.purple, Colors.pink]),
+                              width: 2,
                             ),
-                          ],
-                        ) : BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: const GradientBoxBorder(
-                            gradient: LinearGradient(colors: [Colors.grey, Colors.grey, Colors.grey]),
-                            width: 2,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.3),
-                              offset: const Offset(0.0, 0.0),
-                              blurRadius: 2.0,
-                              spreadRadius: 0.0,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                offset: const Offset(0.0, 0.0),
+                                blurRadius: 2.0,
+                                spreadRadius: 0.0,
+                              ),
+                            ],
+                          ) : BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: const GradientBoxBorder(
+                              gradient: LinearGradient(colors: [Colors.grey, Colors.grey, Colors.grey]),
+                              width: 2,
                             ),
-                          ],
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: CircleAvatar(
-                            radius: 35.0,
-                            backgroundColor: Colors.grey,
-                            backgroundImage: CachedNetworkImageProvider(
-                              user.photoUrl!,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                offset: const Offset(0.0, 0.0),
+                                blurRadius: 2.0,
+                                spreadRadius: 0.0,
+                              ),
+                            ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: CircleAvatar(
+                              radius: 35.0,
+                              backgroundColor: Colors.grey,
+                              backgroundImage: CachedNetworkImageProvider(
+                                user.photoUrl!,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    Text(
-                      user.username!.toLowerCase(),
-                      style: const TextStyle(
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: 'Roboto',
-                      ),
-                    )
-                  ],
-                );
+                      Text(
+                        user.username!.toLowerCase(),
+                        style: const TextStyle(
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: 'Roboto',
+                        ),
+                      )
+                    ],
+                  );
+                } else{
+                  return const SizedBox();
+                }
               },
             )
           );
         } else {
-          return const SizedBox();
-        }
+            return const SizedBox();
+          }
       },
     );
   }

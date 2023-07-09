@@ -75,6 +75,7 @@ dependencies:
   gradient_borders: ^1.0.0
   flutter_image_compress: ^2.0.3
   image_pixels: ^3.0.0
+  google_mobile_ads: ^1.2.0
 
 dev_dependencies:
   flutter_test:

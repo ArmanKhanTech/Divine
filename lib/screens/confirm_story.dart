@@ -36,13 +36,17 @@ class _ConfirmStoryState extends State<ConfirmStory> {
     return Scaffold(
       body: LoadingOverlay(
         isLoading: loading,
-        progressIndicator: circularProgress(context, const Color(0XFF03A9F4)),
+        progressIndicator: circularProgress(context, const Color(0xFFFFFFFF)),
         color: Colors.black,
         opacity: 0.5,
         child: Center(
-          child: AspectRatio(
-            aspectRatio: 9 / 16,
-            child: Image.file(image),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Image.file(
+              image,
+              fit: BoxFit.cover,
+            ),
           ),
         ),
       ),
@@ -109,7 +113,7 @@ class _ConfirmStoryState extends State<ConfirmStory> {
     XFile? result = (await FlutterImageCompress.compressAndGetFile(
       imagePath, outputUri,
       format: CompressFormat.png,
-      quality: 25,
+      quality: 35,
     ));
 
     File image = File(result!.path);
