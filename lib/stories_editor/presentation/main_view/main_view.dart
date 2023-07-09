@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -403,17 +404,31 @@ class _MainViewState extends State<MainView> {
                         ),
                       ),
                       pathList: (path) {
-                        controlNotifier.mediaPath = path.first.path.toString();
-                        if (controlNotifier.mediaPath.isNotEmpty) {
-                          itemProvider.draggableWidget.insert(
-                              0,
-                              EditableItem()
-                                ..type = ItemType.image
-                                ..position = const Offset(0.0, 0));
+                        final file = File(path.first.path.toString());
+                        int sizeInBytes = file.lengthSync();
+                        double sizeInMb = sizeInBytes / (1024 * 1024);
+                        if (sizeInMb > 2){
+                          ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('File size is too large ( > 2 MB)', textAlign: TextAlign.center, style: TextStyle(fontSize: 15),), backgroundColor: Colors.blue,
+                              behavior: SnackBarBehavior.floating, duration: Duration(seconds: 2), padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(30)),
+                              )
+                            )
+                          );
+                        } else{
+                          controlNotifier.mediaPath = path.first.path.toString();
+                          if (controlNotifier.mediaPath.isNotEmpty) {
+                            itemProvider.draggableWidget.insert(
+                                0,
+                                EditableItem()
+                                  ..type = ItemType.image
+                                  ..position = const Offset(0.0, 0));
+                          }
+                          scrollProvider.pageController.animateToPage(0,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeIn);
                         }
-                        scrollProvider.pageController.animateToPage(0,
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeIn);
                       },
                     ),
                   ),
