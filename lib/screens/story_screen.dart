@@ -220,7 +220,7 @@ class _StoryScreenState extends State<StoryScreen> {
       width: MediaQuery.of(context).size.width,
       child: Image.network(
         url,
-        fit: BoxFit.fill,
+        fit: BoxFit.cover,
         loadingBuilder: (BuildContext context, Widget child,
             ImageChunkEvent? loadingProgress) {
           if (loadingProgress == null) {

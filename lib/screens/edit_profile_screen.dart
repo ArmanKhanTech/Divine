@@ -90,7 +90,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                   prefix: CupertinoIcons.briefcase_fill,
                   hintText: "Profession",
                   textInputAction: TextInputAction.next,
-                  validateFunction: Regex.validateURL,
+                  validateFunction: Regex.validateProfession,
                   onSaved: (String val) {
                     viewModel.setProfession(val);
                   },
@@ -131,7 +131,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                     height: 3.0,
                   ),
                   GradientText(
-                    'Edit profile',
+                    'Edit Profile',
                     style: const TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.w300,
@@ -158,11 +158,11 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                 Row(
                   children: [
                     IconButton(
-                      icon: const Icon(CupertinoIcons.checkmark_alt_circle),
+                      icon: const Icon(Icons.save_as_outlined),
                       onPressed: () {
                         viewModel.editProfile(context);
                       },
-                      iconSize: 30.0,
+                      iconSize: 25.0,
                       color: Theme.of(context).colorScheme.secondary,
                     ),
                     const SizedBox(
@@ -179,54 +179,58 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                     onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilePictureScreen()))
                         .then((value) => setState(() {
                       viewModel.imgLink = value;
-                      viewModel.showSnackBar('Profile picture uploaded successfully.', context);
+                      if(viewModel.imgLink != null) {
+                        viewModel.showSnackBar('Profile picture uploaded successfully.', context);
+                      }
                     })),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.transparent,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.3),
-                            offset: const Offset(0.0, 0.0),
-                            blurRadius: 2.0,
-                            spreadRadius: 0.0,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.transparent,
                           ),
-                        ],
-                      ),
-                      child: widget.user!.photoUrl!.isEmpty ? const Padding(
-                        padding: EdgeInsets.all(1.0),
-                        child: CircleAvatar(
-                          radius: 65.0,
-                          backgroundImage: AssetImage('assets/images/profile_png.png'),
-                          backgroundColor: Colors.transparent,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              offset: const Offset(0.0, 0.0),
+                              blurRadius: 2.0,
+                              spreadRadius: 0.0,
+                            ),
+                          ],
                         ),
-                      ) : viewModel.imgLink != null ? Padding(
-                              padding: const EdgeInsets.all(1.0),
-                              child: CircleAvatar(
-                                radius: 65.0,
-                                backgroundImage: NetworkImage(viewModel.imgLink!),
-                              ),
-                            ) : viewModel.image == null ? Padding(
-                              padding: const EdgeInsets.all(1.0),
-                              child: CircleAvatar(
-                                radius: 65.0,
-                                backgroundImage: NetworkImage(widget.user!.photoUrl!),
-                              ),
-                            ) : Padding(
-                              padding: const EdgeInsets.all(1.0),
-                              child: CircleAvatar(
-                                radius: 65.0,
-                                backgroundImage: FileImage(viewModel.image!),
-                              ),
+                        child: widget.user!.photoUrl!.isEmpty ? const Padding(
+                          padding: EdgeInsets.all(1.0),
+                          child: CircleAvatar(
+                            radius: 65.0,
+                            backgroundImage: AssetImage('assets/images/profile_png.png'),
+                            backgroundColor: Colors.transparent,
+                          ),
+                        ) : viewModel.imgLink != null ? Padding(
+                          padding: const EdgeInsets.all(1.0),
+                          child: CircleAvatar(
+                            radius: 65.0,
+                            backgroundImage: NetworkImage(viewModel.imgLink!),
+                          ),
+                        ) : viewModel.image == null ? Padding(
+                          padding: const EdgeInsets.all(1.0),
+                          child: CircleAvatar(
+                            radius: 65.0,
+                            backgroundImage: NetworkImage(widget.user!.photoUrl!),
+                          ),
+                        ) : Padding(
+                          padding: const EdgeInsets.all(1.0),
+                          child: CircleAvatar(
+                            radius: 65.0,
+                            backgroundImage: FileImage(viewModel.image!),
+                          ),
+                        ),
                       ),
-                    ),
+                    )
                   ),
                 ),
-                const SizedBox(height: 10.0),
                 buildForm(viewModel, context)
               ],
             ),

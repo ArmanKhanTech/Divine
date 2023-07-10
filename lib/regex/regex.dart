@@ -14,8 +14,7 @@ class Regex {
     if (value!.isEmpty && isRequired) {
       return 'Your email is required.';
     }
-    final RegExp emailExp = RegExp(
-        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
+    final RegExp emailExp = RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
     if (!emailExp.hasMatch(value) && isRequired) {
       return 'Invalid email address.';
     }
@@ -44,10 +43,22 @@ class Regex {
   }
 
   static String? validateURL(String? value){
-    final urlRegExp = RegExp(
-        r"((https?:www\.)|(https?:\/\/)|(www\.))[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,6}(\/[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)?");
-    if (!urlRegExp.hasMatch(value!)) {
+    final RegExp urlRegExp = RegExp(r"((https?:www\.)|(https?:\/\/)|(www\.))[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,6}(\/[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)?");
+    if (!urlRegExp.hasMatch(value!) && value != '') {
       return 'Please enter a valid URL.';
+    } else if (value.length > 100) {
+      return 'URL must be short.';
+    } else if (value == '') {
+      return null;
+    }
+    return null;
+  }
+
+  static String? validateProfession(String? value){
+    if (value!.length > 20 && value != '') {
+      return 'Please enter a valid profession.';
+    } else if (value == '') {
+      return null;
     }
     return null;
   }

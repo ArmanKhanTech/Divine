@@ -27,11 +27,16 @@ class EditProfileViewModel extends ChangeNotifier{
   editProfile(BuildContext context) async {
     FormState form = formKey.currentState!;
     form.save();
+    if(profession == '') {
+      profession = '';
+    } else if(link == '') {
+      link = '';
+    }
+    notifyListeners();
     if (!form.validate()) {
       validate = true;
       notifyListeners();
-      showSnackBar(
-          'Kindly fix all the errors before submitting.', context);
+      showSnackBar('Kindly fix all the errors before submitting.', context);
     } else {
       try {
         loading = true;
@@ -70,6 +75,7 @@ class EditProfileViewModel extends ChangeNotifier{
 
   setImage(UserModel user) {
     imgLink = user.photoUrl;
+    notifyListeners();
   }
 
   setCountry(String val) {

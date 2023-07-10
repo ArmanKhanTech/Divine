@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:divine/auth/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -67,9 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: GestureDetector(
                 onTap: () async {
                   await auth.signOut();
-                  Navigator.of(context).push(
-                    CupertinoPageRoute(
-                      builder: (_) => const RegisterPage(),
+                  Navigator.of(context).pushReplacement(CupertinoPageRoute(builder: (_) => const RegisterPage(),
                     ),
                   );
                 },

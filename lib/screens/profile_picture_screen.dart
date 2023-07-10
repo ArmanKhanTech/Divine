@@ -109,7 +109,7 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                       height: 3.0,
                     ),
                     GradientText(
-                      'Profile picture',
+                      'Profile Picture',
                       style: const TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.w300,
