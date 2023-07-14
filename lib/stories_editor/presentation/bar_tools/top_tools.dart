@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -6,6 +7,7 @@ import '../../domain/notifiers/control_notifier.dart';
 import '../../domain/notifiers/draggable_widget_notifier.dart';
 import '../../domain/notifiers/painting_notifier.dart';
 import '../../domain/services/save_as_image.dart';
+import '../filters/filters.dart';
 import '../utils/model_sheets.dart';
 import '../widgets/animated_on_tap_button.dart';
 import '../widgets/tool_button.dart';
@@ -13,7 +15,9 @@ import '../widgets/tool_button.dart';
 class TopTools extends StatefulWidget {
   final GlobalKey contentKey;
   final BuildContext context;
-  const TopTools({Key? key, required this.contentKey, required this.context})
+  final Function(String) onDone;
+
+  const TopTools({Key? key, required this.contentKey, required this.context, required this.onDone})
       : super(key: key);
 
   @override
@@ -73,36 +77,64 @@ class _TopToolsState extends State<TopTools> {
                             context: context,
                             saveToGallery: true);
                         if (response) {
-                          Fluttertoast.showToast(msg: 'Successfully saved');
+                          Fluttertoast.showToast(msg: 'Successfully Saved');
                         } else {
                           Fluttertoast.showToast(msg: 'Error');
                         }
                       }
                     },
-                    child: const Icon(
-                      Icons.save,
-                      color: Colors.white,
-                      size: 35,
-                    )),
+                    child: const Padding(
+                        padding: EdgeInsets.only(left: 1),
+                        child: Icon(
+                          Icons.save,
+                          color: Colors.white,
+                          size: 30,
+                        )
+                    )
+                ),
                 ToolButton(
                     backGroundColor: Colors.black12,
                     onTap: () => createGiphyItem(
                         context: context, giphyKey: controlNotifier.giphyKey),
-                    child: const ImageIcon(
-                      AssetImage('assets/icons/stickers.png'),
+                    child: const Padding(
+                        padding: EdgeInsets.all(2.0),
+                        child:  ImageIcon(
+                          AssetImage('assets/icons/stickers.png'),
+                          color: Colors.white,
+                          size: 20,
+                        )
+                    )
+                ),
+                ToolButton(
+                    backGroundColor: Colors.black12,
+                    onTap: () {
+                      Navigator.of(context)
+                          .push(CupertinoPageRoute(builder: (_) => const Filters())
+                      ).then((path) {
+                        if (path != null) {
+                          widget.onDone(path);
+                        }
+                      });
+                    },
+                    child: const Icon(
+                      Icons.filter,
                       color: Colors.white,
-                      size: 20,
+                      size: 25,
                     )),
                 ToolButton(
                     backGroundColor: Colors.black12,
                     onTap: () {
                       controlNotifier.isPainting = true;
                     },
-                    child: const ImageIcon(
-                      AssetImage('assets/icons/draw.png'),
-                      color: Colors.white,
-                      size: 20,
-                    )),
+                    child: const Padding(
+                      padding: EdgeInsets.all(2.0),
+                      child:  ImageIcon(
+                          AssetImage('assets/icons/draw.png'),
+                          color: Colors.white,
+                          size: 20,
+                        )
+                    )
+                ),
                 ToolButton(
                   backGroundColor: Colors.black12,
                   onTap: () => controlNotifier.isTextEditing =

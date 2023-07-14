@@ -31,6 +31,10 @@
 		<key>GADApplicationIdentifier</key>
         <string>ca-app-pub-8676869226236884~5130351526</string>
 		<key>UISupportedInterfaceOrientations</key>
+		<key>NSCameraUsageDescription</key>
+        <string>App requires to take pictures.</string>
+        <key>NSMicrophoneUsageDescription</key>
+        <string>App requires to record audio.</string>
 		<array>
 			<string>UIInterfaceOrientationPortrait</string>
 			<string>UIInterfaceOrientationLandscapeLeft</string>

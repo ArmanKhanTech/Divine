@@ -97,7 +97,7 @@ class BottomTools extends StatelessWidget {
                           GradientText(
                             Constants.appName,
                             style: const TextStyle(
-                              fontSize: 40.0,
+                              fontSize: 35.0,
                               fontWeight: FontWeight.w400,
                               fontFamily: 'Raleway',
                             ),

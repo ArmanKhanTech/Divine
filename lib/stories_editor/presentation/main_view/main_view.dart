@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:deepar_flutter/deepar_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -318,6 +319,18 @@ class _MainViewState extends State<MainView> {
                                     child: TopTools(
                                       contentKey: contentKey,
                                       context: context,
+                                      onDone: (path) {
+                                        setState(() {
+                                          controlNotifier.mediaPath = path.toString();
+                                          if (controlNotifier.mediaPath.isNotEmpty) {
+                                            itemProvider.draggableWidget.insert(
+                                                0,
+                                                EditableItem()
+                                                  ..type = ItemType.image
+                                                  ..position = const Offset(0.0, 0));
+                                          }
+                                        });
+                                      },
                                     )),
                               ),
 
