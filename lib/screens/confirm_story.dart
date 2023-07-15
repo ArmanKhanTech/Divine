@@ -11,7 +11,6 @@ import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../models/story_model.dart';
 import '../utilities/firebase.dart';
-import '../utilities/system_ui.dart';
 import '../view_models/user/story_view_model.dart';
 import '../widgets/progress_indicators.dart';
 
@@ -35,8 +34,7 @@ class _ConfirmStoryState extends State<ConfirmStory> {
 
     return Scaffold(
       appBar:  AppBar(
-        title: Center(
-          child: GradientText(
+        title: GradientText(
             'Upload Story',
             style: const TextStyle(
               fontSize: 25,
@@ -44,7 +42,16 @@ class _ConfirmStoryState extends State<ConfirmStory> {
             ), colors: const [
             Colors.blue,
             Colors.purple,
-          ],),
+          ],
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(CupertinoIcons.chevron_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          iconSize: 30.0,
+          color: Colors.white,
         ),
         automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
@@ -58,7 +65,6 @@ class _ConfirmStoryState extends State<ConfirmStory> {
         ),
       ),
       backgroundColor: Colors.black,
-      extendBodyBehindAppBar: true,
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -68,10 +74,11 @@ class _ConfirmStoryState extends State<ConfirmStory> {
           color: Colors.black,
           opacity: 0.5,
           child: Stack(
+            clipBehavior: Clip.hardEdge,
             children: [
               SizedBox(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
@@ -86,15 +93,20 @@ class _ConfirmStoryState extends State<ConfirmStory> {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: 21, vertical: 6),
                   child: Container(
                       height: MediaQuery.of(context).size.height * .06,
                       width: MediaQuery.of(context).size.width * .96,
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: Colors.white,
+                          width: 1,
                         ),
-                        borderRadius: const BorderRadius.all(Radius.circular(20)),
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
+                        color: Colors.black12,
                       ),
                       child: Center(
                         widthFactor: 100,
@@ -109,7 +121,7 @@ class _ConfirmStoryState extends State<ConfirmStory> {
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,
-                                fontWeight: FontWeight.w300,
+                                fontWeight: FontWeight.bold,
                               )
                           ),
                           onPressed: () async {

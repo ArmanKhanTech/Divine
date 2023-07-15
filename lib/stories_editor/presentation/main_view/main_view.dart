@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:deepar_flutter/deepar_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -293,8 +292,7 @@ class _MainViewState extends State<MainView> {
                                   paintingProvider.lines.isEmpty)
                                 IgnorePointer(
                                   ignoring: true,
-                                  child: Align(
-                                    alignment: const Alignment(0, -0.1),
+                                  child: Center(
                                     child: Text('Tap to type',
                                         style: TextStyle(
                                             fontFamily: 'Alegreya',

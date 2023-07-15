@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'package:divine/auth/register_page.dart';
 import 'package:divine/utilities/system_ui.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import '../auth/login_page.dart';
 import 'main_screen.dart';
 
 // SplashScreen.
@@ -37,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           return const MainScreen();
                         } else {
                           // Goto RegisterPage(user is not logged in.)
-                          return const RegisterPage();
+                          return const LoginPage();
                         }
                       }),
                     ),)));

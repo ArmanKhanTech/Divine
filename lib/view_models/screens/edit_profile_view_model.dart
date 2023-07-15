@@ -7,8 +7,8 @@ import '../../services/user_service.dart';
 
 class EditProfileViewModel extends ChangeNotifier{
   // Keys.
-  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  GlobalKey<ScaffoldState> editProfileScaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey<FormState> editProfileFormKey = GlobalKey<FormState>();
 
   // Flags.
   bool validate = false;
@@ -21,11 +21,11 @@ class EditProfileViewModel extends ChangeNotifier{
   File? image;
 
   // Variables.
-  String? country, username, bio, imgLink, profession, link;
+  String? country, username, name, bio, imgLink, profession, link;
 
   // Edit Profile function.
   editProfile(BuildContext context) async {
-    FormState form = formKey.currentState!;
+    FormState form = editProfileFormKey.currentState!;
     form.save();
     if(profession == '') {
       profession = '';
@@ -44,6 +44,7 @@ class EditProfileViewModel extends ChangeNotifier{
         bool success = await userService.updateProfile(
           image: image,
           username: username,
+          name: name,
           bio: bio,
           country: country,
           link: link,
@@ -78,6 +79,11 @@ class EditProfileViewModel extends ChangeNotifier{
     notifyListeners();
   }
 
+  setName(String val) {
+    name = val;
+    notifyListeners();
+  }
+
   setCountry(String val) {
     country = val;
     notifyListeners();
@@ -104,7 +110,7 @@ class EditProfileViewModel extends ChangeNotifier{
   }
 
   resetEditProfile() {
-    image = username = bio = country = profession = link = null;
+    image = username = bio = country = profession = link = name = null;
     notifyListeners();
   }
 

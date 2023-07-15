@@ -97,7 +97,7 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
             isLoading: viewModel.loading,
             child: Scaffold(
               resizeToAvoidBottomInset: false,
-              key: viewModel.scaffoldKey,
+              key: viewModel.postScaffoldKey,
               backgroundColor: Theme.of(context).colorScheme.background,
               appBar: AppBar(
                 systemOverlayStyle: const SystemUiOverlayStyle(
@@ -114,9 +114,9 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                         fontSize: 25,
                         fontWeight: FontWeight.w300,
                       ), colors: const [
-                      Colors.blue,
-                      Colors.purple,
-                    ],
+                          Colors.blue,
+                          Colors.purple,
+                      ],
                     ),
                   ],
                 ),

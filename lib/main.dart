@@ -63,8 +63,8 @@ class _MyAppState extends State<MyApp> {
     // https://pub.dev/documentation/provider/latest/provider/MultiProvider-class.html
     return MultiProvider(
       providers: providers,
-      child: Consumer<ThemeProvider>(
-        builder: (context, ThemeProvider themeProvider, Widget? child) {
+      child: Consumer<ThemeViewModel>(
+        builder: (context, ThemeViewModel viewModel, Widget? child) {
           return MaterialApp(
             // Set app's name.
             title: Constants.appName,
@@ -72,7 +72,7 @@ class _MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             // Set app's theme
             theme: themeData(
-              themeProvider.dark ? Constants.darkTheme : Constants.lightTheme,
+              viewModel.dark ? Constants.darkTheme : Constants.lightTheme,
             ),
             // Check whether user is logged in or not, redirect to LoginPage if not, MainPage otherwise.
             // https://api.flutter.dev/flutter/widgets/StreamBuilder-class.html

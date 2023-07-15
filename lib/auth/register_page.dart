@@ -11,7 +11,6 @@ import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../components/pass_form_builder.dart';
 import '../regex/regex.dart';
 import '../view_models/auth/register_view_model.dart';
-import 'login_page.dart';
 
 // RegisterPage.
 class RegisterPage extends StatefulWidget {
@@ -30,7 +29,7 @@ class _RegisterPageState extends State<RegisterPage>{
     // Registration Form.
     buildForm(RegisterViewModel viewModel, BuildContext context){
       return Form(
-        key: viewModel.formKey,
+        key: viewModel.registerFormKey,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           children: [
@@ -39,7 +38,7 @@ class _RegisterPageState extends State<RegisterPage>{
               prefix: CupertinoIcons.person_fill,
               hintText: "Username",
               textInputAction: TextInputAction.next,
-              validateFunction: Regex.validateName,
+              validateFunction: Regex.validateUsername,
               onSaved: (String val) {
                 viewModel.setName(val);
               },
@@ -151,7 +150,7 @@ class _RegisterPageState extends State<RegisterPage>{
             progressIndicator: circularProgress(context, const Color(0XFF03A9F4)),
             child: Scaffold(
                 backgroundColor: Theme.of(context).colorScheme.background,
-                key: viewModel.scaffoldKey,
+                key: viewModel.registerScaffoldKey,
                 body: ListView(
                   padding: const EdgeInsets.symmetric(vertical: 20.0),
                   children: [
@@ -187,10 +186,7 @@ class _RegisterPageState extends State<RegisterPage>{
                           ),
                         ),
                         GestureDetector(
-                          onTap: () => Navigator.of(context).push(
-                            CupertinoPageRoute(
-                              builder: (_) => const LoginPage(),
-                            )),
+                          onTap: () => Navigator.of(context).pop(),
                           child: const Text(
                             ' Log In.',
                             style: TextStyle(

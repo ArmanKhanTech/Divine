@@ -1,7 +1,7 @@
 // This class is input validator.
 // It will check if the input is valid or not.
 class Regex {
-  static String? validateName(String? value) {
+  static String? validateUsername(String? value) {
     if (value!.isEmpty) return 'Your username is required.';
     final RegExp nameExp = RegExp(r'^[A-za-zğüşöçİĞÜŞÖÇ ]+$');
     if (!nameExp.hasMatch(value)) {
@@ -38,6 +38,13 @@ class Regex {
   static String? validateBio(String? value){
     if (value!.length > 1000) {
       return 'Bio must be short.';
+    }
+    return null;
+  }
+
+  static String? validateName(String? value){
+    if (value!.length > 100) {
+      return 'Invalid name.';
     }
     return null;
   }

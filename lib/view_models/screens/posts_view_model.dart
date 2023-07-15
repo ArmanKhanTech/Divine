@@ -12,7 +12,6 @@ import '../../services/user_service.dart';
 import '../../utilities/constants.dart';
 import '../../utilities/firebase.dart';
 
-
 // Uploading Posts ViewModel.
 class PostsViewModel extends ChangeNotifier{
   // Services.
@@ -20,8 +19,8 @@ class PostsViewModel extends ChangeNotifier{
   PostService postService = PostService();
 
   // Keys.
-  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  GlobalKey<ScaffoldState> postScaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey<FormState> postFormKey = GlobalKey<FormState>();
 
   // Flags.
   bool loading = false;
@@ -94,7 +93,7 @@ class PostsViewModel extends ChangeNotifier{
             title: 'Crop Profile Image',
           ),
           WebUiSettings(
-            context: scaffoldKey.currentContext!,
+            context: postScaffoldKey.currentContext!,
             presentStyle: CropperPresentStyle.dialog,
             enableZoom: true,
             enableResize: true,

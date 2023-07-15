@@ -1,3 +1,4 @@
+import 'package:divine/auth/register_page.dart';
 import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -21,6 +22,11 @@ class LoginPage extends StatefulWidget {
 // Login screen of the app.
 class _LoginPageState extends State<LoginPage> {
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // ViewModel(backend basically) of LoginPage.
     LoginViewModel viewModel = Provider.of<LoginViewModel>(context);
@@ -28,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
     // Login Form.
     buildForm(BuildContext context, LoginViewModel viewModel) {
       return Form(
-        key: viewModel.formKey,
+        key: viewModel.loginFormKey,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(children: [
           TextFormBuilder(
@@ -116,7 +122,7 @@ class _LoginPageState extends State<LoginPage> {
           isLoading: viewModel.loading,
           child: Scaffold(
             backgroundColor: Theme.of(context).colorScheme.background,
-            key: viewModel.scaffoldKey,
+            key: viewModel.loginScaffoldKey,
             body: ListView(
               padding: const EdgeInsets.symmetric(vertical: 20.0),
               children: [
@@ -157,7 +163,11 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(width: 5.0),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pop();
+                        Navigator.of(context).push(
+                          CupertinoPageRoute(
+                            builder: (context) => const RegisterPage(),
+                          ),
+                        );
                       },
                       child: const Text(
                         'Sign Up.',

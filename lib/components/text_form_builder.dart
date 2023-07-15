@@ -15,6 +15,7 @@ class TextFormBuilder extends StatefulWidget {
   final String? whichPage;
   final FormFieldValidator<String>? validateFunction;
   final void Function(String)? onSaved, onChange;
+
   // ignore: overridden_fields
   @override
   final Key? key;

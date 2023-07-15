@@ -39,7 +39,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Form(
-          key: viewModel.formKey,
+          key: viewModel.editProfileFormKey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,9 +51,22 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                 prefix: CupertinoIcons.person_fill,
                 hintText: "Username",
                 textInputAction: TextInputAction.next,
-                validateFunction: Regex.validateName,
+                validateFunction: Regex.validateUsername,
                 onSaved: (String val) {
                   viewModel.setUsername(val);
+                },
+                whichPage: 'signup',
+              ),
+              const SizedBox(height: 10.0),
+              TextFormBuilder(
+                enabled: !viewModel.loading,
+                initialValue: widget.user!.name,
+                prefix: Icons.person_outline_outlined,
+                hintText: "Name",
+                textInputAction: TextInputAction.next,
+                validateFunction: Regex.validateName,
+                onSaved: (String val) {
+                  viewModel.setName(val);
                 },
                 whichPage: 'signup',
               ),
@@ -64,7 +77,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                 prefix: CupertinoIcons.globe,
                 hintText: "Country",
                 textInputAction: TextInputAction.next,
-                validateFunction: Regex.validateName,
+                validateFunction: Regex.validateUsername,
                 onSaved: (String val) {
                   viewModel.setCountry(val);
                 },
@@ -98,7 +111,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
               ),
               const SizedBox(height: 10.0),
               TextFormBuilder(
-                  initialValue: widget.user!.url,
+                  initialValue: widget.user!.link,
                   enabled: !viewModel.loading,
                   prefix: CupertinoIcons.link_circle_fill,
                   hintText: "Link",
@@ -122,7 +135,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
           progressIndicator: circularProgress(context, const Color(0XFF03A9F4)),
           isLoading: viewModel.loading,
           child: Scaffold(
-            key: viewModel.scaffoldKey,
+            key: viewModel.editProfileScaffoldKey,
             appBar: AppBar(
               backgroundColor: Theme.of(context).colorScheme.background,
               title: Column(

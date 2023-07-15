@@ -117,7 +117,7 @@ class TopTextTools extends StatelessWidget {
 
                   ToolButton(
                     onTap: onDone,
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     backGroundColor: Colors.black12,
                     child: Transform.scale(
                         scale: 0.7,

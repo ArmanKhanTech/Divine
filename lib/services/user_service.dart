@@ -19,19 +19,21 @@ class UserService extends Service {
   }
 
   // Display the profile pic in ProfileScreen after update.
-  updateProfile({File? image, String? username, String? bio, String? country, String? link, String? profession}) async {
+  updateProfile({File? image, String? username, String? name, String? bio, String? country, String? link, String? profession}) async {
     DocumentSnapshot doc = await usersRef.doc(currentUid()).get();
     var users = UserModel.fromJson(doc.data() as Map<String, dynamic>);
     users.username = username;
     users.bio = bio;
     users.country = country;
-    users.url = link;
+    users.link = link;
     users.profession = profession;
+    users.name = name;
     if (image != null) {
       users.photoUrl = await uploadImage(profilePic, image);
     }
     await usersRef.doc(currentUid()).update({
       'username': username,
+      'name': name,
       'bio': bio,
       'country': country,
       'photoUrl': users.photoUrl ?? '',

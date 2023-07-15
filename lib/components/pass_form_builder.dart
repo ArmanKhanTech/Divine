@@ -16,6 +16,7 @@ class PasswordFormBuilder extends StatefulWidget {
   final FormFieldValidator<String>? validateFunction;
   final void Function(String)? onSaved, onChange;
   final String? whichPage;
+
   // ignore: overridden_fields
   @override
   final Key? key;

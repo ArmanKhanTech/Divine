@@ -13,8 +13,8 @@ class StoryViewModel extends ChangeNotifier {
   StatusService statusService = StatusService();
 
   // Keys.
-  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  GlobalKey<ScaffoldState> storyScaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey<FormState> storyFormKey = GlobalKey<FormState>();
 
   // Flags.
   bool loading = true;

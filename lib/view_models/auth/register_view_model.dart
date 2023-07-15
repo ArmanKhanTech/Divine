@@ -8,8 +8,8 @@ import '../../services/auth_service.dart';
 // ViewModel of RegisterPage.
 class RegisterViewModel extends ChangeNotifier {
   // Maintain state of child widgets.
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  GlobalKey<ScaffoldState> registerScaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey<FormState> registerFormKey = GlobalKey<FormState>();
 
   // bool flags.
   bool validate = false;
@@ -30,7 +30,7 @@ class RegisterViewModel extends ChangeNotifier {
 
   // Register the user.
   register(BuildContext context) async {
-    FormState form = formKey.currentState!;
+    FormState form = registerFormKey.currentState!;
     form.save();
     if (!form.validate()) {
       validate = true;

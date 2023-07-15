@@ -8,8 +8,8 @@ import '../../services/auth_service.dart';
 // ViewModel of LoginPage.
 class LoginViewModel extends ChangeNotifier {
   // Maintain state of child widgets.
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  GlobalKey<ScaffoldState> loginScaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
 
   // bool flags.
   bool validate = false;
@@ -27,7 +27,7 @@ class LoginViewModel extends ChangeNotifier {
 
   // Login the user.
   loginUser(BuildContext context) async {
-    FormState form = formKey.currentState!;
+    FormState form = loginFormKey.currentState!;
     form.save();
 
     if (!form.validate()) {
@@ -71,7 +71,7 @@ class LoginViewModel extends ChangeNotifier {
   forgotPassword(BuildContext context) async {
     loading = true;
     notifyListeners();
-    FormState form = formKey.currentState!;
+    FormState form = loginFormKey.currentState!;
     form.save();
     if (Regex.validateEmail(email) != null) {
       showSnackBar(
