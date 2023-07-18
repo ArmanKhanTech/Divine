@@ -62,14 +62,8 @@ class _MainScreenState extends State<MainScreen>{
             child: AppBar(
               systemOverlayStyle: const SystemUiOverlayStyle(
                 statusBarColor: Colors.transparent,
-                statusBarIconBrightness: Brightness.dark,
-                statusBarBrightness: Brightness.dark,
-                systemNavigationBarColor: Colors.white,
-                systemNavigationBarIconBrightness: Brightness.dark,
-                systemNavigationBarDividerColor: null,
               ),
               automaticallyImplyLeading: false,
-              backgroundColor: Colors.transparent,
             ),
           ),
           body: PageTransitionSwitcher(
@@ -93,7 +87,7 @@ class _MainScreenState extends State<MainScreen>{
             items: <Widget>[
               Icon((_page == 0) ? CupertinoIcons.house_fill : CupertinoIcons.house, size: 30, color: (_page == 0) ? Theme.of(context).colorScheme.background : Colors.blue,),
               Icon((_page == 1) ? CupertinoIcons.search : CupertinoIcons.search, size: 30, color: (_page == 1) ? Theme.of(context).colorScheme.background : Colors.blue,),
-              Icon((_page == 2) ? CupertinoIcons.camera_fill : CupertinoIcons.camera, size: 30, color: (_page == 2) ? Theme.of(context).colorScheme.background : Colors.blue,),
+              Icon((_page == 2) ? CupertinoIcons.play_circle_fill : CupertinoIcons.play_circle, size: 30, color: (_page == 2) ? Theme.of(context).colorScheme.background : Colors.blue,),
               Icon((_page == 3) ? CupertinoIcons.bell_fill : CupertinoIcons.bell, size: 30, color: (_page == 3) ? Theme.of(context).colorScheme.background : Colors.blue,),
               Icon((_page == 4) ? CupertinoIcons.person_fill : CupertinoIcons.person, size: 30, color: (_page == 4) ? Theme.of(context).colorScheme.background : Colors.blue,),
             ],

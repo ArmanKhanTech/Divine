@@ -40,7 +40,7 @@ class _RegisterPageState extends State<RegisterPage>{
               textInputAction: TextInputAction.next,
               validateFunction: Regex.validateUsername,
               onSaved: (String val) {
-                viewModel.setName(val);
+                viewModel.setUsername(val);
               },
               focusNode: viewModel.usernameFocusNode,
               nextFocusNode: viewModel.emailFocusNode,
@@ -149,6 +149,25 @@ class _RegisterPageState extends State<RegisterPage>{
             isLoading: viewModel.loading,
             progressIndicator: circularProgress(context, const Color(0XFF03A9F4)),
             child: Scaffold(
+                appBar: AppBar(
+                  automaticallyImplyLeading: false,
+                  leading: IconButton(
+                    icon: const Icon(CupertinoIcons.chevron_back),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    iconSize: 30.0,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                  title: const Text(
+                    'Register',
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                extendBodyBehindAppBar: true,
                 backgroundColor: Theme.of(context).colorScheme.background,
                 key: viewModel.registerScaffoldKey,
                 body: ListView(

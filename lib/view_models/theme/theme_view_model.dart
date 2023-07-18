@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ThemeViewModel extends ChangeNotifier {
   // This key is an unique identifier of the any value stored in SharedPreference.
   final String key = "theme";
-  SharedPreferences? _prefs;
+  SharedPreferences? prefs;
   bool darkTheme = false;
   bool get dark => darkTheme;
 
@@ -23,20 +23,20 @@ class ThemeViewModel extends ChangeNotifier {
 
   // Initialize the _prefs object.
   initPrefs() async {
-    _prefs ??= await SharedPreferences.getInstance();
+    prefs ??= await SharedPreferences.getInstance();
   }
 
   // Get state of theme from SharedPreference using key defined above.
   loadFromPrefs() async {
     await initPrefs();
-    darkTheme = _prefs!.getBool(key) ?? true;
+    darkTheme = prefs!.getBool(key) ?? true;
     notifyListeners();
   }
 
   // Store state of theme from SharedPreference using key defined above.
   saveToPrefs() async {
     await initPrefs();
-    _prefs!.setBool(key, darkTheme);
+    prefs!.setBool(key, darkTheme);
     notifyListeners();
   }
 }

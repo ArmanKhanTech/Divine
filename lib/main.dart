@@ -71,9 +71,11 @@ class _MyAppState extends State<MyApp> {
             // Don't show the debug banner.
             debugShowCheckedModeBanner: false,
             // Set app's theme
-            theme: themeData(
-              viewModel.dark ? Constants.darkTheme : Constants.lightTheme,
-            ),
+            theme: Constants.lightTheme,
+            darkTheme: Constants.darkTheme,
+
+            // TODO : Fix it
+            themeMode: viewModel.dark ? ThemeMode.dark : ThemeMode.light,
             // Check whether user is logged in or not, redirect to LoginPage if not, MainPage otherwise.
             // https://api.flutter.dev/flutter/widgets/StreamBuilder-class.html
             home: const SplashScreen(),

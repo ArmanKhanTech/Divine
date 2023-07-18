@@ -79,8 +79,8 @@ class RegisterViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  setName(val) {
-    username = val;
+  setUsername(val) {
+    username = val.toString().toLowerCase();
     notifyListeners();
   }
 

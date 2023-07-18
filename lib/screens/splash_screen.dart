@@ -45,6 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // UI of SplashScreen
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: null,
       body: Center(
         child: Stack(
           alignment: Alignment.center,

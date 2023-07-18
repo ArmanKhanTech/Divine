@@ -1,16 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-
 import '../models/post_model.dart';
 import '../utilities/firebase.dart';
 import '../widgets/progress_indicators.dart';
 
 class ListPosts extends StatefulWidget {
-  final userId;
-
-  final username;
+  final userId, username;
 
   const ListPosts({Key? key, required this.userId, required this.username})
       : super(key: key);
@@ -76,7 +72,7 @@ class _ListPostsState extends State<ListPosts> {
             } else {
               return const Center(
                 child: Text(
-                  'No Feeds',
+                  'No Feed to show',
                   style: TextStyle(
                     fontSize: 26.0,
                     fontWeight: FontWeight.bold,

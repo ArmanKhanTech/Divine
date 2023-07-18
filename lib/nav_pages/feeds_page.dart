@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:divine/admobs/adHelper.dart';
 import 'package:flutter/cupertino.dart';
@@ -55,7 +54,6 @@ class _FeedsPageState extends State<FeedsPage>{
           },
           onAdFailedToLoad: (Ad ad, LoadAdError error) {
             ad.dispose();
-            print('Ad load failed (code=${error.code} message=${error.message})');
           },
         ),
         request: const AdRequest(),
@@ -108,10 +106,10 @@ class _FeedsPageState extends State<FeedsPage>{
                 visible: !kIsWeb,
                 child: ListTile(
                 leading: const Icon(
-                    CupertinoIcons.photo_on_rectangle,
+                    CupertinoIcons.time,
                     color: Colors.blue
                 ),
-                title: Text('Add to Stories', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
+                title: Text('Add a new Story', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
                 onTap: () {
                   Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => StoriesEditor(
                     giphyKey: 'C4dMA7Q19nqEGdpfj82T8ssbOeZIylD4',
@@ -131,7 +129,7 @@ class _FeedsPageState extends State<FeedsPage>{
               ),
               ListTile(
                 leading: const Icon(
-                    CupertinoIcons.plus_rectangle_on_rectangle,
+                    CupertinoIcons.plus_circle,
                     color: Colors.blue
                 ),
                 title: Text('Make a new Post', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
@@ -153,7 +151,7 @@ class _FeedsPageState extends State<FeedsPage>{
               ),
               ListTile(
                 leading: const Icon(
-                    CupertinoIcons.camera,
+                    CupertinoIcons.play_circle,
                     color: Colors.blue
                 ),
                 title: Text('Upload a new Reel', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),

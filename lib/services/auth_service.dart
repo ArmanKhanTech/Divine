@@ -82,7 +82,7 @@ class AuthService {
       return "Invalid credentials.";
     } else if (e.contains('firebase_auth/requires-recent-login')) {
       return 'This operation is sensitive and requires recent authentication.'
-          ' Log in again before retrying this request.';
+          ' Log in again before retrying this request again.';
     } else {
       return e;
     }
