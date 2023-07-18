@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-
 import '../widgets/progress_indicators.dart';
 
 typedef ItemBuilder<T> = Widget Function(
@@ -33,11 +32,17 @@ class StreamGridWrapper extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           var list = snapshot.data!.docs.toList();
-          return list.isEmpty
-              ? const Center(
-                child: Text('No Posts'),
-              )
-              : GridView.builder(
+
+          return list.isEmpty ? const Center(
+                child: Text(
+                  'No Posts',
+                  style: TextStyle(
+                    color: Color(0xFFB2BEB5),
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ) : GridView.builder(
             padding: padding,
             scrollDirection: scrollDirection,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -52,7 +57,7 @@ class StreamGridWrapper extends StatelessWidget {
             },
           );
         } else {
-          return circularProgress(context, Color(0xFFB2BEB5));
+          return circularProgress(context, const Color(0xFFB2BEB5));
         }
       },
     );

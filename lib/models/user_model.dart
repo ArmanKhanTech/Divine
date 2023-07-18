@@ -17,6 +17,7 @@ class UserModel{
   Timestamp? lastSeen;
 
   bool? isOnline;
+  bool? isVerified;
 
   UserModel(
       {this.username,
@@ -31,14 +32,15 @@ class UserModel{
         this.link,
         this.type,
         this.profession,
-        this.name});
+        this.name,
+        this.isVerified});
 
   UserModel.fromJson(Map<String, dynamic> json) {
     username = json['name'];
     email = json['email'];
     country = json['country'];
     photoUrl = json['photoUrl'];
-    signedUpAt = json['signedUpAt'];
+    signedUpAt = json['createdAt'];
     isOnline = json['isOnline'];
     lastSeen = json['lastSeen'];
     bio = json['bio'];
@@ -47,6 +49,7 @@ class UserModel{
     type = json['type'];
     profession = json['profession'];
     name = json['name'];
+    isVerified = json['isVerified'];
   }
 
   Map<String, dynamic> toJson() {
@@ -56,7 +59,7 @@ class UserModel{
     data['email'] = email;
     data['photoUrl'] = photoUrl;
     data['bio'] = bio;
-    data['signedUpAt'] = signedUpAt;
+    data['createdAt'] = signedUpAt;
     data['isOnline'] = isOnline;
     data['lastSeen'] = lastSeen;
     data['id'] = id;
@@ -64,6 +67,7 @@ class UserModel{
     data['type'] = type;
     data['profession'] = profession;
     data['name'] = name;
+    data['isVerified'] = isVerified;
 
     return data;
   }

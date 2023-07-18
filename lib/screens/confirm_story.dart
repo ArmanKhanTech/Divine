@@ -93,7 +93,7 @@ class _ConfirmStoryState extends State<ConfirmStory> {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 21, vertical: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   child: Container(
                       height: MediaQuery.of(context).size.height * .06,
                       width: MediaQuery.of(context).size.width * .96,

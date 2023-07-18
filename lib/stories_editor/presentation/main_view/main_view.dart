@@ -215,7 +215,6 @@ class _MainViewState extends State<MainView> {
                                                       Colors.transparent),
                                                   child: Container(),
                                                 ),
-
                                                 ...itemProvider.draggableWidget
                                                     .map((editableItem) {
                                                   return DraggableWidget(
@@ -305,7 +304,9 @@ class _MainViewState extends State<MainView> {
                                                   blurRadius: 3.0,
                                                   color: Colors.black45
                                                       .withOpacity(0.3))
-                                            ])),
+                                            ]
+                                        )
+                                    ),
                                   ),
                                 ),
 
@@ -329,7 +330,8 @@ class _MainViewState extends State<MainView> {
                                           }
                                         });
                                       },
-                                    )),
+                                    )
+                                ),
                               ),
 
                               DeleteItem(

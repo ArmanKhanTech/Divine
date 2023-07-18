@@ -78,6 +78,7 @@ dependencies:
   google_mobile_ads: ^1.2.0
   deepar_flutter: ^0.0.5
   url_launcher: ^6.1.12
+  blurrycontainer: 1.0.2
 
 dev_dependencies:
   flutter_test:

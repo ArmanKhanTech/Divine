@@ -77,7 +77,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                 prefix: CupertinoIcons.globe,
                 hintText: "Country",
                 textInputAction: TextInputAction.next,
-                validateFunction: Regex.validateUsername,
+                validateFunction: Regex.validateCountry,
                 onSaved: (String val) {
                   viewModel.setCountry(val);
                 },
@@ -189,7 +189,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
               children: [
                 Center(
                   child: GestureDetector(
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilePictureScreen()))
+                    onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (context) => const ProfilePictureScreen()))
                         .then((value) => setState(() {
                       viewModel.imgLink = value;
                       if(viewModel.imgLink != null) {

@@ -52,6 +52,7 @@ class AuthService {
       'type': 'public',
       'saved': 0,
       'hashtags': '',
+      'verified':false,
     });
   }
 

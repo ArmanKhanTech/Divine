@@ -53,7 +53,7 @@ class Regex {
     final RegExp urlRegExp = RegExp(r"((https?:www\.)|(https?:\/\/)|(www\.))[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,6}(\/[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)?");
     if (!urlRegExp.hasMatch(value!) && value != '') {
       return 'Please enter a valid URL.';
-    } else if (value.length > 100) {
+    } else if (value.length > 500) {
       return 'URL must be short.';
     } else if (value == '') {
       return null;

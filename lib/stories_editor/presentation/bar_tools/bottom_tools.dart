@@ -40,43 +40,46 @@ class BottomTools extends StatelessWidget {
                 Expanded(
                   child: Container(
                     alignment: Alignment.centerLeft,
-                    child: SizedBox(
-                      child: _preViewContainer(
-                        child: controlNotifier.mediaPath.isEmpty
-                            ? ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: GestureDetector(
-                              onTap: () {
-                                if (controlNotifier.mediaPath.isEmpty) {
-                                  scrollNotifier.pageController
-                                      .animateToPage(1,
-                                      duration: const Duration(
-                                          milliseconds: 300),
-                                      curve: Curves.ease);
-                                }
-                              },
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 10.w),
+                      child: SizedBox(
+                        child: _preViewContainer(
+                          child: controlNotifier.mediaPath.isEmpty
+                              ? ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: GestureDetector(
+                                onTap: () {
+                                  if (controlNotifier.mediaPath.isEmpty) {
+                                    scrollNotifier.pageController
+                                        .animateToPage(1,
+                                        duration: const Duration(
+                                            milliseconds: 300),
+                                        curve: Curves.ease);
+                                  }
+                                },
+                                child: const Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                ),
+                              ))
+                              : GestureDetector(
+                            onTap: () {
+                              controlNotifier.mediaPath = '';
+                              itemNotifier.draggableWidget.removeAt(0);
+                            },
+                            child: Container(
+                              height: 45,
+                              width: 45,
+                              color: Colors.transparent,
                               child: const Icon(
-                                Icons.add,
+                                Icons.delete,
                                 color: Colors.white,
                               ),
-                            ))
-                            : GestureDetector(
-                          onTap: () {
-                            controlNotifier.mediaPath = '';
-                            itemNotifier.draggableWidget.removeAt(0);
-                          },
-                          child: Container(
-                            height: 45,
-                            width: 45,
-                            color: Colors.transparent,
-                            child: const Icon(
-                              Icons.delete,
-                              color: Colors.white,
                             ),
                           ),
                         ),
                       ),
-                    ),
+                    )
                   ),
                 ),
 

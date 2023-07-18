@@ -1,3 +1,4 @@
+import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_gif_picker/modal_gif_picker.dart';
@@ -10,7 +11,6 @@ import '../../domain/notifiers/text_editing_notifier.dart';
 import '../../domain/services/save_as_image.dart';
 import '../widgets/animated_on_tap_button.dart';
 import 'constants/app_enum.dart';
-import 'extensions/hex_color.dart';
 
 Future createGiphyItem(
     {required BuildContext context, required giphyKey}) async {
@@ -36,7 +36,9 @@ Future createGiphyItem(
 }
 
 Future<bool> exitDialog({required context, required contentKey}) async {
-  return (await showDialog(
+  return (
+      await
+  showDialog(
     context: context,
     barrierColor: Colors.black38,
     barrierDismissible: true,
@@ -47,21 +49,12 @@ Future<bool> exitDialog({required context, required contentKey}) async {
       insetAnimationCurve: Curves.ease,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
-        child: Container(
-          padding: const EdgeInsets.only(
-              top: 25, bottom: 5, right: 20, left: 20),
-          alignment: Alignment.center,
+        child: BlurryContainer(
           height: 280,
-          decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: HexColor.fromHex('#262626'),
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: const [
-                BoxShadow(
-                    color: Colors.white10,
-                    offset: Offset(0, 1),
-                    blurRadius: 4),
-              ]),
+          color: Colors.pink.withOpacity(0.2),
+          blur: 5,
+          padding: const EdgeInsets.all(20),
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
