@@ -63,6 +63,19 @@ class EditProfileViewModel extends ChangeNotifier{
     }
   }
 
+  updateProfileStatus(BuildContext context, String type) async {
+    try {
+      notifyListeners();
+      bool success = await userService.updateProfileStatus(type: type);
+      if (success) {
+        showSnackBar('Your account is now $type.', context);
+      }
+    } catch (e) {
+      notifyListeners();
+    }
+    notifyListeners();
+  }
+
   clear() {
     image = null;
     notifyListeners();
@@ -124,6 +137,7 @@ class EditProfileViewModel extends ChangeNotifier{
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
           ) : BorderRadius.all(Radius.circular(30)),
-        )));
+        )
+    ));
   }
 }

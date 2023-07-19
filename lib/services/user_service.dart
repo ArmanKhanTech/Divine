@@ -42,4 +42,14 @@ class UserService extends Service {
     });
     return true;
   }
+
+  updateProfileStatus({String? type}) async {
+    DocumentSnapshot doc = await usersRef.doc(currentUid()).get();
+    var users = UserModel.fromJson(doc.data() as Map<String, dynamic>);
+    users.type = type;
+    await usersRef.doc(currentUid()).update({
+      'type': type,
+    });
+    return true;
+  }
 }

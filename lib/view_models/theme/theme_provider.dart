@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // This class is basically to toggle between dark & light theme & store its state in SharedPreference.
-class ThemeViewModel extends ChangeNotifier {
+class ThemeProvider extends ChangeNotifier {
   // This key is an unique identifier of the any value stored in SharedPreference.
   final String key = "theme";
   SharedPreferences? prefs;

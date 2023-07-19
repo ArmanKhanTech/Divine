@@ -1,12 +1,12 @@
 import 'package:divine/screens/splash_screen.dart';
-import 'package:divine/secret_keys.dart';
 import 'package:divine/services/user_service.dart';
 import 'package:divine/utilities/constants.dart';
 import 'package:divine/utilities/no_thumb_scrollbar.dart';
 import 'package:divine/utilities/providers.dart';
-import 'package:divine/view_models/theme/theme_view_model.dart';
+import 'package:divine/view_models/theme/theme_provider.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,13 +21,16 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // TODO: Fix app check for web.
   // Initialize Firebase App Check.
   await FirebaseAppCheck.instance.activate(
-    webRecaptchaSiteKey: webRecaptchaSiteKey,
+    //webRecaptchaSiteKey: webRecaptchaSiteKey,
     androidProvider: AndroidProvider.playIntegrity,
   );
   // Initialize Google Mobile Ads SDK.
-  MobileAds.instance.initialize();
+  if(!kIsWeb){
+    await MobileAds.instance.initialize();
+  }
   // Set the orientation to portrait only.
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp]);
@@ -63,19 +66,17 @@ class _MyAppState extends State<MyApp> {
     // https://pub.dev/documentation/provider/latest/provider/MultiProvider-class.html
     return MultiProvider(
       providers: providers,
-      child: Consumer<ThemeViewModel>(
-        builder: (context, ThemeViewModel viewModel, Widget? child) {
+      child: Consumer<ThemeProvider>(
+        builder: (context, ThemeProvider notifier, Widget? child) {
           return MaterialApp(
             // Set app's name.
             title: Constants.appName,
             // Don't show the debug banner.
             debugShowCheckedModeBanner: false,
             // Set app's theme
-            theme: Constants.lightTheme,
-            darkTheme: Constants.darkTheme,
-
-            // TODO : Fix it
-            themeMode: viewModel.dark ? ThemeMode.dark : ThemeMode.light,
+            theme: themeData(
+              notifier.dark ? Constants.darkTheme : Constants.lightTheme,
+            ),
             // Check whether user is logged in or not, redirect to LoginPage if not, MainPage otherwise.
             // https://api.flutter.dev/flutter/widgets/StreamBuilder-class.html
             home: const SplashScreen(),
@@ -94,10 +95,9 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  // https://fonts.google.com/specimen/Nunito+Sans
   ThemeData themeData(ThemeData theme) {
     return theme.copyWith(
-      textTheme: GoogleFonts.nunitoSansTextTheme(
+      textTheme: GoogleFonts.nunitoTextTheme(
         theme.textTheme,
       ),
     );

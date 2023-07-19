@@ -159,13 +159,6 @@ class _RegisterPageState extends State<RegisterPage>{
                     iconSize: 30.0,
                     color: Theme.of(context).colorScheme.secondary,
                   ),
-                  title: const Text(
-                    'Register',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
                 ),
                 extendBodyBehindAppBar: true,
                 backgroundColor: Theme.of(context).colorScheme.background,
@@ -173,7 +166,7 @@ class _RegisterPageState extends State<RegisterPage>{
                 body: ListView(
                   padding: const EdgeInsets.symmetric(vertical: 20.0),
                   children: [
-                    SizedBox(height: kIsWeb != true ? MediaQuery.of(context).size.height / 10 : MediaQuery.of(context).size.height / 15),
+                    SizedBox(height: MediaQuery.of(context).size.height / 10),
                     Row(
                       children: [
                         const SizedBox(

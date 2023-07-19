@@ -33,7 +33,7 @@ class _ProfilePageState extends State<ProfilePage> {
   int followersCount = 0;
   int followingCount = 0;
 
-  bool isFollowing = false;
+  bool isFollowing = false, requested = false;
 
   UserModel? users;
 
@@ -51,6 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     checkIfFollowing();
+    checkIfRequested();
   }
 
   @override
@@ -67,6 +68,17 @@ class _ProfilePageState extends State<ProfilePage> {
         .get();
     setState(() {
       isFollowing = doc.exists;
+    });
+  }
+
+  checkIfRequested() async {
+    DocumentSnapshot doc = await followingRequestRef
+        .doc(widget.profileId)
+        .collection('followRequest')
+        .doc(currentUserId())
+        .get();
+    setState(() {
+      requested = doc.exists;
     });
   }
 
@@ -148,7 +160,7 @@ class _ProfilePageState extends State<ProfilePage> {
         stream: usersRef.doc(widget.profileId).snapshots(),
         builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasData) {
-            currentUser = UserModel.fromJson(snapshot.data!.data() as Map<String, dynamic>,);
+            currentUser = UserModel.fromJson(snapshot.data!.data() as Map<String, dynamic>);
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -357,7 +369,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ],
                 ),
-                buildPostView(),
+                buildPostView(currentUser),
               ],
             );
           }
@@ -417,10 +429,20 @@ class _ProfilePageState extends State<ProfilePage> {
         function: handleUnfollow,
       );
       // if you are not following the user then "follow"
-    } else if (!isFollowing) {
+    } else if (!isFollowing && user.type == "public") {
       return buildButton(
         text: "Follow",
         function: handleFollow,
+      );
+    } else if(!isFollowing && user.type == "private" && !requested) {
+      return buildButton(
+        text: "Request",
+        function: handleFollowRequest,
+      );
+    } else if(!isFollowing && user.type == "private" && requested) {
+      return buildButton(
+        text: "Requested",
+        function: () {},
       );
     }
   }
@@ -528,8 +550,50 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
-  buildPostView() {
-    return buildGridPost();
+  // TODO: Implement private profile button
+  handleFollowRequest() async {
+    DocumentSnapshot doc = await usersRef.doc(currentUserId()).get();
+    users = UserModel.fromJson(doc.data() as Map<String, dynamic>);
+    setState(() {
+      requested = true;
+    });
+    followingRequestRef
+        .doc(widget.profileId)
+        .collection('followRequest')
+        .doc(currentUserId())
+        .set({});
+    notificationRef
+        .doc(widget.profileId)
+        .collection('notifications')
+        .doc(currentUserId())
+        .set({
+      "type": "followRequest",
+      "ownerId": widget.profileId,
+      "username": users?.username,
+      "userId": users?.id,
+      "userDp": users?.photoUrl,
+      "timestamp": timestamp,
+    });
+  }
+
+  buildPostView(UserModel currentUser) {
+    if(widget.profileId != auth.currentUser?.uid){
+      if(currentUser.type == 'private' && isFollowing == false) {
+        return const Center(
+          child: Text(
+            'This account is private.',
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        );
+      } else {
+        return buildGridPost();
+      }
+    } else {
+      return buildGridPost();
+    }
   }
 
   buildGridPost() {

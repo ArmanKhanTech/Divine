@@ -27,6 +27,7 @@ class StoryWidget extends StatelessWidget {
             if (snapshot.hasData) {
               List storyList = snapshot.data!.docs;
               if (storyList.isNotEmpty) {
+
                 return ListView.builder(
                   padding: const EdgeInsets.symmetric(vertical: 5.0),
                   itemCount: storyList.length,
@@ -34,6 +35,7 @@ class StoryWidget extends StatelessWidget {
                   physics: const AlwaysScrollableScrollPhysics(),
                   itemBuilder: (BuildContext context, int index) {
                     DocumentSnapshot storyListSnapshot = storyList[index];
+
                     return StreamBuilder<QuerySnapshot>(
                       stream: storyListStream(storyListSnapshot.id),
                       builder: (context, snapshot) {
@@ -105,9 +107,7 @@ class StoryWidget extends StatelessWidget {
                 );
               }
             } else {
-              return Center(
-                  child: circularProgress(context, const Color(0xFFE91E63))
-              );
+              return Center(child: circularProgress(context, const Color(0xFFE91E63)));
             }
           },
         ),
@@ -122,13 +122,14 @@ class StoryWidget extends StatelessWidget {
       String storyId,
       int index,
       ) {
+
     return StreamBuilder(
       stream: usersRef.doc(userId).snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           DocumentSnapshot documentSnapshot = snapshot.data as DocumentSnapshot<Object?>;
-          UserModel user = UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>,
-          );
+          UserModel user = UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
+
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: FutureBuilder<QuerySnapshot>(

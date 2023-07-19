@@ -63,7 +63,7 @@ class _UserInfoScreenState extends State<UserInfoScreen>{
             ),
             const SizedBox(height: 20,),
             const Text(
-              'Email ID :',
+              'E-mail ID :',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
@@ -79,7 +79,7 @@ class _UserInfoScreenState extends State<UserInfoScreen>{
             ),
             const SizedBox(height: 20,),
             const Text(
-              'Account created on :',
+              'Date of joining :',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w500,

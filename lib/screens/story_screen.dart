@@ -55,6 +55,7 @@ class _StoryScreenState extends State<StoryScreen> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               List story = snapshot.data!.docs;
+
               return StoryPageView(
                 backgroundColor: Colors.black,
                 indicatorPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
@@ -77,6 +78,7 @@ class _StoryScreenState extends State<StoryScreen> {
                         .doc(stats.storyId)
                         .update({'viewers': allViewers});
                   }
+
                   return SizedBox(
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width,
@@ -95,9 +97,8 @@ class _StoryScreenState extends State<StoryScreen> {
                               if (snapshot.hasData) {
                                 DocumentSnapshot documentSnapshot = snapshot
                                     .data as DocumentSnapshot<Object?>;
-                                UserModel user = UserModel.fromJson(
-                                    documentSnapshot.data()
-                                    as Map<String, dynamic>);
+                                UserModel user = UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
+
                                 return Padding(
                                   padding:
                                   const EdgeInsets.only(right: 10.0),
@@ -224,8 +225,10 @@ class _StoryScreenState extends State<StoryScreen> {
         loadingBuilder: (BuildContext context, Widget child,
             ImageChunkEvent? loadingProgress) {
           if (loadingProgress == null) {
+
             return child;
           }
+
           return Center(
             child: CircularProgressIndicator(
               value: loadingProgress.expectedTotalBytes != null

@@ -121,14 +121,10 @@ class _LoginPageState extends State<LoginPage> {
           progressIndicator: circularProgress(context, const Color(0xFFFF9800)),
           isLoading: viewModel.loading,
           child: Scaffold(
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              title: const Text(
-                'Login',
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                ),
+            appBar: PreferredSize(
+              preferredSize: const Size.fromHeight(0.0),
+              child: AppBar(
+                automaticallyImplyLeading: false,
               ),
             ),
             extendBodyBehindAppBar: true,
