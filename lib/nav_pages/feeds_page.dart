@@ -1,9 +1,9 @@
+import 'package:divine/screens/new_post_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:divine/admobs/adHelper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
@@ -105,25 +105,28 @@ class _FeedsPageState extends State<FeedsPage>{
               Visibility(
                 visible: !kIsWeb,
                 child: ListTile(
-                leading: const Icon(
-                    CupertinoIcons.time,
-                    color: Colors.blue
-                ),
-                title: Text('Add a new Story', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
-                onTap: () {
-                  Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => StoriesEditor(
-                    giphyKey: 'C4dMA7Q19nqEGdpfj82T8ssbOeZIylD4',
-                    fontFamilyList: const ['Shizuru', 'Aladin'],
-                    galleryThumbnailQuality: 300,
-                    isCustomFontList: true,
-                    onDone: (uri) {
-                      Navigator.of(context).push(
-                        CupertinoPageRoute(
-                          builder: (_) => ConfirmStory(uri: uri),
-                        ),
-                      );
-                    },
-                  )));
+                  leading: const Icon(
+                      CupertinoIcons.time,
+                      color: Colors.blue
+                  ),
+                  title: Text('Add a new Story', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
+                  onTap: () {
+                    Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => StoriesEditor(
+                      giphyKey: 'C4dMA7Q19nqEGdpfj82T8ssbOeZIylD4',
+                      fontFamilyList: const ['Shizuru', 'Aladin', 'TitilliumWeb', 'Varela',
+                        'Vollkorn', 'Rakkas', 'B612', 'ConcertOne', 'YatraOne', 'Tangerine',
+                        'OldStandardTT', 'DancingScript', 'SedgwickAve', 'IndieFlower', 'Sacramento', 'PressStart2P'],
+                      galleryThumbnailQuality: 300,
+                      isCustomFontList: true,
+                      onDone: (uri) {
+                        Navigator.of(context).push(
+                          CupertinoPageRoute(
+                            builder: (_) => ConfirmStory(uri: uri),
+                          ),
+                        );
+                      },
+                    )
+                    ));
                 },
               ),
               ),
@@ -133,10 +136,9 @@ class _FeedsPageState extends State<FeedsPage>{
                     color: Colors.blue
                 ),
                 title: Text('Make a new Post', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
-                /*onTap: () async {
-                  // Navigator.pop(context);
-                  await viewModel.pickImage(context: context);
-                },*/
+                onTap: () async {
+                  Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => const NewPostScreen()));
+                },
               ),
               ListTile(
                 leading: const Icon(
@@ -177,8 +179,6 @@ class _FeedsPageState extends State<FeedsPage>{
       key: scaffoldKey,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,),
         title: GradientText(
           Constants.appName,
           style: const TextStyle(

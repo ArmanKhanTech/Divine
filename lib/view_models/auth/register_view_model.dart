@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../screens/main_screen.dart';
-import '../../screens/profile_picture_screen.dart';
 import '../../services/auth_service.dart';
 
 // ViewModel of RegisterPage.
@@ -97,7 +96,7 @@ class RegisterViewModel extends ChangeNotifier {
   // Show temporary text message on screen.
   showSnackBar(String msg, context) {
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15),), backgroundColor: Colors.blue,
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15, color: Colors.white)), backgroundColor: Colors.blue,
         behavior: kIsWeb == true ? SnackBarBehavior.fixed : SnackBarBehavior.floating, duration: const Duration(seconds: 2), padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
         shape: const RoundedRectangleBorder(
           borderRadius: kIsWeb == true ? BorderRadius.only(

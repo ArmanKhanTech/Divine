@@ -455,8 +455,7 @@ class _MainViewState extends State<MainView> {
   }
 
   Future<bool> _popScope() async {
-    final controlNotifier =
-    Provider.of<ControlNotifier>(context, listen: false);
+    final controlNotifier = Provider.of<ControlNotifier>(context, listen: false);
 
     if (controlNotifier.isTextEditing) {
       controlNotifier.isTextEditing = !controlNotifier.isTextEditing;

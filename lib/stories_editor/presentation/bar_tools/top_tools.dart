@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import '../../domain/notifiers/control_notifier.dart';
 import '../../domain/notifiers/draggable_widget_notifier.dart';
@@ -77,9 +76,9 @@ class _TopToolsState extends State<TopTools> {
                             context: context,
                             saveToGallery: true);
                         if (response) {
-                          Fluttertoast.showToast(msg: 'Successfully Saved');
+                          showSnackBar('Saved Successfully.', context);
                         } else {
-                          Fluttertoast.showToast(msg: 'Error');
+                          showSnackBar('Error.', context);
                         }
                       }
                     },

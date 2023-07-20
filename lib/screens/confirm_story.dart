@@ -93,19 +93,15 @@ class _ConfirmStoryState extends State<ConfirmStory> {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 8),
                   child: Container(
-                      height: MediaQuery.of(context).size.height * .06,
-                      width: MediaQuery.of(context).size.width * .96,
+                      height: MediaQuery.of(context).size.height * .05,
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: Colors.white,
                           width: 1,
                         ),
-                        borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(20),
-                          bottomRight: Radius.circular(20),
-                        ),
+                        borderRadius: const BorderRadius.all(Radius.circular(20)),
                         color: Colors.black12,
                       ),
                       child: Center(

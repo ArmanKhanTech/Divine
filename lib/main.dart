@@ -74,6 +74,7 @@ class _MyAppState extends State<MyApp> {
             // Don't show the debug banner.
             debugShowCheckedModeBanner: false,
             // Set app's theme
+            // TODO: Fix app theme.
             theme: themeData(
               notifier.dark ? Constants.darkTheme : Constants.lightTheme,
             ),

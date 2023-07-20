@@ -81,7 +81,8 @@ class LoginViewModel extends ChangeNotifier {
         await authService.forgotPassword(email!);
         showSnackBar(
             'Please check your email for instructions to reset your password.',
-            context);
+            context
+        );
       } catch (e) {
         showSnackBar(e.toString(), context);
       }
@@ -93,7 +94,7 @@ class LoginViewModel extends ChangeNotifier {
   // Show temporary text message on screen.
   showSnackBar(String msg, context) {
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15),), backgroundColor: Colors.orange,
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15, color: Colors.white)), backgroundColor: Colors.orange,
         behavior: kIsWeb == true ? SnackBarBehavior.fixed : SnackBarBehavior.floating, duration: const Duration(seconds: 2), padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
         shape: const RoundedRectangleBorder(
           borderRadius: kIsWeb == true ? BorderRadius.only(

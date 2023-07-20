@@ -1,6 +1,5 @@
 import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_gif_picker/modal_gif_picker.dart';
 import 'package:provider/provider.dart';
 import '../../domain/models/editable_item.dart';
@@ -36,8 +35,7 @@ Future createGiphyItem(
 }
 
 Future<bool> exitDialog({required context, required contentKey}) async {
-  return (
-      await
+  return (await
   showDialog(
     context: context,
     barrierColor: Colors.black38,
@@ -51,7 +49,7 @@ Future<bool> exitDialog({required context, required contentKey}) async {
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: BlurryContainer(
           height: 280,
-          color: Colors.pink.withOpacity(0.2),
+          color: Colors.black.withOpacity(0.15),
           blur: 5,
           padding: const EdgeInsets.all(20),
           borderRadius: const BorderRadius.all(Radius.circular(20)),
@@ -117,8 +115,7 @@ Future<bool> exitDialog({required context, required contentKey}) async {
                         context: context,
                         saveToGallery: true);
                     if (response) {
-                      _dispose(
-                          context: context, message: 'Successfully saved');
+                      _dispose(context: context, message: 'Successfully saved');
                     } else {
                       _dispose(context: context, message: 'Error');
                     }
@@ -181,6 +178,29 @@ _resetDefaults({required BuildContext context}) {
 
 _dispose({required context, required message}) {
   _resetDefaults(context: context);
-  Fluttertoast.showToast(msg: message);
+  showSnackBar(message, context);
   Navigator.of(context).pop(true);
+}
+
+showSnackBar(String msg, context) {
+  ScaffoldMessenger.of(context).removeCurrentSnackBar();
+  ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+          content: Text(
+              msg,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                  fontSize: 15,
+                  color: Colors.white
+              )
+          ),
+          backgroundColor: Colors.blue,
+          behavior: SnackBarBehavior.floating,
+          duration: const Duration(seconds: 2),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+          margin: const EdgeInsets.symmetric(vertical: 18, horizontal: 10),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(30)),
+      )
+  ));
 }

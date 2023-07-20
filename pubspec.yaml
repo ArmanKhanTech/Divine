@@ -168,19 +168,3 @@ flutter:
       - family: PressStart2P
         fonts:
           - asset: assets/fonts/PressStart2P-Regular.ttf
-
-      - family: FrederickatheGreat
-        fonts:
-          - asset: assets/fonts/FrederickatheGreat-Regular.ttf
-
-      - family: ReenieBeanie
-        fonts:
-          - asset: assets/fonts/ReenieBeanie-Regular.ttf
-
-      - family: BungeeShade
-        fonts:
-          - asset: assets/fonts/BungeeShade-Regular.ttf
-
-      - family: UnifrakturMaguntia
-        fonts:
-          - asset: assets/fonts/UnifrakturMaguntia-Regular.ttf

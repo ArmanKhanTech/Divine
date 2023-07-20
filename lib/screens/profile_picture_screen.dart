@@ -101,7 +101,8 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
               backgroundColor: Theme.of(context).colorScheme.background,
               appBar: AppBar(
                 systemOverlayStyle: const SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent,),
+                  statusBarColor: Colors.transparent
+                ),
                 backgroundColor: Theme.of(context).colorScheme.background,
                 title: Column(
                   children: [
