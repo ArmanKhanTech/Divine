@@ -133,7 +133,7 @@ class StoryWidget extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: FutureBuilder<QuerySnapshot>(
-              future: statusRef.doc(storiesId).collection('statuses').get(),
+              future: storyRef.doc(storiesId).collection('stories').get(),
               builder: (context, snapshot){
                 if(snapshot.hasData){
                   List stories = snapshot.data!.docs;
@@ -224,10 +224,10 @@ class StoryWidget extends StatelessWidget {
   }
 
   Stream<QuerySnapshot> viewerListStream(String uid) {
-    return statusRef.where('whoCanSee', arrayContains: uid).snapshots();
+    return storyRef.where('whoCanSee', arrayContains: uid).snapshots();
   }
 
   Stream<QuerySnapshot> storyListStream(String documentId) {
-    return statusRef.doc(documentId).collection('statuses').snapshots();
+    return storyRef.doc(documentId).collection('stories').snapshots();
   }
 }

@@ -15,14 +15,14 @@ class StoryModel {
 
   StoryModel.fromJson(Map<String, dynamic> json) {
     url = json['url'];
-    storyId = json['statusId'];
+    storyId = json['storyId'];
     viewers = json['viewers'];
     time = json['time'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['statusId'] = storyId;
+    data['storyId'] = storyId;
     data['viewers'] = viewers;
     data['url'] = url;
     data['time'] = time;

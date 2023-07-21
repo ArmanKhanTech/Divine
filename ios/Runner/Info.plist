@@ -35,6 +35,8 @@
         <string>App requires to take pictures.</string>
         <key>NSMicrophoneUsageDescription</key>
         <string>App requires to record audio.</string>
+        <key>NSPhotoLibraryUsageDescription</key>
+        <string>Required to select pictures.</string>
 		<array>
 			<string>UIInterfaceOrientationPortrait</string>
 			<string>UIInterfaceOrientationLandscapeLeft</string>

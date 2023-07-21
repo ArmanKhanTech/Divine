@@ -10,7 +10,7 @@ class StoryViewModel extends ChangeNotifier {
   // Services.
   UserService userService = UserService();
   PostService postService = PostService();
-  StatusService statusService = StatusService();
+  StoryService storyService = StoryService();
 
   // Keys.
   GlobalKey<ScaffoldState> storyScaffoldKey = GlobalKey<ScaffoldState>();
@@ -34,14 +34,14 @@ class StoryViewModel extends ChangeNotifier {
   File? mediaUrl;
 
   sendStory(StoryModel story, String storyId) {
-    statusService.sendStory(
+    storyService.sendStory(
       story,
       storyId,
     );
   }
 
   Future<String> sendFirstStory(StoryModel story) async {
-    String newStoryId = await statusService.sendFirstStory(
+    String newStoryId = await storyService.sendFirstStory(
       story,
     );
 
@@ -60,6 +60,7 @@ class StoryViewModel extends ChangeNotifier {
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15, color: Colors.white)), backgroundColor: Colors.purpleAccent,
         behavior: kIsWeb == true ? SnackBarBehavior.fixed : SnackBarBehavior.floating, duration: const Duration(seconds: 2), padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         shape: const RoundedRectangleBorder(
           borderRadius: kIsWeb == true ? BorderRadius.only(
             topLeft: Radius.circular(20),

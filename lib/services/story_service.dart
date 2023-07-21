@@ -8,7 +8,7 @@ import 'package:uuid/uuid.dart';
 import '../models/story_model.dart';
 import '../utilities/firebase.dart';
 
-class StatusService extends Service{
+class StoryService extends Service{
   String storyId = const Uuid().v1();
   UserService userService = UserService();
 
@@ -24,29 +24,29 @@ class StatusService extends Service{
 
   // Send Story to DB.
   sendStory(StoryModel story, String chatId) async {
-    await statusRef
+    await storyRef
         .doc(chatId)
-        .collection("statuses")
+        .collection("stories")
         .doc(story.storyId)
         .set(story.toJson());
-    await statusRef.doc(chatId).update({
+    await storyRef.doc(chatId).update({
       "userId": auth.currentUser!.uid,
     });
   }
 
   // TODO: add only followers to ids.
   // Send first Story to DB.
-  Future<String> sendFirstStory(StoryModel status) async {
+  Future<String> sendFirstStory(StoryModel story) async {
     List<String> ids = [];
     await usersRef.get().then((QuerySnapshot snapshot) {
       for (var documentSnapshot in snapshot.docs) {
         ids.add(documentSnapshot.get('id'));
       }
     });
-    DocumentReference ref = await statusRef.add({
+    DocumentReference ref = await storyRef.add({
       'whoCanSee': ids,
     });
-    await sendStory(status, ref.id);
+    await sendStory(story, ref.id);
     return ref.id;
   }
 

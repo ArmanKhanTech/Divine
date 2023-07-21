@@ -69,8 +69,10 @@ class _FeedsPageState extends State<FeedsPage>{
     super.dispose();
   }
 
+  // TODO: Fix status bar color.
   // Choose Dialog.
   chooseUpload(BuildContext context, StoryViewModel viewModel) {
+
     return showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(

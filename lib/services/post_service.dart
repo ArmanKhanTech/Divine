@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:divine/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
 import '../utilities/firebase.dart';
@@ -14,6 +16,27 @@ class PostService extends Service{
     var ref = usersRef.doc(user.uid);
     ref.update({
       "photoUrl": link,
+    });
+  }
+
+  uploadSinglePost(File image, String location, String description) async {
+    String link = await uploadImage(posts, image);
+    DocumentSnapshot doc = await usersRef.doc(auth.currentUser!.uid).get();
+    UserModel user = UserModel.fromJson(
+      doc.data() as Map<String, dynamic>,
+    );
+    var ref = postRef.doc();
+    ref.set({
+      "id": ref.id,
+      "postId": ref.id,
+      "username": user.username,
+      "ownerId": auth.currentUser!.uid,
+      "mediaUrl": link,
+      "description": description ?? "",
+      "location": location ?? "Divine",
+      "timestamp": Timestamp.now(),
+    }).catchError((e) {
+      // do something
     });
   }
 }

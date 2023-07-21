@@ -60,9 +60,6 @@ class _MainScreenState extends State<MainScreen>{
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(0.0),
             child: AppBar(
-              systemOverlayStyle: const SystemUiOverlayStyle(
-                statusBarColor: Colors.transparent,
-              ),
               automaticallyImplyLeading: false,
             ),
           ),

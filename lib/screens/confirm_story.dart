@@ -90,6 +90,7 @@ class _ConfirmStoryState extends State<ConfirmStory> {
                   ),
                 )
               ),
+              //  TODO: Fix touch area of button.
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
@@ -124,7 +125,7 @@ class _ConfirmStoryState extends State<ConfirmStory> {
                             setState(() {
                               loading = true;
                             });
-                            QuerySnapshot snapshot = await statusRef
+                            QuerySnapshot snapshot = await storyRef
                                 .where('userId', isEqualTo: auth.currentUser!.uid)
                                 .get();
                             if (snapshot.docs.isNotEmpty) {

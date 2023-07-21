@@ -96,6 +96,7 @@ class LoginViewModel extends ChangeNotifier {
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15, color: Colors.white)), backgroundColor: Colors.orange,
         behavior: kIsWeb == true ? SnackBarBehavior.fixed : SnackBarBehavior.floating, duration: const Duration(seconds: 2), padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         shape: const RoundedRectangleBorder(
           borderRadius: kIsWeb == true ? BorderRadius.only(
             topLeft: Radius.circular(20),

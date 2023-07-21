@@ -49,7 +49,7 @@ Future<bool> exitDialog({required context, required contentKey}) async {
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: BlurryContainer(
           height: 280,
-          color: Colors.black.withOpacity(0.15),
+          color: Colors.black.withOpacity(0.2),
           blur: 5,
           padding: const EdgeInsets.all(20),
           borderRadius: const BorderRadius.all(Radius.circular(20)),
@@ -120,7 +120,7 @@ Future<bool> exitDialog({required context, required contentKey}) async {
                       _dispose(context: context, message: 'Error');
                     }
                   } else {
-                    _dispose(context: context, message: 'Draft Empty');
+                    _dispose(context: context, message: 'Draft empty');
                   }
                 },
                 child: const Text(

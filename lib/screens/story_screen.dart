@@ -51,7 +51,7 @@ class _StoryScreenState extends State<StoryScreen> {
           Navigator.pop(context);
         },
         child: FutureBuilder<QuerySnapshot>(
-          future: statusRef.doc(widget.storiesId).collection('statuses').get(),
+          future: storyRef.doc(widget.storiesId).collection('stories').get(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               List story = snapshot.data!.docs;
@@ -72,9 +72,9 @@ class _StoryScreenState extends State<StoryScreen> {
                   // add viewer to story.
                   if (!allViewers!.contains(auth.currentUser!.uid)) {
                     allViewers.add(auth.currentUser!.uid);
-                    statusRef
+                    storyRef
                         .doc(widget.storiesId)
-                        .collection('statuses')
+                        .collection('stories')
                         .doc(stats.storyId)
                         .update({'viewers': allViewers});
                   }
