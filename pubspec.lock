@@ -146,7 +146,7 @@ packages:
     source: hosted
     version: "1.17.1"
   colorfilter_generator:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: colorfilter_generator
       sha256: ccc2995e440b1d828d55d99150e7cad64624f3cb4a1e235000de3f93cf10d35c
@@ -210,7 +210,7 @@ packages:
     source: hosted
     version: "0.0.5"
   extended_image:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: extended_image
       sha256: e77d18f956649ba6e5ecebd0cb68542120886336a75ee673788145bd4c3f0767
@@ -399,7 +399,7 @@ packages:
     source: hosted
     version: "3.3.1"
   flutter_colorpicker:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_colorpicker
       sha256: "458a6ed8ea480eb16ff892aedb4b7092b2804affd7e046591fb03127e8d8ef8b"
@@ -489,7 +489,7 @@ packages:
     source: sdk
     version: "0.0.0"
   font_awesome_flutter:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: font_awesome_flutter
       sha256: "5fb789145cae1f4c3245c58b3f8fb287d055c26323879eab57a7bf0cfd1e45f3"
@@ -657,7 +657,7 @@ packages:
     source: hosted
     version: "1.0.0"
   hand_signature:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: hand_signature
       sha256: "69cc5a978a5a15dfc1fabb01c097efcf91e9af2006475e48bb8f2560db368a97"
@@ -729,7 +729,7 @@ packages:
     source: hosted
     version: "4.0.0"
   image_editor:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: image_editor
       sha256: "9877a057b0cd2fafcd9a3dce5279948bd850d53ce76231a83c9678a2c9f186e9"
@@ -752,14 +752,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
-  image_editor_plus:
-    dependency: "direct main"
-    description:
-      name: image_editor_plus
-      sha256: "1a79038294402ac058488f6f619e62fc78ed857393512912d896da778f5f7e8d"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.5"
   image_gallery_saver:
     dependency: "direct main"
     description:
@@ -1153,7 +1145,7 @@ packages:
     source: hosted
     version: "0.27.7"
   screenshot:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: screenshot
       sha256: "455284ff1f5b911d94a43c25e1385485cf6b4f288293eba68f15dad711c7b81c"

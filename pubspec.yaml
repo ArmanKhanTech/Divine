@@ -78,8 +78,14 @@ dependencies:
   deepar_flutter: ^0.0.5
   url_launcher: ^6.1.12
   blurrycontainer: 1.0.2
-  image_editor_plus: ^0.2.5
   path_provider: ^2.0.15
+  font_awesome_flutter: ^10.1.0
+  screenshot: ^2.1.0
+  flutter_colorpicker: ^1.0.3
+  extended_image: ^8.0.2
+  image_editor: ^1.0.2
+  colorfilter_generator: ^0.0.8
+  hand_signature: ^3.0.0
 
 dev_dependencies:
   flutter_test:
