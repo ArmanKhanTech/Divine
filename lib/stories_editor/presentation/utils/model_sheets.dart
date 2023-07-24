@@ -1,5 +1,7 @@
 import 'package:blurrycontainer/blurrycontainer.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_gif_picker/modal_gif_picker.dart';
 import 'package:provider/provider.dart';
 import '../../domain/models/editable_item.dart';
@@ -49,7 +51,7 @@ Future<bool> exitDialog({required context, required contentKey}) async {
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: BlurryContainer(
           height: 280,
-          color: Colors.black.withOpacity(0.2),
+          color: Colors.black.withOpacity(0.4),
           blur: 5,
           padding: const EdgeInsets.all(20),
           borderRadius: const BorderRadius.all(Radius.circular(20)),
@@ -115,12 +117,12 @@ Future<bool> exitDialog({required context, required contentKey}) async {
                         context: context,
                         saveToGallery: true);
                     if (response) {
-                      _dispose(context: context, message: 'Successfully saved');
+                      _dispose(context: context, message: 'Successfully Saved');
                     } else {
-                      _dispose(context: context, message: 'Error');
+                      _dispose(context: context, message: 'Some Error Occurred');
                     }
                   } else {
-                    _dispose(context: context, message: 'Draft empty');
+                    _dispose(context: context, message: 'Draft Empty');
                   }
                 },
                 child: const Text(
@@ -178,29 +180,43 @@ _resetDefaults({required BuildContext context}) {
 
 _dispose({required context, required message}) {
   _resetDefaults(context: context);
-  showSnackBar(message, context);
+  showToast(message, context);
   Navigator.of(context).pop(true);
 }
 
-showSnackBar(String msg, context) {
-  ScaffoldMessenger.of(context).removeCurrentSnackBar();
-  ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-          content: Text(
-              msg,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                  fontSize: 15,
-                  color: Colors.white
-              )
-          ),
-          backgroundColor: Colors.blue,
-          behavior: SnackBarBehavior.floating,
-          duration: const Duration(seconds: 2),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-          margin: const EdgeInsets.symmetric(vertical: 18, horizontal: 10),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(30)),
-      )
-  ));
+showToast(String msg, context) {
+  Widget toast = Container(
+    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(25.0),
+      color: Colors.blue,
+    ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        msg == 'Error' || msg == 'Draft Empty' ? const Icon(CupertinoIcons.clear_circled, color: Colors.red,)
+        : const Icon(CupertinoIcons.check_mark_circled, color: Colors.white),
+        const SizedBox(
+          width: 10.0,
+        ),
+        Text(
+          msg,
+          style: const TextStyle(
+              color: Colors.white,
+              fontSize: 15,
+              fontWeight: FontWeight.w600
+          )
+        ),
+      ],
+    ),
+  );
+
+  FToast fToast = FToast();
+  fToast.init(context);
+
+  fToast.showToast(
+    child: toast,
+    gravity: ToastGravity.BOTTOM,
+    toastDuration: const Duration(seconds: 2),
+  );
 }

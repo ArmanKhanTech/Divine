@@ -1,9 +1,12 @@
+import 'dart:ui';
+
 import 'package:divine/screens/new_post_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:divine/admobs/adHelper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
@@ -83,6 +86,7 @@ class _FeedsPageState extends State<FeedsPage>{
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
       builder: (BuildContext context) {
+
         return FractionallySizedBox(
           heightFactor: .7,
           child: Column(
@@ -129,8 +133,8 @@ class _FeedsPageState extends State<FeedsPage>{
                       },
                     )
                     ));
-                },
-              ),
+                  },
+                ),
               ),
               ListTile(
                 leading: const Icon(
@@ -200,7 +204,9 @@ class _FeedsPageState extends State<FeedsPage>{
               CupertinoIcons.add_circled,
               size: 30.0,
             ),
-            onPressed: () => chooseUpload(context, viewModel),
+            onPressed: () => {
+              chooseUpload(context, viewModel),
+            }
           ),
           IconButton(
             icon: const Icon(

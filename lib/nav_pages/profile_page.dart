@@ -106,7 +106,23 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
         automaticallyImplyLeading: false,
-        leading: widget.profileId == auth.currentUser!.uid ? null : IconButton(
+        leading: widget.profileId == auth.currentUser!.uid ?  GestureDetector(
+            onTap: () async {
+              Navigator.of(context).push(
+                CupertinoPageRoute(
+                  builder: (_) => const SettingsScreen(),
+                ),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: Icon(
+                CupertinoIcons.settings,
+                color: Theme.of(context).colorScheme.secondary,
+                size: 25,
+              ),
+            )
+        ) : IconButton(
           icon: const Icon(CupertinoIcons.chevron_back),
           onPressed: () {
             Navigator.of(context).pop();
@@ -119,22 +135,6 @@ class _ProfilePageState extends State<ProfilePage> {
             visible: widget.profileId == auth.currentUser!.uid,
             child: Row(
               children: [
-                const SizedBox(width: 10.0),
-                GestureDetector(
-                  onTap: () async {
-                    Navigator.of(context).push(
-                      CupertinoPageRoute(
-                        builder: (_) => const SettingsScreen(),
-                      ),
-                    );
-                  },
-                  child: Icon(
-                    CupertinoIcons.settings,
-                    color: Theme.of(context).colorScheme.secondary,
-                    size: 25,
-                  )
-                ),
-                const SizedBox(width: 10.0),
                 GestureDetector(
                   onTap: () async {
                   await auth.signOut();
@@ -167,10 +167,7 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 Row(
                   children: [
-                    const SizedBox(
-                      width: 20.0,
-                    ),
-                    StreamBuilder(
+                    /*StreamBuilder(
                       stream: postRef.where('ownerId', isEqualTo: widget.profileId).snapshots(),
                       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (snapshot.hasData) {
@@ -183,6 +180,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         }
                       },
                     ),
+                    const Spacer(),*/
                     const Spacer(),
                     StreamBuilder(
                       stream: followersRef.doc(widget.profileId).collection('userFollowers').snapshots(),
@@ -197,7 +195,34 @@ class _ProfilePageState extends State<ProfilePage> {
                         }
                       },
                     ),
-                    const Spacer(),
+                    const SizedBox(
+                      width: 20.0,
+                    ),
+                    // TODO: Implement user story widget.
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: currentUser.photoUrl!.isEmpty ? CircleAvatar(
+                        radius: 35.0,
+                        backgroundColor: Colors.grey,
+                        child: Center(
+                          child: Text(
+                            currentUser.username![0].toUpperCase(),
+                            style: const TextStyle(
+                              color: Colors.blue,
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ),
+                      ) : CircleAvatar(
+                        radius: 35.0,
+                        backgroundImage:
+                        CachedNetworkImageProvider('${currentUser.photoUrl}'),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20.0,
+                    ),
                     StreamBuilder(
                       stream: followingRef.doc(widget.profileId).collection('userFollowing').snapshots(),
                       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -212,87 +237,76 @@ class _ProfilePageState extends State<ProfilePage> {
                       },
                     ),
                     const Spacer(),
-                    // TODO: Implement user story widget.
-                    Padding(
-                      padding: const EdgeInsets.only(right: 20.0),
-                      child: currentUser.photoUrl!.isEmpty ? CircleAvatar(
-                        radius: 40.0,
-                        backgroundColor: Colors.grey,
-                        child: Center(
-                          child: Text(
-                            currentUser.username![0].toUpperCase(),
-                            style: const TextStyle(
-                              color: Colors.blue,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w900,
-                            ),
+                  ],
+                ),
+                const SizedBox(height: 10.0),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Align(
+                        alignment: AlignmentDirectional.centerEnd,
+                        child: currentUser.name!.isNotEmpty ? Text(
+                          currentUser.name!,
+                          style: const TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 1,
+                        ) : Text(
+                          currentUser.username!,
+                          style: const TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 1,
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: AlignmentDirectional.center,
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Container(
+                            height: 16.0,
+                            width: 0.5,
+                            color: Colors.blue,
                           ),
                         ),
-                      ) : CircleAvatar(
-                        radius: 40.0,
-                        backgroundImage:
-                        CachedNetworkImageProvider('${currentUser.photoUrl}'),
+                      ),
+                    ),
+                    Expanded(
+                      child: Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: currentUser.profession!.isEmpty ? Text(
+                          currentUser.country!,
+                          style: const TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 1,
+                        ) : Text(
+                          currentUser.profession![0].toUpperCase() + currentUser.profession!.substring(1),
+                          style: const TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 1,
+                        ),
                       ),
                     ),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10.0, left: 20.0),
-                  child: SizedBox(
-                    child: currentUser.name!.isNotEmpty ? Text(
-                      currentUser.name!,
-                      style: const TextStyle(
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      maxLines: null,
-                    ) : Text(
-                      currentUser.username!,
-                      style: const TextStyle(
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      maxLines: null,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10.0),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: SizedBox(
-                    child: currentUser.profession!.isEmpty ? SizedBox(
-                      child: Text(
-                        currentUser.country!,
-                        style: const TextStyle(
-                          fontSize: 15.0,
-                          color: Colors.blue,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ) : SizedBox(
-                      child: Text(
-                        currentUser.profession![0].toUpperCase() + currentUser.profession!.substring(1),
-                        style: const TextStyle(
-                          fontSize: 15.0,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10.0),
+                const SizedBox(height: 5.0),
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0),
                   child: currentUser.bio!.isEmpty ? Container() : SizedBox(
-                    width: 200,
                     child: Text(
                       currentUser.bio!,
                       style: const TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.w700,
                       ),
-                      maxLines: null,
                     ),
                   ),
                 ),
@@ -383,22 +397,28 @@ class _ProfilePageState extends State<ProfilePage> {
 
   buildCount(String label, int count) {
     return Column(
+      crossAxisAlignment: label == 'Followers' ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          count.toString(),
-          style: const TextStyle(
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Ubuntu-Regular',
-          ),
+        Padding(
+            padding: label == 'Followers' ? const EdgeInsets.only(right: 1) : const EdgeInsets.only(left: 1),
+            child: Text(
+              count.toString(),
+              textAlign: TextAlign.end,
+              style: const TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.w600,
+                fontFamily: 'Ubuntu-Regular',
+              ),
+            ),
         ),
-        const SizedBox(height: 3.0),
+        const SizedBox(height: 2.0),
         Text(
           label,
           style: const TextStyle(
             fontSize: 15,
-            fontWeight: FontWeight.w400,
+            fontWeight: FontWeight.w500,
             fontFamily: 'Ubuntu-Regular',
+            color: Colors.grey,
           ),
         )
       ],

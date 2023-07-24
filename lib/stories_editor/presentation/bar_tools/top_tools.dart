@@ -76,9 +76,9 @@ class _TopToolsState extends State<TopTools> {
                             context: context,
                             saveToGallery: true);
                         if (response) {
-                          showSnackBar('Saved successfully.', context);
+                          showToast('Saved Successfully', context);
                         } else {
-                          showSnackBar('Error.', context);
+                          showToast('Some Error Occurred', context);
                         }
                       }
                     },
