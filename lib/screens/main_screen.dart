@@ -53,15 +53,10 @@ class _MainScreenState extends State<MainScreen>{
   // UI of Home Screen.
   @override
   Widget build(BuildContext context) {
+
     return FlutterWebFrame(
       builder: (context) {
         return Scaffold(
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(0.0),
-            child: AppBar(
-              automaticallyImplyLeading: false,
-            ),
-          ),
           body: PageTransitionSwitcher(
             transitionBuilder: (
                 Widget child,

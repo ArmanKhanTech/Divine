@@ -1,4 +1,5 @@
 import 'package:blurrycontainer/blurrycontainer.dart';
+import 'package:divine/screens/main_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -37,6 +38,7 @@ Future createGiphyItem(
 }
 
 Future<bool> exitDialog({required context, required contentKey}) async {
+
   return (await
   showDialog(
     context: context,
@@ -181,7 +183,12 @@ _resetDefaults({required BuildContext context}) {
 _dispose({required context, required message}) {
   _resetDefaults(context: context);
   showToast(message, context);
-  Navigator.of(context).pop(true);
+  Navigator.pushReplacement(
+    context,
+    CupertinoPageRoute(
+        builder: (_) => const MainScreen()
+    )
+  );
 }
 
 showToast(String msg, context) {

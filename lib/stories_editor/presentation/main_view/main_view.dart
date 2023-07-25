@@ -7,6 +7,7 @@ import 'package:gallery_media_picker/gallery_media_picker.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
+import '../../../utilities/system_ui.dart';
 import '../../domain/models/editable_item.dart';
 import '../../domain/models/painting_model.dart';
 import '../../domain/notifiers/control_notifier.dart';
@@ -86,7 +87,7 @@ class _MainViewState extends State<MainView> {
   bool _isLoading = false;
 
   @override
-  void initState() {
+  initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var control = Provider.of<ControlNotifier>(context, listen: false);
 
@@ -115,6 +116,8 @@ class _MainViewState extends State<MainView> {
   Widget build(BuildContext context) {
     final ScreenUtil screenUtil = ScreenUtil();
 
+    WidgetsBinding.instance.addPostFrameCallback((_) => SystemUI.setDarkSystemUI(context));
+
     return WillPopScope(
       onWillPop: _popScope,
       child: LoadingOverlay(
@@ -123,21 +126,6 @@ class _MainViewState extends State<MainView> {
         progressIndicator: circularProgress(context, const Color(0XFF03A9F4)),
         opacity: 0.5,
         child: Scaffold(
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(5.0),
-            child: AppBar(
-              systemOverlayStyle: const SystemUiOverlayStyle(
-                statusBarColor: Colors.black,
-                statusBarIconBrightness: Brightness.light,
-                statusBarBrightness: Brightness.light,
-                systemNavigationBarColor: Colors.black,
-                systemNavigationBarIconBrightness: Brightness.light,
-                systemNavigationBarDividerColor: null,
-              ),
-              automaticallyImplyLeading: false,
-              backgroundColor: Colors.black,
-            ),
-          ),
           body: Material(
             color: widget.editorBackgroundColor == Colors.transparent
                 ? Colors.black
@@ -366,7 +354,7 @@ class _MainViewState extends State<MainView> {
                             },
                             onTapped : (isLoading) {
                               setState(() {
-                              _isLoading = isLoading;
+                                _isLoading = isLoading;
                               });
                             },
                             onDoneButtonStyle: widget.onDoneButtonStyle,
@@ -374,6 +362,7 @@ class _MainViewState extends State<MainView> {
                           ),
                       ],
                     ),
+
                     gallery: GalleryMediaPicker(
                       mediaPickerParams: MediaPickerParamsModel(
                         gridViewController: scrollProvider.gridController,
@@ -427,7 +416,7 @@ class _MainViewState extends State<MainView> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(Radius.circular(30)),
                               )
-                            )
+                          )
                           );
                         } else{
                           controlNotifier.mediaPath = path.first.path.toString();
@@ -449,8 +438,8 @@ class _MainViewState extends State<MainView> {
               },
             ),
           ),
-        ),
-      )
+        )
+      ),
     );
   }
 
@@ -468,8 +457,7 @@ class _MainViewState extends State<MainView> {
     }
 
     else if (!controlNotifier.isTextEditing && !controlNotifier.isPainting) {
-      return widget.onBackPress ??
-          exitDialog(context: context, contentKey: contentKey);
+      return widget.onBackPress ?? exitDialog(context: context, contentKey: contentKey);
     }
     return false;
   }

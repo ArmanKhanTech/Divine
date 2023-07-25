@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:divine/utilities/system_ui.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
@@ -23,8 +22,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SystemUI.lightSystemUI();
-
     Timer(
         const Duration(seconds: 2),
             () => Navigator.of(context).pushReplacement(

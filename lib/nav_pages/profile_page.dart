@@ -5,6 +5,7 @@ import 'package:divine/widgets/progress_indicators.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../components/stream_grid_wrapper.dart';
 import '../models/user_model.dart';
@@ -203,6 +204,9 @@ class _ProfilePageState extends State<ProfilePage> {
       key: profileScaffoldKey,
       appBar: AppBar(
         centerTitle: true,
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+        ),
         title: widget.profileId == auth.currentUser!.uid ? GradientText(
           'Profile',
           style: const TextStyle(

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:divine/admobs/adHelper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
@@ -31,6 +32,8 @@ class _FeedsPageState extends State<FeedsPage>{
   int page = 5;
   bool loadingMore = false;
   ScrollController scrollController = ScrollController();
+
+  bool backFromStories = false;
 
   @override
   void initState() {
@@ -69,151 +72,198 @@ class _FeedsPageState extends State<FeedsPage>{
     super.dispose();
   }
 
-  // TODO: Fix status bar color.
-  // Choose Dialog.
-  chooseUpload(BuildContext context, StoryViewModel viewModel) {
-
-    return showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-            topRight: Radius.circular(20),
-            topLeft: Radius.circular(20)
-        ),
-      ),
-      backgroundColor: Theme.of(context).colorScheme.background,
-      builder: (BuildContext context) {
-
-        return FractionallySizedBox(
-          heightFactor: .7,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 15.0),
-              const Center(
-                child:Text(
-                  'Choose',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10.0),
-              const Divider(
-                height: 1.0,
-                color: Colors.blue,
-              ),
-              Visibility(
-                visible: !kIsWeb,
-                child: ListTile(
-                  dense: true,
-                  contentPadding: const EdgeInsets.only(
-                    left: 20,
-                    top: 15,
-                    bottom: 8,
-                  ),
-                  visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-                  leading: const Icon(
-                    CupertinoIcons.time,
-                    color: Colors.blue,
-                    size: 25,
-                  ),
-                  title: Text('Add a new Story', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
-                  onTap: () {
-                    Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => StoriesEditor(
-                      giphyKey: 'C4dMA7Q19nqEGdpfj82T8ssbOeZIylD4',
-                      fontFamilyList: const ['Shizuru', 'Aladin', 'TitilliumWeb', 'Varela',
-                        'Vollkorn', 'Rakkas', 'B612', 'ConcertOne', 'YatraOne', 'Tangerine',
-                        'OldStandardTT', 'DancingScript', 'SedgwickAve', 'IndieFlower', 'Sacramento', 'PressStart2P'],
-                      galleryThumbnailQuality: 300,
-                      isCustomFontList: true,
-                      onDone: (uri) {
-                        Navigator.of(context).push(
-                          CupertinoPageRoute(
-                            builder: (_) => ConfirmStory(uri: uri),
-                          ),
-                        );
-                      },
-                    )
-                    ));
-                  },
-                ),
-              ),
-              ListTile(
-                dense: true,
-                contentPadding: const EdgeInsets.only(
-                  left: 20,
-                  top: 8,
-                  bottom: 8,
-                ),
-                visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-                leading: const Icon(
-                  CupertinoIcons.plus_circle,
-                  color: Colors.blue,
-                  size: 25,
-                ),
-                title: Text('Make a new Post', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
-                onTap: () async {
-                  Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => const NewPostScreen()));
-                },
-              ),
-              ListTile(
-                dense: true,
-                contentPadding: const EdgeInsets.only(
-                  left: 20,
-                  top: 8,
-                  bottom: 8,
-                ),
-                visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-                leading: const Icon(
-                  CupertinoIcons.equal_circle,
-                  color: Colors.blue,
-                  size: 25,
-                ),
-                title: Text('Write a new Thread', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
-                /*onTap: () async {
-                  // Navigator.pop(context);
-                  await viewModel.pickImage(context: context);
-                },*/
-              ),
-              ListTile(
-                dense: true,
-                contentPadding: const EdgeInsets.only(
-                  left: 20,
-                  top: 8,
-                  bottom: 8,
-                ),
-                visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-                leading: const Icon(
-                  CupertinoIcons.play_circle,
-                  color: Colors.blue,
-                  size: 25,
-                ),
-                title: Text('Upload a new Reel', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
-                /*onTap: () async {
-                  // Navigator.pop(context);
-                  await viewModel.pickImage(context: context);
-                },*/
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
   // UI of FeedsScreen.
   @override
   Widget build(BuildContext context) {
     // ViewModel of Stories.
     StoryViewModel viewModel = Provider.of<StoryViewModel>(context);
 
+    darkTheme() {
+      SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+        statusBarColor: Colors.black,
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.light,
+        systemNavigationBarColor: Colors.black,
+        systemNavigationBarIconBrightness: Brightness.light,
+      ));
+    }
+
+    lightTheme() {
+      SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+        statusBarColor: Colors.white,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.dark,
+        systemNavigationBarColor: Colors.white,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ));
+    }
+
+    setSystemUI() {
+      if(backFromStories == true) {
+        if(Theme.of(scaffoldKey.currentContext!).colorScheme.background == Colors.black) {
+          darkTheme();
+        } else {
+          lightTheme();
+        }
+      }
+    }
+
+    // Choose Dialog.
+    chooseUpload(BuildContext context, StoryViewModel viewModel) {
+
+      return showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(20),
+              topLeft: Radius.circular(20)
+          ),
+        ),
+        useSafeArea: true,
+        backgroundColor: Theme.of(context).colorScheme.background,
+        builder: (BuildContext context) {
+
+          return FractionallySizedBox(
+            heightFactor: .7,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 15.0),
+                const Center(
+                  child:Text(
+                    'Choose',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10.0),
+                const Divider(
+                  height: 1.0,
+                  color: Colors.blue,
+                ),
+                Visibility(
+                  visible: !kIsWeb,
+                  child: ListTile(
+                    dense: true,
+                    contentPadding: const EdgeInsets.only(
+                      left: 20,
+                      top: 15,
+                      bottom: 8,
+                    ),
+                    visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                    leading: const Icon(
+                      CupertinoIcons.time,
+                      color: Colors.blue,
+                      size: 25,
+                    ),
+                    title: Text('Add a new Story', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
+                    onTap: () {
+                      Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => StoriesEditor(
+                        giphyKey: 'C4dMA7Q19nqEGdpfj82T8ssbOeZIylD4',
+                        fontFamilyList: const ['Shizuru', 'Aladin', 'TitilliumWeb', 'Varela',
+                          'Vollkorn', 'Rakkas', 'B612', 'ConcertOne', 'YatraOne', 'Tangerine',
+                          'OldStandardTT', 'DancingScript', 'SedgwickAve', 'IndieFlower', 'Sacramento', 'PressStart2P'],
+                        galleryThumbnailQuality: 300,
+                        isCustomFontList: true,
+                        onDone: (uri) {
+                          Navigator.of(context).push(
+                            CupertinoPageRoute(
+                              builder: (_) => ConfirmStory(uri: uri),
+                            ),
+                          ).then((value) => {
+                            setState(() {
+                              backFromStories = true;
+                              setSystemUI();
+                            })
+                          });
+                        },
+                      ))).then((value) => {
+                        setState(() {
+                          backFromStories = true;
+                          setSystemUI();
+                        })
+                      });
+                    },
+                  ),
+                ),
+                ListTile(
+                  dense: true,
+                  contentPadding: const EdgeInsets.only(
+                    left: 20,
+                    top: 8,
+                    bottom: 8,
+                  ),
+                  visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                  leading: const Icon(
+                    CupertinoIcons.plus_circle,
+                    color: Colors.blue,
+                    size: 25,
+                  ),
+                  title: Text('Make a new Post', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
+                  onTap: () async {
+                    Navigator.pushReplacement(
+                        context,
+                        CupertinoPageRoute(
+                            builder: (context) => const NewPostScreen()
+                        )
+                    ).then((value) => value == true ? null : null);
+                  },
+                ),
+                ListTile(
+                  dense: true,
+                  contentPadding: const EdgeInsets.only(
+                    left: 20,
+                    top: 8,
+                    bottom: 8,
+                  ),
+                  visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                  leading: const Icon(
+                    CupertinoIcons.equal_circle,
+                    color: Colors.blue,
+                    size: 25,
+                  ),
+                  title: Text('Write a new Thread', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
+                  /*onTap: () async {
+                  // Navigator.pop(context);
+                  await viewModel.pickImage(context: context);
+                },*/
+                ),
+                ListTile(
+                  dense: true,
+                  contentPadding: const EdgeInsets.only(
+                    left: 20,
+                    top: 8,
+                    bottom: 8,
+                  ),
+                  visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                  leading: const Icon(
+                    CupertinoIcons.play_circle,
+                    color: Colors.blue,
+                    size: 25,
+                  ),
+                  title: Text('Upload a new Reel', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
+                  /*onTap: () async {
+                  // Navigator.pop(context);
+                  await viewModel.pickImage(context: context);
+                },*/
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+        ),
         title: GradientText(
           Constants.appName,
           style: const TextStyle(

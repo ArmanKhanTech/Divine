@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../models/story_model.dart';
 import '../utilities/firebase.dart';
+import '../utilities/system_ui.dart';
 import '../view_models/user/story_view_model.dart';
 import '../widgets/progress_indicators.dart';
 
@@ -31,6 +32,8 @@ class _ConfirmStoryState extends State<ConfirmStory> {
   Widget build(BuildContext context) {
     StoryViewModel viewModel = Provider.of<StoryViewModel>(context);
     final File image = File(widget.uri);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => SystemUI.setDarkSystemUI(context));
 
     return Scaffold(
       appBar:  AppBar(
@@ -55,14 +58,6 @@ class _ConfirmStoryState extends State<ConfirmStory> {
         ),
         automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
-        systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarColor: Colors.black,
-          statusBarIconBrightness: Brightness.light,
-          statusBarBrightness: Brightness.light,
-          systemNavigationBarColor: Colors.black,
-          systemNavigationBarIconBrightness: Brightness.light,
-          systemNavigationBarDividerColor: null,
-        ),
       ),
       backgroundColor: Colors.black,
       body: SizedBox(

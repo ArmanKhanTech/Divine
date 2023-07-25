@@ -7,7 +7,6 @@ import 'package:flutter_web_frame/flutter_web_frame.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
-import '../components/custom_image.dart';
 import '../widgets/progress_indicators.dart';
 
 class ProfilePictureScreen extends StatefulWidget{
@@ -40,7 +39,7 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 10.0),
+                const SizedBox(height: 15.0),
                 const Center(
                   child: Text(
                     'Select from',
@@ -52,7 +51,7 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                     ),
                   ),
                 ),
-                const SizedBox(height: 15.0),
+                const SizedBox(height: 10.0),
                 const Divider(
                   height: 2.0,
                   color: Colors.blue,
