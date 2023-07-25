@@ -3,7 +3,6 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
 import '../nav_pages/activity_page.dart';
 import '../nav_pages/feeds_page.dart';
@@ -91,7 +90,7 @@ class _MainScreenState extends State<MainScreen>{
             color: Theme.of(context).colorScheme.background,
             buttonBackgroundColor: Colors.pink,
             backgroundColor: Colors.blue,
-            animationCurve: Curves.easeInOut,
+            animationCurve: Curves.easeIn,
             animationDuration: const Duration(milliseconds: 500),
             onTap: (index) {
               setState(() {

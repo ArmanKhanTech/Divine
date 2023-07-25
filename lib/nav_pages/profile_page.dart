@@ -82,6 +82,121 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
+  openMenu(BuildContext context) {
+
+    return showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(20),
+            topLeft: Radius.circular(20)
+        ),
+      ),
+      backgroundColor: Theme.of(context).colorScheme.background,
+      builder: (BuildContext context) {
+
+        return FractionallySizedBox(
+          heightFactor: .7,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 15.0),
+              const Center(
+                child:Text(
+                  'Menu',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10.0),
+              const Divider(
+                height: 1.0,
+                color: Colors.blue,
+              ),
+              ListTile(
+                dense: true,
+                contentPadding: const EdgeInsets.only(
+                  left: 20,
+                  top: 15,
+                  bottom: 8,
+                ),
+                visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                leading: Icon(
+                  CupertinoIcons.info,
+                  color: Theme.of(context).colorScheme.secondary,
+                  size: 25,
+                ),
+                title: Text('About This Account', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
+                onTap: () {
+                  Navigator.of(context).pushReplacement(
+                    CupertinoPageRoute(
+                      builder: (_) => UserInfoScreen(
+                        country: currentUser.country,
+                        email: currentUser.email,
+                        timeStamp: currentUser.signedUpAt,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              Visibility(
+                visible: widget.profileId == auth.currentUser!.uid,
+                child: ListTile(
+                  dense: true,
+                  contentPadding: const EdgeInsets.only(
+                    left: 20,
+                    top: 8,
+                    bottom: 8,
+                  ),
+                  visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                  leading: Icon(
+                    CupertinoIcons.settings,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                  title: Text('Settings', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
+                  onTap: () async {
+                  Navigator.of(context).pushReplacement(
+                    CupertinoPageRoute(
+                      builder: (_) => const SettingsScreen(),
+                    ));
+                  },
+                )
+              ),
+              Visibility(
+                visible: widget.profileId == auth.currentUser!.uid,
+                child: ListTile(
+                  dense: true,
+                  contentPadding: const EdgeInsets.only(
+                    left: 20,
+                    top: 8,
+                    bottom: 8,
+                  ),
+                  visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                  onTap: () async {
+                    await auth.signOut();
+                    Navigator.of(context).pushReplacement(
+                      CupertinoPageRoute(
+                          builder: (_) => const SplashScreen()
+                      )
+                    );
+                  },
+                  title: Text('Logout', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
+                  leading: const Icon(
+                    Icons.logout,
+                    color: Colors.red,
+                  )
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,23 +221,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
         automaticallyImplyLeading: false,
-        leading: widget.profileId == auth.currentUser!.uid ?  GestureDetector(
-            onTap: () async {
-              Navigator.of(context).push(
-                CupertinoPageRoute(
-                  builder: (_) => const SettingsScreen(),
-                ),
-              );
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: Icon(
-                CupertinoIcons.settings,
-                color: Theme.of(context).colorScheme.secondary,
-                size: 25,
-              ),
-            )
-        ) : IconButton(
+        leading: widget.profileId == auth.currentUser!.uid ? null : IconButton(
           icon: const Icon(CupertinoIcons.chevron_back),
           onPressed: () {
             Navigator.of(context).pop();
@@ -131,28 +230,18 @@ class _ProfilePageState extends State<ProfilePage> {
           color: Theme.of(context).colorScheme.secondary,
         ),
         actions: [
-          Visibility(
-            visible: widget.profileId == auth.currentUser!.uid,
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () async {
-                  await auth.signOut();
-                  Navigator.of(context).pushReplacement(
-                      CupertinoPageRoute(
-                          builder: (_) => const SplashScreen()
-                      )
-                    );
-                  },
-                  child: const Icon(
-                    Icons.logout,
-                    color: Colors.red,
-                    size: 25,
-                  )
-                ),
-                const SizedBox(width: 20.0),
-              ],
-            )
+          Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () {
+                  openMenu(context);
+                },
+                iconSize: 25.0,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+              const SizedBox(width: 10.0),
+            ],
           )
         ],
       ),
@@ -167,42 +256,14 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 Row(
                   children: [
-                    /*StreamBuilder(
-                      stream: postRef.where('ownerId', isEqualTo: widget.profileId).snapshots(),
-                      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (snapshot.hasData) {
-                          QuerySnapshot<Object?>? snap = snapshot.data;
-                          List<DocumentSnapshot> docs = snap!.docs;
-
-                          return buildCount("Posts", docs.length);
-                        } else {
-                          return buildCount("Posts", 0);
-                        }
-                      },
-                    ),
-                    const Spacer(),*/
-                    const Spacer(),
-                    StreamBuilder(
-                      stream: followersRef.doc(widget.profileId).collection('userFollowers').snapshots(),
-                      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (snapshot.hasData) {
-                          QuerySnapshot<Object?>? snap = snapshot.data;
-                          List<DocumentSnapshot> docs = snap!.docs;
-
-                          return buildCount("Followers", docs.length);
-                        } else {
-                          return buildCount("Followers", 0);
-                        }
-                      },
-                    ),
                     const SizedBox(
                       width: 20.0,
                     ),
                     // TODO: Implement user story widget.
                     Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
+                      padding: const EdgeInsets.only(top: 5.0),
                       child: currentUser.photoUrl!.isEmpty ? CircleAvatar(
-                        radius: 35.0,
+                        radius: 45.0,
                         backgroundColor: Colors.grey,
                         child: Center(
                           child: Text(
@@ -215,14 +276,40 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                       ) : CircleAvatar(
-                        radius: 35.0,
-                        backgroundImage:
-                        CachedNetworkImageProvider('${currentUser.photoUrl}'),
+                        radius: 45.0,
+                        backgroundImage: CachedNetworkImageProvider('${currentUser.photoUrl}'),
                       ),
                     ),
-                    const SizedBox(
-                      width: 20.0,
+                    const Spacer(),
+                    StreamBuilder(
+                      stream: postRef.where('ownerId', isEqualTo: widget.profileId).snapshots(),
+                      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasData) {
+                          QuerySnapshot<Object?>? snap = snapshot.data;
+                          List<DocumentSnapshot> docs = snap!.docs;
+
+                          return buildCount("Posts", docs.length);
+                        } else {
+                          return buildCount("Posts", 0);
+                        }
+                      },
                     ),
+                    const Spacer(),
+                    StreamBuilder(
+                      stream: followersRef.doc(widget.profileId).collection('userFollowers').snapshots(),
+                      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasData) {
+                          QuerySnapshot<Object?>? snap = snapshot.data;
+                          List<DocumentSnapshot> docs = snap!.docs;
+
+                          return buildCount("Followers", docs.length);
+                        } else {
+
+                          return buildCount("Followers", 0);
+                        }
+                      },
+                    ),
+                    const Spacer(),
                     StreamBuilder(
                       stream: followingRef.doc(widget.profileId).collection('userFollowing').snapshots(),
                       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -232,6 +319,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                           return buildCount("Following", docs.length);
                         } else {
+
                           return buildCount("Following", 0);
                         }
                       },
@@ -240,64 +328,44 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
                 const SizedBox(height: 10.0),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Align(
-                        alignment: AlignmentDirectional.centerEnd,
-                        child: currentUser.name!.isNotEmpty ? Text(
-                          currentUser.name!,
-                          style: const TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          maxLines: 1,
-                        ) : Text(
-                          currentUser.username!,
-                          style: const TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          maxLines: 1,
-                        ),
-                      ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: currentUser.name!.isNotEmpty ? Text(
+                    currentUser.name!,
+                    style: const TextStyle(
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.w600,
                     ),
-                    Align(
-                      alignment: AlignmentDirectional.center,
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Container(
-                            height: 16.0,
-                            width: 0.5,
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ),
+                    maxLines: 1,
+                  ) : Text(
+                    currentUser.username!,
+                    style: const TextStyle(
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.w600,
                     ),
-                    Expanded(
-                      child: Align(
-                        alignment: AlignmentDirectional.centerStart,
-                        child: currentUser.profession!.isEmpty ? Text(
-                          currentUser.country!,
-                          style: const TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          maxLines: 1,
-                        ) : Text(
-                          currentUser.profession![0].toUpperCase() + currentUser.profession!.substring(1),
-                          style: const TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          maxLines: 1,
-                        ),
-                      ),
-                    ),
-                  ],
+                    maxLines: 1,
+                  ),
                 ),
-                const SizedBox(height: 5.0),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: currentUser.profession!.isEmpty ? Text(
+                    currentUser.country!,
+                    style: const TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.blue,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    maxLines: 1,
+                ) : Text(
+                    currentUser.profession![0].toUpperCase() + currentUser.profession!.substring(1),
+                    style: const TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    maxLines: 1,
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0),
                   child: currentUser.bio!.isEmpty ? Container() : SizedBox(
@@ -305,7 +373,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       currentUser.bio!,
                       style: const TextStyle(
                         fontSize: 15.0,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
@@ -320,7 +388,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         currentUser.link!,
                         style: const TextStyle(
                           fontSize: 15.0,
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.w600,
                           color: Colors.purple,
                         ),
                         maxLines: null,
@@ -341,25 +409,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18),
                     ),
                     const Spacer(),
-                    GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            CupertinoPageRoute(
-                              builder: (_) => UserInfoScreen(
-                                country: currentUser.country,
-                                email: currentUser.email,
-                                timeStamp: currentUser.signedUpAt,
-                              ),
-                            ),
-                          );
-                        },
-                        child: Icon(
-                          CupertinoIcons.info,
-                          color: Theme.of(context).colorScheme.secondary,
-                          size: 25,
-                        )
-                    ),
-                    const SizedBox(width: 5.0),
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -397,25 +446,24 @@ class _ProfilePageState extends State<ProfilePage> {
 
   buildCount(String label, int count) {
     return Column(
-      crossAxisAlignment: label == 'Followers' ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: <Widget>[
-        Padding(
-            padding: label == 'Followers' ? const EdgeInsets.only(right: 1) : const EdgeInsets.only(left: 1),
-            child: Text(
-              count.toString(),
-              textAlign: TextAlign.end,
-              style: const TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.w600,
-                fontFamily: 'Ubuntu-Regular',
-              ),
-            ),
+        const SizedBox(
+          height: 5.0,
+        ),
+        Text(
+          count.toString(),
+          textAlign: TextAlign.end,
+          style: const TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.w600,
+            fontFamily: 'Ubuntu-Regular',
+          ),
         ),
         const SizedBox(height: 2.0),
         Text(
           label,
           style: const TextStyle(
-            fontSize: 15,
+            fontSize: 16,
             fontWeight: FontWeight.w500,
             fontFamily: 'Ubuntu-Regular',
             color: Colors.grey,

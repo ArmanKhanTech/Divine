@@ -51,6 +51,7 @@ class _SettingsScreenState extends State<SettingsScreen>{
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: ListView(
+          shrinkWrap: true,
           children: <Widget>[
             const ListTile(
                 title: Text(
@@ -82,16 +83,20 @@ class _SettingsScreenState extends State<SettingsScreen>{
                   fontSize: 15
                 ),
               ),
-              trailing: Consumer<ThemeProvider>(
-                builder: (context, notifier, child) =>
-                    CupertinoSwitch(
-                      onChanged: (val) {
-                        notifier.toggleTheme();
-                      },
-                      value: notifier.dark,
-                      activeColor: Colors.blue,
-                    ),
-              ),
+              trailing: SizedBox(
+                width: 50,
+                height: 50,
+                child: Consumer<ThemeProvider>(
+                  builder: (context, notifier, child) =>
+                  CupertinoSwitch(
+                    onChanged: (val) {
+                      notifier.toggleTheme();
+                    },
+                    value: notifier.dark,
+                    activeColor: Colors.blue,
+                  ),
+                ),
+              )
             ),
             const Divider(),
             ListTile(
@@ -108,34 +113,38 @@ class _SettingsScreenState extends State<SettingsScreen>{
                     fontSize: 15
                 ),
               ),
-              trailing: StreamBuilder(
-                stream: usersRef.doc(auth.currentUser?.uid).snapshots(),
-                builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  if (snapshot.hasData) {
-                    UserModel user = UserModel.fromJson(snapshot.data!.data() as Map<String, dynamic>);
+              trailing: SizedBox(
+                width: 50,
+                height: 50,
+                child: StreamBuilder(
+                  stream: usersRef.doc(auth.currentUser?.uid).snapshots(),
+                  builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                    if (snapshot.hasData) {
+                      UserModel user = UserModel.fromJson(snapshot.data!.data() as Map<String, dynamic>);
 
-                    if(user.type == 'public'){
-                      return CupertinoSwitch(
-                        onChanged: (val) {
-                          viewModel.updateProfileStatus(context, 'private');
-                        },
-                        value: false,
-                        activeColor: Colors.blue,
-                      );
+                      if(user.type == 'public'){
+                        return CupertinoSwitch(
+                          onChanged: (val) {
+                            viewModel.updateProfileStatus(context, 'private');
+                          },
+                          value: false,
+                          activeColor: Colors.blue,
+                        );
+                      } else {
+                        return CupertinoSwitch(
+                          onChanged: (val) {
+                            viewModel.updateProfileStatus(context, 'public');
+                          },
+                          value: true,
+                          activeColor: Colors.blue,
+                        );
+                      }
                     } else {
-                      return CupertinoSwitch(
-                        onChanged: (val) {
-                          viewModel.updateProfileStatus(context, 'public');
-                        },
-                        value: true,
-                        activeColor: Colors.blue,
-                      );
+                      return circularProgress(context, const Color(0xff00c6ff));
                     }
-                  } else {
-                    return circularProgress(context, const Color(0xff00c6ff));
-                  }
-                },
-              ),
+                  },
+                ),
+              )
             ),
           ],
         ),

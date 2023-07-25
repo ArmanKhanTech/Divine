@@ -1,12 +1,9 @@
-import 'dart:ui';
-
 import 'package:divine/screens/new_post_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:divine/admobs/adHelper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
@@ -103,7 +100,7 @@ class _FeedsPageState extends State<FeedsPage>{
                   ),
                 ),
               ),
-              const SizedBox(height: 15.0),
+              const SizedBox(height: 10.0),
               const Divider(
                 height: 1.0,
                 color: Colors.blue,
@@ -111,9 +108,17 @@ class _FeedsPageState extends State<FeedsPage>{
               Visibility(
                 visible: !kIsWeb,
                 child: ListTile(
+                  dense: true,
+                  contentPadding: const EdgeInsets.only(
+                    left: 20,
+                    top: 15,
+                    bottom: 8,
+                  ),
+                  visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
                   leading: const Icon(
-                      CupertinoIcons.time,
-                      color: Colors.blue
+                    CupertinoIcons.time,
+                    color: Colors.blue,
+                    size: 25,
                   ),
                   title: Text('Add a new Story', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
                   onTap: () {
@@ -137,9 +142,17 @@ class _FeedsPageState extends State<FeedsPage>{
                 ),
               ),
               ListTile(
+                dense: true,
+                contentPadding: const EdgeInsets.only(
+                  left: 20,
+                  top: 8,
+                  bottom: 8,
+                ),
+                visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
                 leading: const Icon(
-                    CupertinoIcons.plus_circle,
-                    color: Colors.blue
+                  CupertinoIcons.plus_circle,
+                  color: Colors.blue,
+                  size: 25,
                 ),
                 title: Text('Make a new Post', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
                 onTap: () async {
@@ -147,9 +160,17 @@ class _FeedsPageState extends State<FeedsPage>{
                 },
               ),
               ListTile(
+                dense: true,
+                contentPadding: const EdgeInsets.only(
+                  left: 20,
+                  top: 8,
+                  bottom: 8,
+                ),
+                visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
                 leading: const Icon(
-                    CupertinoIcons.chat_bubble_text,
-                    color: Colors.blue
+                  CupertinoIcons.equal_circle,
+                  color: Colors.blue,
+                  size: 25,
                 ),
                 title: Text('Write a new Thread', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
                 /*onTap: () async {
@@ -158,9 +179,17 @@ class _FeedsPageState extends State<FeedsPage>{
                 },*/
               ),
               ListTile(
+                dense: true,
+                contentPadding: const EdgeInsets.only(
+                  left: 20,
+                  top: 8,
+                  bottom: 8,
+                ),
+                visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
                 leading: const Icon(
-                    CupertinoIcons.play_circle,
-                    color: Colors.blue
+                  CupertinoIcons.play_circle,
+                  color: Colors.blue,
+                  size: 25,
                 ),
                 title: Text('Upload a new Reel', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
                 /*onTap: () async {

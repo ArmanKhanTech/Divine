@@ -40,7 +40,7 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 15.0),
+                const SizedBox(height: 10.0),
                 const Center(
                   child: Text(
                     'Select from',
@@ -58,7 +58,14 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                   color: Colors.blue,
                 ),
                 ListTile(
-                  leading: const Icon(CupertinoIcons.camera_fill, color: Colors.blue),
+                  dense: true,
+                  contentPadding: const EdgeInsets.only(
+                    left: 20,
+                    top: 15,
+                    bottom: 8,
+                  ),
+                  visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                  leading: const Icon(CupertinoIcons.camera_fill, color: Colors.blue, size: 25),
                   title: Text('Camera', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
                   onTap: () {
                     Navigator.pop(context);
@@ -67,7 +74,14 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                   },
                 ),
                 ListTile(
-                  leading: const Icon(CupertinoIcons.photo_fill, color: Colors.blue),
+                  dense: true,
+                  contentPadding: const EdgeInsets.only(
+                    left: 20,
+                    top: 8,
+                    bottom: 8,
+                  ),
+                  visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                  leading: const Icon(CupertinoIcons.photo_fill, color: Colors.blue, size: 25),
                   title: Text('Gallery', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
                   onTap: () {
                     Navigator.pop(context);
