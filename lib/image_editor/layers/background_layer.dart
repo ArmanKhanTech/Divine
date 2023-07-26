@@ -22,7 +22,6 @@ class _BackgroundLayerState extends State<BackgroundLayer> {
     return Container(
       width: widget.layerData.file.width.toDouble(),
       height: widget.layerData.file.height.toDouble(),
-      // color: black,
       padding: EdgeInsets.zero,
       child: Image.memory(widget.layerData.file.image),
     );

@@ -74,12 +74,6 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                           topRight: Radius.circular(20),
                           topLeft: Radius.circular(20)
                       ),
-                      border: const Border(
-                        top: BorderSide(width: 1.0, color: Colors.blue, style: BorderStyle.solid),
-                        bottom: BorderSide(width: 0.0, color: Colors.blue, style: BorderStyle.solid),
-                        left: BorderSide(width: 0.0, color: Colors.blue, style: BorderStyle.solid),
-                        right: BorderSide(width: 0.0, color: Colors.blue, style: BorderStyle.solid),
-                      ),
                     ),
                     child: const Padding(
                       padding: EdgeInsets.only(

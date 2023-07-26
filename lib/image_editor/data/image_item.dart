@@ -40,10 +40,7 @@ class ImageItem {
       decodedImage = await decodeImageFromList(imageFile);
     }
 
-    // image was decoded
     if (decodedImage != null) {
-      // print(['height', viewportSize.height, decodedImage.height]);
-      // print(['width', viewportSize.width, decodedImage.width]);
 
       height = decodedImage.height;
       width = decodedImage.width;

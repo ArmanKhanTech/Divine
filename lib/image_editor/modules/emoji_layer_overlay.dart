@@ -24,8 +24,6 @@ class _EmojiLayerOverlayState extends State<EmojiLayerOverlay> {
 
   @override
   void initState() {
-    //  slider = widget.sizeable;
-
     super.initState();
   }
 
@@ -34,17 +32,20 @@ class _EmojiLayerOverlayState extends State<EmojiLayerOverlay> {
     return Container(
       height: 200,
       decoration: const BoxDecoration(
-        color: Colors.black87,
+        color: Colors.black,
         borderRadius: BorderRadius.only(
-            topRight: Radius.circular(10), topLeft: Radius.circular(10)),
+            topRight: Radius.circular(20), topLeft: Radius.circular(20)),
       ),
       child: Column(
         children: [
-          const SizedBox(height: 10),
+          const SizedBox(height: 20),
           Center(
             child: Text(
               i18n('Size Adjust').toUpperCase(),
-              style: const TextStyle(color: Colors.white),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                ),
             ),
           ),
           const Divider(),
@@ -81,7 +82,7 @@ class _EmojiLayerOverlayState extends State<EmojiLayerOverlay> {
                 },
                 child: Text(
                   i18n('Remove'),
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.red, fontSize: 20),
                 ),
               ),
             ),

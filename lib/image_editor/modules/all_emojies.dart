@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../data/data.dart';
 import '../data/layer.dart';
 import '../image_editor_plus.dart';
@@ -20,8 +19,8 @@ class _EmojiesState extends State<Emojies> {
         height: 400,
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(32),
-            topRight: Radius.circular(32),
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
           ),
           color: Colors.black,
           boxShadow: [
@@ -37,14 +36,21 @@ class _EmojiesState extends State<Emojies> {
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text(
                 i18n('Select Emoji'),
-                style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
               ),
             ]),
-            const Divider(height: 1),
-            const SizedBox(height: 16),
+            const SizedBox(height: 10),
             Container(
-              height: 315,
-              padding: const EdgeInsets.all(0.0),
+              height: 320,
+              padding: const EdgeInsets.only(
+                left: 20,
+                right: 10,
+                top: 5,
+              ),
               child: GridView(
                 shrinkWrap: true,
                 physics: const ClampingScrollPhysics(),

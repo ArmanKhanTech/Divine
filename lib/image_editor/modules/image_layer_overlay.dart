@@ -23,8 +23,6 @@ class _ImageLayerOverlayState extends State<ImageLayerOverlay> {
 
   @override
   void initState() {
-    //  slider = widget.sizevalue;
-
     super.initState();
   }
 

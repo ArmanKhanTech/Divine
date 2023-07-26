@@ -32,24 +32,28 @@ class _TextViewState extends State<TextLayer> {
       child: GestureDetector(
         onTap: () {
           showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
-                topRight: Radius.circular(10),
-                topLeft: Radius.circular(10),
+                topRight: Radius.circular(20),
+                topLeft: Radius.circular(20),
               ),
             ),
-            context: context,
-            builder: (context) {
-              return TextLayerOverlay(
-                index: layers.indexOf(widget.layerData),
-                layer: widget.layerData,
-                onUpdate: () {
-                  if (widget.onUpdate != null) widget.onUpdate!();
-                  setState(() {});
-                },
-              );
-            },
-          );
+            builder: (BuildContext context) {
+              return SingleChildScrollView(
+                  child: Container(
+                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                    child: TextLayerOverlay(
+                      index: layers.indexOf(widget.layerData),
+                      layer: widget.layerData,
+                      onUpdate: () {
+                        if (widget.onUpdate != null) widget.onUpdate!();
+                        setState(() {});
+                      },
+                    ),
+                  ));
+            });
         },
         onScaleUpdate: (detail) {
           if (detail.pointerCount == 1) {
@@ -58,11 +62,7 @@ class _TextViewState extends State<TextLayer> {
               widget.layerData.offset.dy + detail.focalPointDelta.dy,
             );
           } else if (detail.pointerCount == 2) {
-            widget.layerData.size =
-                initialSize + detail.scale * (detail.scale > 1 ? 1 : -1);
-
-            // print('angle');
-            // print(detail.rotation);
+            widget.layerData.size = initialSize + detail.scale * (detail.scale > 1 ? 1 : -1);
             widget.layerData.rotation = detail.rotation;
           }
           setState(() {});

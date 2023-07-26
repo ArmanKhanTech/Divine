@@ -35,8 +35,8 @@ class _EmojiLayerState extends State<EmojiLayer> {
           showModalBottomSheet(
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
-                topRight: Radius.circular(10),
-                topLeft: Radius.circular(10),
+                topRight: Radius.circular(20),
+                topLeft: Radius.circular(20),
               ),
             ),
             context: context,

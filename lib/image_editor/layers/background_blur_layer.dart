@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../data/layer.dart';
 
-/// Image layer to blur background using BackdropFilter
 class BackgroundBlurLayer extends StatefulWidget {
   final BackgroundBlurLayerData layerData;
   final VoidCallback? onUpdate;

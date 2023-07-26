@@ -32,22 +32,25 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 450,
+      height: 400,
       decoration: const BoxDecoration(
-        color: Colors.black87,
+        color: Colors.black,
         borderRadius: BorderRadius.only(
-            topRight: Radius.circular(10), topLeft: Radius.circular(10)),
+            topRight: Radius.circular(20), topLeft: Radius.circular(20)),
       ),
       child: Column(
         children: [
-          const SizedBox(height: 10),
+          const SizedBox(height: 20),
           Center(
             child: Text(
-              i18n('Size Adjust').toUpperCase(),
-              style: const TextStyle(color: Colors.white),
+              i18n('Text Size'),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
-          const Divider(),
           Slider(
               activeColor: Colors.white,
               inactiveColor: Colors.grey,
@@ -63,7 +66,6 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
               onChanged: (v) {
                 setState(() {
                   slider = v;
-                  // print(v.toDouble());
                   widget.layer.size = v.toDouble();
                   widget.onUpdate();
                 });
@@ -75,16 +77,19 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
             ),
             child:
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const SizedBox(height: 20),
               Container(
-                padding: const EdgeInsets.only(left: 16),
+                padding: const EdgeInsets.only(left: 10),
                 child: Text(
-                  i18n('Color'),
-                  style: const TextStyle(color: Colors.white),
+                  i18n('Text Color'),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                  ),
                 ),
               ),
               Row(children: [
-                const SizedBox(width: 8),
+                const SizedBox(width: 10),
                 Expanded(
                   child: BarColorPicker(
                     width: 300,
@@ -108,20 +113,29 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
                     });
                   },
                   child: Text(i18n('Reset'),
-                      style: const TextStyle(color: Colors.white)),
+                      style: const TextStyle(
+                        color: Colors.blue,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                      )
+                  ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: 10),
               ]),
               const SizedBox(height: 20),
               Container(
-                padding: const EdgeInsets.only(left: 16),
+                padding: const EdgeInsets.only(left: 10),
                 child: Text(
-                  i18n('Background Color'),
-                  style: const TextStyle(color: Colors.white),
+                  i18n('Text Background Color'),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                    ),
                 ),
               ),
               Row(children: [
-                const SizedBox(width: 8),
+                const SizedBox(width: 10),
                 Expanded(
                   child: BarColorPicker(
                     width: 300,
@@ -146,21 +160,29 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
                   },
                   child: Text(
                     i18n('Reset'),
-                    style: const TextStyle(color: Colors.white),
+                    style: const TextStyle(
+                      color: Colors.blue,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: 10),
               ]),
               const SizedBox(height: 20),
               Container(
-                padding: const EdgeInsets.only(left: 16),
+                padding: const EdgeInsets.only(left: 10),
                 child: Text(
-                  i18n('Background Opacity'),
-                  style: const TextStyle(color: Colors.white),
+                  i18n('Text Background Opacity'),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                    ),
                 ),
               ),
               Row(children: [
-                const SizedBox(width: 8),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Slider(
                     min: 0,
@@ -185,14 +207,17 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
                   },
                   child: Text(
                     i18n('Reset'),
-                    style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(
+                        color: Colors.blue,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                      ),
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: 10),
               ]),
             ]),
           ),
-          const SizedBox(height: 10),
           Row(children: [
             Expanded(
               child: TextButton(
@@ -201,12 +226,10 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
 
                   Navigator.pop(context);
                   widget.onUpdate();
-                  // back(context);
-                  // setState(() {});
                 },
                 child: Text(
                   i18n('Remove'),
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.red, fontSize: 20),
                 ),
               ),
             ),

@@ -96,7 +96,6 @@ class TextLayerData extends Layer {
   );
 }
 
-/// Attributes used by [BackgroundBlurLayer]
 class BackgroundBlurLayerData extends Layer {
   Color color;
   double radius;

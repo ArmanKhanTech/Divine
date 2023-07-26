@@ -14,7 +14,7 @@ class TextEditorImage extends StatefulWidget {
 class _TextEditorImageState extends State<TextEditorImage> {
   TextEditingController name = TextEditingController();
   Color currentColor = Colors.white;
-  double slider = 32.0;
+  double slider = 20.0;
   TextAlign align = TextAlign.left;
 
   @override
@@ -88,18 +88,26 @@ class _TextEditorImageState extends State<TextEditorImage> {
                     controller: name,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      contentPadding: const EdgeInsets.all(10),
-                      hintText: i18n('Insert Your Message'),
-                      hintStyle: const TextStyle(color: Colors.white),
+                      contentPadding: const EdgeInsets.all(15),
+                      hintText: Text(
+                        i18n('Enter text here'),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: slider,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ).data,
                       alignLabelWithHint: true,
                     ),
                     scrollPadding: const EdgeInsets.all(20.0),
                     keyboardType: TextInputType.multiline,
-                    minLines: 5,
+                    minLines: 1,
                     maxLines: 99999,
                     style: TextStyle(
                       color: currentColor,
+                      fontSize: slider,
                     ),
+                    textAlign: align,
                     autofocus: true,
                   ),
                 ),
@@ -107,12 +115,18 @@ class _TextEditorImageState extends State<TextEditorImage> {
                   color: Colors.transparent,
                   child: Column(
                     children: [
-                      //   SizedBox(height: 20.0),
+                      const SizedBox(height: 20.0),
                       Text(
-                        i18n('Slider Color'),
+                        i18n('Text Color'),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                        ),
                       ),
-                      //   SizedBox(height: 10.0),
                       Row(children: [
+                        const SizedBox(
+                          width: 10.0,
+                        ),
                         Expanded(
                           child: BarColorPicker(
                             width: 300,
@@ -127,18 +141,35 @@ class _TextEditorImageState extends State<TextEditorImage> {
                           ),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              currentColor = Colors.white;
+                            });
+                          },
                           child: Text(
                             i18n('Reset'),
+                            style: const TextStyle(
+                              color: Colors.blue,
+                              fontSize: 15,
+                            )
                           ),
                         ),
+                        const SizedBox(
+                          width: 10.0
+                        )
                       ]),
-                      //   SizedBox(height: 20.0),
+                      const SizedBox(height: 10.0),
                       Text(
-                        i18n('Slider White Black Color'),
+                        i18n('Text White/Black Color'),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                        ),
                       ),
-                      //   SizedBox(height: 10.0),
                       Row(children: [
+                        const SizedBox(
+                          width: 10.0,
+                        ),
                         Expanded(
                           child: BarColorPicker(
                             width: 300,
@@ -153,10 +184,22 @@ class _TextEditorImageState extends State<TextEditorImage> {
                           ),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              currentColor = const Color(0xFFFFFFFF);
+                            });
+                          },
                           child: Text(
                             i18n('Reset'),
+                              style: const TextStyle(
+                                color: Colors.blue,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              )
                           ),
+                        ),
+                        const SizedBox(
+                            width: 10.0
                         )
                       ]),
                       Container(
@@ -166,11 +209,14 @@ class _TextEditorImageState extends State<TextEditorImage> {
                             const SizedBox(height: 10.0),
                             Center(
                               child: Text(
-                                i18n('Size Adjust').toUpperCase(),
-                                style: const TextStyle(color: Colors.white),
+                                i18n('Text Size'),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
-                            const SizedBox(height: 10.0),
                             Slider(
                                 activeColor: Colors.white,
                                 inactiveColor: Colors.grey,

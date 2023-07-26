@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
-
 import '../view_models/screens/posts_view_model.dart';
-import 'confirm_single_post_screen.dart';
 
 class NewPostScreen extends StatefulWidget {
   const NewPostScreen({Key? key}) : super(key: key);
@@ -21,7 +19,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
     PostsViewModel viewModel = Provider.of<PostsViewModel>(context);
 
     return LoadingOverlay(
-        isLoading: viewModel.loading,
+        isLoading: false, //viewModel.loading,
         progressIndicator: circularProgress(context, const Color(0XFF03A9F4)),
         opacity: 0.5,
         child: Scaffold(
@@ -54,10 +52,11 @@ class _NewPostScreenState extends State<NewPostScreen> {
                     const Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "Single Image",
+                        "Single Image : ",
                         style: TextStyle(
                           fontSize: 20.0,
                           fontWeight: FontWeight.bold,
+                          color: Colors.blue
                         ),
                       ),
                     ),
@@ -72,8 +71,12 @@ class _NewPostScreenState extends State<NewPostScreen> {
                               height: 200.0,
                               width: MediaQuery.of(context).size.width * 0.42,
                               decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                borderRadius: BorderRadius.circular(10.0),
+                                color: Theme.of(context).colorScheme.background,
+                                borderRadius: BorderRadius.circular(20.0),
+                                border: Border.all(
+                                  color: Colors.blue,
+                                  width: 1.0,
+                                ),
                               ),
                               child: const Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -81,16 +84,19 @@ class _NewPostScreenState extends State<NewPostScreen> {
                                 children: [
                                   Icon(
                                     CupertinoIcons.camera,
-                                    size: 50.0,
-                                    color: Colors.grey,
+                                    size: 40.0,
+                                    color: Colors.blue
+                                  ),
+                                  SizedBox(
+                                    height: 5.0,
                                   ),
                                   Text(
-                                      'Camera',
-                                      style: TextStyle(
-                                          fontSize: 15.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.grey
-                                      )
+                                    'Camera',
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.blue
+                                    )
                                   )
                                 ],
                               )
@@ -105,8 +111,12 @@ class _NewPostScreenState extends State<NewPostScreen> {
                               height: 200.0,
                               width: MediaQuery.of(context).size.width * 0.42,
                               decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                borderRadius: BorderRadius.circular(10.0),
+                                color: Theme.of(context).colorScheme.background,
+                                borderRadius: BorderRadius.circular(20.0),
+                                border: Border.all(
+                                  color: Colors.blue,
+                                  width: 1.0,
+                                ),
                               ),
                               child: const Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -114,15 +124,18 @@ class _NewPostScreenState extends State<NewPostScreen> {
                                 children: [
                                   Icon(
                                     CupertinoIcons.photo_on_rectangle,
-                                    size: 50.0,
-                                    color: Colors.grey,
+                                    size: 40.0,
+                                    color: Colors.blue,
+                                  ),
+                                  SizedBox(
+                                    height: 5.0,
                                   ),
                                   Text(
                                       'Gallery',
                                       style: TextStyle(
-                                          fontSize: 15.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.grey
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.blue
                                       )
                                   )
                                 ],
@@ -135,10 +148,11 @@ class _NewPostScreenState extends State<NewPostScreen> {
                     const Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "Multiple Images",
+                        "Multiple Images : ",
                         style: TextStyle(
                           fontSize: 20.0,
                           fontWeight: FontWeight.bold,
+                          color: Colors.blue
                         ),
                       ),
                     ),
@@ -153,8 +167,12 @@ class _NewPostScreenState extends State<NewPostScreen> {
                               height: 200.0,
                               width: MediaQuery.of(context).size.width * 0.42,
                               decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                borderRadius: BorderRadius.circular(10.0),
+                                color: Theme.of(context).colorScheme.background,
+                                borderRadius: BorderRadius.circular(20.0),
+                                border: Border.all(
+                                  color: Colors.blue,
+                                  width: 1.0,
+                                ),
                               ),
                               child: const Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -162,16 +180,19 @@ class _NewPostScreenState extends State<NewPostScreen> {
                                 children: [
                                   Icon(
                                     CupertinoIcons.photo_on_rectangle,
-                                    size: 50.0,
-                                    color: Colors.grey,
+                                    size: 40.0,
+                                    color: Colors.blue,
+                                  ),
+                                  SizedBox(
+                                    height: 5.0,
                                   ),
                                   Text(
-                                      'Gallery',
-                                      style: TextStyle(
-                                          fontSize: 15.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.grey
-                                      )
+                                    'Gallery',
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.blue,
+                                    )
                                   )
                                 ],
                               )
