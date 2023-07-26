@@ -33,8 +33,6 @@ class _FeedsPageState extends State<FeedsPage>{
   bool loadingMore = false;
   ScrollController scrollController = ScrollController();
 
-  bool backFromStories = false;
-
   @override
   void initState() {
     scrollController.addListener(() async {
@@ -78,36 +76,6 @@ class _FeedsPageState extends State<FeedsPage>{
     // ViewModel of Stories.
     StoryViewModel viewModel = Provider.of<StoryViewModel>(context);
 
-    darkTheme() {
-      SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-        statusBarColor: Colors.black,
-        statusBarIconBrightness: Brightness.light,
-        statusBarBrightness: Brightness.light,
-        systemNavigationBarColor: Colors.black,
-        systemNavigationBarIconBrightness: Brightness.light,
-      ));
-    }
-
-    lightTheme() {
-      SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-        statusBarColor: Colors.white,
-        statusBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.dark,
-        systemNavigationBarColor: Colors.white,
-        systemNavigationBarIconBrightness: Brightness.dark,
-      ));
-    }
-
-    setSystemUI() {
-      if(backFromStories == true) {
-        if(Theme.of(scaffoldKey.currentContext!).colorScheme.background == Colors.black) {
-          darkTheme();
-        } else {
-          lightTheme();
-        }
-      }
-    }
-
     // Choose Dialog.
     chooseUpload(BuildContext context, StoryViewModel viewModel) {
 
@@ -115,8 +83,8 @@ class _FeedsPageState extends State<FeedsPage>{
         context: context,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-              topRight: Radius.circular(20),
-              topLeft: Radius.circular(20)
+            topRight: Radius.circular(20),
+            topLeft: Radius.circular(20)
           ),
         ),
         useSafeArea: true,
@@ -124,134 +92,267 @@ class _FeedsPageState extends State<FeedsPage>{
         builder: (BuildContext context) {
 
           return FractionallySizedBox(
-            heightFactor: .7,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 15.0),
-                const Center(
-                  child:Text(
-                    'Choose',
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
+            heightFactor: .95,
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.background,
+                  border: const Border(
+                    left: BorderSide(
                       color: Colors.blue,
+                      width: 0.0,
+                    ),
+                    top: BorderSide(
+                      color: Colors.blue,
+                      width: 1.0,
+                    ),
+                    right: BorderSide(
+                      color: Colors.blue,
+                      width: 0.0,
+                    ),
+                    bottom: BorderSide(
+                      color: Colors.blue,
+                      width: 0.0,
                     ),
                   ),
-                ),
-                const SizedBox(height: 10.0),
-                const Divider(
-                  height: 1.0,
-                  color: Colors.blue,
-                ),
-                Visibility(
-                  visible: !kIsWeb,
-                  child: ListTile(
-                    dense: true,
-                    contentPadding: const EdgeInsets.only(
-                      left: 20,
-                      top: 15,
-                      bottom: 8,
-                    ),
-                    visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-                    leading: const Icon(
-                      CupertinoIcons.time,
-                      color: Colors.blue,
-                      size: 25,
-                    ),
-                    title: Text('Add a new Story', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
-                    onTap: () {
-                      Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => StoriesEditor(
-                        giphyKey: 'C4dMA7Q19nqEGdpfj82T8ssbOeZIylD4',
-                        fontFamilyList: const ['Shizuru', 'Aladin', 'TitilliumWeb', 'Varela',
-                          'Vollkorn', 'Rakkas', 'B612', 'ConcertOne', 'YatraOne', 'Tangerine',
-                          'OldStandardTT', 'DancingScript', 'SedgwickAve', 'IndieFlower', 'Sacramento', 'PressStart2P'],
-                        galleryThumbnailQuality: 300,
-                        isCustomFontList: true,
-                        onDone: (uri) {
-                          Navigator.of(context).push(
-                            CupertinoPageRoute(
-                              builder: (_) => ConfirmStory(uri: uri),
+                  borderRadius: const BorderRadius.only(
+                      topRight: Radius.circular(20),
+                      topLeft: Radius.circular(20)
+                  )
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.background,
+                        borderRadius: const BorderRadius.only(
+                            topRight: Radius.circular(20),
+                            topLeft: Radius.circular(20)
+                        ),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.only(
+                          top: 15.0,
+                          bottom: 10.0,
+                        ),
+                        child: Center(
+                          child:Text(
+                            'Choose',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue,
                             ),
-                          ).then((value) => {
-                            setState(() {
-                              backFromStories = true;
-                              setSystemUI();
-                            })
-                          });
+                          ),
+                        ),
+                      )
+                  ),
+                  const Divider(
+                    color: Colors.blue,
+                    thickness: 1,
+                  ),
+                  const SizedBox(height: 20.0),
+                  Row(
+                    children: [
+                      const SizedBox(width: 25.0),
+                      Visibility(
+                          visible: !kIsWeb,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => StoriesEditor(
+                                giphyKey: 'C4dMA7Q19nqEGdpfj82T8ssbOeZIylD4',
+                                fontFamilyList: const ['Shizuru', 'Aladin', 'TitilliumWeb', 'Varela',
+                                  'Vollkorn', 'Rakkas', 'B612', 'ConcertOne', 'YatraOne', 'Tangerine',
+                                  'OldStandardTT', 'DancingScript', 'SedgwickAve', 'IndieFlower', 'Sacramento', 'PressStart2P'],
+                                galleryThumbnailQuality: 300,
+                                isCustomFontList: true,
+                                onDone: (uri) {
+                                  Navigator.of(context).push(
+                                    CupertinoPageRoute(
+                                      builder: (_) => ConfirmStory(uri: uri),
+                                    ),
+                                  );
+                                },
+                              )));
+                            },
+                            child: Container(
+                                height: 150.0,
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.background,
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  border: Border.all(
+                                    color: Colors.blue,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                child: const Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      CupertinoIcons.time,
+                                      color: Colors.blue,
+                                      size: 30,
+                                    ),
+                                    SizedBox(
+                                      height: 5.0,
+                                    ),
+                                    Text(
+                                        'Story',
+                                        style: TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.blue
+                                        )
+                                    )
+                                  ],
+                                )
+                            ),
+                          )
+                      ),
+                      const Spacer(),
+                      GestureDetector(
+                        onTap: () async {
+                          Navigator.pushReplacement(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) => const NewPostScreen())
+                          );
                         },
-                      ))).then((value) => {
-                        setState(() {
-                          backFromStories = true;
-                          setSystemUI();
-                        })
-                      });
-                    },
+                        child: Container(
+                            height: 150.0,
+                            width: MediaQuery.of(context).size.width * 0.4,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.background,
+                              borderRadius: BorderRadius.circular(20.0),
+                              border: Border.all(
+                                color: Colors.blue,
+                                width: 1.0,
+                              ),
+                            ),
+                            child: const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  CupertinoIcons.plus_circle,
+                                  color: Colors.blue,
+                                  size: 30,
+                                ),
+                                SizedBox(
+                                  height: 5.0,
+                                ),
+                                Text(
+                                    'Post',
+                                    style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.blue
+                                    )
+                                )
+                              ],
+                            )
+                        ),
+                      ),
+                      const SizedBox(width: 25.0),
+                    ],
                   ),
-                ),
-                ListTile(
-                  dense: true,
-                  contentPadding: const EdgeInsets.only(
-                    left: 20,
-                    top: 8,
-                    bottom: 8,
-                  ),
-                  visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-                  leading: const Icon(
-                    CupertinoIcons.plus_circle,
-                    color: Colors.blue,
-                    size: 25,
-                  ),
-                  title: Text('Make a new Post', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
-                  onTap: () async {
-                    Navigator.pushReplacement(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) => const NewPostScreen()
-                        )
-                    ).then((value) => value == true ? null : null);
-                  },
-                ),
-                ListTile(
-                  dense: true,
-                  contentPadding: const EdgeInsets.only(
-                    left: 20,
-                    top: 8,
-                    bottom: 8,
-                  ),
-                  visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-                  leading: const Icon(
-                    CupertinoIcons.equal_circle,
-                    color: Colors.blue,
-                    size: 25,
-                  ),
-                  title: Text('Write a new Thread', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
-                  /*onTap: () async {
-                  // Navigator.pop(context);
-                  await viewModel.pickImage(context: context);
-                },*/
-                ),
-                ListTile(
-                  dense: true,
-                  contentPadding: const EdgeInsets.only(
-                    left: 20,
-                    top: 8,
-                    bottom: 8,
-                  ),
-                  visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-                  leading: const Icon(
-                    CupertinoIcons.play_circle,
-                    color: Colors.blue,
-                    size: 25,
-                  ),
-                  title: Text('Upload a new Reel', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
-                  /*onTap: () async {
-                  // Navigator.pop(context);
-                  await viewModel.pickImage(context: context);
-                },*/
-                ),
-              ],
-            ),
+                  const SizedBox(height: 30.0),
+                  Row(
+                    children: [
+                      const SizedBox(width: 25.0),
+                      Visibility(
+                          visible: !kIsWeb,
+                          child: GestureDetector(
+                            /*onTap: () async {
+                            // Navigator.pop(context);
+                            await viewModel.pickImage(context: context);
+                          },*/
+                            child: Container(
+                                height: 150.0,
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.background,
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  border: Border.all(
+                                    color: Colors.blue,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                child: const Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      CupertinoIcons.play_circle,
+                                      color: Colors.blue,
+                                      size: 30,
+                                    ),
+                                    SizedBox(
+                                      height: 5.0,
+                                    ),
+                                    Text(
+                                        'Reels',
+                                        style: TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.blue
+                                        )
+                                    )
+                                  ],
+                                )
+                            ),
+                          )
+                      ),
+                      const Spacer(),
+                      GestureDetector(
+                        /*onTap: () async {
+                        // Navigator.pop(context);
+                        await viewModel.pickImage(context: context);
+                      },*/
+                        child: Container(
+                            height: 150.0,
+                            width: MediaQuery.of(context).size.width * 0.4,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.background,
+                              borderRadius: BorderRadius.circular(20.0),
+                              border: Border.all(
+                                color: Colors.blue,
+                                width: 1.0,
+                              ),
+                            ),
+                            child: const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  CupertinoIcons.equal_circle,
+                                  color: Colors.blue,
+                                  size: 30,
+                                ),
+                                SizedBox(
+                                  height: 5.0,
+                                ),
+                                Text(
+                                    'Threads',
+                                    style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.blue
+                                    )
+                                )
+                              ],
+                            )
+                        ),
+                      ),
+                      const SizedBox(width: 25.0),
+                    ],
+                  )
+                ],
+              ),
+            )
           );
         },
       );
@@ -261,13 +362,23 @@ class _FeedsPageState extends State<FeedsPage>{
       key: scaffoldKey,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        systemOverlayStyle: const SystemUiOverlayStyle(
+        systemOverlayStyle: Theme.of(context).colorScheme.background != Colors.black ? const SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
+          statusBarBrightness: Brightness.dark,
+          statusBarIconBrightness: Brightness.dark,
+          systemNavigationBarColor: Colors.white,
+          systemNavigationBarIconBrightness: Brightness.light,
+        ) : const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarBrightness: Brightness.light,
+          statusBarIconBrightness: Brightness.light,
+          systemNavigationBarColor: Colors.black,
+          systemNavigationBarIconBrightness: Brightness.light,
         ),
         title: GradientText(
           Constants.appName,
           style: const TextStyle(
-              fontSize: 40.0,
+              fontSize: 35.0,
               fontWeight: FontWeight.w400,
              fontFamily: 'Raleway',
           ),

@@ -34,63 +34,110 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
           ),
         ),
         builder: (BuildContext context) {
+
           return FractionallySizedBox(
-            heightFactor: .5,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 15.0),
-                const Center(
-                  child: Text(
-                    'Select from',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
+            heightFactor: .6,
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.background,
+                  border: const Border(
+                    left: BorderSide(
                       color: Colors.blue,
+                      width: 0.0,
+                    ),
+                    top: BorderSide(
+                      color: Colors.blue,
+                      width: 1.0,
+                    ),
+                    right: BorderSide(
+                      color: Colors.blue,
+                      width: 0.0,
+                    ),
+                    bottom: BorderSide(
+                      color: Colors.blue,
+                      width: 0.0,
                     ),
                   ),
-                ),
-                const SizedBox(height: 10.0),
-                const Divider(
-                  height: 2.0,
-                  color: Colors.blue,
-                ),
-                ListTile(
-                  dense: true,
-                  contentPadding: const EdgeInsets.only(
-                    left: 20,
-                    top: 15,
-                    bottom: 8,
+                  borderRadius: const BorderRadius.only(
+                      topRight: Radius.circular(20),
+                      topLeft: Radius.circular(20)
+                  )
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.background,
+                      borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(20),
+                          topLeft: Radius.circular(20)
+                      ),
+                      border: const Border(
+                        top: BorderSide(width: 1.0, color: Colors.blue, style: BorderStyle.solid),
+                        bottom: BorderSide(width: 0.0, color: Colors.blue, style: BorderStyle.solid),
+                        left: BorderSide(width: 0.0, color: Colors.blue, style: BorderStyle.solid),
+                        right: BorderSide(width: 0.0, color: Colors.blue, style: BorderStyle.solid),
+                      ),
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.only(
+                        top: 15.0,
+                        bottom: 15.0,
+                      ),
+                      child: Center(
+                        child:Text(
+                          'Select From',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                  visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-                  leading: const Icon(CupertinoIcons.camera_fill, color: Colors.blue, size: 25),
-                  title: Text('Camera', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
-                  onTap: () {
-                    Navigator.pop(context);
-                    // Open in camera.
-                    viewModel.pickProfileImage(camera: true, context: context);
-                  },
-                ),
-                ListTile(
-                  dense: true,
-                  contentPadding: const EdgeInsets.only(
-                    left: 20,
-                    top: 8,
-                    bottom: 8,
+                  const Divider(
+                    height: 1.0,
+                    color: Colors.blue,
                   ),
-                  visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-                  leading: const Icon(CupertinoIcons.photo_fill, color: Colors.blue, size: 25),
-                  title: Text('Gallery', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
-                  onTap: () {
-                    Navigator.pop(context);
-                    // Open in gallery.
-                    viewModel.pickProfileImage(camera: false, context: context);
-                    // viewModel.pickProfilePicture();
-                  },
-                ),
-              ],
-            ),
+                  ListTile(
+                    dense: true,
+                    contentPadding: const EdgeInsets.only(
+                      left: 20,
+                      top: 15,
+                      bottom: 8,
+                    ),
+                    visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                    leading: const Icon(CupertinoIcons.camera_fill, color: Colors.blue, size: 25),
+                    title: Text('Camera', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
+                    onTap: () {
+                      Navigator.pop(context);
+                      // Open in camera.
+                      viewModel.pickProfileImage(camera: true, context: context);
+                    },
+                  ),
+                  ListTile(
+                    dense: true,
+                    contentPadding: const EdgeInsets.only(
+                      left: 20,
+                      top: 8,
+                      bottom: 8,
+                    ),
+                    visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                    leading: const Icon(CupertinoIcons.photo_fill, color: Colors.blue, size: 25),
+                    title: Text('Gallery', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
+                    onTap: () {
+                      Navigator.pop(context);
+                      // Open in gallery.
+                      viewModel.pickProfileImage(camera: false, context: context);
+                      // viewModel.pickProfilePicture();
+                    },
+                  ),
+                ],
+              ),
+            )
           );
         },
       );

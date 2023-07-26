@@ -58,7 +58,7 @@ class _SettingsScreenState extends State<SettingsScreen>{
                   "About",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 20
+                    fontSize: 18
                   ),
                 ),
                 subtitle: Text(
@@ -74,7 +74,7 @@ class _SettingsScreenState extends State<SettingsScreen>{
                 "Dark Mode",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 20
+                    fontSize: 18
                 ),
               ),
               subtitle: const Text(
@@ -85,7 +85,7 @@ class _SettingsScreenState extends State<SettingsScreen>{
               ),
               trailing: SizedBox(
                 width: 50,
-                height: 50,
+                height: 40,
                 child: Consumer<ThemeProvider>(
                   builder: (context, notifier, child) =>
                   CupertinoSwitch(
@@ -104,7 +104,7 @@ class _SettingsScreenState extends State<SettingsScreen>{
                 "Private Account",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 20
+                    fontSize: 18
                 ),
               ),
               subtitle: const Text(
@@ -115,7 +115,7 @@ class _SettingsScreenState extends State<SettingsScreen>{
               ),
               trailing: SizedBox(
                 width: 50,
-                height: 50,
+                height: 40,
                 child: StreamBuilder(
                   stream: usersRef.doc(auth.currentUser?.uid).snapshots(),
                   builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {

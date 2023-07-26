@@ -7,7 +7,6 @@ import 'package:gallery_media_picker/gallery_media_picker.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
-import '../../../utilities/system_ui.dart';
 import '../../domain/models/editable_item.dart';
 import '../../domain/models/painting_model.dart';
 import '../../domain/notifiers/control_notifier.dart';
@@ -116,8 +115,6 @@ class _MainViewState extends State<MainView> {
   Widget build(BuildContext context) {
     final ScreenUtil screenUtil = ScreenUtil();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => SystemUI.setDarkSystemUI(context));
-
     return WillPopScope(
       onWillPop: _popScope,
       child: LoadingOverlay(
@@ -126,6 +123,18 @@ class _MainViewState extends State<MainView> {
         progressIndicator: circularProgress(context, const Color(0XFF03A9F4)),
         opacity: 0.5,
         child: Scaffold(
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(0),
+            child: AppBar(
+              systemOverlayStyle: const SystemUiOverlayStyle(
+                statusBarColor: Colors.black,
+                statusBarIconBrightness: Brightness.light,
+                statusBarBrightness: Brightness.light,
+                systemNavigationBarColor: Colors.black,
+                systemNavigationBarIconBrightness: Brightness.light,
+              ),
+            ),
+          ),
           body: Material(
             color: widget.editorBackgroundColor == Colors.transparent
                 ? Colors.black

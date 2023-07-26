@@ -98,101 +98,146 @@ class _ProfilePageState extends State<ProfilePage> {
 
         return FractionallySizedBox(
           heightFactor: .7,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 15.0),
-              const Center(
-                child:Text(
-                  'Menu',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue,
-                  ),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.background,
+              border: const Border(
+                left: BorderSide(
+                  color: Colors.blue,
+                  width: 0.0,
+                ),
+                top: BorderSide(
+                  color: Colors.blue,
+                  width: 1.0,
+                ),
+                right: BorderSide(
+                  color: Colors.blue,
+                  width: 0.0,
+                ),
+                bottom: BorderSide(
+                  color: Colors.blue,
+                  width: 0.0,
                 ),
               ),
-              const SizedBox(height: 10.0),
-              const Divider(
-                height: 1.0,
-                color: Colors.blue,
-              ),
-              ListTile(
-                dense: true,
-                contentPadding: const EdgeInsets.only(
-                  left: 20,
-                  top: 15,
-                  bottom: 8,
-                ),
-                visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-                leading: Icon(
-                  CupertinoIcons.info,
-                  color: Theme.of(context).colorScheme.secondary,
-                  size: 25,
-                ),
-                title: Text('About This Account', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
-                onTap: () {
-                  Navigator.of(context).pushReplacement(
-                    CupertinoPageRoute(
-                      builder: (_) => UserInfoScreen(
-                        country: currentUser.country,
-                        email: currentUser.email,
-                        timeStamp: currentUser.signedUpAt,
+              borderRadius: const BorderRadius.only(
+                topRight: Radius.circular(20),
+                topLeft: Radius.circular(20)
+              )
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.background,
+                      borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(20),
+                          topLeft: Radius.circular(20)
                       ),
                     ),
-                  );
-                },
-              ),
-              Visibility(
-                visible: widget.profileId == auth.currentUser!.uid,
-                child: ListTile(
-                  dense: true,
-                  contentPadding: const EdgeInsets.only(
-                    left: 20,
-                    top: 8,
-                    bottom: 8,
-                  ),
-                  visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-                  leading: Icon(
-                    CupertinoIcons.settings,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                  title: Text('Settings', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
-                  onTap: () async {
-                  Navigator.of(context).pushReplacement(
-                    CupertinoPageRoute(
-                      builder: (_) => const SettingsScreen(),
-                    ));
-                  },
-                )
-              ),
-              Visibility(
-                visible: widget.profileId == auth.currentUser!.uid,
-                child: ListTile(
-                  dense: true,
-                  contentPadding: const EdgeInsets.only(
-                    left: 20,
-                    top: 8,
-                    bottom: 8,
-                  ),
-                  visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-                  onTap: () async {
-                    await auth.signOut();
-                    Navigator.of(context).pushReplacement(
-                      CupertinoPageRoute(
-                          builder: (_) => const SplashScreen()
-                      )
-                    );
-                  },
-                  title: Text('Logout', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
-                  leading: const Icon(
-                    Icons.logout,
-                    color: Colors.red,
-                  )
+                    child: const Padding(
+                      padding: EdgeInsets.only(
+                        top: 15.0,
+                        bottom: 10.0,
+                      ),
+                      child: Center(
+                        child:Text(
+                          'Menu',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
+                    )
                 ),
-              ),
-            ],
-          ),
+                const Divider(
+                  color: Colors.blue,
+                  thickness: 1.0,
+                ),
+                Column(
+                    children: [
+                      ListTile(
+                        dense: true,
+                        contentPadding: const EdgeInsets.only(
+                          left: 20,
+                          top: 10,
+                          bottom: 8,
+                        ),
+                        visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                        leading: Icon(
+                          CupertinoIcons.info,
+                          color: Theme.of(context).colorScheme.secondary,
+                          size: 25,
+                        ),
+                        title: Text('About This Account', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
+                        onTap: () {
+                          Navigator.of(context).pushReplacement(
+                            CupertinoPageRoute(
+                              builder: (_) => UserInfoScreen(
+                                country: currentUser.country,
+                                email: currentUser.email,
+                                timeStamp: currentUser.signedUpAt,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      Visibility(
+                          visible: widget.profileId == auth.currentUser!.uid,
+                          child: ListTile(
+                            dense: true,
+                            contentPadding: const EdgeInsets.only(
+                              left: 20,
+                              top: 8,
+                              bottom: 8,
+                            ),
+                            visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                            leading: Icon(
+                              CupertinoIcons.settings,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                            title: Text('Settings', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
+                            onTap: () async {
+                              Navigator.of(context).pushReplacement(
+                                  CupertinoPageRoute(
+                                    builder: (_) => const SettingsScreen(),
+                                  ));
+                            },
+                          )
+                      ),
+                      Visibility(
+                        visible: widget.profileId == auth.currentUser!.uid,
+                        child: ListTile(
+                            dense: true,
+                            contentPadding: const EdgeInsets.only(
+                              left: 20,
+                              top: 8,
+                              bottom: 8,
+                            ),
+                            visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                            onTap: () async {
+                              await auth.signOut();
+                              Navigator.of(context).pushReplacement(
+                                  CupertinoPageRoute(
+                                      builder: (_) => const SplashScreen()
+                                  )
+                              );
+                            },
+                            title: Text('Logout', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
+                            leading: const Icon(
+                              Icons.logout,
+                              color: Colors.red,
+                            )
+                        ),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
+          )
         );
       },
     );
@@ -208,7 +253,7 @@ class _ProfilePageState extends State<ProfilePage> {
           statusBarColor: Colors.transparent,
         ),
         title: widget.profileId == auth.currentUser!.uid ? GradientText(
-          'Profile',
+          'Your Profile',
           style: const TextStyle(
             fontSize: 25,
             fontWeight: FontWeight.w300,
@@ -526,7 +571,7 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Container(
-            height: 35.0,
+            height: 40.0,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),

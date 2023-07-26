@@ -11,7 +11,6 @@ import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../models/story_model.dart';
 import '../utilities/firebase.dart';
-import '../utilities/system_ui.dart';
 import '../view_models/user/story_view_model.dart';
 import '../widgets/progress_indicators.dart';
 
@@ -27,17 +26,30 @@ class ConfirmStory extends StatefulWidget {
 class _ConfirmStoryState extends State<ConfirmStory> {
   bool loading = false;
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   // UI of ConfirmStory.
   @override
   Widget build(BuildContext context) {
     StoryViewModel viewModel = Provider.of<StoryViewModel>(context);
     final File image = File(widget.uri);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => SystemUI.setDarkSystemUI(context));
-
-    return Scaffold(
-      appBar:  AppBar(
-        title: GradientText(
+    return LoadingOverlay(
+      isLoading: loading,
+      progressIndicator: circularProgress(context, const Color(0xFFFFFFFF)),
+      color: Colors.black,
+      opacity: 0.5,
+      child: Scaffold(
+        appBar:  AppBar(
+          title: GradientText(
             'Upload Story',
             style: const TextStyle(
               fontSize: 25,
@@ -46,28 +58,30 @@ class _ConfirmStoryState extends State<ConfirmStory> {
             Colors.blue,
             Colors.purple,
           ],
+          ),
+          centerTitle: true,
+          leading: IconButton(
+            icon: const Icon(CupertinoIcons.chevron_back),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            iconSize: 30.0,
+            color: Colors.white,
+          ),
+          systemOverlayStyle: const SystemUiOverlayStyle(
+            statusBarColor: Colors.black,
+            statusBarIconBrightness: Brightness.light,
+            statusBarBrightness: Brightness.light,
+            systemNavigationBarColor: Colors.black,
+            systemNavigationBarIconBrightness: Brightness.light,
+          ),
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.black,
         ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(CupertinoIcons.chevron_back),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          iconSize: 30.0,
-          color: Colors.white,
-        ),
-        automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
-      ),
-      backgroundColor: Colors.black,
-      body: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: LoadingOverlay(
-          isLoading: loading,
-          progressIndicator: circularProgress(context, const Color(0xFFFFFFFF)),
-          color: Colors.black,
-          opacity: 0.5,
+        body: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
           child: Stack(
             clipBehavior: Clip.hardEdge,
             children: [
@@ -91,86 +105,84 @@ class _ConfirmStoryState extends State<ConfirmStory> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 8),
                   child: Container(
-                      height: MediaQuery.of(context).size.height * .05,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.white,
-                          width: 1,
-                        ),
-                        borderRadius: const BorderRadius.all(Radius.circular(20)),
-                        color: Colors.black12,
+                    height: MediaQuery.of(context).size.height * .05,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 1,
                       ),
-                      child: Center(
-                        widthFactor: 100,
-                        child: FloatingActionButton(
-                          backgroundColor: Colors.transparent,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: const Text(
-                              'Done',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              )
-                          ),
-                          onPressed: () async {
-                            setState(() {
-                              loading = true;
-                            });
-                            QuerySnapshot snapshot = await storyRef
-                                .where('userId', isEqualTo: auth.currentUser!.uid)
-                                .get();
-                            if (snapshot.docs.isNotEmpty) {
-                              List storyList = snapshot.docs;
-                              DocumentSnapshot storyListSnapshot = storyList[0];
-                              String url = await uploadMedia(widget.uri);
-                              StoryModel story = StoryModel(
-                                url: url,
-                                time: Timestamp.now(),
-                                storyId: uuid.v1(),
-                                viewers: [],
-                              );
-                              await viewModel.sendStory(story, storyListSnapshot.id);
-                              setState(() {
-                                loading = false;
-                              });
-                              Navigator.of(context).pushReplacement(
-                                CupertinoPageRoute(
-                                  builder: (_) => const MainScreen(),
-                                ),
-                              );
-                            } else {
-                              String url = await uploadMedia(widget.uri);
-                              StoryModel story = StoryModel(
-                                url: url,
-                                time: Timestamp.now(),
-                                storyId: uuid.v1(),
-                                viewers: [],
-                              );
-                              String id = await viewModel.sendFirstStory(story);
-                              await viewModel.sendStory(story, id);
-                              setState(() {
-                                loading = false;
-                              });
-                              Navigator.of(context).pushReplacement(
-                                CupertinoPageRoute(
-                                  builder: (_) => const MainScreen(),
-                                ),
-                              );
-                            }
-                          },
-                        ),
-                      )
-                  ),
-                )
+                      borderRadius: const BorderRadius.all(Radius.circular(20)),
+                      color: Colors.black12,
+                    ),
+                    child: FloatingActionButton(
+                      backgroundColor: Colors.transparent,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: const Text(
+                          'Done',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          )
+                      ),
+                      onPressed: () async {
+                        setState(() {
+                          loading = true;
+                        });
+                        QuerySnapshot snapshot = await storyRef
+                            .where('userId', isEqualTo: auth.currentUser!.uid)
+                            .get();
+                        if (snapshot.docs.isNotEmpty) {
+                          List storyList = snapshot.docs;
+                          DocumentSnapshot storyListSnapshot = storyList[0];
+                          String url = await uploadMedia(widget.uri);
+                          StoryModel story = StoryModel(
+                            url: url,
+                            time: Timestamp.now(),
+                            storyId: uuid.v1(),
+                            viewers: [],
+                          );
+                          await viewModel.sendStory(story, storyListSnapshot.id);
+                          setState(() {
+                            loading = false;
+                          });
+                          Navigator.of(context).pushReplacement(
+                            CupertinoPageRoute(
+                              builder: (_) => const MainScreen(),
+                            ),
+                          );
+                        } else {
+                          String url = await uploadMedia(widget.uri);
+                          StoryModel story = StoryModel(
+                            url: url,
+                            time: Timestamp.now(),
+                            storyId: uuid.v1(),
+                            viewers: [],
+                          );
+                          String id = await viewModel.sendFirstStory(story);
+                          await viewModel.sendStory(story, id);
+                          setState(() {
+                            loading = false;
+                          });
+                          Navigator.of(context).pushReplacement(
+                            CupertinoPageRoute(
+                              builder: (_) => const MainScreen(),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  )
+                ),
               ),
             ],
           )
         ),
-      ),
+      )
     );
   }
 
