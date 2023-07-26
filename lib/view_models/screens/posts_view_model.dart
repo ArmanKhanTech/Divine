@@ -179,7 +179,7 @@ class PostsViewModel extends ChangeNotifier{
     try {
       loading = true;
       notifyListeners();
-      await postService.uploadSinglePost(mediaUrl!, location!, description!);
+      await postService.uploadSinglePost(mediaUrl!, location!, description!,);
       loading = false;
       resetPost();
       notifyListeners();
@@ -201,7 +201,6 @@ class PostsViewModel extends ChangeNotifier{
         preferredCameraDevice: CameraDevice.front,
         imageQuality: 75,
       );
-      // TODO: Fix status ba color.
       if(pickedFile != null){
         Uint8List? bytes = await pickedFile.readAsBytes();
         final editedImage = await Navigator.push(
@@ -234,7 +233,7 @@ class PostsViewModel extends ChangeNotifier{
         mediaUrl?.writeAsBytesSync(convertedImage);
         loading = false;
         notifyListeners();
-        Navigator.push(
+        Navigator.pushReplacement(
             context,
             CupertinoPageRoute(
               builder: (context) => ConfirmSinglePostScreen(
@@ -242,6 +241,9 @@ class PostsViewModel extends ChangeNotifier{
               ),
             )
         );
+      } else {
+        loading = false;
+        notifyListeners();
       }
     } catch (e) {
       loading = false;

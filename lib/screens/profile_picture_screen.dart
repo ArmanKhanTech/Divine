@@ -142,7 +142,6 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
       builder: (context) {
         return WillPopScope(
           onWillPop: () async {
-            // Reset post onBackPressed.
             viewModel.resetPost();
             return true;
           },
@@ -198,7 +197,7 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                     onTap: () => showImageChoices(context, viewModel),
                     child: Container(
                       decoration: BoxDecoration(
-                        shape:BoxShape.circle,
+                        shape: BoxShape.circle,
                         color: Theme.of(context).colorScheme.background,
                         border: Border.all(
                           color: Colors.blue,
@@ -209,7 +208,7 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height * 0.4,
                         decoration: BoxDecoration(
-                          shape:BoxShape.circle,
+                          shape: BoxShape.circle,
                           color: Theme.of(context).colorScheme.background,
                         ),
                         clipBehavior: Clip.hardEdge,

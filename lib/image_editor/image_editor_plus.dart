@@ -498,8 +498,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
 
                 LoadingScreen(scaffoldGlobalKey).show();
 
-                var binaryIntList =
-                await screenshotController.capture(pixelRatio: pixelRatio);
+                var binaryIntList = await screenshotController.capture(pixelRatio: pixelRatio);
 
                 LoadingScreen(scaffoldGlobalKey).hide();
 
