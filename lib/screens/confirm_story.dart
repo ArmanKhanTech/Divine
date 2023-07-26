@@ -99,7 +99,6 @@ class _ConfirmStoryState extends State<ConfirmStory> {
                   ),
                 )
               ),
-              //  TODO: Fix touch area of button.
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
