@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -42,7 +43,24 @@ class _SplashScreenState extends State<SplashScreen> {
     // UI of SplashScreen
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      appBar: null,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(0),
+        child: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.background,
+          elevation: 0,
+          systemOverlayStyle: Theme.of(context).colorScheme.background == Colors.white ? const SystemUiOverlayStyle(
+            statusBarColor: Colors.white,
+            statusBarIconBrightness: Brightness.dark,
+            systemNavigationBarColor: Colors.white,
+            systemNavigationBarIconBrightness: Brightness.dark,
+          ) : const SystemUiOverlayStyle(
+            statusBarColor: Colors.black,
+            statusBarIconBrightness: Brightness.light,
+            systemNavigationBarColor: Colors.black,
+            systemNavigationBarIconBrightness: Brightness.light,
+          ),
+        ),
+      ),
       body: Center(
         child: Stack(
           alignment: Alignment.center,

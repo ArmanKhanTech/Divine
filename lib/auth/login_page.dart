@@ -38,6 +38,7 @@ class _LoginPageState extends State<LoginPage> {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(children: [
           TextFormBuilder(
+            capitalization: false,
             enabled: !viewModel.loading,
             prefix: CupertinoIcons.mail_solid,
             hintText: 'Email',
@@ -119,6 +120,8 @@ class _LoginPageState extends State<LoginPage> {
       builder: (context) {
         return LoadingOverlay(
           progressIndicator: circularProgress(context, const Color(0xFFFF9800)),
+          opacity: 0.5,
+          color: Theme.of(context).colorScheme.background,
           isLoading: viewModel.loading,
           child: Scaffold(
             appBar: PreferredSize(

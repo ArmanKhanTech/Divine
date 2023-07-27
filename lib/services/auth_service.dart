@@ -48,11 +48,12 @@ class AuthService {
       'favorites': 0,
       'createdAt': Timestamp.now(),
       'gender': '',
-      'url': '',
       'type': 'public',
       'saved': 0,
-      'hashtags': '',
-      'verified':false,
+      'hashtags': {'nature' : 10, 'city' : 10},
+      'verified': false,
+      'profession': '',
+      'link': '',
     });
   }
 

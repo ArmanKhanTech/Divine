@@ -308,19 +308,19 @@ class _ProfilePageState extends State<ProfilePage> {
                     const SizedBox(
                       width: 20.0,
                     ),
-                    // TODO: Implement user story widget.
+                    // TODO: Implement user story widget & view profile picture.
                     Padding(
                       padding: const EdgeInsets.only(top: 5.0),
                       child: currentUser.photoUrl!.isEmpty ? CircleAvatar(
                         radius: 45.0,
-                        backgroundColor: Colors.grey,
+                        backgroundColor: Theme.of(context).colorScheme.secondary,
                         child: Center(
                           child: Text(
                             currentUser.username![0].toUpperCase(),
-                            style: const TextStyle(
-                              color: Colors.blue,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w900,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 25.0,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
@@ -417,7 +417,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0),
-                  child: currentUser.bio!.isEmpty ? Container() : SizedBox(
+                  child: currentUser.bio!.isEmpty ? const SizedBox(
+                    height: 0.0,
+                    width: 0.0,
+                  ) : SizedBox(
                     child: Text(
                       currentUser.bio!,
                       style: const TextStyle(
@@ -430,7 +433,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 // TODO: Implement open browser
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0),
-                  child: currentUser.link!.isEmpty ? Container() : SizedBox(
+                  child: currentUser.link!.isEmpty ? const SizedBox(
+                    height: 0.0,
+                    width: 0.0,
+                  ) : SizedBox(
                     width: 500,
                     child: GestureDetector(
                       child: Text(
@@ -440,7 +446,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           fontWeight: FontWeight.w600,
                           color: Colors.purple,
                         ),
-                        maxLines: null,
                       ),
                     )
                   ),
@@ -569,12 +574,12 @@ class _ProfilePageState extends State<ProfilePage> {
       child: GestureDetector(
         onTap: function!,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 18),
           child: Container(
             height: 40.0,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.circular(20.0),
               color: text == "Edit Profile" ? Colors.grey : text == "Follow" ? Colors.blue : Colors.red,
             ),
             child: Center(

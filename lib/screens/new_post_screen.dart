@@ -22,8 +22,11 @@ class _NewPostScreenState extends State<NewPostScreen> {
         isLoading: viewModel.loading,
         progressIndicator: circularProgress(context, const Color(0XFF03A9F4)),
         opacity: 0.5,
+        color: Theme.of(context).colorScheme.background,
         child: Scaffold(
-            appBar: AppBar(
+          extendBody: true,
+          backgroundColor: Theme.of(context).colorScheme.background,
+          appBar: AppBar(
               automaticallyImplyLeading: false,
               leading: IconButton(
                 icon: const Icon(CupertinoIcons.chevron_back),

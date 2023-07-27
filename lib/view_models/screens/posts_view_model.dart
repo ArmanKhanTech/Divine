@@ -33,7 +33,10 @@ class PostsViewModel extends ChangeNotifier{
   bool edit = false;
 
   // Variables.
-  String? username, location, bio, description, email, commentData, ownerId, userId, type, imgLink, id;
+  String? username, location, bio, description, email, commentData, ownerId, userId, type, imgLink, id, hashtags, mentions;
+
+  List<String> hashtagsList = [];
+  List<String> mentionsList = [];
 
   // Objects.
   File? mediaUrl;
@@ -136,22 +139,22 @@ class PostsViewModel extends ChangeNotifier{
     mediaUrl = null;
     description = null;
     location = null;
+    hashtags = null;
+    mentions = null;
+    hashtagsList = [];
+    mentionsList = [];
     edit = false;
     notifyListeners();
   }
 
+  // TODO: Set initial values for editing post.
   setPost(PostModel post) {
-    if (post != null) {
-      description = post.description;
-      imgLink = post.mediaUrl;
-      location = post.location;
-      edit = true;
-      edit = false;
-      notifyListeners();
-    } else {
-      edit = false;
-      notifyListeners();
-    }
+    description = post.description;
+    imgLink = post.mediaUrl;
+    location = post.location;
+
+    edit = true;
+    notifyListeners();
   }
 
   getLocation() async {
@@ -160,7 +163,6 @@ class PostsViewModel extends ChangeNotifier{
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied ||
         permission == LocationPermission.deniedForever) {
-      LocationPermission rPermission = await Geolocator.requestPermission();
       await getLocation();
     } else {
       position = await Geolocator.getCurrentPosition(
@@ -168,7 +170,7 @@ class PostsViewModel extends ChangeNotifier{
       List<Placemark> placemarks = await placemarkFromCoordinates(
           position!.latitude, position!.longitude);
       placemark = placemarks[0];
-      location = " ${placemarks[0].locality}, ${placemarks[0].country}";
+      location = "${placemarks[0].locality}, ${placemarks[0].country}";
       locationTEC.text = location!;
     }
     loading = false;
@@ -179,7 +181,7 @@ class PostsViewModel extends ChangeNotifier{
     try {
       loading = true;
       notifyListeners();
-      await postService.uploadSinglePost(mediaUrl!, location!, description!,);
+      await postService.uploadSinglePost(mediaUrl!, location!, description!, hashtagsList, mentionsList);
       loading = false;
       resetPost();
       notifyListeners();
@@ -259,6 +261,18 @@ class PostsViewModel extends ChangeNotifier{
 
   setLocation(String val) {
     location = val;
+    notifyListeners();
+  }
+
+  setHashtags(String val) {
+    hashtags = val;
+    hashtagsList = hashtags!.split(" ");
+    notifyListeners();
+  }
+
+  setMentions(String val) {
+    mentions = val;
+    mentionsList = mentions!.split(" ");
     notifyListeners();
   }
 

@@ -19,7 +19,7 @@ class PostService extends Service{
     });
   }
 
-  uploadSinglePost(File image, String location, String description) async {
+  uploadSinglePost(File image, String location, String description, List<String> hashtagsList, List<String> mentionsList) async {
     String link = await uploadImage(posts, image);
     DocumentSnapshot doc = await usersRef.doc(auth.currentUser!.uid).get();
     UserModel user = UserModel.fromJson(
@@ -32,9 +32,12 @@ class PostService extends Service{
       "username": user.username,
       "ownerId": auth.currentUser!.uid,
       "mediaUrl": link,
-      "description": description ?? "",
-      "location": location ?? "Divine",
+      "description": description,
+      "location": location,
       "timestamp": Timestamp.now(),
+      "likes": {},
+      "hashtags": hashtagsList,
+      "mentions": mentionsList,
     }).catchError((e) {
       // do something
     });

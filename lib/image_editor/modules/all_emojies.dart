@@ -22,13 +22,6 @@ class _EmojiesState extends State<Emojies> {
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
           ),
-          color: Colors.black,
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 10.9,
-              color: Color.fromRGBO(0, 0, 0, 0.1),
-            ),
-          ],
         ),
         child: Column(
           children: [
@@ -38,7 +31,7 @@ class _EmojiesState extends State<Emojies> {
                 i18n('Select Emoji'),
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: FontWeight.w600,
                   ),
               ),

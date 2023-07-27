@@ -87,7 +87,6 @@ dependencies:
   colorfilter_generator: ^0.0.8
   hand_signature: ^3.0.1
   fluttertoast: ^8.2.2
-  hashtagable: ^2.1.0
 
 dev_dependencies:
   flutter_test:

@@ -692,8 +692,8 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
             right: 0,
             child: SafeArea(
               child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.25),
+                decoration: const BoxDecoration(
+                  color: Colors.black,
                 ),
                 child: Row(
                   children: filterActions,
@@ -888,7 +888,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                           i18n('Slider Color'),
                                             style: const TextStyle(
                                               color: Colors.white,
-                                              fontSize: 15,
+                                              fontSize: 18,
                                             ),
                                         ),
                                         Row(children: [
@@ -932,7 +932,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                           i18n('Blur Radius'),
                                           style: const TextStyle(
                                             color: Colors.white,
-                                            fontSize: 15,
+                                            fontSize: 18,
                                           ),
                                         ),
                                         Row(children: [
@@ -975,7 +975,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                           i18n('Color Opacity'),
                                           style: const TextStyle(
                                             color: Colors.white,
-                                            fontSize: 15,
+                                            fontSize: 18,
                                           ),
                                         ),
                                         Row(children: [

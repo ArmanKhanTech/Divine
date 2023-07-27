@@ -19,7 +19,7 @@ class UserService extends Service {
   }
 
   // Display the profile pic in ProfileScreen after update.
-  updateProfile({File? image, String? username, String? name, String? bio, String? country, String? link, String? profession}) async {
+  updateProfile({File? image, String? username, String? name, String? bio, String? country, String? link, String? profession, String? gender}) async {
     DocumentSnapshot doc = await usersRef.doc(currentUid()).get();
     var users = UserModel.fromJson(doc.data() as Map<String, dynamic>);
     users.username = username;
@@ -28,6 +28,7 @@ class UserService extends Service {
     users.link = link;
     users.profession = profession;
     users.name = name;
+    users.gender = gender;
     if (image != null) {
       users.photoUrl = await uploadImage(profilePic, image);
     }
@@ -39,6 +40,7 @@ class UserService extends Service {
       'photoUrl': users.photoUrl ?? '',
       'link': link,
       'profession': profession,
+      'gender': gender,
     });
     return true;
   }

@@ -9,6 +9,7 @@ class TextFormBuilder extends StatefulWidget {
   final TextInputType? textInputType;
   final TextEditingController? controller;
   final TextInputAction? textInputAction;
+  final bool capitalization;
   final bool obscureText;
   final FocusNode? focusNode, nextFocusNode;
   final VoidCallback? submitAction;
@@ -38,8 +39,9 @@ class TextFormBuilder extends StatefulWidget {
       this.validateFunction,
       this.onSaved,
       this.onChange,
-        required this.whichPage,
-      this.key});
+      this.key,
+      required this.whichPage,
+      required this.capitalization});
 
   @override
   State<TextFormBuilder> createState() => _TextFormBuilderState();
@@ -65,7 +67,7 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
               ),
               child: TextFormField(
                   cursorColor: Theme.of(context).colorScheme.secondary,
-                  textCapitalization: TextCapitalization.none,
+                  textCapitalization: widget.capitalization == false ? TextCapitalization.none : TextCapitalization.characters,
                   initialValue: widget.initialValue,
                   enabled: widget.enabled,
                   style: TextStyle(

@@ -1,5 +1,4 @@
 import 'package:divine/screens/profile_picture_screen.dart';
-import 'package:divine/view_models/screens/posts_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +32,6 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
   @override
   Widget build(BuildContext context) {
     EditProfileViewModel viewModel = Provider.of<EditProfileViewModel>(context);
-    PostsViewModel postsViewModel = Provider.of<PostsViewModel>(context);
 
     buildForm(EditProfileViewModel viewModel, BuildContext context) {
       return Padding(
@@ -46,6 +44,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               TextFormBuilder(
+                capitalization: false,
                 enabled: !viewModel.loading,
                 initialValue: widget.user!.username,
                 prefix: CupertinoIcons.person_fill,
@@ -59,6 +58,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
               ),
               const SizedBox(height: 10.0),
               TextFormBuilder(
+                capitalization: true,
                 enabled: !viewModel.loading,
                 initialValue: widget.user!.name,
                 prefix: Icons.person_outline_outlined,
@@ -72,6 +72,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
               ),
               const SizedBox(height: 10.0),
               TextFormBuilder(
+                capitalization: true,
                 initialValue: widget.user!.country,
                 enabled: !viewModel.loading,
                 prefix: CupertinoIcons.globe,
@@ -85,6 +86,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
               ),
               const SizedBox(height: 10.0),
               TextFormBuilder(
+                  capitalization: false,
                   initialValue: widget.user!.bio,
                   enabled: !viewModel.loading,
                   prefix: CupertinoIcons.info_circle_fill,
@@ -98,6 +100,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
               ),
               const SizedBox(height: 10.0),
               TextFormBuilder(
+                  capitalization: true,
                   initialValue: widget.user!.profession,
                   enabled: !viewModel.loading,
                   prefix: CupertinoIcons.briefcase_fill,
@@ -111,6 +114,21 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
               ),
               const SizedBox(height: 10.0),
               TextFormBuilder(
+                  capitalization: true,
+                  initialValue: widget.user!.gender,
+                  enabled: !viewModel.loading,
+                  prefix: Icons.male,
+                  hintText: "Gender",
+                  textInputAction: TextInputAction.next,
+                  validateFunction: Regex.validateGender,
+                  onSaved: (String val) {
+                    viewModel.setGender(val);
+                  },
+                  whichPage: 'signup'
+              ),
+              const SizedBox(height: 10.0),
+              TextFormBuilder(
+                  capitalization: false,
                   initialValue: widget.user!.link,
                   enabled: !viewModel.loading,
                   prefix: CupertinoIcons.link_circle_fill,
@@ -134,6 +152,8 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
         return LoadingOverlay(
           progressIndicator: circularProgress(context, const Color(0XFF03A9F4)),
           isLoading: viewModel.loading,
+          opacity: 0.5,
+          color: Theme.of(context).colorScheme.background,
           child: Scaffold(
             key: viewModel.editProfileScaffoldKey,
             appBar: AppBar(
@@ -217,26 +237,26 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                         child: widget.user!.photoUrl!.isEmpty ? const Padding(
                           padding: EdgeInsets.all(1.0),
                           child: CircleAvatar(
-                            radius: 65.0,
+                            radius: 50.0,
                             backgroundImage: AssetImage('assets/images/profile_png.png'),
                             backgroundColor: Colors.transparent,
                           ),
                         ) : viewModel.imgLink != null ? Padding(
                           padding: const EdgeInsets.all(1.0),
                           child: CircleAvatar(
-                            radius: 65.0,
+                            radius: 50.0,
                             backgroundImage: NetworkImage(viewModel.imgLink!),
                           ),
                         ) : viewModel.image == null ? Padding(
                           padding: const EdgeInsets.all(1.0),
                           child: CircleAvatar(
-                            radius: 65.0,
+                            radius: 50.0,
                             backgroundImage: NetworkImage(widget.user!.photoUrl!),
                           ),
                         ) : Padding(
                           padding: const EdgeInsets.all(1.0),
                           child: CircleAvatar(
-                            radius: 65.0,
+                            radius: 50.0,
                             backgroundImage: FileImage(viewModel.image!),
                           ),
                         ),

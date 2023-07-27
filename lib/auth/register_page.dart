@@ -34,6 +34,7 @@ class _RegisterPageState extends State<RegisterPage>{
         child: Column(
           children: [
             TextFormBuilder(
+              capitalization: false,
               enabled: !viewModel.loading,
               prefix: CupertinoIcons.person_fill,
               hintText: "Username",
@@ -48,6 +49,7 @@ class _RegisterPageState extends State<RegisterPage>{
             ),
             const SizedBox(height: 10.0),
             TextFormBuilder(
+              capitalization: false,
               enabled: !viewModel.loading,
               prefix: CupertinoIcons.mail_solid,
               hintText: "Email",
@@ -62,6 +64,7 @@ class _RegisterPageState extends State<RegisterPage>{
             ),
             const SizedBox(height: 10.0),
             TextFormBuilder(
+              capitalization: true,
               enabled: !viewModel.loading,
               prefix: CupertinoIcons.globe,
               hintText: "Country",
@@ -148,6 +151,8 @@ class _RegisterPageState extends State<RegisterPage>{
         return LoadingOverlay(
             isLoading: viewModel.loading,
             progressIndicator: circularProgress(context, const Color(0XFF03A9F4)),
+            opacity: 0.5,
+            color: Theme.of(context).colorScheme.background,
             child: Scaffold(
                 appBar: AppBar(
                   automaticallyImplyLeading: false,

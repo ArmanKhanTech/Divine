@@ -74,14 +74,16 @@ class _TextEditorImageState extends State<TextEditorImage> {
                 );
               },
               color: Colors.white,
-              padding: const EdgeInsets.all(15),
+              padding: const EdgeInsets.all(10),
             )
           ],
         ),
         body: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
+          child: SingleChildScrollView(
               child: Column(children: [
+                const SizedBox(
+                  height: 20,
+                ),
                 SizedBox(
                   height: size.height / 2.2,
                   child: TextField(
@@ -111,17 +113,63 @@ class _TextEditorImageState extends State<TextEditorImage> {
                     autofocus: true,
                   ),
                 ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Container(
+                  color: Colors.black,
+                  child: Column(
+                    children: [
+                      Center(
+                        child: Text(
+                          i18n('Text Size'),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                      Slider(
+                          activeColor: Colors.white,
+                          inactiveColor: Colors.grey,
+                          value: slider,
+                          min: 0.0,
+                          max: 100.0,
+                          onChangeEnd: (v) {
+                            setState(() {
+                              slider = v;
+                            });
+                          },
+                          onChanged: (v) {
+                            setState(() {
+                              slider = v;
+                            });
+                          }),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
                 Container(
                   color: Colors.transparent,
                   child: Column(
                     children: [
-                      const SizedBox(height: 20.0),
-                      Text(
-                        i18n('Text Color'),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 20
                         ),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            i18n('Text Color'),
+                            textAlign: TextAlign.left,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                        )
                       ),
                       Row(children: [
                         const SizedBox(
@@ -158,84 +206,6 @@ class _TextEditorImageState extends State<TextEditorImage> {
                           width: 10.0
                         )
                       ]),
-                      const SizedBox(height: 10.0),
-                      Text(
-                        i18n('Text White/Black Color'),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                        ),
-                      ),
-                      Row(children: [
-                        const SizedBox(
-                          width: 10.0,
-                        ),
-                        Expanded(
-                          child: BarColorPicker(
-                            width: 300,
-                            thumbColor: Colors.white,
-                            cornerRadius: 10,
-                            pickMode: PickMode.grey,
-                            colorListener: (int value) {
-                              setState(() {
-                                currentColor = Color(value);
-                              });
-                            },
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            setState(() {
-                              currentColor = const Color(0xFFFFFFFF);
-                            });
-                          },
-                          child: Text(
-                            i18n('Reset'),
-                              style: const TextStyle(
-                                color: Colors.blue,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                              )
-                          ),
-                        ),
-                        const SizedBox(
-                            width: 10.0
-                        )
-                      ]),
-                      Container(
-                        color: Colors.black,
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 10.0),
-                            Center(
-                              child: Text(
-                                i18n('Text Size'),
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                            Slider(
-                                activeColor: Colors.white,
-                                inactiveColor: Colors.grey,
-                                value: slider,
-                                min: 0.0,
-                                max: 100.0,
-                                onChangeEnd: (v) {
-                                  setState(() {
-                                    slider = v;
-                                  });
-                                },
-                                onChanged: (v) {
-                                  setState(() {
-                                    slider = v;
-                                  });
-                                }),
-                          ],
-                        ),
-                      )
                     ],
                   ),
                 ),
@@ -243,7 +213,6 @@ class _TextEditorImageState extends State<TextEditorImage> {
             ),
           ),
         ),
-      ),
     );
   }
 }

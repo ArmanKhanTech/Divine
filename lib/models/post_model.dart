@@ -9,8 +9,8 @@ class PostModel {
   String? description;
   String? mediaUrl;
 
-  List<String> tags = [];
-  List<String> hashtags = [];
+  List<String>? mentions = [];
+  List<String>? hashtags = [];
 
   Timestamp? timestamp;
 
@@ -23,8 +23,8 @@ class PostModel {
     this.mediaUrl,
     this.username,
     this.timestamp,
-    required this.tags,
-    required this.hashtags,
+    this.mentions,
+    this.hashtags,
   });
 
   PostModel.fromJson(Map<String, dynamic> json) {
@@ -36,7 +36,7 @@ class PostModel {
     description = json['description'];
     mediaUrl = json['mediaUrl'];
     timestamp = json['timestamp'];
-    tags = json['tags'].cast<String>();
+    mentions = json['tags'].cast<String>();
     hashtags = json['hashtags'].cast<String>();
   }
 
@@ -50,7 +50,7 @@ class PostModel {
     data['mediaUrl'] = mediaUrl;
     data['timestamp'] = timestamp;
     data['username'] = username;
-    data['tags'] = tags;
+    data['tags'] = mentions;
     data['hashtags'] = hashtags;
     return data;
   }

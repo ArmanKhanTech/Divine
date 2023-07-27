@@ -32,7 +32,7 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 400,
+      height: 420,
       decoration: const BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.only(
@@ -46,8 +46,7 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
               i18n('Text Size'),
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
+                fontSize: 18,
               ),
             ),
           ),
@@ -78,13 +77,13 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
             child:
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Container(
-                padding: const EdgeInsets.only(left: 10),
+                padding: const EdgeInsets.only(left: 20),
                 child: Text(
                   i18n('Text Color'),
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 15,
+                    fontSize: 18,
                   ),
                 ),
               ),
@@ -124,13 +123,13 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
               ]),
               const SizedBox(height: 20),
               Container(
-                padding: const EdgeInsets.only(left: 10),
+                padding: const EdgeInsets.only(left: 20),
                 child: Text(
                   i18n('Text Background Color'),
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 15,
+                      fontSize: 18,
                     ),
                 ),
               ),
@@ -171,13 +170,13 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
               ]),
               const SizedBox(height: 20),
               Container(
-                padding: const EdgeInsets.only(left: 10),
+                padding: const EdgeInsets.only(left: 20),
                 child: Text(
                   i18n('Text Background Opacity'),
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 15,
+                      fontSize: 18,
                     ),
                 ),
               ),

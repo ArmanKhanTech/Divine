@@ -102,7 +102,7 @@ Future<bool> exitDialog({required context, required contentKey}) async {
               const SizedBox(
                 height: 22,
                 child: Divider(
-                  color: Colors.white10,
+                  color: Colors.white,
                 ),
               ),
 
@@ -140,7 +140,7 @@ Future<bool> exitDialog({required context, required contentKey}) async {
               const SizedBox(
                 height: 22,
                 child: Divider(
-                  color: Colors.white10,
+                  color: Colors.white,
                 ),
               ),
 

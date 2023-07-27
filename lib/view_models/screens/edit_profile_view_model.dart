@@ -21,16 +21,18 @@ class EditProfileViewModel extends ChangeNotifier{
   File? image;
 
   // Variables.
-  String? country, username, name, bio, imgLink, profession, link;
+  String? country, username, name, bio, imgLink, profession, link, gender;
 
   // Edit Profile function.
   editProfile(BuildContext context) async {
     FormState form = editProfileFormKey.currentState!;
     form.save();
-    if(profession == '') {
+    if (profession == '') {
       profession = '';
     } else if(link == '') {
       link = '';
+    } else if(gender == ''){
+      gender = '';
     }
     notifyListeners();
     if (!form.validate()) {
@@ -49,6 +51,7 @@ class EditProfileViewModel extends ChangeNotifier{
           country: country,
           link: link,
           profession: profession,
+          gender: gender,
         );
         if (success) {
           clear();
@@ -84,6 +87,11 @@ class EditProfileViewModel extends ChangeNotifier{
   // Setters.
   setUser(UserModel val) {
     user = val;
+    notifyListeners();
+  }
+
+  setGender(String val){
+    gender = val;
     notifyListeners();
   }
 

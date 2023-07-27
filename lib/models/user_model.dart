@@ -12,9 +12,12 @@ class UserModel{
   String? type;
   String? profession;
   String? name;
+  String? gender;
 
   Timestamp? signedUpAt;
   Timestamp? lastSeen;
+
+  UserHashtags? userHashtags;
 
   bool? isOnline;
   bool? isVerified;
@@ -33,7 +36,9 @@ class UserModel{
         this.type,
         this.profession,
         this.name,
-        this.isVerified});
+        this.isVerified,
+        this.gender,
+        this.userHashtags});
 
   UserModel.fromJson(Map<String, dynamic> json) {
     username = json['name'];
@@ -50,6 +55,8 @@ class UserModel{
     profession = json['profession'];
     name = json['name'];
     isVerified = json['isVerified'];
+    userHashtags = UserHashtags.fromJson(json['hashtags']);
+    gender = json['gender'];
   }
 
   Map<String, dynamic> toJson() {
@@ -68,7 +75,30 @@ class UserModel{
     data['profession'] = profession;
     data['name'] = name;
     data['isVerified'] = isVerified;
+    data['hashtags'] = userHashtags?.toJson();
+    data['gender'] = gender;
 
+    return data;
+  }
+}
+
+class UserHashtags {
+  String? tag = '';
+  int? count = 0;
+
+  UserHashtags({
+    this.tag,
+    this.count});
+
+  UserHashtags.fromJson(Map<String, dynamic> json) {
+    tag = json['tag'];
+    count = json['count'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['tag'] = tag;
+    data['count'] = count;
     return data;
   }
 }
