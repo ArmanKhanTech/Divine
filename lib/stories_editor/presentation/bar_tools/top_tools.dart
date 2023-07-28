@@ -1,12 +1,14 @@
+import 'package:camerawesome/camerawesome_plugin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import '../../../camera/camera_main_view.dart';
 import '../../domain/notifiers/control_notifier.dart';
 import '../../domain/notifiers/draggable_widget_notifier.dart';
 import '../../domain/notifiers/painting_notifier.dart';
 import '../../domain/services/save_as_image.dart';
-import '../filters/filters.dart';
 import '../utils/model_sheets.dart';
 import '../widgets/animated_on_tap_button.dart';
 import '../widgets/tool_button.dart';
@@ -85,9 +87,9 @@ class _TopToolsState extends State<TopTools> {
                     child: const Padding(
                         padding: EdgeInsets.only(left: 1),
                         child: Icon(
-                          Icons.save,
+                          CupertinoIcons.square_arrow_down,
                           color: Colors.white,
-                          size: 30,
+                          size: 28,
                         )
                     )
                 ),
@@ -104,19 +106,29 @@ class _TopToolsState extends State<TopTools> {
                         )
                     )
                 ),
+                // TODO : Add music
+                /*ToolButton(
+                    backGroundColor: Colors.black12,
+                    onTap: () => createGiphyItem(
+                        context: context, giphyKey: controlNotifier.giphyKey),
+                    child: const Padding(
+                        padding: EdgeInsets.all(2.0),
+                        child:  Icon(
+                          CupertinoIcons.music_note,
+                          color: Colors.white,
+                          size: 28,
+                        )
+                    )
+                ),*/
                 ToolButton(
                     backGroundColor: Colors.black12,
                     onTap: () {
-                      Navigator.of(context)
-                          .push(CupertinoPageRoute(builder: (_) => const Filters())
-                      ).then((path) {
-                        if (path != null) {
-                          widget.onDone(path);
-                        }
-                      });
+                      Navigator.push(context,
+                        CupertinoPageRoute(builder: (context) => const CameraMainView())
+                      ).then((value) => widget.onDone(value));
                     },
                     child: const Icon(
-                      Icons.filter,
+                      CupertinoIcons.camera,
                       color: Colors.white,
                       size: 25,
                     )),

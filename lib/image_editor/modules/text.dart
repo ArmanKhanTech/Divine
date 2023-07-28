@@ -206,6 +206,60 @@ class _TextEditorImageState extends State<TextEditorImage> {
                           width: 10.0
                         )
                       ]),
+                      const SizedBox(
+                          height: 20.0
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.only(
+                              left: 20
+                          ),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              i18n('Black/White Color'),
+                              textAlign: TextAlign.left,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
+                            ),
+                          )
+                      ),
+                      Row(children: [
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        Expanded(
+                          child: BarColorPicker(
+                            width: 300,
+                            thumbColor: Colors.white,
+                            cornerRadius: 10,
+                            pickMode: PickMode.grey,
+                            colorListener: (int value) {
+                              setState(() {
+                                currentColor = Color(value);
+                              });
+                            },
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              currentColor = const Color(0x00000001);
+                            });
+                          },
+                          child: Text(
+                              i18n('Reset'),
+                              style: const TextStyle(
+                                color: Colors.blue,
+                                fontSize: 15,
+                              )
+                          ),
+                        ),
+                        const SizedBox(
+                            width: 10.0
+                        )
+                      ]),
                     ],
                   ),
                 ),

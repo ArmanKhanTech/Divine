@@ -70,6 +70,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                       height: 40,
                     ),
 
+                    // TODO : Fix popping
                     AnimatedOnTapButton(
                       onTap: () async {
                         viewModel.resetPost();

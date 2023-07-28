@@ -75,7 +75,6 @@ dependencies:
   flutter_image_compress: ^2.0.4
   image_pixels: ^3.0.0
   google_mobile_ads: ^3.0.0
-  deepar_flutter: ^0.0.5
   url_launcher: ^6.1.12
   blurrycontainer: 1.0.2
   path_provider: ^2.0.15
@@ -87,6 +86,8 @@ dependencies:
   colorfilter_generator: ^0.0.8
   hand_signature: ^3.0.1
   fluttertoast: ^8.2.2
+  camerawesome: ^1.4.0
+  better_open_file: ^3.6.4
 
 dev_dependencies:
   flutter_test:
@@ -114,7 +115,6 @@ flutter:
     - assets/lottie/
     - assets/images/
     - assets/icons/
-    - assets/effects/
 
   fonts:
       - family: Alegreya

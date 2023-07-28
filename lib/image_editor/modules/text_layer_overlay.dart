@@ -32,11 +32,17 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 420,
+      height: 400,
       decoration: const BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.only(
             topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+        border: Border(
+          top: BorderSide(width: 1, color: Colors.white),
+          bottom: BorderSide(width: 0, color: Colors.white),
+          left: BorderSide(width: 0, color: Colors.white),
+          right: BorderSide(width: 0, color: Colors.white),
+        )
       ),
       child: Column(
         children: [
@@ -121,7 +127,7 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
                 ),
                 const SizedBox(width: 10),
               ]),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               Container(
                 padding: const EdgeInsets.only(left: 20),
                 child: Text(
@@ -168,7 +174,7 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
                 ),
                 const SizedBox(width: 10),
               ]),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               Container(
                 padding: const EdgeInsets.only(left: 20),
                 child: Text(

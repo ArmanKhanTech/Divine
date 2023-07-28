@@ -30,25 +30,31 @@ class _EmojiLayerOverlayState extends State<EmojiLayerOverlay> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
+      height: 180,
       decoration: const BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.only(
             topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+        border: Border(
+          top: BorderSide(width: 1, color: Colors.white),
+          bottom: BorderSide(width: 0, color: Colors.white),
+          left: BorderSide(width: 0, color: Colors.white),
+          right: BorderSide(width: 0, color: Colors.white),
+        )
       ),
       child: Column(
         children: [
           const SizedBox(height: 20),
           Center(
             child: Text(
-              i18n('Size Adjust').toUpperCase(),
+              i18n('Size Adjust'),
                 style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 15,
+                  fontSize: 18,
                 ),
             ),
           ),
-          const Divider(),
+          const SizedBox(height: 10),
           Slider(
               activeColor: Colors.white,
               inactiveColor: Colors.grey,

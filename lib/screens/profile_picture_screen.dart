@@ -93,7 +93,7 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                     ),
                   ),
                   const Divider(
-                    height: 1.0,
+                    height: 2.0,
                     color: Colors.blue,
                   ),
                   ListTile(

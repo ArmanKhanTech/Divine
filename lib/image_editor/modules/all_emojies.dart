@@ -13,15 +13,17 @@ class Emojies extends StatefulWidget {
 class _EmojiesState extends State<Emojies> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        padding: const EdgeInsets.all(0.0),
+    return Container(
         height: 400,
         decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+            border: Border(
+              top: BorderSide(width: 1, color: Colors.white),
+              bottom: BorderSide(width: 0, color: Colors.white),
+              left: BorderSide(width: 0, color: Colors.white),
+              right: BorderSide(width: 0, color: Colors.white),
+            )
         ),
         child: Column(
           children: [
@@ -77,7 +79,6 @@ class _EmojiesState extends State<Emojies> {
             )
           ],
         ),
-      ),
     );
   }
 }

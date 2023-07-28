@@ -35,6 +35,7 @@ Map<String, String> _translations = {};
 String i18n(String sourceString) =>
     _translations[sourceString.toLowerCase()] ?? sourceString;
 
+// TODO : Dont allow image above 2MB
 /// Single endpoint for MultiImageEditor & SingleImageEditor
 class ImageEditor extends StatelessWidget {
   final Uint8List? image;
@@ -878,6 +879,12 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                       borderRadius: BorderRadius.only(
                                           topRight: Radius.circular(20),
                                           topLeft: Radius.circular(20)),
+                                        border: Border(
+                                          top: BorderSide(width: 1, color: Colors.white),
+                                          bottom: BorderSide(width: 0, color: Colors.white),
+                                          left: BorderSide(width: 0, color: Colors.white),
+                                          right: BorderSide(width: 0, color: Colors.white),
+                                        )
                                     ),
                                     padding: const EdgeInsets.all(20),
                                     height: 300,
@@ -1031,9 +1038,13 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                       onTap: () async {
                         resetTransformation();
 
+                        LoadingScreen(scaffoldGlobalKey).show();
+
                         var mergedImage = await getMergedImage();
 
-                        if (!mounted) return;
+                        if (!mounted) {
+                          return;
+                        }
 
                         Uint8List? filterAppliedImage = await Navigator.push(
                           context,
@@ -1043,6 +1054,8 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                             ),
                           ),
                         );
+
+                        LoadingScreen(scaffoldGlobalKey).hide();
 
                         if (filterAppliedImage == null) return;
 
@@ -1068,6 +1081,11 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                         EmojiLayerData? layer = await showModalBottomSheet(
                           context: context,
                           backgroundColor: Colors.black,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(20),
+                                topLeft: Radius.circular(20)),
+                          ),
                           builder: (BuildContext context) {
                             return const Emojies();
                           },

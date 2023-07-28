@@ -367,7 +367,7 @@ class _FeedsPageState extends State<FeedsPage>{
           statusBarBrightness: Brightness.dark,
           statusBarIconBrightness: Brightness.dark,
           systemNavigationBarColor: Colors.white,
-          systemNavigationBarIconBrightness: Brightness.light,
+          systemNavigationBarIconBrightness: Brightness.dark,
         ) : const SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
           statusBarBrightness: Brightness.light,

@@ -124,8 +124,10 @@ class _MainViewState extends State<MainView> {
         opacity: 0.5,
         child: Scaffold(
           appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(0),
+            preferredSize: const Size.fromHeight(2),
             child: AppBar(
+              backgroundColor: Colors.black,
+              automaticallyImplyLeading: false,
               systemOverlayStyle: const SystemUiOverlayStyle(
                 statusBarColor: Colors.black,
                 statusBarIconBrightness: Brightness.light,

@@ -37,6 +37,8 @@
         <string>App requires to record audio.</string>
         <key>NSPhotoLibraryUsageDescription</key>
         <string>Required to select pictures.</string>
+        <key>NSLocationWhenInUseUsageDescription</key>
+        <string>To enable GPS location access for Exif data</string>
 		<array>
 			<string>UIInterfaceOrientationPortrait</string>
 			<string>UIInterfaceOrientationLandscapeLeft</string>
