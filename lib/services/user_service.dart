@@ -5,12 +5,11 @@ import '../../services/services.dart';
 import '../../utilities/firebase.dart';
 
 class UserService extends Service {
-  // Get current user's ID.
   String currentUid() {
+
     return auth.currentUser!.uid;
   }
 
-  // Update last seen in DMs after closing and opening the app.
   setUserStatus(bool isUserOnline) {
     var user = auth.currentUser;
     if (user != null) {
@@ -18,7 +17,6 @@ class UserService extends Service {
     }
   }
 
-  // Display the profile pic in ProfileScreen after update.
   updateProfile({File? image, String? username, String? name, String? bio, String? country, String? link, String? profession, String? gender}) async {
     DocumentSnapshot doc = await usersRef.doc(currentUid()).get();
     var users = UserModel.fromJson(doc.data() as Map<String, dynamic>);
@@ -42,6 +40,7 @@ class UserService extends Service {
       'profession': profession,
       'gender': gender,
     });
+
     return true;
   }
 
@@ -52,6 +51,7 @@ class UserService extends Service {
     await usersRef.doc(currentUid()).update({
       'type': type,
     });
+
     return true;
   }
 }

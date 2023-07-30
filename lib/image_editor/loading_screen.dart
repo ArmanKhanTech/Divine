@@ -7,7 +7,9 @@ class LoadingScreen {
   LoadingScreen(this.globalKey);
 
   show([String? text]) {
-    if (globalKey.currentContext == null) return;
+    if (globalKey.currentContext == null) {
+      return;
+    }
 
     showDialog<String>(
       context: globalKey.currentContext!,
@@ -21,7 +23,9 @@ class LoadingScreen {
   }
 
   hide() {
-    if (globalKey.currentContext == null) return;
+    if (globalKey.currentContext == null) {
+      return;
+    }
 
     Navigator.pop(globalKey.currentContext!);
   }

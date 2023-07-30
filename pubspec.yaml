@@ -63,7 +63,6 @@ dependencies:
   story_view: ^0.14.0
   timeago: ^3.5.0
   flutter_screenutil: ^5.8.4
-  modal_gif_picker: ^0.0.2
   animated_text_kit: ^4.2.2
   perfect_freehand: ^1.0.4
   image_gallery_saver: ^2.0.3
@@ -87,7 +86,23 @@ dependencies:
   hand_signature: ^3.0.1
   fluttertoast: ^8.2.2
   camerawesome: ^1.4.0
+  camera: ^0.10.5+2
   better_open_file: ^3.6.4
+  rxdart: ^0.27.7
+  google_mlkit_barcode_scanning:
+  google_mlkit_digital_ink_recognition:
+  google_mlkit_face_detection:
+  google_mlkit_face_mesh_detection:
+  google_mlkit_image_labeling:
+  google_mlkit_object_detection:
+  google_mlkit_pose_detection:
+  google_mlkit_selfie_segmentation:
+  google_mlkit_text_recognition:
+
+  google_mlkit_entity_extraction:
+  google_mlkit_language_id:
+  google_mlkit_translation:
+  google_mlkit_smart_reply:
 
 dev_dependencies:
   flutter_test:

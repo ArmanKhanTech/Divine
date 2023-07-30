@@ -19,7 +19,6 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-// Login screen of the app.
 class _LoginPageState extends State<LoginPage> {
   @override
   void dispose() {
@@ -28,11 +27,10 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    // ViewModel(backend basically) of LoginPage.
     LoginViewModel viewModel = Provider.of<LoginViewModel>(context);
 
-    // Login Form.
     buildForm(BuildContext context, LoginViewModel viewModel) {
+
       return Form(
         key: viewModel.loginFormKey,
         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -115,9 +113,9 @@ class _LoginPageState extends State<LoginPage> {
       );
     }
 
-    // UI of LoginPage
     return FlutterWebFrame(
       builder: (context) {
+
         return LoadingOverlay(
           progressIndicator: circularProgress(context, const Color(0xFFFF9800)),
           opacity: 0.5,

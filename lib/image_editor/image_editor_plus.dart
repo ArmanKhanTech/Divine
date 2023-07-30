@@ -3,7 +3,7 @@ import 'dart:io';
 import 'dart:math' as math;
 import 'package:colorfilter_generator/colorfilter_generator.dart';
 import 'package:colorfilter_generator/presets.dart';
-import 'package:divine/image_editor/utils.dart';
+import 'package:divine/image_editor/utilities.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -36,15 +36,19 @@ String i18n(String sourceString) =>
     _translations[sourceString.toLowerCase()] ?? sourceString;
 
 // TODO : Dont allow image above 2MB
-/// Single endpoint for MultiImageEditor & SingleImageEditor
 class ImageEditor extends StatelessWidget {
   final Uint8List? image;
+
   final List? images;
 
   final Directory? savePath;
+
   final int maxLength;
+
   final bool allowGallery, allowCamera, allowMultiple;
+
   final ImageEditorFeatures features;
+
   final List<AspectRatioOption> cropAvailableRatios;
 
   const ImageEditor({
@@ -90,6 +94,7 @@ class ImageEditor extends StatelessWidget {
     }
 
     if ((image == null || images != null) && allowMultiple == true) {
+
       return MultiImageEditor(
         images: images ?? [],
         savePath: savePath,
@@ -99,6 +104,7 @@ class ImageEditor extends StatelessWidget {
         cropAvailableRatios: cropAvailableRatios,
       );
     } else {
+
       return SingleImageEditor(
         image: image,
         savePath: savePath,
@@ -114,7 +120,6 @@ class ImageEditor extends StatelessWidget {
     });
   }
 
-  /// Set custom theme properties default is dark theme with white text
   static ThemeData theme = ThemeData(
     scaffoldBackgroundColor: Colors.black,
     colorScheme: const ColorScheme.dark(
@@ -144,13 +149,17 @@ class ImageEditor extends StatelessWidget {
   );
 }
 
-/// Show multiple image carousel to edit multiple images at one and allow more images to be added
 class MultiImageEditor extends StatefulWidget {
   final Directory? savePath;
+
   final List images;
+
   final int maxLength;
+
   final bool allowGallery, allowCamera, allowMultiple;
+
   final ImageEditorFeatures features;
+
   final List<AspectRatioOption> cropAvailableRatios;
 
   const MultiImageEditor({
@@ -193,7 +202,6 @@ class _MultiImageEditorState extends State<MultiImageEditor> {
   @override
   void initState() {
     images = widget.images.map((e) => ImageItem(e)).toList();
-
     super.initState();
   }
 
@@ -267,7 +275,6 @@ class _MultiImageEditorState extends State<MultiImageEditor> {
                                 ),
                               ),
                             );
-
                             if (img != null) {
                               image.load(img);
                               setState(() {});
@@ -341,7 +348,6 @@ class _MultiImageEditorState extends State<MultiImageEditor> {
                                     ),
                                   ),
                                 );
-
                                 if (editedImage != null) {
                                   image.load(editedImage);
                                 }
@@ -364,13 +370,17 @@ class _MultiImageEditorState extends State<MultiImageEditor> {
   final picker = ImagePicker();
 }
 
-/// Image editor with all option available
 class SingleImageEditor extends StatefulWidget {
   final Directory? savePath;
+
   final dynamic image;
+
   final List? imageList;
+
   final bool allowCamera, allowGallery;
+
   final ImageEditorFeatures features;
+
   final List<AspectRatioOption> cropAvailableRatios;
 
   const SingleImageEditor({
@@ -411,10 +421,12 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
 
   Offset offset1 = Offset.zero;
   Offset offset2 = Offset.zero;
+
   final scaffoldGlobalKey = GlobalKey<ScaffoldState>();
 
   final GlobalKey container = GlobalKey();
   final GlobalKey globalKey = GlobalKey();
+
   ScreenshotController screenshotController = ScreenshotController();
 
   @override
@@ -424,6 +436,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
   }
 
   List<Widget> get filterActions {
+
     return [
       const BackButton(color: Colors.white),
       SizedBox(
@@ -442,13 +455,13 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                 if (removedLayers.isNotEmpty) {
                   layers.add(removedLayers.removeLast());
                   setState(() {});
+
                   return;
                 }
-
-                if (layers.length <= 1) return; // do not remove image layer
-
+                if (layers.length <= 1) {
+                  return; // do not remove image layer
+                }
                 undoLayers.add(layers.removeLast());
-
                 setState(() {});
               },
             ),
@@ -457,10 +470,10 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
               icon: Icon(Icons.redo,
                   color: undoLayers.isNotEmpty ? Colors.white : Colors.grey),
               onPressed: () {
-                if (undoLayers.isEmpty) return;
-
+                if (undoLayers.isEmpty) {
+                  return;
+                }
                 layers.add(undoLayers.removeLast());
-
                 setState(() {});
               },
             ),
@@ -471,9 +484,9 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                 onPressed: () async {
                   var image =
                   await picker.pickImage(source: ImageSource.gallery);
-
-                  if (image == null) return;
-
+                  if (image == null) {
+                    return;
+                  }
                   loadImage(image);
                 },
               ),
@@ -484,9 +497,9 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                 onPressed: () async {
                   var image =
                   await picker.pickImage(source: ImageSource.camera);
-
-                  if (image == null) return;
-
+                  if (image == null) {
+                    return;
+                  }
                   loadImage(image);
                 },
               ),
@@ -496,14 +509,12 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
               onPressed: () async {
                 resetTransformation();
                 setState(() {});
-
                 LoadingScreen(scaffoldGlobalKey).show();
-
                 var binaryIntList = await screenshotController.capture(pixelRatio: pixelRatio);
-
                 LoadingScreen(scaffoldGlobalKey).hide();
-
-                if (mounted) Navigator.pop(context, binaryIntList);
+                if (mounted) {
+                  Navigator.pop(context, binaryIntList);
+                }
               },
             ),
           ]),
@@ -517,7 +528,6 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
     if (widget.image != null) {
       loadImage(widget.image!);
     }
-
     super.initState();
   }
 
@@ -540,8 +550,10 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
 
   Future<Uint8List?> getMergedImage() async {
     if (layers.length == 1 && layers.first is BackgroundLayerData) {
+
       return (layers.first as BackgroundLayerData).file.image;
     } else if (layers.length == 1 && layers.first is ImageLayerData) {
+
       return (layers.first as ImageLayerData).image.image;
     }
 
@@ -556,8 +568,8 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
 
     var layersStack = Stack(
       children: layers.map<Widget>((layerItem) {
-        // Background layer
         if (layerItem is BackgroundLayerData) {
+
           return BackgroundLayer(
             layerData: layerItem,
             onUpdate: () {
@@ -566,8 +578,8 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
           );
         }
 
-        // Image layer
         if (layerItem is ImageLayerData) {
+
           return ImageLayer(
             layerData: layerItem,
             onUpdate: () {
@@ -576,8 +588,8 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
           );
         }
 
-        // Background blur layer
         if (layerItem is BackgroundBlurLayerData && layerItem.radius > 0) {
+
           return BackgroundBlurLayer(
             layerData: layerItem,
             onUpdate: () {
@@ -586,8 +598,8 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
           );
         }
 
-        // Emoji layer
         if (layerItem is EmojiLayerData) {
+
           return EmojiLayer(
             layerData: layerItem,
             onUpdate: () {
@@ -596,8 +608,8 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
           );
         }
 
-        // Text layer
         if (layerItem is TextLayerData) {
+
           return TextLayer(
             layerData: layerItem,
             onUpdate: () {
@@ -606,7 +618,6 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
           );
         }
 
-        // Blank layer
         return Container();
       }).toList(),
     );
@@ -633,14 +644,11 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
         body: Stack(children: [
           GestureDetector(
             onScaleUpdate: (details) {
-              // move
               if (details.pointerCount == 1) {
                 x += details.focalPointDelta.dx;
                 y += details.focalPointDelta.dy;
                 setState(() {});
               }
-
-              // scale
               if (details.pointerCount == 2) {
                 if (details.horizontalScale != 1) {
                   scaleFactor = lastScaleFactor *
@@ -724,13 +732,12 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                       onTap: () async {
                         resetTransformation();
                         LoadingScreen(scaffoldGlobalKey).show();
-
                         var mergedImage = await getMergedImage();
-
                         LoadingScreen(scaffoldGlobalKey).hide();
+                        if (!mounted) {
 
-                        if (!mounted) return;
-
+                          return;
+                        }
                         Uint8List? croppedImage = await Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -740,12 +747,11 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                             ),
                           ),
                         );
-
-                        if (croppedImage == null) return;
-
+                        if (croppedImage == null) {
+                          return;
+                        }
                         flipValue = 0;
                         rotateValue = 0;
-
                         await currentImage.load(croppedImage);
                         setState(() {});
                       },
@@ -764,11 +770,9 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                             ),
                           ),
                         );
-
                         if (drawing != null) {
                           undoLayers.clear();
                           removedLayers.clear();
-
                           layers.add(
                             ImageLayerData(
                               image: ImageItem(drawing),
@@ -778,7 +782,6 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                               ),
                             ),
                           );
-
                           setState(() {});
                         }
                       },
@@ -795,18 +798,16 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                             builder: (context) => const TextEditorImage(),
                           ),
                         );
+                        if (layer == null) {
 
-                        if (layer == null) return;
-
+                          return;
+                        }
                         undoLayers.clear();
                         removedLayers.clear();
-
                         layers.add(layer);
-
                         setState(() {});
                       },
                     ),
-
                   if (widget.features.flip)
                     BottomButton(
                       icon: Icons.flip,
@@ -817,7 +818,6 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                         });
                       },
                     ),
-
                   if (widget.features.rotate)
                     BottomButton(
                       icon: Icons.rotate_left,
@@ -826,7 +826,6 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                         var t = currentImage.width;
                         currentImage.width = currentImage.height;
                         currentImage.height = t;
-
                         rotateValue--;
                         setState(() {});
                       },
@@ -840,12 +839,10 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                         var t = currentImage.width;
                         currentImage.width = currentImage.height;
                         currentImage.height = t;
-
                         rotateValue++;
                         setState(() {});
                       },
                     ),
-
                   if (widget.features.blur)
                     BottomButton(
                       icon: Icons.blur_on,
@@ -856,7 +853,6 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                           radius: 0.0,
                           opacity: 0.0,
                         );
-
                         undoLayers.clear();
                         removedLayers.clear();
                         layers.add(blurLayer);
@@ -870,8 +866,10 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                           ),
                           context: context,
                           builder: (context) {
+
                             return StatefulBuilder(
                               builder: (context, setS) {
+
                                 return SingleChildScrollView(
                                   child: Container(
                                     decoration: const BoxDecoration(
@@ -1030,22 +1028,17 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                         );
                       },
                     ),
-
                   if (widget.features.filters)
                     BottomButton(
                       icon: Icons.photo,
                       text: i18n('Filter'),
                       onTap: () async {
                         resetTransformation();
-
                         LoadingScreen(scaffoldGlobalKey).show();
-
                         var mergedImage = await getMergedImage();
-
                         if (!mounted) {
                           return;
                         }
-
                         Uint8List? filterAppliedImage = await Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -1054,22 +1047,17 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                             ),
                           ),
                         );
-
                         LoadingScreen(scaffoldGlobalKey).hide();
-
-                        if (filterAppliedImage == null) return;
-
+                        if (filterAppliedImage == null) {
+                          return;
+                        }
                         removedLayers.clear();
                         undoLayers.clear();
-
                         var layer = BackgroundLayerData(
                           file: ImageItem(filterAppliedImage),
                         );
-
                         layers.add(layer);
-
                         await layer.file.status;
-
                         setState(() {});
                       },
                     ),
@@ -1087,16 +1075,16 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                 topLeft: Radius.circular(20)),
                           ),
                           builder: (BuildContext context) {
+
                             return const Emojies();
                           },
                         );
-
-                        if (layer == null) return;
-
+                        if (layer == null) {
+                          return;
+                        }
                         undoLayers.clear();
                         removedLayers.clear();
                         layers.add(layer);
-
                         setState(() {});
                       },
                     ),
@@ -1123,7 +1111,6 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
   }
 }
 
-/// Button used in bottomNavigationBar in ImageEditor
 class BottomButton extends StatelessWidget {
   final VoidCallback? onTap, onLongPress;
   final IconData icon;
@@ -1139,6 +1126,7 @@ class BottomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return GestureDetector(
       onTap: onTap,
       onLongPress: onLongPress,
@@ -1164,7 +1152,6 @@ class BottomButton extends StatelessWidget {
   }
 }
 
-/// Crop given image with various aspect ratios
 class ImageCropper extends StatefulWidget {
   final Uint8List image;
   final List<AspectRatioOption> availableRatios;
@@ -1220,12 +1207,13 @@ class _ImageCropperState extends State<ImageCropper> {
               icon: const Icon(Icons.check),
               onPressed: () async {
                 var state = _controller.currentState;
-
-                if (state == null) return;
-
+                if (state == null) {
+                  return;
+                }
                 var data = await cropImageDataWithNativeLibrary(state: state);
-
-                if (mounted) Navigator.pop(context, data);
+                if (mounted) {
+                  Navigator.pop(context, data);
+                }
               },
             ),
           ],
@@ -1239,6 +1227,7 @@ class _ImageCropperState extends State<ImageCropper> {
             extendedImageEditorKey: _controller,
             mode: ExtendedImageMode.editor,
             initEditorConfigHandler: (state) {
+
               return EditorConfig(
                 cropAspectRatio: aspectRatio,
               );
@@ -1390,10 +1379,15 @@ class ImageFilters extends StatefulWidget {
 
 class _ImageFiltersState extends State<ImageFilters> {
   late img.Image decodedImage;
+
   ColorFilterGenerator selectedFilter = PresetFilters.none;
+
   Uint8List resizedImage = Uint8List.fromList([]);
+
   double filterOpacity = 1;
+
   Uint8List filterAppliedImage = Uint8List.fromList([]);
+
   ScreenshotController screenshotController = ScreenshotController();
 
   @override
@@ -1403,6 +1397,7 @@ class _ImageFiltersState extends State<ImageFilters> {
 
   @override
   Widget build(BuildContext context) {
+
     return Theme(
       data: ImageEditor.theme,
       child: Scaffold(
@@ -1483,6 +1478,7 @@ class _ImageFiltersState extends State<ImageFilters> {
   }
 
   Widget filterPreviewButton({required filter, required String name}) {
+
     return GestureDetector(
       onTap: () {
         selectedFilter = filter;
@@ -1551,9 +1547,7 @@ class FilterAppliedImage extends StatelessWidget {
         if (result != null) {
           onProcess!(result);
         }
-      }).catchError((err, stack) {
-        // print(err);
-      });
+      }).catchError((err, stack) {});
     }
   }
 
@@ -1654,7 +1648,9 @@ class _ImageEditorDrawingState extends State<ImageEditorDrawing> {
                     : Colors.white.withAlpha(80),
               ),
               onPressed: () {
-                if (control.paths.isEmpty) return;
+                if (control.paths.isEmpty) {
+                  return;
+                }
                 skipNextEvent = true;
                 undoList.add(control.paths.last);
                 control.stepBack();
@@ -1670,8 +1666,9 @@ class _ImageEditorDrawingState extends State<ImageEditorDrawing> {
                     : Colors.white.withAlpha(80),
               ),
               onPressed: () {
-                if (undoList.isEmpty) return;
-
+                if (undoList.isEmpty) {
+                  return;
+                }
                 control.paths.add(undoList.removeLast());
                 setState(() {});
               },
@@ -1680,15 +1677,17 @@ class _ImageEditorDrawingState extends State<ImageEditorDrawing> {
               padding: const EdgeInsets.symmetric(horizontal: 8),
               icon: const Icon(Icons.check),
               onPressed: () async {
-                if (control.paths.isEmpty) return Navigator.pop(context);
-
+                if (control.paths.isEmpty) {
+                  return Navigator.pop(context);
+                }
                 var data = await control.toImage(
                   color: currentColor,
                   height: widget.image.height,
                   width: widget.image.width,
                 );
-
-                if (!mounted) return;
+                if (!mounted) {
+                  return;
+                }
 
                 return Navigator.pop(context, data!.buffer.asUint8List());
               },
@@ -1736,6 +1735,7 @@ class _ImageEditorDrawingState extends State<ImageEditorDrawing> {
                       ),
                       context: context,
                       builder: (context) {
+
                         return Container(
                           color: Colors.black87,
                           padding: const EdgeInsets.all(20),

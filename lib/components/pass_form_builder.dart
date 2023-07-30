@@ -2,7 +2,6 @@ import 'package:divine/components/custom_card.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
-// This class will build password input fields for our forms.
 class PasswordFormBuilder extends StatefulWidget {
   final String? initialValue;
   final bool? enabled;
@@ -52,6 +51,7 @@ class _PasswordFormBuilderState extends State<PasswordFormBuilder> {
 
   @override
   Widget build(BuildContext context) {
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
       child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
@@ -138,6 +138,7 @@ class _PasswordFormBuilderState extends State<PasswordFormBuilder> {
   }
 
   border(BuildContext context) {
+
     return const OutlineInputBorder(
       borderRadius: BorderRadius.all(
         Radius.circular(30.0),
@@ -150,6 +151,7 @@ class _PasswordFormBuilderState extends State<PasswordFormBuilder> {
   }
 
   focusBorder(BuildContext context) {
+
     return OutlineInputBorder(
       borderRadius: const BorderRadius.all(
         Radius.circular(30.0),

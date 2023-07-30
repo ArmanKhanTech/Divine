@@ -5,6 +5,7 @@ import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class UserInfoScreen extends StatefulWidget{
   final String? country, email;
+
   final Timestamp? timeStamp;
 
   const UserInfoScreen({super.key, this.country, this.email, required this.timeStamp});
@@ -16,6 +17,7 @@ class UserInfoScreen extends StatefulWidget{
 class _UserInfoScreenState extends State<UserInfoScreen>{
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

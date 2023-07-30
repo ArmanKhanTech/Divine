@@ -6,7 +6,7 @@ import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../components/custom_image.dart';
-import '../stories_editor/presentation/widgets/animated_on_tap_button.dart';
+import '../stories/stories_editor/presentation/widgets/animated_on_tap_button.dart';
 import '../view_models/screens/posts_view_model.dart';
 import '../widgets/progress_indicators.dart';
 import 'main_screen.dart';

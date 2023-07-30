@@ -5,13 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import '../models/story_model.dart';
 import '../models/user_model.dart';
-import '../screens/story_screen.dart';
+import '../stories/screens/story_screen.dart';
 import '../utilities/firebase.dart';
 
 class StoryWidget extends StatelessWidget {
   const StoryWidget({Key? key}) : super(key: key);
 
-  // StoryWidget display on top of FeedsPage.
   // TODO: Sort stories by time.
   @override
   Widget build(BuildContext context) {
@@ -44,7 +43,6 @@ class StoryWidget extends StatelessWidget {
                           StoryModel story = StoryModel.fromJson(stories.first.data());
                           List users = storyListSnapshot.get('whoCanSee');
                           String uploadUserId = storyListSnapshot.get('userId');
-                          // if user is in the list of users who can see the story and the story is not uploaded by the current user.
                           if(users.contains(auth.currentUser!.uid) && uploadUserId != auth.currentUser!.uid){
                             users.remove(auth.currentUser!.uid);
                             storyCounter++;
@@ -56,7 +54,6 @@ class StoryWidget extends StatelessWidget {
                                 index);
                           }
 
-                          // if there is no story to show except for current user.
                           if(storyCounter == 0){
                             return Padding(
                                 padding: const EdgeInsets.only(bottom: 20),
@@ -86,7 +83,6 @@ class StoryWidget extends StatelessWidget {
                   },
                 );
               } else {
-                // if there is no story to show.
                 return Padding(
                     padding: const EdgeInsets.only(bottom: 20),
                     child: SizedBox(
@@ -107,6 +103,7 @@ class StoryWidget extends StatelessWidget {
                 );
               }
             } else {
+
               return Center(child: circularProgress(context, const Color(0xFFE91E63)));
             }
           },
@@ -115,7 +112,6 @@ class StoryWidget extends StatelessWidget {
     );
   }
 
-  // StoryWidget display on top of ChatPage.
   _buildStatusAvatar(
       String userId,
       String storiesId,
@@ -137,7 +133,6 @@ class StoryWidget extends StatelessWidget {
               builder: (context, snapshot){
                 if(snapshot.hasData){
                   List stories = snapshot.data!.docs;
-                  // get list of users who viewed the story.
                   StoryModel stats = StoryModel.fromJson(stories.toList()[stories.length - 1].data());
                   List<dynamic>? allViewers = stats.viewers;
 
@@ -158,7 +153,6 @@ class StoryWidget extends StatelessWidget {
                           );
                         },
                         child: Container(
-                          // set the border depending on whether user viewed the story.
                           decoration: !allViewers!.contains(auth.currentUser!.uid) ? BoxDecoration(
                             shape: BoxShape.circle,
                             border: const GradientBoxBorder(
@@ -211,12 +205,14 @@ class StoryWidget extends StatelessWidget {
                     ],
                   );
                 } else{
+
                   return const SizedBox();
                 }
               },
             )
           );
         } else {
+
             return const SizedBox();
           }
       },
@@ -224,10 +220,12 @@ class StoryWidget extends StatelessWidget {
   }
 
   Stream<QuerySnapshot> viewerListStream(String uid) {
+
     return storyRef.where('whoCanSee', arrayContains: uid).snapshots();
   }
 
   Stream<QuerySnapshot> storyListStream(String documentId) {
+
     return storyRef.doc(documentId).collection('stories').snapshots();
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'custom_card.dart';
 
-// This class will build text input fields for our forms.
 class TextFormBuilder extends StatefulWidget {
   final String? initialValue;
   final bool? enabled;
@@ -52,6 +51,7 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
 
   @override
   Widget build(BuildContext context) {
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
       child: Column(
@@ -67,7 +67,7 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
               ),
               child: TextFormField(
                   cursorColor: Theme.of(context).colorScheme.secondary,
-                  textCapitalization: widget.capitalization == false ? TextCapitalization.none : TextCapitalization.characters,
+                  textCapitalization: widget.capitalization == false ? TextCapitalization.none : TextCapitalization.sentences,
                   initialValue: widget.initialValue,
                   enabled: widget.enabled,
                   style: TextStyle(
@@ -138,6 +138,7 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
   }
 
   border(BuildContext context) {
+
     return const OutlineInputBorder(
       borderRadius: BorderRadius.all(
         Radius.circular(30.0),
@@ -150,6 +151,7 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
   }
 
   focusBorder(BuildContext context) {
+
     return OutlineInputBorder(
       borderRadius: const BorderRadius.all(
         Radius.circular(30.0),

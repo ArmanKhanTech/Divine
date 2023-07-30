@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../data/layer.dart';
 
-/// Main layer
 class BackgroundLayer extends StatefulWidget {
   final BackgroundLayerData layerData;
   final VoidCallback? onUpdate;
@@ -19,6 +18,7 @@ class BackgroundLayer extends StatefulWidget {
 class _BackgroundLayerState extends State<BackgroundLayer> {
   @override
   Widget build(BuildContext context) {
+
     return Container(
       width: widget.layerData.file.width.toDouble(),
       height: widget.layerData.file.height.toDouble(),

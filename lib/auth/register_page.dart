@@ -12,7 +12,6 @@ import '../components/pass_form_builder.dart';
 import '../regex/regex.dart';
 import '../view_models/auth/register_view_model.dart';
 
-// RegisterPage.
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
@@ -23,11 +22,10 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage>{
   @override
   Widget build(BuildContext context) {
-    // ViewModel(backend basically) of RegisterPage.
     RegisterViewModel viewModel = Provider.of<RegisterViewModel>(context);
 
-    // Registration Form.
     buildForm(RegisterViewModel viewModel, BuildContext context){
+
       return Form(
         key: viewModel.registerFormKey,
         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -145,9 +143,9 @@ class _RegisterPageState extends State<RegisterPage>{
       );
     }
 
-    // UI of RegisterPage.
     return FlutterWebFrame(
       builder: (context) {
+
         return LoadingOverlay(
             isLoading: viewModel.loading,
             progressIndicator: circularProgress(context, const Color(0XFF03A9F4)),

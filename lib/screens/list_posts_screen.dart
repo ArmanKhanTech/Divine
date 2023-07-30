@@ -18,6 +18,7 @@ class ListPosts extends StatefulWidget {
 class _ListPostsState extends State<ListPosts> {
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
@@ -56,11 +57,13 @@ class _ListPostsState extends State<ListPosts> {
             if (snapshot.hasData) {
               var snap = snapshot.data;
               List docs = snap!.docs;
+
               return ListView.builder(
                 itemCount: docs.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   PostModel posts = PostModel.fromJson(docs[index].data());
+
                   return const Padding(
                     padding: EdgeInsets.all(10.0),
                     //child: UserPost(post: posts),
@@ -68,8 +71,10 @@ class _ListPostsState extends State<ListPosts> {
                 },
               );
             } else if (snapshot.connectionState == ConnectionState.waiting) {
+
               return circularProgress(context, const Color(0xFFB92B27));
             } else {
+
               return const Center(
                 child: Text(
                   'No Feed to show',

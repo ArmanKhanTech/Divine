@@ -1,7 +1,6 @@
 import 'dart:io';
 
 class adHelper {
-
   static String get nativeAdUnitId {
     if (Platform.isAndroid) {
       return '<ca-app-pub-8676869226236884/9325581556>';

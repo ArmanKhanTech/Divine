@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../data/layer.dart';
 import '../image_editor_plus.dart';
 
@@ -29,6 +28,7 @@ class _EmojiLayerOverlayState extends State<EmojiLayerOverlay> {
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       height: 180,
       decoration: const BoxDecoration(

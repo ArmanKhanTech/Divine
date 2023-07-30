@@ -28,13 +28,11 @@ class _ProfilePageState extends State<ProfilePage> {
 
   late UserModel currentUser;
 
-  bool isLoading = false;
-
   int postCount = 0;
   int followersCount = 0;
   int followingCount = 0;
 
-  bool isFollowing = false, requested = false;
+  bool isFollowing = false, requested = false, isLoading = false;
 
   UserModel? users;
 
@@ -245,6 +243,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       key: profileScaffoldKey,
       appBar: AppBar(
@@ -319,14 +318,34 @@ class _ProfilePageState extends State<ProfilePage> {
                             currentUser.username![0].toUpperCase(),
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.primary,
-                              fontSize: 25.0,
+                              fontSize: 30.0,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                      ) : CircleAvatar(
-                        radius: 45.0,
-                        backgroundImage: CachedNetworkImageProvider('${currentUser.photoUrl}'),
+                      ) : CachedNetworkImage(
+                        imageUrl: '${currentUser.photoUrl}',
+                        imageBuilder: (context, imageProvider) => Container(
+                          height: 90,
+                          width: 90,
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.all(Radius.circular(50)),
+                            image: DecorationImage(
+                              image: imageProvider,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        progressIndicatorBuilder: (context, url, downloadProgress) =>
+                            SizedBox(
+                              height: 90,
+                              width: 90,
+                              child: CircularProgressIndicator(
+                                  value: downloadProgress.progress,
+                                  color: Colors.blue
+                              ),
+                            ),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
                       ),
                     ),
                     const Spacer(),
@@ -339,6 +358,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                           return buildCount("Posts", docs.length);
                         } else {
+
                           return buildCount("Posts", 0);
                         }
                       },
@@ -499,6 +519,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   buildCount(String label, int count) {
+
     return Column(
       children: <Widget>[
         const SizedBox(
@@ -529,8 +550,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   // TODO: Implement private profile button
   buildProfileButton(user) {
-    // if isMe then display "edit profile"
     bool isMe = widget.profileId == auth.currentUser!.uid;
+
     if (isMe) {
       return buildButton(
           text: "Edit Profile",
@@ -544,24 +565,26 @@ class _ProfilePageState extends State<ProfilePage> {
             );
           });
       // TODO: Implement DM button
-      // if you are already following the user then "unfollow"
     } else if (isFollowing) {
+
       return buildButton(
         text: "Unfollow",
         function: handleUnfollow,
       );
-      // if you are not following the user then "follow"
     } else if (!isFollowing && user.type == "public") {
+
       return buildButton(
         text: "Follow",
         function: handleFollow,
       );
     } else if(!isFollowing && user.type == "private" && !requested) {
+
       return buildButton(
         text: "Request",
         function: handleFollowRequest,
       );
     } else if(!isFollowing && user.type == "private" && requested) {
+
       return buildButton(
         text: "Requested",
         function: () {},
@@ -570,6 +593,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   buildButton({String? text, Function()? function}) {
+
     return Center(
       child: GestureDetector(
         onTap: function!,
@@ -604,7 +628,7 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       isFollowing = false;
     });
-    // remove follower
+
     followersRef
         .doc(widget.profileId)
         .collection('userFollowers')
@@ -615,7 +639,7 @@ class _ProfilePageState extends State<ProfilePage> {
         doc.reference.delete();
       }
     });
-    // remove following
+
     followingRef
         .doc(currentUserId())
         .collection('userFollowing')
@@ -626,7 +650,7 @@ class _ProfilePageState extends State<ProfilePage> {
         doc.reference.delete();
       }
     });
-    // remove from notifications feeds
+
     notificationRef
         .doc(widget.profileId)
         .collection('notifications')
@@ -645,19 +669,19 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       isFollowing = true;
     });
-    // updates the followers collection of the followed user
+
     followersRef
         .doc(widget.profileId)
         .collection('userFollowers')
         .doc(currentUserId())
         .set({});
-    // updates the following collection of the currentUser
+
     followingRef
         .doc(currentUserId())
         .collection('userFollowing')
         .doc(widget.profileId)
         .set({});
-    // update the notification feeds
+
     notificationRef
         .doc(widget.profileId)
         .collection('notifications')
@@ -675,15 +699,19 @@ class _ProfilePageState extends State<ProfilePage> {
   // TODO: Implement private profile button
   handleFollowRequest() async {
     DocumentSnapshot doc = await usersRef.doc(currentUserId()).get();
+
     users = UserModel.fromJson(doc.data() as Map<String, dynamic>);
+
     setState(() {
       requested = true;
     });
+
     followingRequestRef
         .doc(widget.profileId)
         .collection('followRequest')
         .doc(currentUserId())
         .set({});
+
     notificationRef
         .doc(widget.profileId)
         .collection('notifications')
@@ -701,6 +729,7 @@ class _ProfilePageState extends State<ProfilePage> {
   buildPostView(UserModel currentUser) {
     if(widget.profileId != auth.currentUser?.uid){
       if(currentUser.type == 'private' && isFollowing == false) {
+
         return const Center(
           child: Text(
             'This account is private.',
@@ -711,14 +740,17 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         );
       } else {
+
         return buildGridPost();
       }
     } else {
+
       return buildGridPost();
     }
   }
 
   buildGridPost() {
+
     return StreamGridWrapper(
       shrinkWrap: true,
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -738,6 +770,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   buildLikeButton() {
+
     return StreamBuilder(
       stream: favUsersRef
           .where('postId', isEqualTo: widget.profileId)
@@ -746,6 +779,7 @@ class _ProfilePageState extends State<ProfilePage> {
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasData) {
           List<QueryDocumentSnapshot> docs = snapshot.data?.docs ?? [];
+
           return GestureDetector(
             onTap: () {
               if (docs.isEmpty) {
@@ -782,6 +816,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           );
         }
+
         return Container();
       },
     );

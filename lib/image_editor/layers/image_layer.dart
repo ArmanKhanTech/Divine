@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-
 import '../data/layer.dart';
 import '../image_editor_plus.dart';
 import '../modules/image_layer_overlay.dart';
 
-/// Image layer that can be used to add overlay images and drawings
 class ImageLayer extends StatefulWidget {
   final ImageLayerData layerData;
   final VoidCallback? onUpdate;
@@ -42,6 +40,7 @@ class _ImageLayerState extends State<ImageLayer> {
             ),
             context: context,
             builder: (context) {
+
               return ImageLayerOverlay(
                 index: layers.indexOf(widget.layerData),
                 layerData: widget.layerData,

@@ -7,20 +7,16 @@ import '../../services/story_service.dart';
 import '../../services/user_service.dart';
 
 class StoryViewModel extends ChangeNotifier {
-  // Services.
   UserService userService = UserService();
   PostService postService = PostService();
   StoryService storyService = StoryService();
 
-  // Keys.
   GlobalKey<ScaffoldState> storyScaffoldKey = GlobalKey<ScaffoldState>();
   GlobalKey<FormState> storyFormKey = GlobalKey<FormState>();
 
-  // Flags.
   bool loading = true;
   bool edit = false;
 
-  // Variables.
   String? username;
   String? description;
   String? email;
@@ -28,9 +24,9 @@ class StoryViewModel extends ChangeNotifier {
   String? userId;
   String? imgLink;
   String? id;
+
   int pageIndex = 0;
 
-  // Objects.
   File? mediaUrl;
 
   sendStory(StoryModel story, String storyId) {
@@ -48,7 +44,6 @@ class StoryViewModel extends ChangeNotifier {
     return newStoryId;
   }
 
-  // Reset Post.
   resetPost() {
     mediaUrl = null;
     description = null;

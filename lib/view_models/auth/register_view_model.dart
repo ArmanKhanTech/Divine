@@ -4,30 +4,23 @@ import 'package:flutter/material.dart';
 import '../../screens/main_screen.dart';
 import '../../services/auth_service.dart';
 
-// ViewModel of RegisterPage.
 class RegisterViewModel extends ChangeNotifier {
-  // Maintain state of child widgets.
   GlobalKey<ScaffoldState> registerScaffoldKey = GlobalKey<ScaffoldState>();
   GlobalKey<FormState> registerFormKey = GlobalKey<FormState>();
 
-  // bool flags.
   bool validate = false;
   bool loading = false;
 
-  // Variables.
   String? username, email, country, password, cPassword;
 
-  // FocusNodes.
   FocusNode usernameFocusNode = FocusNode();
   FocusNode emailFocusNode = FocusNode();
   FocusNode countryFocusNode = FocusNode();
   FocusNode passFocusNode = FocusNode();
   FocusNode cPassFocusNode = FocusNode();
 
-  // Objects.
   AuthService auth = AuthService();
 
-  // Register the user.
   register(BuildContext context) async {
     FormState form = registerFormKey.currentState!;
     form.save();
@@ -67,7 +60,6 @@ class RegisterViewModel extends ChangeNotifier {
     }
   }
 
-  // Setters for email, password, name, country and confirm password.
   setEmail(val) {
     email = val;
     notifyListeners();
@@ -93,7 +85,6 @@ class RegisterViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Show temporary text message on screen.
   showSnackBar(String msg, context) {
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15, color: Colors.white)), backgroundColor: Colors.blue,

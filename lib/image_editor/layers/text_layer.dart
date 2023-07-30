@@ -3,7 +3,6 @@ import '../data/layer.dart';
 import '../image_editor_plus.dart';
 import '../modules/text_layer_overlay.dart';
 
-/// Text layer
 class TextLayer extends StatefulWidget {
   final TextLayerData layerData;
   final VoidCallback? onUpdate;
@@ -41,6 +40,7 @@ class _TextViewState extends State<TextLayer> {
               ),
             ),
             builder: (BuildContext context) {
+
               return SingleChildScrollView(
                   child: Container(
                     padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),

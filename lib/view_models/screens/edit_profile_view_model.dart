@@ -6,24 +6,22 @@ import '../../models/user_model.dart';
 import '../../services/user_service.dart';
 
 class EditProfileViewModel extends ChangeNotifier{
-  // Keys.
   GlobalKey<ScaffoldState> editProfileScaffoldKey = GlobalKey<ScaffoldState>();
   GlobalKey<FormState> editProfileFormKey = GlobalKey<FormState>();
 
-  // Flags.
   bool validate = false;
   bool loading = false;
 
-  // Objects.
   UserService userService = UserService();
+
   final picker = ImagePicker();
+
   UserModel? user;
+
   File? image;
 
-  // Variables.
   String? country, username, name, bio, imgLink, profession, link, gender;
 
-  // Edit Profile function.
   editProfile(BuildContext context) async {
     FormState form = editProfileFormKey.currentState!;
     form.save();
@@ -84,7 +82,6 @@ class EditProfileViewModel extends ChangeNotifier{
     notifyListeners();
   }
 
-  // Setters.
   setUser(UserModel val) {
     user = val;
     notifyListeners();
@@ -135,7 +132,6 @@ class EditProfileViewModel extends ChangeNotifier{
     notifyListeners();
   }
 
-  // Show temporary text message on screen.
   showSnackBar(String msg, context) {
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15, color: Colors.white)), backgroundColor: Colors.blue,

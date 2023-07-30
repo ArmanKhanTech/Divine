@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:divine/screens/profile_picture_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -243,15 +244,55 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                           ),
                         ) : viewModel.imgLink != null ? Padding(
                           padding: const EdgeInsets.all(1.0),
-                          child: CircleAvatar(
-                            radius: 50.0,
-                            backgroundImage: NetworkImage(viewModel.imgLink!),
+                          child: CachedNetworkImage(
+                            imageUrl: viewModel.imgLink!,
+                            imageBuilder: (context, imageProvider) => Container(
+                              height: 100,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.all(Radius.circular(50)),
+                                image: DecorationImage(
+                                  image: imageProvider,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                SizedBox(
+                                  height: 100,
+                                  width: 100,
+                                  child: CircularProgressIndicator(
+                                      value: downloadProgress.progress,
+                                      color: Colors.blue
+                                  ),
+                                ),
+                            errorWidget: (context, url, error) => const Icon(Icons.error),
                           ),
                         ) : viewModel.image == null ? Padding(
                           padding: const EdgeInsets.all(1.0),
-                          child: CircleAvatar(
-                            radius: 50.0,
-                            backgroundImage: NetworkImage(widget.user!.photoUrl!),
+                          child: CachedNetworkImage(
+                            imageUrl: widget.user!.photoUrl!,
+                            imageBuilder: (context, imageProvider) => Container(
+                              height: 100,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.all(Radius.circular(50)),
+                                image: DecorationImage(
+                                  image: imageProvider,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                SizedBox(
+                                  height: 100,
+                                  width: 100,
+                                  child: CircularProgressIndicator(
+                                      value: downloadProgress.progress,
+                                      color: Colors.blue
+                                  ),
+                                ),
+                            errorWidget: (context, url, error) => const Icon(Icons.error),
                           ),
                         ) : Padding(
                           padding: const EdgeInsets.all(1.0),

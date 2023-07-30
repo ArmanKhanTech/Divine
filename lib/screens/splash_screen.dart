@@ -8,7 +8,6 @@ import 'package:lottie/lottie.dart';
 import '../auth/login_page.dart';
 import 'main_screen.dart';
 
-// SplashScreen.
 class SplashScreen extends StatefulWidget{
   const SplashScreen({Key? key}) : super(key: key);
 
@@ -31,16 +30,15 @@ class _SplashScreenState extends State<SplashScreen> {
                       stream: FirebaseAuth.instance.authStateChanges(),
                       builder: ((BuildContext context, snapshot) {
                         if (snapshot.hasData) {
-                          // Goto MainPage(user is logged in.)
+
                           return const MainScreen();
                         } else {
-                          // Goto RegisterPage(user is not logged in.)
+
                           return const LoginPage();
                         }
                       }),
                     ),)));
 
-    // UI of SplashScreen
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: PreferredSize(

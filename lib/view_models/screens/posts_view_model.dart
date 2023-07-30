@@ -10,7 +10,7 @@ import 'package:image_cropper/image_cropper.dart' as image_cropper;
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../image_editor/image_editor_plus.dart';
-import '../../image_editor/utils.dart';
+import '../../image_editor/utilities.dart';
 import '../../models/post_model.dart';
 import '../../models/user_model.dart';
 import '../../services/post_service.dart';
@@ -18,37 +18,33 @@ import '../../services/user_service.dart';
 import '../../utilities/constants.dart';
 import '../../utilities/firebase.dart';
 
-// Uploading Posts ViewModel.
 class PostsViewModel extends ChangeNotifier{
-  // Services.
   UserService userService = UserService();
   PostService postService = PostService();
 
-  // Keys.
   GlobalKey<ScaffoldState> postScaffoldKey = GlobalKey<ScaffoldState>();
   GlobalKey<FormState> postFormKey = GlobalKey<FormState>();
 
-  // Flags.
   bool loading = false;
   bool edit = false;
 
-  // Variables.
   String? username, location, bio, description, email, commentData, ownerId, userId, type, imgLink, id, hashtags, mentions;
 
   List<String> hashtagsList = [];
   List<String> mentionsList = [];
 
-  // Objects.
   File? mediaUrl;
+
   final picker = ImagePicker();
+
   Position? position;
+
   Placemark? placemark;
+
   File? userDp;
 
-  //controllers
   TextEditingController locationTEC = TextEditingController();
 
-  // Upload profile picture to Firebase Storage & its link to user's collection.
   uploadProfilePicture(BuildContext context) async {
     if (mediaUrl == null) {
       showSnackBar('Kindly select an image.', context);
@@ -71,7 +67,6 @@ class PostsViewModel extends ChangeNotifier{
     }
   }
 
-  // Profile ImagePicker function.
   pickProfileImage({bool camera = false, BuildContext? context}) async {
     loading = true;
     notifyListeners();
@@ -82,7 +77,6 @@ class PostsViewModel extends ChangeNotifier{
       );
       image_cropper.CroppedFile? croppedFile = await image_cropper.ImageCropper().cropImage(
         sourcePath: pickedFile!.path,
-        // Compression of image to 25% quality since it's a profile picture.
         compressFormat: image_cropper.ImageCompressFormat.png,
         compressQuality: 20,
         aspectRatioPresets: [
@@ -134,7 +128,6 @@ class PostsViewModel extends ChangeNotifier{
     notifyListeners();
   }
 
-  // Reset function executed on back button pressed.
   resetPost() {
     mediaUrl = null;
     description = null;
@@ -193,7 +186,6 @@ class PostsViewModel extends ChangeNotifier{
     }
   }
 
-  // Upload single post to Firebase Storage & its link to user's collection.
   uploadPostSingleImage({bool camera = false, BuildContext? context}) async {
     loading = true;
     notifyListeners();

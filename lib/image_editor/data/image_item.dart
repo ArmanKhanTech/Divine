@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../image_editor_plus.dart';
 
 class ImageItem {
@@ -41,7 +40,6 @@ class ImageItem {
     }
 
     if (decodedImage != null) {
-
       height = decodedImage.height;
       width = decodedImage.width;
       viewportRatio = viewportSize.height / height;

@@ -6,9 +6,9 @@ import 'package:uuid/uuid.dart';
 FirebaseAuth auth = FirebaseAuth.instance;
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 FirebaseStorage storage = FirebaseStorage.instance;
+
 const Uuid uuid = Uuid();
 
-// Collection references.
 CollectionReference usersRef = firestore.collection('users');
 CollectionReference chatRef = firestore.collection("chats");
 CollectionReference postRef = firestore.collection('posts');
@@ -22,7 +22,6 @@ CollectionReference favUsersRef = firestore.collection('favoriteUsers');
 CollectionReference chatIdRef = firestore.collection('chatIds');
 CollectionReference storyRef = firestore.collection('stories');
 
-// Storage references.
 Reference profilePic = storage.ref().child('profilePic');
 Reference posts = storage.ref().child('posts');
 Reference stories = storage.ref().child('stories');

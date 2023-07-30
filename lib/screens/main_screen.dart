@@ -21,7 +21,6 @@ class MainScreen extends StatefulWidget{
 class _MainScreenState extends State<MainScreen>{
   int _page = 0;
 
-  // List of Navigation Pages.
   List pages = [
     {
       'title': 'Home',
@@ -56,6 +55,7 @@ class _MainScreenState extends State<MainScreen>{
 
     return FlutterWebFrame(
       builder: (context) {
+
         return Scaffold(
           body: PageTransitionSwitcher(
             transitionBuilder: (
@@ -63,6 +63,7 @@ class _MainScreenState extends State<MainScreen>{
                 Animation<double> animation,
                 Animation<double> secondaryAnimation,
                 ) {
+
               return FadeThroughTransition(
                 animation: animation,
                 secondaryAnimation: secondaryAnimation,

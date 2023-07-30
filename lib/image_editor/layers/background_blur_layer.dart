@@ -19,6 +19,7 @@ class BackgroundBlurLayer extends StatefulWidget {
 class _BackgroundBlurLayerState extends State<BackgroundBlurLayer> {
   @override
   Widget build(BuildContext context) {
+
     return Positioned.fill(
       child: BackdropFilter(
         filter: ImageFilter.blur(

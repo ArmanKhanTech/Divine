@@ -27,6 +27,7 @@ class StreamGridWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return StreamBuilder<QuerySnapshot>(
       stream: stream,
       builder: (context, snapshot) {
@@ -53,10 +54,12 @@ class StreamGridWrapper extends StatelessWidget {
             shrinkWrap: shrinkWrap,
             physics: physics,
             itemBuilder: (BuildContext context, int index) {
+
               return itemBuilder(context, list[index]);
             },
           );
         } else {
+
           return circularProgress(context, const Color(0xFFB2BEB5));
         }
       },

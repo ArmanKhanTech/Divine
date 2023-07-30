@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// Convert firebase JSON response to a Dart object & vice versa & save to SharedPreference.
 class UserModel{
   String? username;
   String? email;

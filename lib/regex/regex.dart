@@ -1,5 +1,5 @@
-// This class is input validator. It will check if the input is valid or not.
 class Regex {
+  // TODO: Add more regex for validation.
   static String? validateUsername(String? value) {
     if (value!.isEmpty) return 'Your username is required.';
     final RegExp nameExp = RegExp(r'^[A-za-zğüşöçİĞÜŞÖÇ ]+$');
@@ -61,7 +61,6 @@ class Regex {
   }
 
   static String? validateGender(String? value){
-    print('value: $value');
     if (value!.length > 20 && value != ''){
       return 'Please enter a valid gender.';
     } else if (value == '') {

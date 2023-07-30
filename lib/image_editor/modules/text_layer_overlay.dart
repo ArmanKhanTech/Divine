@@ -24,13 +24,12 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
 
   @override
   void initState() {
-    //  slider = widget.sizeable;
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       height: 400,
       decoration: const BoxDecoration(

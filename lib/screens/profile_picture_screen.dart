@@ -19,10 +19,8 @@ class ProfilePictureScreen extends StatefulWidget{
 class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
   @override
   Widget build(BuildContext context) {
-    // ViewModel of ProfilePictureScreen.
     PostsViewModel viewModel = Provider.of<PostsViewModel>(context);
 
-    // Pick image from where camera or gallery.
     showImageChoices(BuildContext context, PostsViewModel viewModel){
       showModalBottomSheet(
         context: context,
@@ -92,9 +90,13 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                       ),
                     ),
                   ),
-                  const Divider(
-                    height: 2.0,
-                    color: Colors.blue,
+                  SizedBox(
+                    height: 1,
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.blue
+                      ),
+                    ),
                   ),
                   ListTile(
                     dense: true,
@@ -137,12 +139,12 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
       );
     }
 
-    // UI of ProfilePictureScreen.
     return FlutterWebFrame(
       builder: (context) {
         return WillPopScope(
           onWillPop: () async {
             viewModel.resetPost();
+
             return true;
           },
           child: LoadingOverlay(

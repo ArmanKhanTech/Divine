@@ -28,6 +28,7 @@ class _ImageLayerOverlayState extends State<ImageLayerOverlay> {
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       height: 200,
       decoration: const BoxDecoration(
@@ -74,8 +75,6 @@ class _ImageLayerOverlayState extends State<ImageLayerOverlay> {
                   removedLayers.add(layers.removeAt(widget.index));
                   Navigator.pop(context);
                   widget.onUpdate();
-                  // back(context);
-                  // setState(() {});
                 },
                 child: Text(
                   i18n('Remove'),

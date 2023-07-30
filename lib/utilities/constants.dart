@@ -15,7 +15,6 @@ class Constants {
   static const Color lightBG = Color.fromARGB(255, 255, 255, 255);
   static const Color darkBG = Color.fromARGB(255, 0, 0, 0);
 
-  // Light Theme
   static ThemeData lightTheme = ThemeData(
     primaryColor: lightPrimary,
     textSelectionTheme: const TextSelectionThemeData(
@@ -53,7 +52,6 @@ class Constants {
     ).copyWith(background: lightBG),
   );
 
-  //Dark Theme
   static ThemeData darkTheme = ThemeData(
     iconTheme: const IconThemeData(color: Colors.white),
     primaryColor: darkPrimary,

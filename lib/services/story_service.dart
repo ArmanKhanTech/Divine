@@ -10,9 +10,9 @@ import '../utilities/firebase.dart';
 
 class StoryService extends Service{
   String storyId = const Uuid().v1();
+
   UserService userService = UserService();
 
-  // Show temporary text message on screen.
   showSnackBar(String msg, context) {
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15),), backgroundColor: Colors.orange,
@@ -22,7 +22,6 @@ class StoryService extends Service{
         )));
   }
 
-  // Send Story to DB.
   sendStory(StoryModel story, String chatId) async {
     await storyRef
         .doc(chatId)
@@ -35,7 +34,6 @@ class StoryService extends Service{
   }
 
   // TODO: add only followers to ids.
-  // Send first Story to DB.
   Future<String> sendFirstStory(StoryModel story) async {
     List<String> ids = [];
     await usersRef.get().then((QuerySnapshot snapshot) {
@@ -47,6 +45,7 @@ class StoryService extends Service{
       'whoCanSee': ids,
     });
     await sendStory(story, ref.id);
+
     return ref.id;
   }
 

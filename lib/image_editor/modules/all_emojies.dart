@@ -11,6 +11,7 @@ class Emojies extends StatefulWidget {
 }
 
 class _EmojiesState extends State<Emojies> {
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -55,6 +56,7 @@ class _EmojiesState extends State<Emojies> {
                   maxCrossAxisExtent: 60.0,
                 ),
                 children: emojis.map((String emoji) {
+
                   return GridTile(
                       child: GestureDetector(
                         onTap: () {

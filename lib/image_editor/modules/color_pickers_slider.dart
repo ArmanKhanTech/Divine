@@ -11,6 +11,7 @@ class ColorPickersSlider extends StatefulWidget {
 }
 
 class _ColorPickersSliderState extends State<ColorPickersSlider> {
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,7 +33,6 @@ class _ColorPickersSliderState extends State<ColorPickersSlider> {
           const SizedBox(height: 20),
           Text(i18n('Slider Color'),
               style: const TextStyle(color: Colors.white)),
-          // const SizedBox(height: 10),
           Row(
             children: [
               Expanded(
@@ -42,9 +42,7 @@ class _ColorPickersSliderState extends State<ColorPickersSlider> {
                   cornerRadius: 10,
                   pickMode: PickMode.color,
                   colorListener: (int value) {
-                    setState(() {
-                      //  currentColor = Color(value);
-                    });
+                    setState(() {});
                   },
                 ),
               ),

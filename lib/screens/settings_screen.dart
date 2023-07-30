@@ -7,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
-
 import '../view_models/screens/edit_profile_view_model.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -123,6 +122,7 @@ class _SettingsScreenState extends State<SettingsScreen>{
                       UserModel user = UserModel.fromJson(snapshot.data!.data() as Map<String, dynamic>);
 
                       if(user.type == 'public'){
+
                         return CupertinoSwitch(
                           onChanged: (val) {
                             viewModel.updateProfileStatus(context, 'private');
@@ -131,6 +131,7 @@ class _SettingsScreenState extends State<SettingsScreen>{
                           activeColor: Colors.blue,
                         );
                       } else {
+
                         return CupertinoSwitch(
                           onChanged: (val) {
                             viewModel.updateProfileStatus(context, 'public');
@@ -140,6 +141,7 @@ class _SettingsScreenState extends State<SettingsScreen>{
                         );
                       }
                     } else {
+
                       return circularProgress(context, const Color(0xff00c6ff));
                     }
                   },

@@ -3,7 +3,6 @@ import '../data/layer.dart';
 import '../image_editor_plus.dart';
 import '../modules/emoji_layer_overlay.dart';
 
-/// Emoji layer
 class EmojiLayer extends StatefulWidget {
   final EmojiLayerData layerData;
   final VoidCallback? onUpdate;
@@ -41,6 +40,7 @@ class _EmojiLayerState extends State<EmojiLayer> {
             ),
             context: context,
             builder: (context) {
+
               return EmojiLayerOverlay(
                 index: layers.indexOf(widget.layerData),
                 layer: widget.layerData,

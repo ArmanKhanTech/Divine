@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'image_item.dart';
 
-/// Layer class with some common properties
 class Layer {
   late Offset offset;
   late double rotation, scale, opacity;
@@ -20,7 +18,6 @@ class Layer {
   }
 }
 
-/// Attributes used by [BackgroundLayer]
 class BackgroundLayerData extends Layer {
   ImageItem file;
 
@@ -29,7 +26,6 @@ class BackgroundLayerData extends Layer {
   });
 }
 
-/// Attributes used by [EmojiLayer]
 class EmojiLayerData extends Layer {
   String text;
   double size;
@@ -49,7 +45,6 @@ class EmojiLayerData extends Layer {
   );
 }
 
-/// Attributes used by [ImageLayer]
 class ImageLayerData extends Layer {
   ImageItem image;
   double size;
@@ -69,7 +64,6 @@ class ImageLayerData extends Layer {
   );
 }
 
-/// Attributes used by [TextLayer]
 class TextLayerData extends Layer {
   String text;
   double size;

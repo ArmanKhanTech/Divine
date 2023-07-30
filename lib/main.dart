@@ -17,24 +17,19 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Initialize Firebase depending on the platform.
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   // TODO: Fix app check for web.
-  // Initialize Firebase App Check.
   await FirebaseAppCheck.instance.activate(
     //webRecaptchaSiteKey: webRecaptchaSiteKey,
     androidProvider: AndroidProvider.playIntegrity,
   );
-  // Initialize Google Mobile Ads SDK.
   if(!kIsWeb){
     await MobileAds.instance.initialize();
   }
-  // Set the orientation to portrait only.
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp]);
-  // Run the app.
   runApp(const MyApp());
 }
 
@@ -49,12 +44,9 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    // Listening to app lifecycle event changes.
     WidgetsBinding.instance.addObserver(
       AppLifeCycleEventHandler(
-        // The user exited the app.
         detachedCallBack: () => UserService().setUserStatus(false),
-        // The user opened or reopened the app.
         resumeCallBack: () => UserService().setUserStatus(true),
       ),
     );
@@ -62,29 +54,23 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    // Making use of MultiProvider to avoid writing boilerplate code.
-    // https://pub.dev/documentation/provider/latest/provider/MultiProvider-class.html
+
     return MultiProvider(
       providers: providers,
       child: Consumer<ThemeProvider>(
         builder: (context, ThemeProvider notifier, Widget? child) {
+
           return MaterialApp(
-            // Set app's name.
             title: Constants.appName,
-            // Don't show the debug banner.
             debugShowCheckedModeBanner: false,
-            // Set app's theme
             // TODO: Fix app theme.
             theme: themeData(
               notifier.dark ? Constants.darkTheme : Constants.lightTheme,
             ),
-            // Check whether user is logged in or not, redirect to LoginPage if not, MainPage otherwise.
-            // https://api.flutter.dev/flutter/widgets/StreamBuilder-class.html
             home: const SplashScreen(),
-            // Disable scrollbars.
             scrollBehavior: NoThumbScrollBehavior().copyWith(scrollbars: false),
             builder: (context, child) {
-              // Disable text scaling.
+
               return MediaQuery(
                 data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
                 child: child!,
@@ -97,6 +83,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   ThemeData themeData(ThemeData theme) {
+
     return theme.copyWith(
       textTheme: GoogleFonts.nunitoTextTheme(
         theme.textTheme,

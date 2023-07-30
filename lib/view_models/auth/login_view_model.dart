@@ -5,27 +5,20 @@ import '../../regex/regex.dart';
 import '../../screens/main_screen.dart';
 import '../../services/auth_service.dart';
 
-// ViewModel of LoginPage.
 class LoginViewModel extends ChangeNotifier {
-  // Maintain state of child widgets.
   GlobalKey<ScaffoldState> loginScaffoldKey = GlobalKey<ScaffoldState>();
   GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
 
-  // bool flags.
   bool validate = false;
   bool loading = false;
 
-  // Variables.
   String? email, password;
 
-  // FocusNodes.
   FocusNode emailFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
 
-  // Objects.
   AuthService authService = AuthService();
 
-  // Login the user.
   loginUser(BuildContext context) async {
     FormState form = loginFormKey.currentState!;
     form.save();
@@ -56,7 +49,6 @@ class LoginViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Setters for email and password.
   setEmail(val) {
     email = val;
     notifyListeners();
@@ -67,7 +59,6 @@ class LoginViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // If user forgets the password.
   forgotPassword(BuildContext context) async {
     loading = true;
     notifyListeners();
@@ -91,7 +82,6 @@ class LoginViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Show temporary text message on screen.
   showSnackBar(String msg, context) {
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15, color: Colors.white)), backgroundColor: Colors.orange,
