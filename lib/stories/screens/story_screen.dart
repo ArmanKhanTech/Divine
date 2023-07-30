@@ -27,6 +27,7 @@ class StoryScreen extends StatefulWidget {
 class _StoryScreenState extends State<StoryScreen> {
   @override
   Widget build(BuildContext context) {
+
     // TODO: DMs in story screen.
     return Scaffold(
       appBar: PreferredSize(
@@ -153,6 +154,7 @@ class _StoryScreenState extends State<StoryScreen> {
                                   ),
                                 );
                               } else {
+
                                 return const SizedBox();
                               }
                             },

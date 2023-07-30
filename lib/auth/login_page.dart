@@ -8,7 +8,7 @@ import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 import '../components/pass_form_builder.dart';
 import '../components/text_form_builder.dart';
-import '../regex/regex.dart';
+import '../utilities/regex/regex.dart';
 import '../view_models/auth/login_view_model.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
 

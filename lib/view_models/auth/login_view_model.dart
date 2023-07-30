@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../../regex/regex.dart';
+import '../../utilities/regex/regex.dart';
 import '../../screens/main_screen.dart';
 import '../../services/auth_service.dart';
 

@@ -16,6 +16,7 @@ import '../../widgets/progress_indicators.dart';
 
 class ConfirmStory extends StatefulWidget {
   final String uri;
+
   const ConfirmStory({required this.uri, super.key});
 
   @override
@@ -78,15 +79,14 @@ class _ConfirmStoryState extends State<ConfirmStory> {
         ),
         backgroundColor: Colors.black,
         body: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: Stack(
-            clipBehavior: Clip.hardEdge,
+          child: Column(
             children: [
               SizedBox(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
                   child: Container(
+                    height: MediaQuery.of(context).size.height * .8,
+                    width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       image: DecorationImage(
@@ -100,20 +100,16 @@ class _ConfirmStoryState extends State<ConfirmStory> {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 3),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Container(
                     height: MediaQuery.of(context).size.height * .05,
                     width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 1,
-                      ),
-                      borderRadius: const BorderRadius.all(Radius.circular(20)),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
                       color: Colors.black12,
                     ),
                     child: FloatingActionButton(
-                      backgroundColor: Colors.transparent,
+                      backgroundColor: Colors.blue,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
@@ -183,9 +179,9 @@ class _ConfirmStoryState extends State<ConfirmStory> {
     );
   }
 
-  // Compress & Upload media to Firebase Storage.
   Future<String> uploadMedia(String imagePath) async {
     final imageUri = Uri.parse(imagePath);
+
     final String outputUri = imageUri.resolve('./output.png').toString();
 
     XFile? result = (await FlutterImageCompress.compressAndGetFile(

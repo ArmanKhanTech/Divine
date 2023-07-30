@@ -1,6 +1,7 @@
 import 'package:divine/screens/splash_screen.dart';
 import 'package:divine/services/user_service.dart';
 import 'package:divine/utilities/constants.dart';
+import 'package:divine/utilities/event_handlers/app_life_cycle_event_handler.dart';
 import 'package:divine/utilities/no_thumb_scrollbar.dart';
 import 'package:divine/utilities/providers.dart';
 import 'package:divine/view_models/theme/theme_provider.dart';
@@ -12,7 +13,6 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
-import 'event_handlers/app_life_cycle_event_handler.dart';
 import 'firebase_options.dart';
 
 void main() async {

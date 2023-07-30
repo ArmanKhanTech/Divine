@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../../components/text_form_builder.dart';
 import '../../models/user_model.dart';
-import '../../regex/regex.dart';
+import '../../utilities/regex/regex.dart';
 import '../../utilities/firebase.dart';
 import '../../view_models/screens/edit_profile_view_model.dart';
 import '../../widgets/progress_indicators.dart';
@@ -148,7 +148,6 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
       );
     }
 
-    // UI of Edit Profile.
     return FlutterWebFrame(
       builder: (context) {
         return LoadingOverlay(
@@ -182,7 +181,6 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
               leading: IconButton(
                 icon: const Icon(CupertinoIcons.chevron_back),
                 onPressed: () {
-                  // Reset post onBackPressed.
                   viewModel.resetEditProfile();
                   Navigator.of(context).pop();
                 },
