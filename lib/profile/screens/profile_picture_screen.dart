@@ -7,7 +7,7 @@ import 'package:flutter_web_frame/flutter_web_frame.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
-import '../widgets/progress_indicators.dart';
+import '../../widgets/progress_indicators.dart';
 
 class ProfilePictureScreen extends StatefulWidget{
   const ProfilePictureScreen({super.key});

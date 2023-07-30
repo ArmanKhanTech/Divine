@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import '../models/post_model.dart';
-import '../utilities/firebase.dart';
-import '../widgets/progress_indicators.dart';
+import '../../models/post_model.dart';
+import '../../utilities/firebase.dart';
+import '../../widgets/progress_indicators.dart';
 
 class ListPosts extends StatefulWidget {
   final userId, username;

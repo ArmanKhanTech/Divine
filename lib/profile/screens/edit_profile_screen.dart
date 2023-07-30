@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:divine/screens/profile_picture_screen.dart';
+import 'package:divine/profile/screens/profile_picture_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,14 +7,13 @@ import 'package:flutter_web_frame/flutter_web_frame.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
-import '../components/text_form_builder.dart';
-import '../models/user_model.dart';
-import '../regex/regex.dart';
-import '../utilities/firebase.dart';
-import '../view_models/screens/edit_profile_view_model.dart';
-import '../widgets/progress_indicators.dart';
+import '../../components/text_form_builder.dart';
+import '../../models/user_model.dart';
+import '../../regex/regex.dart';
+import '../../utilities/firebase.dart';
+import '../../view_models/screens/edit_profile_view_model.dart';
+import '../../widgets/progress_indicators.dart';
 
-// Edit Profile Screen.
 class EditProfileScreen extends StatefulWidget{
   final UserModel? user;
   const EditProfileScreen({super.key, this.user});
@@ -27,6 +26,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
   UserModel? user;
 
   String currentUid() {
+
     return auth.currentUser!.uid;
   }
 
@@ -35,6 +35,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
     EditProfileViewModel viewModel = Provider.of<EditProfileViewModel>(context);
 
     buildForm(EditProfileViewModel viewModel, BuildContext context) {
+
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Form(
@@ -87,7 +88,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
               ),
               const SizedBox(height: 10.0),
               TextFormBuilder(
-                  capitalization: false,
+                  capitalization: true,
                   initialValue: widget.user!.bio,
                   enabled: !viewModel.loading,
                   prefix: CupertinoIcons.info_circle_fill,

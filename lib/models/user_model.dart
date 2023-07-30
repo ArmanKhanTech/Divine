@@ -40,7 +40,7 @@ class UserModel{
         this.userHashtags});
 
   UserModel.fromJson(Map<String, dynamic> json) {
-    username = json['name'];
+    username = json['username'];
     email = json['email'];
     country = json['country'];
     photoUrl = json['photoUrl'];
@@ -60,7 +60,7 @@ class UserModel{
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['name'] = username;
+    data['username'] = username;
     data['country'] = country;
     data['email'] = email;
     data['photoUrl'] = photoUrl;

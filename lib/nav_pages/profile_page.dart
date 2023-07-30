@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:divine/screens/user_info_screen.dart';
+import 'package:divine/profile/screens/user_info_screen.dart';
 import 'package:divine/widgets/progress_indicators.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,9 +9,9 @@ import 'package:flutter/services.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../components/stream_grid_wrapper.dart';
 import '../models/user_model.dart';
-import '../screens/edit_profile_screen.dart';
-import '../screens/list_posts_screen.dart';
-import '../screens/settings_screen.dart';
+import '../profile/screens/edit_profile_screen.dart';
+import '../posts/screens/list_posts_screen.dart';
+import '../profile/screens/settings_screen.dart';
 import '../screens/splash_screen.dart';
 import '../utilities/firebase.dart';
 

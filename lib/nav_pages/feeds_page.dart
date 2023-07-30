@@ -1,4 +1,4 @@
-import 'package:divine/screens/new_post_screen.dart';
+import 'package:divine/posts/screens/new_post_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:divine/admobs/adHelper.dart';
@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
-import '../screens/chat_screen.dart';
+import '../chats/screens/chat_screen.dart';
 import '../stories/screens/confirm_story.dart';
 import '../stories/stories_editor/stories_editor.dart';
 import '../utilities/constants.dart';

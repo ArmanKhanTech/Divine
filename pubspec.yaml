@@ -85,24 +85,21 @@ dependencies:
   colorfilter_generator: ^0.0.8
   hand_signature: ^3.0.1
   fluttertoast: ^8.2.2
-  camerawesome: ^1.4.0
   camera: ^0.10.5+2
-  better_open_file: ^3.6.4
-  rxdart: ^0.27.7
-  google_mlkit_barcode_scanning:
-  google_mlkit_digital_ink_recognition:
-  google_mlkit_face_detection:
-  google_mlkit_face_mesh_detection:
-  google_mlkit_image_labeling:
-  google_mlkit_object_detection:
-  google_mlkit_pose_detection:
-  google_mlkit_selfie_segmentation:
-  google_mlkit_text_recognition:
+  #google_mlkit_commons: ^0.5.0
+  #google_mlkit_face_detection: ^0.8.0
+  #google_mlkit_face_mesh_detection: ^0.0.1
+  #google_mlkit_image_labeling: ^0.8.0
+  #google_mlkit_object_detection: ^0.9.0
+  #google_mlkit_text_recognition: ^0.9.0
+  #google_mlkit_digital_ink_recognition: ^0.9.0
+  #google_mlkit_pose_detection: ^0.8.0
+  #google_mlkit_selfie_segmentation: ^0.5.0
+  #google_mlkit_language_id: ^0.8.0
+  #google_mlkit_translation: ^0.8.0
+  #google_mlkit_smart_reply: ^0.8.0
+  #google_mlkit_entity_extraction: ^0.9.0
 
-  google_mlkit_entity_extraction:
-  google_mlkit_language_id:
-  google_mlkit_translation:
-  google_mlkit_smart_reply:
 
 dev_dependencies:
   flutter_test:

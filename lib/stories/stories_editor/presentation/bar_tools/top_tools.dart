@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import '../../../../camera/camera_main_view.dart';
 import '../../domain/notifiers/control_notifier.dart';
 import '../../domain/notifiers/draggable_widget_notifier.dart';
 import '../../domain/notifiers/painting_notifier.dart';
@@ -70,6 +69,7 @@ class _TopToolsState extends State<TopTools> {
                           });
                         }
                       }),
+
                 ToolButton(
                     backGroundColor: Colors.black12,
                     onTap: () async {
@@ -95,6 +95,7 @@ class _TopToolsState extends State<TopTools> {
                         )
                     )
                 ),
+
                 ToolButton(
                     backGroundColor: Colors.black12,
                     onTap: () => createGiphyItem(
@@ -122,7 +123,7 @@ class _TopToolsState extends State<TopTools> {
                         )
                     )
                 ),*/
-                ToolButton(
+                /*ToolButton(
                     backGroundColor: Colors.black12,
                     onTap: () {
                       Navigator.push(context,
@@ -133,7 +134,8 @@ class _TopToolsState extends State<TopTools> {
                       CupertinoIcons.camera,
                       color: Colors.white,
                       size: 25,
-                    )),
+                    )),*/
+
                 ToolButton(
                     backGroundColor: Colors.black12,
                     onTap: () {
@@ -148,6 +150,7 @@ class _TopToolsState extends State<TopTools> {
                         )
                     )
                 ),
+
                 ToolButton(
                   backGroundColor: Colors.black12,
                   onTap: () => controlNotifier.isTextEditing =
