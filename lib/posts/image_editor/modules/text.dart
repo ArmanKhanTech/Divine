@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../data/layer.dart';
-import '../image_editor_plus.dart';
+import '../image_editor.dart';
 import 'color_picker.dart';
 
 class TextEditorImage extends StatefulWidget {
@@ -149,7 +149,7 @@ class _TextEditorImageState extends State<TextEditorImage> {
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
                 Container(
                   color: Colors.transparent,
@@ -207,7 +207,7 @@ class _TextEditorImageState extends State<TextEditorImage> {
                         )
                       ]),
                       const SizedBox(
-                          height: 20.0
+                          height: 10.0
                       ),
                       Padding(
                           padding: const EdgeInsets.only(

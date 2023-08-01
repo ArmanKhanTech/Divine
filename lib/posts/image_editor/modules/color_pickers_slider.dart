@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../image_editor_plus.dart';
+import '../image_editor.dart';
 import 'color_picker.dart';
 
 class ColorPickersSlider extends StatefulWidget {
@@ -14,6 +13,7 @@ class _ColorPickersSliderState extends State<ColorPickersSlider> {
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(

@@ -11,11 +11,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../models/post_model.dart';
 import '../../models/user_model.dart';
-import '../../posts/image_editor/image_editor_plus.dart';
+import '../../posts/image_editor/image_editor.dart';
 import '../../posts/image_editor/utilities.dart';
 import '../../services/post_service.dart';
 import '../../services/user_service.dart';
-import '../../utilities/constants.dart';
 import '../../utilities/firebase.dart';
 
 class PostsViewModel extends ChangeNotifier{
@@ -75,6 +74,7 @@ class PostsViewModel extends ChangeNotifier{
         source: camera ? ImageSource.camera : ImageSource.gallery,
         preferredCameraDevice: CameraDevice.front,
       );
+      // TODO: Fix system mav colour android.
       image_cropper.CroppedFile? croppedFile = await image_cropper.ImageCropper().cropImage(
         sourcePath: pickedFile!.path,
         compressFormat: image_cropper.ImageCompressFormat.png,
@@ -89,9 +89,11 @@ class PostsViewModel extends ChangeNotifier{
         uiSettings: [
           image_cropper.AndroidUiSettings(
             toolbarTitle: 'Crop Profile Image',
-            toolbarColor: Constants.lightAccent,
+            toolbarColor: Colors.black,
             toolbarWidgetColor: Colors.white,
             initAspectRatio: image_cropper.CropAspectRatioPreset.square,
+            statusBarColor: Colors.black,
+            backgroundColor: Colors.black,
             lockAspectRatio: false,
           ),
           image_cropper.IOSUiSettings(

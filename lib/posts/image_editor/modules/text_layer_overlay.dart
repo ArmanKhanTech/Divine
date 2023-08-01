@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../data/layer.dart';
-import '../image_editor_plus.dart';
+import '../image_editor.dart';
 import 'color_picker.dart';
 
 class TextLayerOverlay extends StatefulWidget {
@@ -31,7 +31,7 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
   Widget build(BuildContext context) {
 
     return Container(
-      height: 400,
+      height: 420,
       decoration: const BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.only(
@@ -74,7 +74,7 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
                   widget.onUpdate();
                 });
               }),
-          const SizedBox(height: 10),
+          const SizedBox(height: 20),
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
@@ -124,7 +124,6 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
                       )
                   ),
                 ),
-                const SizedBox(width: 10),
               ]),
               const SizedBox(height: 10),
               Container(
@@ -171,7 +170,6 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 10),
               ]),
               const SizedBox(height: 10),
               Container(

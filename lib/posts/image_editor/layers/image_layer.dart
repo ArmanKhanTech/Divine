@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../data/layer.dart';
-import '../image_editor_plus.dart';
+import '../image_editor.dart';
 import '../modules/image_layer_overlay.dart';
 
 class ImageLayer extends StatefulWidget {

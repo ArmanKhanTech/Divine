@@ -5,10 +5,10 @@ import 'package:colorfilter_generator/colorfilter_generator.dart';
 import 'package:colorfilter_generator/presets.dart';
 import 'package:divine/posts/image_editor/utilities.dart';
 import 'package:extended_image/extended_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hand_signature/signature.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_editor/image_editor.dart' as image_editor;
@@ -16,6 +16,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:screenshot/screenshot.dart';
 import 'data/image_item.dart';
 import 'data/layer.dart';
+import 'data/color_filter_generator.dart' as color_filter_generator;
 import 'layers/background_blur_layer.dart';
 import 'layers/background_layer.dart';
 import 'layers/emoji_layer.dart';
@@ -35,7 +36,7 @@ Map<String, String> _translations = {};
 String i18n(String sourceString) =>
     _translations[sourceString.toLowerCase()] ?? sourceString;
 
-// TODO : Dont allow image above 2MB
+// TODO : Dont allow image above 2MB, implement image adjustment
 class ImageEditor extends StatelessWidget {
   final Uint8List? image;
 
@@ -269,7 +270,7 @@ class _MultiImageEditorState extends State<MultiImageEditor> {
                           onTap: () async {
                             var img = await Navigator.push(
                               context,
-                              MaterialPageRoute(
+                              CupertinoPageRoute(
                                 builder: (context) => SingleImageEditor(
                                   image: image,
                                 ),
@@ -342,7 +343,7 @@ class _MultiImageEditorState extends State<MultiImageEditor> {
                               onPressed: () async {
                                 Uint8List? editedImage = await Navigator.push(
                                   context,
-                                  MaterialPageRoute(
+                                  CupertinoPageRoute(
                                     builder: (context) => ImageFilters(
                                       image: image.image,
                                     ),
@@ -725,10 +726,31 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  BottomButton(
+                    icon: CupertinoIcons.slider_horizontal_3,
+                    onTap: () async {
+                      resetTransformation();
+                      LoadingScreen(scaffoldGlobalKey).show();
+                      var mergedImage = await getMergedImage();
+                      LoadingScreen(scaffoldGlobalKey).hide();
+                      if (!mounted) {
+
+                        return;
+                      }
+                      Uint8List? adjustedImage = await Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => ImageAdjust(
+                            image: mergedImage!,
+                          ),
+                        ),
+                      );
+                      setState(() {});
+                    },
+                  ),
                   if (widget.features.crop)
                     BottomButton(
                       icon: Icons.crop,
-                      text: i18n('Crop'),
                       onTap: () async {
                         resetTransformation();
                         LoadingScreen(scaffoldGlobalKey).show();
@@ -740,7 +762,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                         }
                         Uint8List? croppedImage = await Navigator.push(
                           context,
-                          MaterialPageRoute(
+                          CupertinoPageRoute(
                             builder: (context) => ImageCropper(
                               image: mergedImage!,
                               availableRatios: widget.cropAvailableRatios,
@@ -748,6 +770,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                           ),
                         );
                         if (croppedImage == null) {
+
                           return;
                         }
                         flipValue = 0;
@@ -760,11 +783,10 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                   if (widget.features.brush)
                     BottomButton(
                       icon: Icons.edit,
-                      text: i18n('Brush'),
                       onTap: () async {
                         var drawing = await Navigator.push(
                           context,
-                          MaterialPageRoute(
+                          CupertinoPageRoute(
                             builder: (context) => ImageEditorDrawing(
                               image: currentImage,
                             ),
@@ -790,11 +812,10 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                   if (widget.features.text)
                     BottomButton(
                       icon: Icons.text_fields,
-                      text: i18n('Text'),
                       onTap: () async {
                         TextLayerData? layer = await Navigator.push(
                           context,
-                          MaterialPageRoute(
+                          CupertinoPageRoute(
                             builder: (context) => const TextEditorImage(),
                           ),
                         );
@@ -811,7 +832,6 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                   if (widget.features.flip)
                     BottomButton(
                       icon: Icons.flip,
-                      text: i18n('Flip'),
                       onTap: () {
                         setState(() {
                           flipValue = flipValue == 0 ? math.pi : 0;
@@ -821,7 +841,6 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                   if (widget.features.rotate)
                     BottomButton(
                       icon: Icons.rotate_left,
-                      text: i18n('Rotate left'),
                       onTap: () {
                         var t = currentImage.width;
                         currentImage.width = currentImage.height;
@@ -834,7 +853,6 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                   if (widget.features.rotate)
                     BottomButton(
                       icon: Icons.rotate_right,
-                      text: i18n('Rotate right'),
                       onTap: () {
                         var t = currentImage.width;
                         currentImage.width = currentImage.height;
@@ -846,7 +864,6 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                   if (widget.features.blur)
                     BottomButton(
                       icon: Icons.blur_on,
-                      text: i18n('Blur'),
                       onTap: () {
                         var blurLayer = BackgroundBlurLayerData(
                           color: Colors.transparent,
@@ -888,7 +905,6 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                     height: 300,
                                     child: Column(
                                       children: [
-                                        const SizedBox(height: 10.0),
                                         Text(
                                           i18n('Slider Color'),
                                             style: const TextStyle(
@@ -906,8 +922,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                               colorListener: (int value) {
                                                 setS(() {
                                                   setState(() {
-                                                    blurLayer.color =
-                                                        Color(value);
+                                                    blurLayer.color = Color(value);
                                                   });
                                                 });
                                               },
@@ -925,8 +940,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                             onPressed: () {
                                               setState(() {
                                                 setS(() {
-                                                  blurLayer.color =
-                                                      Colors.transparent;
+                                                  blurLayer.color = Colors.transparent;
                                                 });
                                               });
                                             },
@@ -969,13 +983,15 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                             onPressed: () {
                                               setS(() {
                                                 setState(() {
-                                                  blurLayer.color =
-                                                      Colors.white;
+                                                  blurLayer.radius = 0.0;
                                                 });
                                               });
                                             },
                                           ),
                                         ]),
+                                        const SizedBox(
+                                          height: 10.0,
+                                        ),
                                         Text(
                                           i18n('Color Opacity'),
                                           style: const TextStyle(
@@ -1030,8 +1046,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                     ),
                   if (widget.features.filters)
                     BottomButton(
-                      icon: Icons.photo,
-                      text: i18n('Filter'),
+                      icon: Icons.filter_vintage,
                       onTap: () async {
                         resetTransformation();
                         LoadingScreen(scaffoldGlobalKey).show();
@@ -1041,7 +1056,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                         }
                         Uint8List? filterAppliedImage = await Navigator.push(
                           context,
-                          MaterialPageRoute(
+                          CupertinoPageRoute(
                             builder: (context) => ImageFilters(
                               image: mergedImage!,
                             ),
@@ -1063,8 +1078,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                     ),
                   if (widget.features.emoji)
                     BottomButton(
-                      icon: FontAwesomeIcons.faceSmile,
-                      text: i18n('Emoji'),
+                      icon: Icons.emoji_emotions_outlined,
                       onTap: () async {
                         EmojiLayerData? layer = await showModalBottomSheet(
                           context: context,
@@ -1114,14 +1128,12 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
 class BottomButton extends StatelessWidget {
   final VoidCallback? onTap, onLongPress;
   final IconData icon;
-  final String text;
 
   const BottomButton({
     super.key,
     this.onTap,
     this.onLongPress,
     required this.icon,
-    required this.text,
   });
 
   @override
@@ -1131,21 +1143,98 @@ class BottomButton extends StatelessWidget {
       onTap: onTap,
       onLongPress: onLongPress,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: Column(
-          children: [
-            Icon(
-              icon,
-              color: Colors.white,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              i18n(text),
-              style: const TextStyle(
-                color: Colors.white,
-              ),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Icon(
+          icon,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+}
+
+class ImageAdjust extends StatefulWidget{
+  final Uint8List image;
+
+  const ImageAdjust({
+    super.key,
+    required this.image,
+  });
+
+  @override
+  createState() => _ImageAdjustState();
+}
+
+class _ImageAdjustState extends State<ImageAdjust>{
+  ScreenshotController screenshotController = ScreenshotController();
+
+  Uint8List adjustedImage = Uint8List.fromList([]);
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Theme(
+      data: ImageEditor.theme,
+      child: Scaffold(
+        appBar: AppBar(
+          actions: [
+            IconButton(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              icon: const Icon(Icons.check),
+              onPressed: () async {
+                var data = await screenshotController.capture();
+                if (mounted) Navigator.pop(context, data);
+              },
             ),
           ],
+        ),
+        body: Center(
+          child: Screenshot(
+            controller: screenshotController,
+            child: Stack(
+              children: [
+                Image.memory(
+                  widget.image,
+                  fit: BoxFit.cover,
+                ),
+                /*ImageAdjustment(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(imageUrl),
+                      ),
+                    )
+                  )
+                )*/
+              ],
+            ),
+          ),
+        ),
+        bottomNavigationBar: Container(
+          alignment: Alignment.bottomCenter,
+          height: 86 + MediaQuery.of(context).padding.bottom,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          decoration: const BoxDecoration(
+            color: Colors.black87,
+            shape: BoxShape.rectangle,
+          ),
+          child: SafeArea(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  BottomButton(
+                    icon: CupertinoIcons.brightness,
+                    onTap: () async {
+                      setState(() {});
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -1203,11 +1292,12 @@ class _ImageCropperState extends State<ImageCropper> {
         appBar: AppBar(
           actions: [
             IconButton(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               icon: const Icon(Icons.check),
               onPressed: () async {
                 var state = _controller.currentState;
                 if (state == null) {
+
                   return;
                 }
                 var data = await cropImageDataWithNativeLibrary(state: state);
@@ -1428,7 +1518,6 @@ class _ImageFiltersState extends State<ImageFilters> {
                   fit: BoxFit.cover,
                   opacity: filterOpacity,
                   onProcess: (img) {
-                    // print('processing done');
                     filterAppliedImage = img;
                   },
                 ),
@@ -1450,6 +1539,9 @@ class _ImageFiltersState extends State<ImageFilters> {
                     max: 1,
                     divisions: 100,
                     value: filterOpacity,
+                    activeColor: Colors.white,
+                    inactiveColor: Colors.grey,
+                    thumbColor: Colors.white,
                     onChanged: (value) {
                       filterOpacity = value;
                       setState(() {});
@@ -1532,6 +1624,7 @@ class FilterAppliedImage extends StatelessWidget {
     if (onProcess != null) {
       if (filter.filters.isEmpty) {
         onProcess!(image);
+
         return;
       }
 
@@ -1613,6 +1706,7 @@ class _ImageEditorDrawingState extends State<ImageEditorDrawing> {
 
       if (skipNextEvent) {
         skipNextEvent = false;
+
         return;
       }
 
@@ -1625,6 +1719,7 @@ class _ImageEditorDrawingState extends State<ImageEditorDrawing> {
 
   @override
   Widget build(BuildContext context) {
+
     return Theme(
       data: ImageEditor.theme,
       child: Scaffold(
@@ -1667,6 +1762,7 @@ class _ImageEditorDrawingState extends State<ImageEditorDrawing> {
               ),
               onPressed: () {
                 if (undoList.isEmpty) {
+
                   return;
                 }
                 control.paths.add(undoList.removeLast());
@@ -1686,6 +1782,7 @@ class _ImageEditorDrawingState extends State<ImageEditorDrawing> {
                   width: widget.image.width,
                 );
                 if (!mounted) {
+
                   return;
                 }
 
@@ -1782,6 +1879,7 @@ class ColorButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return GestureDetector(
       onTap: () {
         onTap(color);

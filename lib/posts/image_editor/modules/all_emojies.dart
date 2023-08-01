@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../data/data.dart';
 import '../data/layer.dart';
-import '../image_editor_plus.dart';
+import '../image_editor.dart';
 
 class Emojies extends StatefulWidget {
   const Emojies({super.key});
