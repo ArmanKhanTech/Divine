@@ -25,7 +25,14 @@ class _TextEditorImageState extends State<TextEditorImage> {
       data: ImageEditor.theme,
       child: Scaffold(
         appBar: AppBar(
-          actions: <Widget>[
+          title: Text(
+            i18n('Text'),
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+            ),
+          ),          actions: <Widget>[
             IconButton(
               icon: Icon(FontAwesomeIcons.alignLeft,
                   color: align == TextAlign.left

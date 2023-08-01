@@ -436,94 +436,6 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
     super.dispose();
   }
 
-  List<Widget> get filterActions {
-
-    return [
-      const BackButton(color: Colors.white),
-      SizedBox(
-        width: MediaQuery.of(context).size.width - 48,
-        child: SingleChildScrollView(
-          reverse: true,
-          scrollDirection: Axis.horizontal,
-          child: Row(children: [
-            IconButton(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              icon: Icon(Icons.undo,
-                  color: layers.length > 1 || removedLayers.isNotEmpty
-                      ? Colors.white
-                      : Colors.grey),
-              onPressed: () {
-                if (removedLayers.isNotEmpty) {
-                  layers.add(removedLayers.removeLast());
-                  setState(() {});
-
-                  return;
-                }
-                if (layers.length <= 1) {
-                  return; // do not remove image layer
-                }
-                undoLayers.add(layers.removeLast());
-                setState(() {});
-              },
-            ),
-            IconButton(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              icon: Icon(Icons.redo,
-                  color: undoLayers.isNotEmpty ? Colors.white : Colors.grey),
-              onPressed: () {
-                if (undoLayers.isEmpty) {
-                  return;
-                }
-                layers.add(undoLayers.removeLast());
-                setState(() {});
-              },
-            ),
-            if (widget.features.pickFromGallery)
-              IconButton(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                icon: const Icon(Icons.photo, color: Colors.white),
-                onPressed: () async {
-                  var image =
-                  await picker.pickImage(source: ImageSource.gallery);
-                  if (image == null) {
-                    return;
-                  }
-                  loadImage(image);
-                },
-              ),
-            if (widget.features.captureFromCamera)
-              IconButton(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                icon: const Icon(Icons.camera_alt, color: Colors.white),
-                onPressed: () async {
-                  var image =
-                  await picker.pickImage(source: ImageSource.camera);
-                  if (image == null) {
-                    return;
-                  }
-                  loadImage(image);
-                },
-              ),
-            IconButton(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              icon: const Icon(Icons.check, color: Colors.white),
-              onPressed: () async {
-                resetTransformation();
-                setState(() {});
-                LoadingScreen(scaffoldGlobalKey).show();
-                var binaryIntList = await screenshotController.capture(pixelRatio: pixelRatio);
-                LoadingScreen(scaffoldGlobalKey).hide();
-                if (mounted) {
-                  Navigator.pop(context, binaryIntList);
-                }
-              },
-            ),
-          ]),
-        ),
-      ),
-    ];
-  }
-
   @override
   void initState() {
     if (widget.image != null) {
@@ -630,17 +542,93 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
     return Scaffold(
         key: scaffoldGlobalKey,
         backgroundColor: Colors.black,
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(0),
-          child: AppBar(
-            automaticallyImplyLeading: false,
-            systemOverlayStyle: const SystemUiOverlayStyle(
-              statusBarColor: Colors.black,
-              statusBarIconBrightness: Brightness.light,
-              systemNavigationBarColor: Colors.black,
-              systemNavigationBarIconBrightness: Brightness.light,
-            ),
+        appBar: AppBar(
+          systemOverlayStyle: const SystemUiOverlayStyle(
+            statusBarColor: Colors.black,
+            statusBarIconBrightness: Brightness.light,
+            systemNavigationBarColor: Colors.black,
+            systemNavigationBarIconBrightness: Brightness.light,
           ),
+          title: Text(
+            i18n('Edit'),
+            style: const TextStyle(color: Colors.white),
+          ),
+          iconTheme: const IconThemeData(color: Colors.white),
+          backgroundColor: Colors.black,
+          actions: [
+            IconButton(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              icon: Icon(Icons.undo,
+                  color: layers.length > 1 || removedLayers.isNotEmpty
+                      ? Colors.white
+                      : Colors.grey),
+              onPressed: () {
+                if (removedLayers.isNotEmpty) {
+                  layers.add(removedLayers.removeLast());
+                  setState(() {});
+
+                  return;
+                }
+                if (layers.length <= 1) {
+                  return; // do not remove image layer
+                }
+                undoLayers.add(layers.removeLast());
+                setState(() {});
+              },
+            ),
+            IconButton(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              icon: Icon(Icons.redo,
+                  color: undoLayers.isNotEmpty ? Colors.white : Colors.grey),
+              onPressed: () {
+                if (undoLayers.isEmpty) {
+                  return;
+                }
+                layers.add(undoLayers.removeLast());
+                setState(() {});
+              },
+            ),
+            if (widget.features.pickFromGallery)
+              IconButton(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                icon: const Icon(Icons.photo, color: Colors.white),
+                onPressed: () async {
+                  var image =
+                  await picker.pickImage(source: ImageSource.gallery);
+                  if (image == null) {
+                    return;
+                  }
+                  loadImage(image);
+                },
+              ),
+            if (widget.features.captureFromCamera)
+              IconButton(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                icon: const Icon(Icons.camera_alt, color: Colors.white),
+                onPressed: () async {
+                  var image =
+                  await picker.pickImage(source: ImageSource.camera);
+                  if (image == null) {
+                    return;
+                  }
+                  loadImage(image);
+                },
+              ),
+            IconButton(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              icon: const Icon(Icons.check, color: Colors.white),
+              onPressed: () async {
+                resetTransformation();
+                setState(() {});
+                LoadingScreen(scaffoldGlobalKey).show();
+                var binaryIntList = await screenshotController.capture(pixelRatio: pixelRatio);
+                LoadingScreen(scaffoldGlobalKey).hide();
+                if (mounted) {
+                  Navigator.pop(context, binaryIntList);
+                }
+              },
+            ),
+          ],
         ),
         body: Stack(children: [
           GestureDetector(
@@ -696,21 +684,6 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
               ),
             ),
           ),
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: SafeArea(
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.black,
-                ),
-                child: Row(
-                  children: filterActions,
-                ),
-              ),
-            ),
-          )
         ]),
         bottomNavigationBar: Container(
           alignment: Alignment.bottomCenter,
@@ -728,6 +701,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                 children: <Widget>[
                   BottomButton(
                     icon: CupertinoIcons.slider_horizontal_3,
+                    text: 'Adjust',
                     onTap: () async {
                       resetTransformation();
                       LoadingScreen(scaffoldGlobalKey).show();
@@ -751,6 +725,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                   if (widget.features.crop)
                     BottomButton(
                       icon: Icons.crop,
+                      text: 'Crop',
                       onTap: () async {
                         resetTransformation();
                         LoadingScreen(scaffoldGlobalKey).show();
@@ -779,39 +754,10 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                         setState(() {});
                       },
                     ),
-
-                  if (widget.features.brush)
-                    BottomButton(
-                      icon: Icons.edit,
-                      onTap: () async {
-                        var drawing = await Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => ImageEditorDrawing(
-                              image: currentImage,
-                            ),
-                          ),
-                        );
-                        if (drawing != null) {
-                          undoLayers.clear();
-                          removedLayers.clear();
-                          layers.add(
-                            ImageLayerData(
-                              image: ImageItem(drawing),
-                              offset: Offset(
-                                -currentImage.width / 4,
-                                -currentImage.height / 4,
-                              ),
-                            ),
-                          );
-                          setState(() {});
-                        }
-                      },
-                    ),
-
                   if (widget.features.text)
                     BottomButton(
                       icon: Icons.text_fields,
+                      text: 'Text',
                       onTap: () async {
                         TextLayerData? layer = await Navigator.push(
                           context,
@@ -832,6 +778,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                   if (widget.features.flip)
                     BottomButton(
                       icon: Icons.flip,
+                      text: 'Flip',
                       onTap: () {
                         setState(() {
                           flipValue = flipValue == 0 ? math.pi : 0;
@@ -841,6 +788,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                   if (widget.features.rotate)
                     BottomButton(
                       icon: Icons.rotate_left,
+                      text: 'Rotate',
                       onTap: () {
                         var t = currentImage.width;
                         currentImage.width = currentImage.height;
@@ -849,21 +797,10 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                         setState(() {});
                       },
                     ),
-
-                  if (widget.features.rotate)
-                    BottomButton(
-                      icon: Icons.rotate_right,
-                      onTap: () {
-                        var t = currentImage.width;
-                        currentImage.width = currentImage.height;
-                        currentImage.height = t;
-                        rotateValue++;
-                        setState(() {});
-                      },
-                    ),
                   if (widget.features.blur)
                     BottomButton(
                       icon: Icons.blur_on,
+                      text: 'Blur',
                       onTap: () {
                         var blurLayer = BackgroundBlurLayerData(
                           color: Colors.transparent,
@@ -1047,6 +984,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                   if (widget.features.filters)
                     BottomButton(
                       icon: Icons.filter_vintage,
+                      text: 'Filters',
                       onTap: () async {
                         resetTransformation();
                         LoadingScreen(scaffoldGlobalKey).show();
@@ -1079,6 +1017,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                   if (widget.features.emoji)
                     BottomButton(
                       icon: Icons.emoji_emotions_outlined,
+                      text: 'Emoji',
                       onTap: () async {
                         EmojiLayerData? layer = await showModalBottomSheet(
                           context: context,
@@ -1128,12 +1067,13 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
 class BottomButton extends StatelessWidget {
   final VoidCallback? onTap, onLongPress;
   final IconData icon;
+  final String text;
 
   const BottomButton({
     super.key,
     this.onTap,
     this.onLongPress,
-    required this.icon,
+    required this.icon, required this.text,
   });
 
   @override
@@ -1144,9 +1084,23 @@ class BottomButton extends StatelessWidget {
       onLongPress: onLongPress,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Icon(
-          icon,
-          color: Colors.white,
+        child: Column(
+          children: [
+            Icon(
+              icon,
+              color: Colors.white
+            ),
+            const SizedBox(
+              height: 4,
+            ),
+            Text(
+              text,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -1227,6 +1181,7 @@ class _ImageAdjustState extends State<ImageAdjust>{
                 children: <Widget>[
                   BottomButton(
                     icon: CupertinoIcons.brightness,
+                    text: 'Brightness',
                     onTap: () async {
                       setState(() {});
                     },
@@ -1290,6 +1245,14 @@ class _ImageCropperState extends State<ImageCropper> {
       data: ImageEditor.theme,
       child: Scaffold(
         appBar: AppBar(
+          title: Text(
+            i18n('Crop'),
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
           actions: [
             IconButton(
               padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -1492,6 +1455,14 @@ class _ImageFiltersState extends State<ImageFilters> {
       data: ImageEditor.theme,
       child: Scaffold(
         appBar: AppBar(
+          title: Text(
+            i18n('Filters'),
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
           actions: [
             IconButton(
               padding: const EdgeInsets.symmetric(horizontal: 8),
