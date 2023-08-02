@@ -9,7 +9,7 @@ import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../components/pass_form_builder.dart';
-import '../utilities/regex/regex.dart';
+import '../utilities/regex.dart';
 import '../view_models/auth/register_view_model.dart';
 
 class RegisterPage extends StatefulWidget {

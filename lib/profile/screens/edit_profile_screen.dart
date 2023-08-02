@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../../components/text_form_builder.dart';
 import '../../models/user_model.dart';
-import '../../utilities/regex/regex.dart';
+import '../../utilities/regex.dart';
 import '../../utilities/firebase.dart';
 import '../../view_models/screens/edit_profile_view_model.dart';
 import '../../widgets/progress_indicators.dart';
