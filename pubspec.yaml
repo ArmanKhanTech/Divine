@@ -87,6 +87,7 @@ dependencies:
   fluttertoast: ^8.2.2
   camera: ^0.10.5+2
   video_player: 2.7.0
+  gallery_saver: ^2.3.2
   #google_mlkit_commons: ^0.5.0
   #google_mlkit_face_detection: ^0.8.0
   #google_mlkit_face_mesh_detection: ^0.0.1

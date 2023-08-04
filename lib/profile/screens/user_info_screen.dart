@@ -24,7 +24,7 @@ class _UserInfoScreenState extends State<UserInfoScreen>{
         title: GradientText(
           'User Info',
           style: const TextStyle(
-            fontSize: 25,
+            fontSize: 30,
             fontWeight: FontWeight.w300,
           ), colors: const [
           Colors.blue,

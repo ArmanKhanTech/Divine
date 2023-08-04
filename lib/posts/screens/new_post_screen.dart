@@ -40,7 +40,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                 'New Post',
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 25.0,
+                  fontSize: 30.0,
                 ), colors: const [
                 Colors.blue,
                 Colors.purple,

@@ -18,7 +18,6 @@ import '../view_models/user/story_view_model.dart';
 import '../widgets/progress_indicators.dart';
 import '../widgets/story_widget.dart';
 
-// FeedsScreen.
 class FeedsPage extends StatefulWidget{
   const FeedsPage({super.key});
 
@@ -419,6 +418,8 @@ class _FeedsPageState extends State<FeedsPage>{
           const SizedBox(width: 10.0),
         ],
       ),
+      extendBodyBehindAppBar: false,
+      extendBody: false,
       body: RefreshIndicator(
         color: Theme.of(context).colorScheme.secondary,
         onRefresh: () =>

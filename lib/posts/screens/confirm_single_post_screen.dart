@@ -149,7 +149,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
             title: GradientText(
               'Upload Post',
               style: const TextStyle(
-                fontSize: 25,
+                fontSize: 30,
                 fontWeight: FontWeight.w300,
               ), colors: const [
               Colors.blue,

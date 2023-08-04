@@ -37,7 +37,7 @@ class _SettingsScreenState extends State<SettingsScreen>{
         title: GradientText(
           'Settings',
           style: const TextStyle(
-            fontSize: 25,
+            fontSize: 30,
             fontWeight: FontWeight.w300,
           ), colors: const [
           Colors.blue,

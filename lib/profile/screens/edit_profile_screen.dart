@@ -159,22 +159,15 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
             key: viewModel.editProfileScaffoldKey,
             appBar: AppBar(
               backgroundColor: Theme.of(context).colorScheme.background,
-              title: Column(
-                children: [
-                  const SizedBox(
-                    height: 3.0,
-                  ),
-                  GradientText(
-                    'Edit Profile',
-                    style: const TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.w300,
-                    ), colors: const [
-                    Colors.blue,
-                    Colors.purple,
-                  ],
-                  ),
-                ],
+              title: GradientText(
+                'Edit Profile',
+                style: const TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w300,
+                ), colors: const [
+                Colors.blue,
+                Colors.purple,
+              ],
               ),
               centerTitle: true,
               automaticallyImplyLeading: false,

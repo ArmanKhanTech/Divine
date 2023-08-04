@@ -161,22 +161,15 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                   statusBarColor: Colors.transparent
                 ),
                 backgroundColor: Theme.of(context).colorScheme.background,
-                title: Column(
-                  children: [
-                    const SizedBox(
-                      height: 3.0,
-                    ),
-                    GradientText(
-                      'Profile Picture',
-                      style: const TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w300,
-                      ), colors: const [
-                          Colors.blue,
-                          Colors.purple,
-                      ],
-                    ),
-                  ],
+                title: GradientText(
+                  'Profile Picture',
+                  style: const TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w300,
+                  ), colors: const [
+                  Colors.blue,
+                  Colors.purple,
+                ],
                 ),
                 centerTitle: true,
                 automaticallyImplyLeading: false,

@@ -51,7 +51,7 @@ class _ConfirmStoryState extends State<ConfirmStory> {
           title: GradientText(
             'Upload Story',
             style: const TextStyle(
-              fontSize: 25,
+              fontSize: 30,
               fontWeight: FontWeight.w300,
             ), colors: const [
             Colors.blue,

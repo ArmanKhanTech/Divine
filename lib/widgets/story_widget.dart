@@ -11,7 +11,7 @@ import '../utilities/firebase.dart';
 class StoryWidget extends StatelessWidget {
   const StoryWidget({Key? key}) : super(key: key);
 
-  // TODO: Sort stories by time i.e viewed stories at last.
+  // TODO: Sort stories by time i.e viewed stories at last, tags, location, tagged stories within stories.
   @override
   Widget build(BuildContext context) {
     int storyCounter = 0;

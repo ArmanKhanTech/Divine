@@ -254,7 +254,7 @@ class _ProfilePageState extends State<ProfilePage> {
         title: widget.profileId == auth.currentUser!.uid ? GradientText(
           'Your Profile',
           style: const TextStyle(
-            fontSize: 25,
+            fontSize: 30,
             fontWeight: FontWeight.w300,
           ), colors: const [
               Colors.blue,
