@@ -4,11 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
-import '../nav_pages/activity_page.dart';
-import '../nav_pages/feeds_page.dart';
-import '../nav_pages/profile_page.dart';
-import '../nav_pages/reels_page.dart';
-import '../nav_pages/search_page.dart';
+import '../pages/activity_page.dart';
+import '../pages/feeds_page.dart';
+import '../pages/profile_page.dart';
+import '../pages/reels_page.dart';
+import '../pages/search_page.dart';
 import '../utilities/firebase.dart';
 
 class MainScreen extends StatefulWidget{

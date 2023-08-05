@@ -1,13 +1,12 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:camera/camera.dart';
-import 'package:divine/posts/screens/play_video_screen.dart';
+import 'package:divine/reels/screens/pick_from_gallery_screen_reels.dart';
+import 'package:divine/reels/screens/play_video_screen.dart';
 import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gallery_saver/gallery_saver.dart';
 import 'package:lottie/lottie.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:video_player/video_player.dart';
@@ -19,7 +18,8 @@ class NewReelsScreen extends StatefulWidget {
   State<NewReelsScreen> createState() => _NewReelsScreenState();
 }
 
-class _NewReelsScreenState extends State<NewReelsScreen> with WidgetsBindingObserver{
+class _NewReelsScreenState extends State<NewReelsScreen> with
+    WidgetsBindingObserver, TickerProviderStateMixin{
   CameraController? controller;
 
   String recordingTime = '00:00';
@@ -33,6 +33,7 @@ class _NewReelsScreenState extends State<NewReelsScreen> with WidgetsBindingObse
   bool isVideoRecording = false;
   bool isVideoRecordingPaused = false;
   bool triggerTimerAnimation = false;
+  bool enableAudio = true;
 
   late final List<CameraDescription> cameras;
 
@@ -40,6 +41,10 @@ class _NewReelsScreenState extends State<NewReelsScreen> with WidgetsBindingObse
   VoidCallback? videoPlayerListener;
 
   XFile? videoFile;
+
+  double minAvailableExposureOffset = 0.0;
+  double maxAvailableExposureOffset = 0.0;
+  double currentExposureOffset = 0.0;
 
   Future<void> initCamera() async {
     cameras = await availableCameras();
@@ -51,7 +56,8 @@ class _NewReelsScreenState extends State<NewReelsScreen> with WidgetsBindingObse
     controller = CameraController(
       description,
       ResolutionPreset.high,
-      imageFormatGroup: ImageFormatGroup.jpeg
+      imageFormatGroup: ImageFormatGroup.jpeg,
+      enableAudio: enableAudio,
     );
 
     controller?.addListener(() {
@@ -66,6 +72,10 @@ class _NewReelsScreenState extends State<NewReelsScreen> with WidgetsBindingObse
 
         return;
       }
+      controller?.getMinExposureOffset().then(
+              (double value) => minAvailableExposureOffset = value);
+      controller?.getMaxExposureOffset()
+          .then((double value) => maxAvailableExposureOffset = value);
       setState(() {
         isCameraInitialized = true;
       });
@@ -137,23 +147,6 @@ class _NewReelsScreenState extends State<NewReelsScreen> with WidgetsBindingObse
           Colors.purple,
         ],
         ),
-        actions: [
-          Row(
-            children: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.drive_folder_upload_sharp,
-                  color: Colors.white,
-                  size: 30,
-                ),
-              ),
-              const SizedBox(
-                width: 10,
-              )
-            ],
-          )
-        ],
       ) : AppBar(
           automaticallyImplyLeading: false,
           systemOverlayStyle: const SystemUiOverlayStyle(
@@ -195,6 +188,11 @@ class _NewReelsScreenState extends State<NewReelsScreen> with WidgetsBindingObse
             child: Stack(
               children: [
                 cameraWidget(),
+                isVideoRecording == false ? Positioned(
+                    left: 15,
+                    bottom: MediaQuery.of(context).size.height * 0.5,
+                    child: leftControls()
+                ) : Container(),
                 Center(
                   child: triggerTimerAnimation ? Lottie.asset("assets/lottie/timer.json") : Container(),
                 ),
@@ -218,7 +216,13 @@ class _NewReelsScreenState extends State<NewReelsScreen> with WidgetsBindingObse
       return Container();
     }
 
-    return CameraPreview(controller!);
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: CameraPreview(controller!),
+    );
   }
 
   Widget bottomControls(){
@@ -399,6 +403,41 @@ class _NewReelsScreenState extends State<NewReelsScreen> with WidgetsBindingObse
     );
   }
 
+  Widget leftControls() {
+
+    return Container(
+      height: 100,
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        children: [
+          const Spacer(),
+          IconButton(
+            icon: Icon(enableAudio ? Icons.volume_up : Icons.volume_mute, color: Colors.white, size: 30),
+            color: Colors.white,
+            onPressed: controller != null ? onAudioModeButtonPressed : null,
+          ),
+          const Spacer(),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  CupertinoPageRoute(builder: (_) => const PickFromGalleryScreenReels()));
+            },
+            icon: const Icon(
+              Icons.add_circle_outline_outlined,
+              color: Colors.white,
+              size: 30,
+            ),
+          ),
+          const Spacer(),
+        ],
+      ),
+    );
+  }
+
   Future<void> startVideoRecording() async {
     final CameraController? cameraController = controller;
 
@@ -516,6 +555,13 @@ class _NewReelsScreenState extends State<NewReelsScreen> with WidgetsBindingObse
     String result = "$minuteLeft:$secondsLeft";
 
     return result;
+  }
+
+  void onAudioModeButtonPressed() {
+    enableAudio = !enableAudio;
+    if (controller != null) {
+      onNewCameraSelected(controller!.description);
+    }
   }
 
   showSnackBar({required String msg}) {

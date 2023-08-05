@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:divine/posts/screens/confirm_single_post_screen.dart';
@@ -13,6 +14,7 @@ import '../../models/post_model.dart';
 import '../../models/user_model.dart';
 import '../../posts/image_editor/image_editor.dart';
 import '../../posts/image_editor/utilities.dart';
+import '../../posts/screens/pick_from_gallery_screen_posts.dart';
 import '../../services/post_service.dart';
 import '../../services/user_service.dart';
 import '../../utilities/firebase.dart';
@@ -70,10 +72,19 @@ class PostsViewModel extends ChangeNotifier{
     loading = true;
     notifyListeners();
     try {
-      XFile? pickedFile = await picker.pickImage(
-        source: camera ? ImageSource.camera : ImageSource.gallery,
-        preferredCameraDevice: CameraDevice.front,
-      );
+      XFile? pickedFile;
+      if(camera == true){
+        pickedFile = await picker.pickImage(
+          source: camera ? ImageSource.camera : ImageSource.gallery,
+          preferredCameraDevice: CameraDevice.front,
+          imageQuality: 70,
+        );
+      } else {
+        await Navigator.push(context!, CupertinoPageRoute(builder: (_) => const PickFromGalleryScreenPosts()
+        )).then((file) {
+          pickedFile = file;
+        });
+      }
       // TODO: Fix system mav colour android.
       image_cropper.CroppedFile? croppedFile = await image_cropper.ImageCropper().cropImage(
         sourcePath: pickedFile!.path,
@@ -192,51 +203,61 @@ class PostsViewModel extends ChangeNotifier{
     loading = true;
     notifyListeners();
     try {
-      XFile? pickedFile = await picker.pickImage(
-        source: camera ? ImageSource.camera : ImageSource.gallery,
-        preferredCameraDevice: CameraDevice.front,
-        imageQuality: 75,
-      );
+      XFile? pickedFile;
+      if(camera == true){
+        pickedFile = await picker.pickImage(
+          source: camera ? ImageSource.camera : ImageSource.gallery,
+          preferredCameraDevice: CameraDevice.front,
+          imageQuality: 70,
+        );
+      } else {
+        await Navigator.push(context!, CupertinoPageRoute(builder: (_) => const PickFromGalleryScreenPosts()
+        )).then((file) {
+          pickedFile = file;
+        });
+      }
       if(pickedFile != null){
-        Uint8List? bytes = await pickedFile.readAsBytes();
-        final editedImage = await Navigator.push(
-          context!,
-          CupertinoPageRoute(
-            builder: (context) => SingleImageEditor(
-              image: bytes,
-              features: const ImageEditorFeatures(
-                captureFromCamera: true,
-                pickFromGallery: true,
-                crop: true,
-                rotate: true,
-                brush: false,
-                emoji: true,
-                filters: true,
-                flip: true,
-                text: true,
-                blur: true,
+        await Future.delayed(const Duration(seconds: 1), () async {
+          Uint8List? bytes = await pickedFile?.readAsBytes();
+          final editedImage = await Navigator.push(
+            context!,
+            CupertinoPageRoute(
+              builder: (context) => SingleImageEditor(
+                image: bytes,
+                features: const ImageEditorFeatures(
+                  captureFromCamera: true,
+                  pickFromGallery: true,
+                  crop: true,
+                  rotate: true,
+                  brush: false,
+                  emoji: true,
+                  filters: true,
+                  flip: true,
+                  text: true,
+                  blur: true,
+                ),
               ),
             ),
-          ),
-        );
-        final convertedImage = await ImageUtils.convert(
-          editedImage,
-          format: 'png',
-          quality: 75,
-        );
-        final tempDir = await getTemporaryDirectory();
-        mediaUrl = await File('${tempDir.path}/image.png').create();
-        mediaUrl?.writeAsBytesSync(convertedImage);
+          );
+          final convertedImage = await ImageUtils.convert(
+            editedImage,
+            format: 'png',
+            quality: 75,
+          );
+          final tempDir = await getTemporaryDirectory();
+          mediaUrl = await File('${tempDir.path}/image.png').create();
+          mediaUrl?.writeAsBytesSync(convertedImage);
+          Navigator.pushReplacement(
+              context,
+              CupertinoPageRoute(
+                builder: (context) => ConfirmSinglePostScreen(
+                  mediaUrl: mediaUrl!.path,
+                ),
+              )
+          );
+        });
         loading = false;
         notifyListeners();
-        Navigator.pushReplacement(
-            context,
-            CupertinoPageRoute(
-              builder: (context) => ConfirmSinglePostScreen(
-                mediaUrl: mediaUrl!.path,
-              ),
-            )
-        );
       } else {
         loading = false;
         notifyListeners();
@@ -244,7 +265,6 @@ class PostsViewModel extends ChangeNotifier{
     } catch (e) {
       loading = false;
       notifyListeners();
-      showSnackBar('Cancelled.', context);
     }
   }
 

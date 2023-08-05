@@ -9,7 +9,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../chats/screens/chat_screen.dart';
-import '../posts/screens/new_reels_screen.dart';
+import '../reels/screens/new_reels_screen.dart';
 import '../stories/screens/confirm_story.dart';
 import '../stories/stories_editor/stories_editor.dart';
 import '../utilities/constants.dart';

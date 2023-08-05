@@ -3,10 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gallery_media_picker/gallery_media_picker.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
+import '../../../../components/gallery_media_picker/src/data/models/gallery_params_model.dart';
+import '../../../../components/gallery_media_picker/src/presentation/pages/gallery_media_picker.dart';
 import '../../domain/models/editable_item.dart';
 import '../../domain/models/painting_model.dart';
 import '../../domain/notifiers/control_notifier.dart';
@@ -429,8 +430,7 @@ class _MainViewState extends State<MainView> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(Radius.circular(30)),
                               )
-                          )
-                          );
+                          ));
                         } else{
                           controlNotifier.mediaPath = path.first.path.toString();
                           if (controlNotifier.mediaPath.isNotEmpty) {

@@ -89,7 +89,7 @@ class _TopToolsState extends State<TopTools> {
                     child: const Padding(
                         padding: EdgeInsets.only(left: 1),
                         child: Icon(
-                          CupertinoIcons.square_arrow_down,
+                          CupertinoIcons.down_arrow,
                           color: Colors.white,
                           size: 28,
                         )

@@ -157,8 +157,11 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
               key: viewModel.postScaffoldKey,
               backgroundColor: Theme.of(context).colorScheme.background,
               appBar: AppBar(
-                systemOverlayStyle: const SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent
+                systemOverlayStyle: SystemUiOverlayStyle(
+                  statusBarColor: Colors.transparent,
+                  statusBarIconBrightness: Theme.of(context).colorScheme.background == Colors.white ? Brightness.dark : Brightness.light,
+                  systemNavigationBarColor: Theme.of(context).colorScheme.background,
+                  systemNavigationBarIconBrightness: Theme.of(context).colorScheme.background == Colors.white ? Brightness.dark : Brightness.light,
                 ),
                 backgroundColor: Theme.of(context).colorScheme.background,
                 title: GradientText(

@@ -536,22 +536,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "10.5.0"
-  gallery_media_picker:
-    dependency: "direct main"
-    description:
-      name: gallery_media_picker
-      sha256: "85054c3829f4c28e8ddfe75c132ae020576d102bf477eae221f2d953872e551e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.0"
-  gallery_saver:
-    dependency: "direct main"
-    description:
-      name: gallery_saver
-      sha256: df8b7e207ca12d64c71e0710a7ee3bc48aa7206d51cc720716fedb1543a66712
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.3.2"
   geocoding:
     dependency: "direct main"
     description:
@@ -993,7 +977,7 @@ packages:
     source: hosted
     version: "1.0.2"
   oktoast:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: oktoast
       sha256: fd5dd5c7dd02c41c56bdbdbc163351bd6cd59cba61c416daf255e35d1a86dce1
@@ -1073,7 +1057,7 @@ packages:
     source: hosted
     version: "5.4.0"
   photo_manager:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: photo_manager
       sha256: bdc4ab1fa9fb064d8ccfea6ab44119f55b220293d7ce2e19eb5a5f998db86c88
