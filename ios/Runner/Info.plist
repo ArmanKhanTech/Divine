@@ -30,7 +30,6 @@
 		<string>Main</string>
 		<key>GADApplicationIdentifier</key>
         <string>ca-app-pub-8676869226236884~5130351526</string>
-		<key>UISupportedInterfaceOrientations</key>
 		<key>NSCameraUsageDescription</key>
         <string>App requires to take pictures.</string>
         <key>NSMicrophoneUsageDescription</key>
@@ -39,6 +38,7 @@
         <string>Required to select pictures.</string>
         <key>NSLocationWhenInUseUsageDescription</key>
         <string>To enable GPS location access for Exif data</string>
+        <key>UISupportedInterfaceOrientations</key>
 		<array>
 			<string>UIInterfaceOrientationPortrait</string>
 			<string>UIInterfaceOrientationLandscapeLeft</string>
