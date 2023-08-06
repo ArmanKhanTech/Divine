@@ -28,8 +28,6 @@
 .pub-cache/
 .pub/
 /build/
-/lib/firebase_options.dart
-/lib/secret_keys.dart
 
 
 # Android related
