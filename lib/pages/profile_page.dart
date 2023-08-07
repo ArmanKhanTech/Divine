@@ -285,7 +285,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 onPressed: () {
                   openMenu(context);
                 },
-                iconSize: 25.0,
+                iconSize: 30.0,
                 color: Theme.of(context).colorScheme.secondary,
               ),
               const SizedBox(width: 10.0),

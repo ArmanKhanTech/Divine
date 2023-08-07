@@ -5,6 +5,7 @@ import 'package:divine/posts/screens/confirm_single_post_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_cropper/image_cropper.dart' as image_cropper;
@@ -77,7 +78,6 @@ class PostsViewModel extends ChangeNotifier{
         pickedFile = await picker.pickImage(
           source: camera ? ImageSource.camera : ImageSource.gallery,
           preferredCameraDevice: CameraDevice.front,
-          imageQuality: 70,
         );
       } else {
         await Navigator.push(context!, CupertinoPageRoute(builder: (_) => const PickFromGalleryScreenPosts()
@@ -89,7 +89,7 @@ class PostsViewModel extends ChangeNotifier{
       image_cropper.CroppedFile? croppedFile = await image_cropper.ImageCropper().cropImage(
         sourcePath: pickedFile!.path,
         compressFormat: image_cropper.ImageCompressFormat.png,
-        compressQuality: 20,
+        compressQuality: 25,
         aspectRatioPresets: [
           image_cropper.CropAspectRatioPreset.square,
           image_cropper.CropAspectRatioPreset.ratio3x2,
@@ -208,7 +208,6 @@ class PostsViewModel extends ChangeNotifier{
         pickedFile = await picker.pickImage(
           source: camera ? ImageSource.camera : ImageSource.gallery,
           preferredCameraDevice: CameraDevice.front,
-          imageQuality: 70,
         );
       } else {
         await Navigator.push(context!, CupertinoPageRoute(builder: (_) => const PickFromGalleryScreenPosts()
@@ -217,8 +216,9 @@ class PostsViewModel extends ChangeNotifier{
         });
       }
       if(pickedFile != null){
-        await Future.delayed(const Duration(seconds: 1), () async {
+        await Future.delayed(const Duration(milliseconds: 500), () async {
           Uint8List? bytes = await pickedFile?.readAsBytes();
+          bytes = await compressImage(bytes!, 50);
           final editedImage = await Navigator.push(
             context!,
             CupertinoPageRoute(
@@ -266,6 +266,19 @@ class PostsViewModel extends ChangeNotifier{
       loading = false;
       notifyListeners();
     }
+  }
+
+  Future<Uint8List?> compressImage(Uint8List image, int quality) async {
+    var result = await FlutterImageCompress.compressWithList(
+      image,
+      minWidth: 1080,
+      minHeight: 720,
+      quality: quality,
+    );
+
+    print(image.length);
+    print(result.length);
+    return result;
   }
 
   setDescription(String val) {

@@ -1,7 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:divine/reels/screens/pick_from_gallery_screen_reels.dart';
-import 'package:divine/reels/screens/play_video_screen.dart';
 import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:video_player/video_player.dart';
+import '../video_editor/screens/video_editor.dart';
 
 class NewReelsScreen extends StatefulWidget {
   const NewReelsScreen({super.key});
@@ -290,8 +291,10 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
                               }),
                               if (video != null) {
                                 videoFile = video,
-                                Navigator.push(context, CupertinoPageRoute(
-                                    builder: (_) => PlayVideoScreen(filePath: videoFile!.path)))
+                                Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(builder: (BuildContext context) => VideoEditor(file: File(video.path)),
+                                ))
                               }
                             }
                           });

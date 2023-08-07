@@ -1,4 +1,4 @@
-import 'package:divine/reels/screens/play_video_screen.dart';
+import 'package:divine/reels/video_editor/screens/video_editor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -78,7 +78,7 @@ class _PickFromGalleryScreenReelsState extends State<PickFromGalleryScreenReels>
           } else{
             Navigator.push(
                 context,
-                CupertinoPageRoute(builder: (_) => PlayVideoScreen(filePath: path.first.path.toString())));
+                CupertinoPageRoute(builder: (_) => VideoEditor(file: path.first.file!)));
           }
         },
       ),

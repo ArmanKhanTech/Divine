@@ -1,11 +1,14 @@
 import 'dart:io';
+import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:video_player/video_player.dart';
 
-// TODO: Continue from here
+import '../video_editor/src/controller.dart';
+
+// TODO: Continue here
 class PlayVideoScreen extends StatefulWidget {
   final String filePath;
 
@@ -79,7 +82,7 @@ class _PlayVideoScreenState extends State<PlayVideoScreen> {
         builder: (context, state) {
           if (state.connectionState == ConnectionState.waiting) {
 
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: circularProgress(context, const Color(0xff00AEEF)));
           } else {
 
               return Padding(
@@ -93,8 +96,11 @@ class _PlayVideoScreenState extends State<PlayVideoScreen> {
                     ),
                     color: Colors.black,
                   ),
-                  height: MediaQuery.of(context).size.height * 0.6,
-                  child : VideoPlayer(videoPlayerController),
+                  height: MediaQuery.of(context).size.height * 0.65,
+                  child : ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: VideoPlayer(videoPlayerController),
+                  ),
                 )
               );
             }

@@ -55,8 +55,8 @@ dependencies:
   image_picker: ^1.0.2
   geolocator: ^9.0.2
   geocoding: ^2.1.0
-  image_cropper: ^4.0.1
-  firebase_app_check: ^0.1.5
+  image_cropper: ^5.0.0
+  firebase_app_check: ^0.1.5+1
   animations: ^2.0.7
   curved_navigation_bar: ^1.0.3
   story: ^0.8.0
@@ -75,6 +75,7 @@ dependencies:
   google_mobile_ads: ^3.0.0
   url_launcher: ^6.1.12
   blurrycontainer: 1.0.2
+  path: ^1.8.0
   path_provider: ^2.0.15
   font_awesome_flutter: ^10.5.0
   screenshot: ^2.1.0
@@ -86,8 +87,12 @@ dependencies:
   fluttertoast: ^8.2.2
   camera: ^0.10.5+2
   video_player: 2.7.0
-  photo_manager: ^2.6.0
+  photo_manager: ^2.7.1
   oktoast: ^3.3.1
+  transparent_image: ^2.0.1
+  video_thumbnail: ^0.5.3
+  fraction: ^5.0.1
+  ffmpeg_kit_flutter_min: ^5.1.0
   #google_mlkit_commons: ^0.5.0
   #google_mlkit_face_detection: ^0.8.0
   #google_mlkit_face_mesh_detection: ^0.0.1

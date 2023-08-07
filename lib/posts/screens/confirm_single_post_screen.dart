@@ -118,7 +118,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
 
     PostsViewModel viewModel = Provider.of<PostsViewModel>(context);
 
-    // TODO: Transparent navbar
+    // TODO: Search user while tagging
     return WillPopScope(
       onWillPop: () async {
         await exitDialog(viewModel: viewModel);
@@ -187,32 +187,39 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.width - 30,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: Colors.black,
-                  borderRadius: BorderRadius.all(
+                  borderRadius: const BorderRadius.all(
                     Radius.circular(20.0),
                   ),
+                  border: Border.all(
+                    color: Colors.blue,
+                    width: 1.0,
+                  )
                 ),
                 clipBehavior: Clip.hardEdge,
-                child: viewModel.imgLink != null ? CustomImage(
-                  imageUrl: viewModel.imgLink,
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.width - 30,
-                  fit: BoxFit.cover,
-                ) : viewModel.mediaUrl == null ? const Center(
-                  child: Text(
-                    'Upload a Photo',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Raleway',
-                      fontSize: 18.0,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20.0),
+                  child: viewModel.imgLink != null ? CustomImage(
+                    imageUrl: viewModel.imgLink,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.width - 30,
+                    fit: BoxFit.cover,
+                  ) : viewModel.mediaUrl == null ? const Center(
+                    child: Text(
+                      'Upload a Photo',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'Raleway',
+                        fontSize: 18.0,
+                      ),
                     ),
+                  ) : Image.file(
+                    viewModel.mediaUrl!,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.width - 30,
+                    fit: BoxFit.cover,
                   ),
-                ) : Image.file(
-                  viewModel.mediaUrl!,
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.width - 30,
-                  fit: BoxFit.cover,
                 )
               ),
               const SizedBox(height: 20.0),
@@ -236,6 +243,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                       )
                   )
                 ),
+                cursorColor: Colors.white,
                 maxLines: null,
                 onChanged: (val) => viewModel.setDescription(val),
               ),
@@ -273,6 +281,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                     onPressed: () => viewModel.getLocation(),
                   ),
                 ),
+                cursorColor: Colors.white,
                 maxLines: null,
                 onChanged: (val) => viewModel.setLocation(val),
               ),
@@ -299,6 +308,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                         )
                     )
                 ),
+                cursorColor: Colors.white,
                 maxLines: null,
                 onChanged: (val) => viewModel.setMentions(val),
               ),
@@ -323,6 +333,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                         )
                     )
                 ),
+                cursorColor: Colors.white,
                 maxLines: null,
                 onChanged: (val) => viewModel.setHashtags(val),
               ),
