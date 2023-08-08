@@ -45,7 +45,9 @@ class TrimTimeline extends StatelessWidget {
 
               return Text(
                 '$text$localSeconds',
-                style: textStyle ?? Theme.of(context).textTheme.bodySmall,
+                style: const TextStyle(
+                  color: Colors.grey,
+                ),
               );
             }),
           ),

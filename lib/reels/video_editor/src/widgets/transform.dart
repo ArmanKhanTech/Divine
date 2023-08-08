@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../models/transform_data.dart';
 
 class CropTransform extends StatelessWidget {

@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:divine/reels/video_editor/screens/text_overlay_screen.dart';
+import 'package:divine/reels/video_editor/src/widgets/text/text_overlay_bottom_sheet.dart';
 import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +28,10 @@ class VideoEditor extends StatefulWidget {
 class _VideoEditorState extends State<VideoEditor> {
   final exportingProgress = ValueNotifier<double>(0.0);
   final isExporting = ValueNotifier<bool>(false);
+
   final double height = 60;
+
+  bool isOnCover = false;
 
   late final VideoEditorController controller = VideoEditorController.file(
     widget.file,
@@ -82,10 +87,10 @@ class _VideoEditorState extends State<VideoEditor> {
         isExporting.value = false;
         if (!mounted) return;
 
-        showDialog(
+        /*showDialog(
           context: context,
           builder: (_) => VideoResultPopup(video: file),
-        );
+        );*/
       },
     );
   }
@@ -116,6 +121,27 @@ class _VideoEditorState extends State<VideoEditor> {
   @override
   Widget build(BuildContext context) {
 
+    void showBottomDialog() {
+      showModalBottomSheet(
+          context: context,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(20),
+              topLeft: Radius.circular(20),
+            ),
+          ),
+          builder: (BuildContext context) {
+
+            return SingleChildScrollView(
+                child: Container(
+                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: TextOverlayBottomSheet(controller: controller),
+                )
+            );
+          }
+      );
+    }
+
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -133,14 +159,14 @@ class _VideoEditorState extends State<VideoEditor> {
                         children: [
                           Expanded(
                             child: TabBarView(
-                              physics:
-                              const NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               children: [
                                 Stack(
                                   alignment: Alignment.center,
                                   children: [
                                     CropGridViewer.preview(
-                                        controller: controller),
+                                        controller: controller
+                                    ),
                                     AnimatedBuilder(
                                       animation: controller.video,
                                       builder: (_, __) => AnimatedOpacity(
@@ -165,6 +191,38 @@ class _VideoEditorState extends State<VideoEditor> {
                                         ),
                                       ),
                                     ),
+                                    controller.textOverlay == true ? Positioned(
+                                      left: controller.textx1,
+                                      top: controller.texty1,
+                                      child: GestureDetector(
+                                        onPanDown: (d) {
+                                          controller.settextx1Prev(controller.textx1);
+                                          controller.settexty1Prev(controller.texty1);
+                                        },
+                                        onPanUpdate: (details) {
+                                          setState(() {
+                                            controller.settextx1(details.localPosition.dx);
+                                            controller.settexty1(details.localPosition.dy);
+                                          });
+                                        },
+                                        onTap: () {
+                                          showBottomDialog();
+                                        },
+                                        child: Container(
+                                          height: 100,
+                                          width: 200,
+                                          color: Colors.blue,
+                                          child: Text(
+                                            'controller.text',
+                                            /*style: TextStyle(
+                                              color: controller.textColor,
+                                              fontSize: controller.textSize,
+                                              fontWeight: FontWeight.bold,
+                                            ),*/
+                                          ),
+                                        ),
+                                      ),
+                                    ) : Container(),
                                   ],
                                 ),
                                 CoverViewer(controller: controller)
@@ -172,7 +230,7 @@ class _VideoEditorState extends State<VideoEditor> {
                             ),
                           ),
                           Container(
-                            height: 200,
+                            height: 180,
                             margin: const EdgeInsets.only(top: 10),
                             child: Column(
                               children: [
@@ -193,8 +251,7 @@ class _VideoEditorState extends State<VideoEditor> {
                                       children: [
                                         Padding(
                                             padding: EdgeInsets.all(5),
-                                            child:
-                                            Icon(Icons.video_label, color: Colors.white)),
+                                            child: Icon(Icons.video_label, color: Colors.white)),
                                         Text('Cover', style: TextStyle(color: Colors.white))
                                       ],
                                     ),
@@ -248,6 +305,7 @@ class _VideoEditorState extends State<VideoEditor> {
   }
 
   Widget topNavBar() {
+
     return SafeArea(
       child: SizedBox(
         height: height,
@@ -256,24 +314,16 @@ class _VideoEditorState extends State<VideoEditor> {
             Expanded(
               child: IconButton(
                 onPressed: () => Navigator.of(context).pop(),
-                icon: const Icon(Icons.exit_to_app, color: Colors.white),
+                icon: const Icon(CupertinoIcons.back, color: Colors.white),
                 tooltip: 'Leave editor',
               ),
             ),
             const VerticalDivider(endIndent: 22, indent: 22, color: Colors.white),
             Expanded(
               child: IconButton(
-                onPressed: () => controller.rotate90Degrees(RotateDirection.left),
-                icon: const Icon(Icons.rotate_left, color: Colors.white),
-                tooltip: 'Rotate Anticlockwise',
-              ),
-            ),
-            Expanded(
-              child: IconButton(
-                onPressed: () =>
-                    controller.rotate90Degrees(RotateDirection.right),
+                onPressed: () => controller.rotate90Degrees(RotateDirection.right),
                 icon: const Icon(Icons.rotate_right, color: Colors.white),
-                tooltip: 'Rotate clockwise',
+                tooltip: 'Rotate Anticlockwise',
               ),
             ),
             Expanded(
@@ -281,11 +331,39 @@ class _VideoEditorState extends State<VideoEditor> {
                 onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute<void>(
-                    builder: (context) => CropPage(controller: controller),
+                    builder: (context) => CropScreen(controller: controller),
                   ),
                 ),
                 icon: const Icon(Icons.crop, color: Colors.white),
                 tooltip: 'Open crop screen',
+              ),
+            ),
+            Expanded(
+              child: IconButton(
+                onPressed: () =>
+                    controller.rotate90Degrees(RotateDirection.right),
+                icon: const Icon(Icons.music_note, color: Colors.white),
+                tooltip: 'Add audio',
+              ),
+            ),
+            Expanded(
+              child: IconButton(
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (context) => TextOverlayScreen(controller: controller),
+                  ),
+                ),
+                icon: const Icon(Icons.text_fields, color: Colors.white),
+                tooltip: 'Add text',
+              ),
+            ),
+            Expanded(
+              child: IconButton(
+                onPressed: () =>
+                    controller.rotate90Degrees(RotateDirection.right),
+                icon: const Icon(Icons.filter, color: Colors.white),
+                tooltip: 'Add filter',
               ),
             ),
             const VerticalDivider(endIndent: 22, indent: 22, color: Colors.white),
@@ -320,33 +398,37 @@ class _VideoEditorState extends State<VideoEditor> {
           final double pos = controller.trimPosition * duration;
 
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: height / 4),
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+              bottom: 10
+            ),
             child: Row(children: [
-              Text(formatter(Duration(seconds: pos.toInt()))),
+              Text(formatter(Duration(seconds: pos.toInt())), style: const TextStyle(color: Colors.white)),
               const Expanded(child: SizedBox()),
               AnimatedOpacity(
                 opacity: controller.isTrimming ? 1 : 0,
                 duration: kThemeAnimationDuration,
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  Text(formatter(controller.startTrim)),
-                  const SizedBox(width: 10),
-                  Text(formatter(controller.endTrim)),
+                  Text('${formatter(controller.startTrim)} - ', style: const TextStyle(color: Colors.white)),
+                  Text(formatter(controller.endTrim), style: const TextStyle(color: Colors.white)),
                 ]),
               ),
             ]),
           );
         },
       ),
-      Container(
+      SizedBox(
         width: MediaQuery.of(context).size.width,
-        margin: EdgeInsets.symmetric(vertical: height / 4),
         child: TrimSlider(
           controller: controller,
           height: height,
           horizontalMargin: height / 4,
+          hasHaptic: true,
           child: TrimTimeline(
             controller: controller,
             padding: const EdgeInsets.only(top: 10),
+            quantity: 8,
           ),
         ),
       )

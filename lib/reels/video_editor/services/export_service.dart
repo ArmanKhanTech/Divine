@@ -4,7 +4,6 @@ import 'package:ffmpeg_kit_flutter_min/ffmpeg_kit_config.dart';
 import 'package:ffmpeg_kit_flutter_min/ffmpeg_session.dart';
 import 'package:ffmpeg_kit_flutter_min/return_code.dart';
 import 'package:ffmpeg_kit_flutter_min/statistics.dart';
-
 import '../src/export/ffmpeg_export_config.dart';
 
 class ExportService {

@@ -3,7 +3,6 @@ import 'package:divine/reels/video_editor/src/utilities/helpers.dart';
 import 'package:divine/reels/video_editor/src/utilities/thumbnails.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-
 import 'models/cover_data.dart';
 import 'models/cover_style.dart';
 import 'models/crop_style.dart';
@@ -23,7 +22,6 @@ class VideoMinDurationError extends Error {
 enum RotateDirection { left, right }
 
 const Offset maxOffset = Offset(1.0, 1.0);
-
 const Offset minOffset = Offset.zero;
 
 class VideoEditorController extends ChangeNotifier {
@@ -49,7 +47,7 @@ class VideoEditorController extends ChangeNotifier {
         )),
         trimStyle = trimStyle ?? TrimSliderStyle(),
         assert(maxDuration > minDuration,
-            'The maximum duration must be bigger than the minimum duration');
+            'The maximum duration must be bigger than the minimum duration.');
 
   int _rotation = 0;
 
@@ -61,6 +59,25 @@ class VideoEditorController extends ChangeNotifier {
 
   double _minTrim = minOffset.dx;
   double _maxTrim = maxOffset.dx;
+
+  double textx1 = 100;
+  double texty1 = 100;
+
+  double textx1Prev = 100;
+  double texty1Prev = 100;
+
+  String text = '';
+
+  TextAlign textAlign = TextAlign.left;
+
+  Color textColor = Colors.white;
+  Color textBgColor = Colors.transparent;
+
+  double textBgColorOpacity = 0;
+
+  double textSize = 25;
+
+  bool textOverlay = false;
 
   Offset _minCrop = minOffset;
   Offset _maxCrop = maxOffset;
@@ -90,6 +107,76 @@ class VideoEditorController extends ChangeNotifier {
   double get videoHeight => videoDimension.height;
   double get minTrim => _minTrim;
   double get maxTrim => _maxTrim;
+
+  double get textx1Value => textx1;
+  double get texty1Value => texty1;
+
+  double get textx1PrevValue => textx1Prev;
+  double get texty1PrevValue => texty1Prev;
+
+  String get textValue => text;
+
+  TextAlign get textAlignValue => textAlign;
+
+  Color get textColorValue => textColor;
+  Color get textBgColorValue => textBgColor;
+
+  bool get textOverlayValue => textOverlay;
+
+  double get textBgColorOpacityValue => textBgColorOpacity;
+
+  void settextx1Prev(double value) {
+    textx1Prev = value;
+    print(textx1Prev);
+    notifyListeners();
+  }
+
+  void settexty1Prev(double value) {
+    texty1Prev = value;
+    print(texty1Prev);
+    notifyListeners();
+  }
+
+  void settextx1(double value) {
+    textx1 = value + textx1Prev;
+    print(textx1);
+    notifyListeners();
+  }
+
+  void settexty1(double value) {
+    texty1 = value + texty1Prev;
+    print(texty1);
+    notifyListeners();
+  }
+
+  void settextBgColorOpacity(double value) {
+    textBgColorOpacity = value;
+    print(textBgColorOpacity);
+    notifyListeners();
+  }
+
+  void settextOverlay(bool value) {
+    textOverlay = value;
+    print(textOverlay);
+    notifyListeners();
+  }
+
+  void settextBgColor(Color value) {
+    textBgColor = value;
+    print(textBgColor);
+    notifyListeners();
+  }
+
+  void settextColor(Color value) {
+    textColor = value;
+    print(textColor);
+    notifyListeners();
+  }
+
+  void settextSize(double value) {
+    textSize = value;
+    notifyListeners();
+  }
 
   Duration get startTrim => _trimStart;
   Duration get endTrim => _trimEnd;

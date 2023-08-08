@@ -38,6 +38,11 @@
         <string>Required to select pictures.</string>
         <key>NSLocationWhenInUseUsageDescription</key>
         <string>To enable GPS location access for Exif data</string>
+        <key>NSAppTransportSecurity</key>
+        <dict>
+          <key>NSAllowsArbitraryLoads</key>
+          <true/>
+        </dict>
         <key>UISupportedInterfaceOrientations</key>
 		<array>
 			<string>UIInterfaceOrientationPortrait</string>

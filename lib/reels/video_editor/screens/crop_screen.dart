@@ -4,8 +4,8 @@ import '../src/controller.dart';
 import '../src/models/crop_style.dart';
 import '../src/widgets/crop/crop_grid.dart';
 
-class CropPage extends StatelessWidget {
-  const CropPage({super.key, required this.controller});
+class CropScreen extends StatelessWidget {
+  const CropScreen({super.key, required this.controller});
 
   final VideoEditorController controller;
 

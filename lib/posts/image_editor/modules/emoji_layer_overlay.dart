@@ -54,7 +54,6 @@ class _EmojiLayerOverlayState extends State<EmojiLayerOverlay> {
                 ),
             ),
           ),
-          const SizedBox(height: 10),
           Slider(
               activeColor: Colors.white,
               inactiveColor: Colors.grey,

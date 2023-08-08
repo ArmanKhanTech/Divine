@@ -102,10 +102,10 @@ class _TextEditorImageState extends State<TextEditorImage> {
                       border: InputBorder.none,
                       contentPadding: const EdgeInsets.all(15),
                       hintText: Text(
-                        i18n('Enter text here'),
-                        style: TextStyle(
+                        i18n('Enter Text'),
+                        style: const TextStyle(
                           color: Colors.white,
-                          fontSize: slider,
+                          fontSize: 25,
                           fontWeight: FontWeight.bold,
                         ),
                       ).data,
@@ -255,7 +255,7 @@ class _TextEditorImageState extends State<TextEditorImage> {
                         TextButton(
                           onPressed: () {
                             setState(() {
-                              currentColor = const Color(0x00000001);
+                              currentColor = const Color(0xFFFFFFFF);
                             });
                           },
                           child: Text(
