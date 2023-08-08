@@ -121,6 +121,7 @@ class _CropGridViewerState extends State<CropGridViewer> with CropPreviewMixin {
 
   Rect expandedRect() {
     final expandedPosition = _expandedPosition(rect.value.center);
+
     return Rect.fromCenter(
         center: rect.value.center,
         width: rect.value.width + expandedPosition.width,
@@ -317,6 +318,7 @@ class _CropGridViewerState extends State<CropGridViewer> with CropPreviewMixin {
   }
 
   Widget buildCropView(TransformData transform) {
+
     return Padding(
       padding: widget.margin,
       child: buildVideoView(

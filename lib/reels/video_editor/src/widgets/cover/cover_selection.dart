@@ -91,6 +91,7 @@ class _CoverSelectionState extends State<CoverSelection>
     final ratio = rect.value == Rect.zero
         ? widget.controller.video.value.aspectRatio
         : rect.value.size.aspectRatio;
+
     return ratio < 1.0
         ? Size(widget.size * ratio, widget.size)
         : Size(widget.size, widget.size / ratio);
@@ -104,6 +105,7 @@ class _CoverSelectionState extends State<CoverSelection>
     return StreamBuilder<List<CoverData>>(
         stream: stream,
         builder: (_, snapshot) {
+
           return snapshot.hasData
               ? ValueListenableBuilder<TransformData>(
                   valueListenable: transform,
@@ -135,6 +137,7 @@ class _CoverSelectionState extends State<CoverSelection>
                                 if (isSelected &&
                                     widget.selectedCoverBuilder != null) {
                                   final size = _calculateMaxLayout();
+
                                   return widget.selectedCoverBuilder!(
                                     coverThumbnail,
                                     widget.controller.isRotated
@@ -149,8 +152,7 @@ class _CoverSelectionState extends State<CoverSelection>
                         .toList()
                         .cast<Widget>(),
                   ),
-                )
-              : const SizedBox();
+                ) : const SizedBox();
         });
   }
 

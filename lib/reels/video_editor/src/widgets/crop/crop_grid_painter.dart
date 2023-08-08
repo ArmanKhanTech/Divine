@@ -33,7 +33,6 @@ class CropGridPainter extends CustomPainter {
 
     final margin = showGrid ? 0.0 : 1.0;
 
-    // extract [rect] area from the canvas
     canvas.drawPath(
       Path.combine(
         PathOperation.difference,
@@ -71,6 +70,7 @@ class CropGridPainter extends CustomPainter {
   }
 
   Paint getPaintFromBoundary(CropBoundaries offset) {
+
     return Paint()
       ..color = (boundary == CropBoundaries.inside || offset == boundary)
           ? style.selectedBoundariesColor
@@ -95,7 +95,6 @@ class CropGridPainter extends CustomPainter {
       ),
       getPaintFromBoundary(CropBoundaries.topLeft),
     );
-
     canvas.drawRect(
       Rect.fromPoints(
         rect.topRight - Offset(length, 0.0),
@@ -110,7 +109,6 @@ class CropGridPainter extends CustomPainter {
       ),
       getPaintFromBoundary(CropBoundaries.topRight),
     );
-
     canvas.drawRect(
       Rect.fromPoints(
         rect.bottomRight - Offset(width, length),
@@ -125,7 +123,6 @@ class CropGridPainter extends CustomPainter {
       ),
       getPaintFromBoundary(CropBoundaries.bottomRight),
     );
-
     canvas.drawRect(
       Rect.fromPoints(
         rect.bottomLeft - Offset(-width, length),
@@ -140,7 +137,6 @@ class CropGridPainter extends CustomPainter {
       ),
       getPaintFromBoundary(CropBoundaries.bottomLeft),
     );
-
     if (showCenterRects) {
       canvas.drawRect(
         Rect.fromPoints(
@@ -149,7 +145,6 @@ class CropGridPainter extends CustomPainter {
         ),
         getPaintFromBoundary(CropBoundaries.topCenter),
       );
-
       canvas.drawRect(
         Rect.fromPoints(
           rect.bottomCenter + Offset(-length / 2, 0.0),
@@ -157,7 +152,6 @@ class CropGridPainter extends CustomPainter {
         ),
         getPaintFromBoundary(CropBoundaries.bottomCenter),
       );
-
       canvas.drawRect(
         Rect.fromPoints(
           rect.centerLeft + Offset(0.0, -length / 2),
@@ -165,7 +159,6 @@ class CropGridPainter extends CustomPainter {
         ),
         getPaintFromBoundary(CropBoundaries.centerLeft),
       );
-
       canvas.drawRect(
         Rect.fromPoints(
           rect.centerRight + Offset(-width, -length / 2),

@@ -47,7 +47,6 @@ class TopTextTools extends StatelessWidget {
                           'assets/icons/circular_gradient.png'
                         )),
                   ),
-
                   ToolButton(
                     onTap: editorNotifier.onAlignmentChange,
                     child: Transform.scale(
@@ -61,7 +60,6 @@ class TopTextTools extends StatelessWidget {
                           color: Colors.white,
                         )),
                   ),
-
                   ToolButton(
                     onTap: editorNotifier.onBackGroundChange,
                     child: Transform.scale(
@@ -76,7 +74,6 @@ class TopTextTools extends StatelessWidget {
                           ),
                         )),
                   ),
-
                   ToolButton(
                     onTap: () {
                       editorNotifier.isTextAnimation =
@@ -116,7 +113,6 @@ class TopTextTools extends StatelessWidget {
                           ),
                         )),
                   ),
-
                   ToolButton(
                     onTap: onDone,
                     padding: const EdgeInsets.symmetric(horizontal: 10),

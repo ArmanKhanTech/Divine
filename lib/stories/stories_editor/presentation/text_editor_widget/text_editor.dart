@@ -44,6 +44,7 @@ class _TextEditorState extends State<TextEditor> {
         color: Colors.transparent,
         child: Consumer2<ControlNotifier, TextEditingNotifier>(
           builder: (_, controlNotifier, editorNotifier, __) {
+
             return Scaffold(
               backgroundColor: Colors.transparent,
               resizeToAvoidBottomInset: false,
@@ -60,7 +61,6 @@ class _TextEditorState extends State<TextEditor> {
                           alignment: Alignment.center,
                           child: TextFieldWidget(),
                         ),
-
                         const Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
@@ -70,7 +70,6 @@ class _TextEditorState extends State<TextEditor> {
                               child: SizeSliderWidget()
                           ),
                         ),
-
                         SafeArea(
                           child: Align(
                               alignment: Alignment.topCenter,
@@ -79,7 +78,6 @@ class _TextEditorState extends State<TextEditor> {
                                     context, controlNotifier, editorNotifier),
                               )),
                         ),
-
                         Positioned(
                           child: Visibility(
                             visible: editorNotifier.isFontFamily &&
@@ -93,7 +91,6 @@ class _TextEditorState extends State<TextEditor> {
                             ),
                           ),
                         ),
-
                         Positioned(
                           child: Visibility(
                               visible: !editorNotifier.isFontFamily &&
@@ -106,7 +103,6 @@ class _TextEditorState extends State<TextEditor> {
                                 ),
                               )),
                         ),
-
                         Positioned(
                           child: Visibility(
                               visible: editorNotifier.isTextAnimation,

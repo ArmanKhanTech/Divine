@@ -66,11 +66,13 @@ abstract class FFmpegVideoEditorConfig {
     if (!isFiltersEnabled) return [];
     final List<String> filters = [cropCmd, scaleCmd, rotationCmd];
     filters.removeWhere((item) => item.isEmpty);
+
     return filters;
   }
 
   String filtersCmd(List<String> filters) {
     filters.removeWhere((item) => item.isEmpty);
+
     return filters.isNotEmpty ? "-vf '${filters.join(",")}'" : "";
   }
 
@@ -89,6 +91,7 @@ abstract class FFmpegVideoEditorConfig {
   double getFFmpegProgress(int time) {
     final double progressValue =
         time / controller.trimmedDuration.inMilliseconds;
+
     return progressValue.clamp(0.0, 1.0);
   }
 

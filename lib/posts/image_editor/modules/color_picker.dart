@@ -86,7 +86,7 @@ class _BarColorPickerState extends State<BarColorPicker> {
     } else {
       thumbTop = barHeight * percent;
     }
-    // build thumb
+
     var thumb = Positioned(
       left: thumbLeft,
       top: thumbTop,
@@ -108,7 +108,6 @@ class _BarColorPickerState extends State<BarColorPicker> {
       ),
     );
 
-    // build frame
     double frameWidth, frameHeight;
     if (horizontal) {
       frameWidth = barWidth + thumbRadius * 2;
@@ -119,7 +118,6 @@ class _BarColorPickerState extends State<BarColorPicker> {
     }
     Widget frame = SizedBox(width: frameWidth, height: frameHeight);
 
-    // build content
     Gradient gradient;
     double left, top;
     if (horizontal) {
@@ -311,10 +309,12 @@ class _CircleColorPickerState extends State<CircleColorPicker> {
   }
 
   double radiansToDegrees(double radians) {
+
     return (radians + pi) / pi * 180;
   }
 
   double degreesToRadians(double degrees) {
+
     return degrees / 180 * pi - pi;
   }
 }

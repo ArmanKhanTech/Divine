@@ -70,13 +70,10 @@ class _FeedsPageState extends State<FeedsPage>{
     super.dispose();
   }
 
-  // UI of FeedsScreen.
   @override
   Widget build(BuildContext context) {
-    // ViewModel of Stories.
     StoryViewModel viewModel = Provider.of<StoryViewModel>(context);
 
-    // Choose Dialog.
     chooseUpload(BuildContext context, StoryViewModel viewModel) {
 
       return showModalBottomSheet(

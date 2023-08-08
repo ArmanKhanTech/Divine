@@ -36,7 +36,6 @@ class _SizeSliderWidgetState extends State<SizeSliderWidget> {
                   size: Size(screenUtil.screenHeight,
                       (screenUtil.screenWidth).toDouble()),
                 )),
-
             AnimatedContainer(
               padding: EdgeInsets.only(left: _isChange ? 1 : 1, right: 2.1),
               duration: const Duration(milliseconds: 300),

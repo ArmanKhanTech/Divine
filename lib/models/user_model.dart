@@ -98,6 +98,7 @@ class UserHashtags {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['tag'] = tag;
     data['count'] = count;
+
     return data;
   }
 }

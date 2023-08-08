@@ -1,9 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-
 import '../model/giphy_repository.dart';
 
-/// Loads and renders a gif thumbnail image using a GiphyRepository and an index.
 class GiphyImageThumbnail extends StatefulWidget {
   final GiphyRepository repo;
   final int index;
@@ -36,6 +34,7 @@ class _GiphyImageThumbnailState extends State<GiphyImageThumbnail> {
   Widget build(BuildContext context) => FutureBuilder(
       future: _loadPreview,
       builder: (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
+
         if (!snapshot.hasData) {
           return widget.placeholder ??
               Container(
@@ -49,6 +48,7 @@ class _GiphyImageThumbnailState extends State<GiphyImageThumbnail> {
                 ),
               );
         }
+
         return Image.memory(snapshot.data!, fit: BoxFit.cover);
       });
 }

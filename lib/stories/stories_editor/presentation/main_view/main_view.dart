@@ -242,7 +242,6 @@ class _MainViewState extends State<MainView> {
                                                     },
                                                   );
                                                 }),
-
                                                 IgnorePointer(
                                                   ignoring: true,
                                                   child: Align(
@@ -287,7 +286,6 @@ class _MainViewState extends State<MainView> {
                                   ),
                                 ),
                               ),
-
                               if (itemProvider.draggableWidget.isEmpty &&
                                   !controlNotifier.isTextEditing &&
                                   paintingProvider.lines.isEmpty)
@@ -311,7 +309,6 @@ class _MainViewState extends State<MainView> {
                                     ),
                                   ),
                                 ),
-
                               Visibility(
                                 visible: !controlNotifier.isTextEditing &&
                                     !controlNotifier.isPainting,
@@ -335,21 +332,18 @@ class _MainViewState extends State<MainView> {
                                     )
                                 ),
                               ),
-
                               DeleteItem(
                                 activeItem: _activeItem,
                                 animationsDuration:
                                 const Duration(milliseconds: 300),
                                 isDeletePosition: _isDeletePosition,
                               ),
-
                               Visibility(
                                 visible: controlNotifier.isTextEditing,
                                 child: TextEditor(
                                   context: context,
                                 ),
                               ),
-
                               Visibility(
                                 visible: controlNotifier.isPainting,
                                 child: const Painting(),
@@ -357,7 +351,6 @@ class _MainViewState extends State<MainView> {
                             ],
                           ),
                         ),
-
                         if (!kIsWeb)
                           BottomTools(
                             contentKey: contentKey,
@@ -376,7 +369,6 @@ class _MainViewState extends State<MainView> {
                           ),
                       ],
                     ),
-
                     gallery: GalleryMediaPicker(
                       mediaPickerParams: MediaPickerParamsModel(
                         gridViewController: scrollProvider.gridController,

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:typed_data';
-import 'package:divine/stories/stories_editor/presentation/modal_gif_picker/src/model/repository.dart';
+import 'package:divine/stories/stories_editor/modal_gif_picker/src/model/repository.dart';
 import 'package:http/http.dart' as http;
 import '../../modal_gif_picker.dart';
 import '../widgets/giphy_render_image.dart';

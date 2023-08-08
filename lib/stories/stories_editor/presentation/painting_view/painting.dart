@@ -151,6 +151,7 @@ class _PaintingState extends State<Painting> {
             WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
               paintingNotifier.closeConnection();
             });
+
             return true;
           },
           child: Scaffold(
@@ -158,7 +159,6 @@ class _PaintingState extends State<Painting> {
             body: Stack(
               children: [
                 renderCurrentLine(context, paintingNotifier, controlNotifier),
-
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
@@ -166,9 +166,7 @@ class _PaintingState extends State<Painting> {
                     child: SizeSliderWidget(),
                   ),
                 ),
-
                 const SafeArea(child: TopPaintingTools()),
-
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Padding(

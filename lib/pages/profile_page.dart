@@ -17,6 +17,7 @@ import '../utilities/firebase.dart';
 
 class ProfilePage extends StatefulWidget {
   final profileId;
+
   const ProfilePage({super.key, this.profileId});
 
   @override

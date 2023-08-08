@@ -95,7 +95,6 @@ class _TopToolsState extends State<TopTools> {
                         )
                     )
                 ),
-
                 ToolButton(
                     backGroundColor: Colors.black12,
                     onTap: () => createGiphyItem(
@@ -135,7 +134,6 @@ class _TopToolsState extends State<TopTools> {
                       color: Colors.white,
                       size: 25,
                     )),*/
-
                 ToolButton(
                     backGroundColor: Colors.black12,
                     onTap: () {
@@ -150,7 +148,6 @@ class _TopToolsState extends State<TopTools> {
                         )
                     )
                 ),
-
                 ToolButton(
                   backGroundColor: Colors.black12,
                   onTap: () => controlNotifier.isTextEditing =

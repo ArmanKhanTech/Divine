@@ -10,8 +10,8 @@ import '../../domain/notifiers/draggable_widget_notifier.dart';
 import '../../domain/notifiers/painting_notifier.dart';
 import '../../domain/notifiers/text_editing_notifier.dart';
 import '../../domain/services/save_as_image.dart';
-import '../modal_gif_picker/modal_gif_picker.dart';
-import '../modal_gif_picker/src/model/client/rating.dart';
+import '../../modal_gif_picker/modal_gif_picker.dart';
+import '../../modal_gif_picker/src/model/client/rating.dart';
 import '../widgets/animated_on_tap_button.dart';
 import 'constants/app_enum.dart';
 

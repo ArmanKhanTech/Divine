@@ -52,6 +52,7 @@ class PostModel {
     data['username'] = username;
     data['tags'] = mentions;
     data['hashtags'] = hashtags;
+
     return data;
   }
 }

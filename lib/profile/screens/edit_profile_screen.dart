@@ -16,6 +16,7 @@ import '../../widgets/progress_indicators.dart';
 
 class EditProfileScreen extends StatefulWidget{
   final UserModel? user;
+
   const EditProfileScreen({super.key, this.user});
 
   @override

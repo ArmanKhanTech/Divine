@@ -24,8 +24,6 @@ class TrimSliderPainter extends CustomPainter {
       Radius.circular(style.borderRadius),
     );
 
-    // DRAW LEFT AND RIGHT BACKGROUNDS
-    // extract [rect] trimmed area from the canvas
     canvas.drawPath(
       Path.combine(
         PathOperation.difference,
@@ -94,7 +92,6 @@ class TrimSliderPainter extends CustomPainter {
     canvas.drawPath(
       Path.combine(
         PathOperation.union,
-        // DRAW TOP AND BOTTOM LINES
         Path()
           ..addRect(Rect.fromPoints(
             rect.topLeft,
@@ -106,7 +103,6 @@ class TrimSliderPainter extends CustomPainter {
               rect.bottomLeft,
             ),
           ),
-        // DRAW EDGES
         getEdgesBarPath(
           size,
           centerLeft: centerLeft,
@@ -130,7 +126,6 @@ class TrimSliderPainter extends CustomPainter {
   }) {
     if (style.borderRadius == 0) {
       return Path()
-        // LEFT EDGE
         ..addRect(
           Rect.fromCenter(
             center: centerLeft,
@@ -138,7 +133,6 @@ class TrimSliderPainter extends CustomPainter {
             height: size.height + style.lineWidth * 2,
           ),
         )
-        // RIGTH EDGE
         ..addRect(
           Rect.fromCenter(
             center: centerRight,
@@ -150,9 +144,7 @@ class TrimSliderPainter extends CustomPainter {
 
     final borderRadius = Radius.circular(style.borderRadius);
 
-    /// Return left and right edges, with a reversed border radius on the inside of the rect
     return Path()
-      // LEFT EDGE
       ..addPath(
         Path.combine(
           PathOperation.difference,
@@ -185,7 +177,6 @@ class TrimSliderPainter extends CustomPainter {
         ),
         Offset.zero,
       )
-      // RIGHT EDGE
       ..addPath(
         Path.combine(
           PathOperation.difference,
@@ -229,7 +220,6 @@ class TrimSliderPainter extends CustomPainter {
     required Offset centerLeft,
     required Offset centerRight,
   }) {
-    // DRAW RECT BORDERS
     canvas.drawRRect(
         RRect.fromRectAndRadius(
           Rect.fromCenter(
@@ -243,9 +233,7 @@ class TrimSliderPainter extends CustomPainter {
 
     paintIndicator(canvas, size);
 
-    // LEFT CIRCLE
     canvas.drawCircle(centerLeft, style.edgesSize, edges);
-    // RIGHT CIRCLE
     canvas.drawCircle(centerRight, style.edgesSize, edges);
 
     paintIcons(canvas, centerLeft: centerLeft, centerRight: centerRight);
@@ -256,7 +244,6 @@ class TrimSliderPainter extends CustomPainter {
       ..color = style.positionLineColor
       ..strokeWidth = style.positionLineWidth;
 
-    // DRAW VIDEO INDICATOR
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromPoints(
@@ -279,7 +266,6 @@ class TrimSliderPainter extends CustomPainter {
   }) {
     final halfIconSize = Offset(style.iconSize / 2, style.iconSize / 2);
 
-    // LEFT ICON
     if (style.leftIcon != null) {
       TextPainter leftArrow = TextPainter(textDirection: TextDirection.rtl);
       leftArrow.text = TextSpan(
@@ -294,7 +280,6 @@ class TrimSliderPainter extends CustomPainter {
       leftArrow.paint(canvas, centerLeft - halfIconSize);
     }
 
-    // RIGHT ICON
     if (style.rightIcon != null) {
       TextPainter rightArrow = TextPainter(textDirection: TextDirection.rtl);
       rightArrow.text = TextSpan(

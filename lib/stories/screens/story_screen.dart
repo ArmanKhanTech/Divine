@@ -84,7 +84,6 @@ class _StoryScreenState extends State<StoryScreen> {
                     child: Stack(
                       children: [
                        Center(
-                          // load image from storage.
                           child: getImage(stats.url!)
                         ),
                         Positioned(

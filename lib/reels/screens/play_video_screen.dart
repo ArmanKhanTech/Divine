@@ -6,8 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:video_player/video_player.dart';
 
-import '../video_editor/src/controller.dart';
-
 // TODO: Continue here
 class PlayVideoScreen extends StatefulWidget {
   final String filePath;

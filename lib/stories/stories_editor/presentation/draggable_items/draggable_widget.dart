@@ -9,7 +9,7 @@ import '../../domain/notifiers/control_notifier.dart';
 import '../../domain/notifiers/draggable_widget_notifier.dart';
 import '../../domain/notifiers/gradient_notifier.dart';
 import '../../domain/notifiers/text_editing_notifier.dart';
-import '../modal_gif_picker/src/widgets/giphy_render_image.dart';
+import '../../modal_gif_picker/src/widgets/giphy_render_image.dart';
 import '../utilities/constants/app_enum.dart';
 import '../widgets/animated_on_tap_button.dart';
 import '../widgets/file_image_bg.dart';
@@ -92,7 +92,6 @@ class DraggableWidget extends StatelessWidget {
           ),
         );
         break;
-
       case ItemType.image:
         if (controlProvider.mediaPath.isNotEmpty) {
           overlayWidget = SizedBox(
@@ -110,7 +109,6 @@ class DraggableWidget extends StatelessWidget {
         }
 
         break;
-
       case ItemType.gif:
         overlayWidget = SizedBox(
           width: 150,
@@ -133,7 +131,6 @@ class DraggableWidget extends StatelessWidget {
           ),
         );
         break;
-
       case ItemType.video:
         overlayWidget = const Center();
     }
@@ -169,6 +166,7 @@ class DraggableWidget extends StatelessWidget {
         required PaintingStyle paintingStyle,
         bool background = false}) {
     if (draggableWidget.animationType == TextAnimationType.none) {
+
       return Text(draggableWidget.text,
           textAlign: draggableWidget.textAlign,
           style: _textStyle(
@@ -176,6 +174,7 @@ class DraggableWidget extends StatelessWidget {
               paintingStyle: paintingStyle,
               background: background));
     } else {
+
       return DefaultTextStyle(
         style: _textStyle(
             controlNotifier: controlNotifier,
@@ -219,6 +218,7 @@ class DraggableWidget extends StatelessWidget {
       {required ControlNotifier controlNotifier,
         required PaintingStyle paintingStyle,
         bool background = false}) {
+
     return TextStyle(
       fontFamily: controlNotifier.fontList![draggableWidget.fontFamily],
       package: controlNotifier.isCustomFontList ? null : 'stories_editor',
@@ -241,9 +241,11 @@ class DraggableWidget extends StatelessWidget {
     final ScreenUtil screenUtil = ScreenUtil();
     if (draggableWidget.type == ItemType.text) {
       top = screenUtil.screenWidth / 1.2;
+
       return top;
     } else if (draggableWidget.type == ItemType.gif) {
       top = screenUtil.screenWidth / 1.18;
+
       return top;
     }
   }
@@ -252,9 +254,11 @@ class DraggableWidget extends StatelessWidget {
     double scale = 0.0;
     if (draggableWidget.type == ItemType.text) {
       scale = 0.4;
+
       return scale;
     } else if (draggableWidget.type == ItemType.gif) {
       scale = 0.3;
+
       return scale;
     }
   }

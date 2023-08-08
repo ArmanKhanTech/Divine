@@ -11,8 +11,7 @@ class PickFromGalleryScreenPosts extends StatefulWidget {
   const PickFromGalleryScreenPosts({super.key});
 
   @override
-  State<PickFromGalleryScreenPosts> createState() =>
-      _PickFromGalleryScreenPostsState();
+  State<PickFromGalleryScreenPosts> createState() => _PickFromGalleryScreenPostsState();
 }
 
 class _PickFromGalleryScreenPostsState extends State<PickFromGalleryScreenPosts> {

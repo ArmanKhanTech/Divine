@@ -24,6 +24,7 @@ class TrimTimeline extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return LayoutBuilder(builder: (_, constraint) {
       final int count =
           (max(1, (constraint.maxWidth / MediaQuery.of(context).size.width)) *

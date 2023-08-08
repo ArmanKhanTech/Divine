@@ -49,7 +49,6 @@ class _MainScreenState extends State<MainScreen>{
     },
   ];
 
-  // UI of Home Screen.
   @override
   Widget build(BuildContext context) {
 

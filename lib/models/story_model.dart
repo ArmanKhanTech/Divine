@@ -26,6 +26,7 @@ class StoryModel {
     data['viewers'] = viewers;
     data['url'] = url;
     data['time'] = time;
+
     return data;
   }
 }

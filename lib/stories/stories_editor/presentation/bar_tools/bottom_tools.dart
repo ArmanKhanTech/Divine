@@ -29,6 +29,7 @@ class BottomTools extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Consumer3<ControlNotifier, ScrollNotifier, DraggableWidgetNotifier>(
       builder: (_, controlNotifier, scrollNotifier, itemNotifier, __) {
 
@@ -85,7 +86,6 @@ class BottomTools extends StatelessWidget {
                     )
                   ),
                 ),
-
                 if (controlNotifier.middleBottomWidget != null)
                   Expanded(
                     child: Center(
@@ -125,7 +125,6 @@ class BottomTools extends StatelessWidget {
                       ),
                     ),
                   ),
-
                 Expanded(
                   child: Container(
                     alignment: Alignment.centerRight,

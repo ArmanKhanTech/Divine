@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../presentation/utilities/constants/app_enum.dart';
 
 class TextEditingNotifier extends ChangeNotifier {
@@ -49,7 +48,6 @@ class TextEditingNotifier extends ChangeNotifier {
     TextAnimationType.typer,
     TextAnimationType.typeWriter,
     TextAnimationType.scale,
-    //TextAnimationType.colorize,
     TextAnimationType.wavy,
     TextAnimationType.flicker
   ];

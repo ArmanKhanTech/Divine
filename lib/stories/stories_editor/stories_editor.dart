@@ -78,6 +78,7 @@ class _StoriesEditorState extends State<StoriesEditor> {
     return NotificationListener<OverscrollIndicatorNotification>(
       onNotification: (overscroll) {
         overscroll.disallowIndicator();
+
         return false;
       },
       child: ScreenUtilInit(

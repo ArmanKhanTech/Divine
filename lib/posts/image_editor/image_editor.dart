@@ -490,7 +490,6 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
             },
           );
         }
-
         if (layerItem is ImageLayerData) {
 
           return ImageLayer(
@@ -500,7 +499,6 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
             },
           );
         }
-
         if (layerItem is BackgroundBlurLayerData && layerItem.radius > 0) {
 
           return BackgroundBlurLayer(
@@ -510,7 +508,6 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
             },
           );
         }
-
         if (layerItem is EmojiLayerData) {
 
           return EmojiLayer(
@@ -520,7 +517,6 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
             },
           );
         }
-
         if (layerItem is TextLayerData) {
 
           return TextLayer(

@@ -63,6 +63,7 @@ class _CoverViewerState extends State<CoverViewer> with CropPreviewMixin {
       valueListenable: widget.controller.selectedCoverNotifier,
       builder: (_, CoverData? selectedCover, __) {
         if (selectedCover?.thumbData == null) {
+
           return Center(child: Text(widget.noCoverText));
         }
 

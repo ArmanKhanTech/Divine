@@ -11,7 +11,6 @@ Future takePicture(
       required BuildContext context,
       required saveToGallery}) async {
   try {
-    /// converter widget to image
     RenderRepaintBoundary boundary =
     contentKey.currentContext.findRenderObject();
 
@@ -20,7 +19,6 @@ Future takePicture(
     ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     Uint8List pngBytes = byteData!.buffer.asUint8List();
 
-    /// create file
     final String dir = (await getApplicationDocumentsDirectory()).path;
     String imagePath = '$dir/divine${DateTime.now()}.gif';
     File capturedFile = File(imagePath);

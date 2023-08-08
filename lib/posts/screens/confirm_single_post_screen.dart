@@ -13,6 +13,7 @@ import '../../screens/main_screen.dart';
 
 class ConfirmSinglePostScreen extends  StatefulWidget{
   final String? mediaUrl;
+
   const ConfirmSinglePostScreen({Key? key, required this.mediaUrl}) : super(key: key);
 
   @override
@@ -69,7 +70,6 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                     const SizedBox(
                       height: 40,
                     ),
-
                     // TODO : Fix popping
                     AnimatedOnTapButton(
                       onTap: () async {
@@ -93,7 +93,6 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                         color: Colors.white,
                       ),
                     ),
-
                     AnimatedOnTapButton(
                       onTap: () {
                         Navigator.pop(c, true);

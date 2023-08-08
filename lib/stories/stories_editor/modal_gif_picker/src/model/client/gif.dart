@@ -1,4 +1,4 @@
-import 'package:divine/stories/stories_editor/presentation/modal_gif_picker/src/model/client/user.dart';
+import 'package:divine/stories/stories_editor/modal_gif_picker/src/model/client/user.dart';
 import 'images.dart';
 
 class GiphyGif {

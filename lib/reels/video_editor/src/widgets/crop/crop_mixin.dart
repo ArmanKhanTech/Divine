@@ -35,10 +35,12 @@ mixin CropPreviewMixin<T extends StatefulWidget> on State<T> {
     final size = Size(viewerSize.width - margin.horizontal,
         viewerSize.height - margin.vertical);
     if (shouldFlipped) {
+
       return computeSizeWithRatio(videoRatio > 1 ? size.flipped : size,
               getOppositeRatio(videoRatio))
           .flipped;
     }
+
     return computeSizeWithRatio(size, videoRatio);
   }
 
@@ -52,6 +54,7 @@ mixin CropPreviewMixin<T extends StatefulWidget> on State<T> {
     CropBoundaries boundary, {
     bool showGrid = false,
   }) {
+
     return SizedBox.fromSize(
       size: layout,
       child: CropTransformWithAnimation(
@@ -121,6 +124,7 @@ mixin CropPreviewMixin<T extends StatefulWidget> on State<T> {
 
     return LayoutBuilder(builder: (_, constraints) {
       final size = constraints.biggest;
+
       if (size != viewerSize) {
         viewerSize = constraints.biggest;
         updateRectFromBuild();
@@ -128,6 +132,7 @@ mixin CropPreviewMixin<T extends StatefulWidget> on State<T> {
 
       return ValueListenableBuilder(
         valueListenable: transform,
+
         builder: (_, TransformData transform, __) =>
             buildView(context, transform),
       );

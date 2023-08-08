@@ -46,7 +46,6 @@ class ColorSelector extends StatelessWidget {
                   size: 20,
                 ),
               ),
-
               Expanded(
                 child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),

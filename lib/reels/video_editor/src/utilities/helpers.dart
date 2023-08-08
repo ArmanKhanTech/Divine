@@ -8,18 +8,22 @@ const kDefaultSelectedColor = Color(0xffffcc00);
 
 Size computeSizeWithRatio(Size layout, double r) {
   if (layout.aspectRatio == r) {
+
     return layout;
   }
 
   if (layout.aspectRatio > r) {
+
     return Size(layout.height * r, layout.height);
   }
 
   if (layout.aspectRatio < r) {
+
     return Size(layout.width, layout.width / r);
   }
 
   assert(false, 'An error occurred while computing the aspectRatio');
+
   return Size.zero;
 }
 
@@ -54,6 +58,7 @@ Rect translateRectIntoBounds(Size layout, Rect rect) {
       (rect.bottom > layout.height ? layout.height - rect.bottom : 0);
 
   if (translateX != 0 || translateY != 0) {
+
     return rect.translate(translateX, translateY);
   }
 

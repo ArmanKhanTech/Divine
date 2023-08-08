@@ -19,6 +19,7 @@ class _TopPaintingToolsState extends State<TopPaintingTools> {
 
     return Consumer2<ControlNotifier, PaintingNotifier>(
       builder: (context, controlNotifier, paintingNotifier, child) {
+
         return Padding(
 
           padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 20.h),
@@ -41,7 +42,6 @@ class _TopPaintingToolsState extends State<TopPaintingTools> {
                           color: Colors.white,
                         )),
                   ),
-
                 ToolButton(
                   onTap: () {
                     paintingNotifier.paintingType = PaintingType.pen;
@@ -63,7 +63,6 @@ class _TopPaintingToolsState extends State<TopPaintingTools> {
                             : Colors.white,
                       )),
                 ),
-
                 ToolButton(
                   onTap: () {
                     paintingNotifier.paintingType = PaintingType.marker;
@@ -87,7 +86,6 @@ class _TopPaintingToolsState extends State<TopPaintingTools> {
                             : Colors.white,
                       )),
                 ),
-
                 ToolButton(
                   onTap: () {
                     paintingNotifier.paintingType = PaintingType.neon;
@@ -111,7 +109,6 @@ class _TopPaintingToolsState extends State<TopPaintingTools> {
                             : Colors.white,
                       )),
                 ),
-
                 ToolButton(
                   onTap: () {
                     controlNotifier.isPainting = !controlNotifier.isPainting;

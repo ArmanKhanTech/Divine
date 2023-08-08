@@ -59,6 +59,7 @@ class _TrimSliderState extends State<TrimSlider>
     widget.controller.videoDuration.inMilliseconds /
         widget.controller.maxDuration.inMilliseconds,
   );
+
   late final _isExtendTrim = _viewportRatio > 1;
   late final _edgesTouchMargin = max(widget.controller.trimStyle.edgeWidth, _touchMargin);
   late final _positionTouchMargin = max(widget.controller.trimStyle.positionLineWidth, _touchMargin);
@@ -413,6 +414,7 @@ class _TrimSliderState extends State<TrimSlider>
     final double min = (left - _horizontalMargin) / _fullLayout.width;
     final double max = (left + width - _horizontalMargin) / _fullLayout.width;
     final Duration duration = widget.controller.videoDuration;
+
     return (duration * max) - (duration * min);
   }
 

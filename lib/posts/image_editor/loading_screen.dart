@@ -8,6 +8,7 @@ class LoadingScreen {
 
   show([String? text]) {
     if (globalKey.currentContext == null) {
+
       return;
     }
 
@@ -24,6 +25,7 @@ class LoadingScreen {
 
   hide() {
     if (globalKey.currentContext == null) {
+
       return;
     }
 

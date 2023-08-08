@@ -53,7 +53,6 @@ class StoryWidget extends StatelessWidget {
                                 story.storyId!,
                                 index);
                           }
-
                           if(storyCounter == 0){
                             return Padding(
                                 padding: const EdgeInsets.only(bottom: 20),
@@ -74,8 +73,10 @@ class StoryWidget extends StatelessWidget {
                                 )
                             );
                           }
+
                           return const SizedBox();
                         } else {
+
                           return const SizedBox();
                         }
                       },
@@ -83,6 +84,7 @@ class StoryWidget extends StatelessWidget {
                   },
                 );
               } else {
+
                 return Padding(
                     padding: const EdgeInsets.only(bottom: 20),
                     child: SizedBox(
