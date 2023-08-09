@@ -66,14 +66,12 @@ class VideoEditorController extends ChangeNotifier {
   double textx1Prev = 100;
   double texty1Prev = 100;
 
-  String text = '';
+  late String text;
 
   TextAlign textAlign = TextAlign.left;
 
   Color textColor = Colors.white;
   Color textBgColor = Colors.transparent;
-
-  double textBgColorOpacity = 0;
 
   double textSize = 25;
 
@@ -123,58 +121,43 @@ class VideoEditorController extends ChangeNotifier {
 
   bool get textOverlayValue => textOverlay;
 
-  double get textBgColorOpacityValue => textBgColorOpacity;
-
-  void settextx1Prev(double value) {
-    textx1Prev = value;
-    print(textx1Prev);
-    notifyListeners();
-  }
-
-  void settexty1Prev(double value) {
-    texty1Prev = value;
-    print(texty1Prev);
-    notifyListeners();
-  }
-
-  void settextx1(double value) {
+  void setTextx1(double value) {
     textx1 = value + textx1Prev;
-    print(textx1);
     notifyListeners();
   }
 
-  void settexty1(double value) {
+  void setTexty1(double value) {
     texty1 = value + texty1Prev;
-    print(texty1);
     notifyListeners();
   }
 
-  void settextBgColorOpacity(double value) {
-    textBgColorOpacity = value;
-    print(textBgColorOpacity);
+  void setText(String value) {
+    text = value;
     notifyListeners();
   }
 
-  void settextOverlay(bool value) {
+  void setTextOverlay(bool value) {
     textOverlay = value;
-    print(textOverlay);
     notifyListeners();
   }
 
-  void settextBgColor(Color value) {
+  void setTextBgColor(Color value) {
     textBgColor = value;
-    print(textBgColor);
     notifyListeners();
   }
 
-  void settextColor(Color value) {
+  void setTextColor(Color value) {
     textColor = value;
-    print(textColor);
     notifyListeners();
   }
 
-  void settextSize(double value) {
+  void setTextSize(double value) {
     textSize = value;
+    notifyListeners();
+  }
+
+  void setTextAlign(TextAlign value) {
+    textAlign = value;
     notifyListeners();
   }
 

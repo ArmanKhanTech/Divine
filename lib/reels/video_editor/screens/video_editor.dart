@@ -17,9 +17,9 @@ import '../src/widgets/trim/trim_timeline.dart';
 import 'crop_screen.dart';
 
 class VideoEditor extends StatefulWidget {
-  const VideoEditor({super.key, required this.file});
-
   final File file;
+
+  const VideoEditor({super.key, required this.file});
 
   @override
   State<VideoEditor> createState() => _VideoEditorState();
@@ -46,7 +46,7 @@ class _VideoEditorState extends State<VideoEditor> {
         .initialize(aspectRatio: 9 / 16)
         .then((_) => setState(() {}))
         .catchError((error) {
-      Navigator.pop(context);
+      Navigator.pop(context, true);
     }, test: (e) => e is VideoMinDurationError);
   }
 
@@ -70,6 +70,9 @@ class _VideoEditorState extends State<VideoEditor> {
   }
 
   void exportVideo() async {
+    controller.setTextx1(controller.textx1);
+    controller.setTexty1(controller.texty1);
+
     exportingProgress.value = 0;
     isExporting.value = true;
 
@@ -122,7 +125,7 @@ class _VideoEditorState extends State<VideoEditor> {
   Widget build(BuildContext context) {
 
     void showBottomDialog() {
-      showModalBottomSheet(
+      controller.textOverlay == true ? showModalBottomSheet(
           context: context,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
@@ -135,11 +138,16 @@ class _VideoEditorState extends State<VideoEditor> {
             return SingleChildScrollView(
                 child: Container(
                   padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                  child: TextOverlayBottomSheet(controller: controller),
+                  child: TextOverlayBottomSheet(
+                    controller: controller,
+                    onUpdate: () {
+                      setState(() {});
+                    },
+                  ),
                 )
             );
           }
-      );
+      ) : null;
     }
 
     return WillPopScope(
@@ -196,29 +204,32 @@ class _VideoEditorState extends State<VideoEditor> {
                                       top: controller.texty1,
                                       child: GestureDetector(
                                         onPanDown: (d) {
-                                          controller.settextx1Prev(controller.textx1);
-                                          controller.settexty1Prev(controller.texty1);
+                                          controller.textx1Prev = controller.textx1;
+                                          controller.texty1Prev = controller.texty1;
+                                          setState(() {});
                                         },
                                         onPanUpdate: (details) {
-                                          setState(() {
-                                            controller.settextx1(details.localPosition.dx);
-                                            controller.settexty1(details.localPosition.dy);
-                                          });
+                                          controller.textx1 = controller.textx1Prev + details.delta.dx;
+                                          controller.texty1 = controller.texty1Prev + details.delta.dy;
+                                          setState(() {});
                                         },
                                         onTap: () {
                                           showBottomDialog();
                                         },
                                         child: Container(
-                                          height: 100,
-                                          width: 200,
-                                          color: Colors.blue,
+                                          padding: const EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(20),
+                                            color: controller.textBgColor,
+                                          ),
                                           child: Text(
-                                            'controller.text',
-                                            /*style: TextStyle(
-                                              color: controller.textColor,
+                                            controller.text,
+                                            textAlign: controller.textAlign,
+                                            style: TextStyle(
                                               fontSize: controller.textSize,
                                               fontWeight: FontWeight.bold,
-                                            ),*/
+                                              color: controller.textColor,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -353,7 +364,9 @@ class _VideoEditorState extends State<VideoEditor> {
                   MaterialPageRoute<void>(
                     builder: (context) => TextOverlayScreen(controller: controller),
                   ),
-                ),
+                ).then((value) {
+                  setState(() {});
+                }),
                 icon: const Icon(Icons.text_fields, color: Colors.white),
                 tooltip: 'Add text',
               ),

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-
 import '../../../../../posts/image_editor/modules/color_picker.dart';
 import '../../controller.dart';
 
 class TextOverlayBottomSheet extends StatefulWidget {
   final VideoEditorController controller;
+  final Function onUpdate;
 
   const TextOverlayBottomSheet({
-    super.key, required this.controller,
+    super.key, required this.controller, required this.onUpdate,
   });
 
   @override
@@ -26,7 +26,7 @@ class _TextOverlayBottomSheetState extends State<TextOverlayBottomSheet> {
   Widget build(BuildContext context) {
 
     return Container(
-      height: 420,
+      height: 340,
       decoration: const BoxDecoration(
           color: Colors.black,
           borderRadius: BorderRadius.only(
@@ -56,16 +56,19 @@ class _TextOverlayBottomSheetState extends State<TextOverlayBottomSheet> {
               value: widget.controller.textSize,
               min: 0.0,
               max: 100.0,
-              onChangeEnd: (v) {
-                setState(() {
-                  widget.controller.textSize = v.toDouble();
-                });
-              },
               onChanged: (v) {
                 setState(() {
-                  widget.controller.textSize = v.toDouble();
+                  widget.controller.textSize = v;
+                  widget.onUpdate();
                 });
-              }),
+              },
+              onChangeEnd: (v) {
+                setState(() {
+                  widget.controller.textSize = v;
+                  widget.onUpdate();
+                });
+              },
+              ),
           const SizedBox(height: 20),
           Container(
             decoration: BoxDecoration(
@@ -96,6 +99,7 @@ class _TextOverlayBottomSheetState extends State<TextOverlayBottomSheet> {
                     colorListener: (int value) {
                       setState(() {
                         widget.controller.textColor = Color(value);
+                        widget.onUpdate();
                       });
                     },
                   ),
@@ -104,6 +108,7 @@ class _TextOverlayBottomSheetState extends State<TextOverlayBottomSheet> {
                   onPressed: () {
                     setState(() {
                       widget.controller.textColor = Colors.white;
+                      widget.onUpdate();
                     });
                   },
                   child: const Text(
@@ -140,6 +145,7 @@ class _TextOverlayBottomSheetState extends State<TextOverlayBottomSheet> {
                     colorListener: (int value) {
                       setState(() {
                         widget.controller.textBgColor = Color(value);
+                        widget.onUpdate();
                       });
                     },
                   ),
@@ -148,6 +154,7 @@ class _TextOverlayBottomSheetState extends State<TextOverlayBottomSheet> {
                   onPressed: () {
                     setState(() {
                       widget.controller.textBgColor = Colors.transparent;
+                      widget.onUpdate();
                     });
                   },
                   child: const Text(
@@ -161,50 +168,6 @@ class _TextOverlayBottomSheetState extends State<TextOverlayBottomSheet> {
                 ),
               ]),
               const SizedBox(height: 10),
-              Container(
-                padding: const EdgeInsets.only(left: 20),
-                child: const Text(
-                  'Text Background Opacity',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-              Row(children: [
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Slider(
-                    min: 0,
-                    max: 255,
-                    divisions: 255,
-                    value: widget.controller.textBgColorOpacity,
-                    thumbColor: Colors.white,
-                    onChanged: (double value) {
-                      setState(() {
-                        widget.controller.textBgColorOpacity = value.toInt() as double;
-                      });
-                    },
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      widget.controller.textBgColorOpacity = 0;
-                    });
-                  },
-                  child: const Text(
-                    'Reset',
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-              ]),
             ]),
           ),
           Row(children: [
@@ -213,6 +176,7 @@ class _TextOverlayBottomSheetState extends State<TextOverlayBottomSheet> {
                 onPressed: () {
                   setState(() {
                     widget.controller.textOverlay = false;
+                    widget.onUpdate();
                   });
                 },
                 child: const Text(

@@ -41,11 +41,11 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
   VideoPlayerController? videoController;
   VoidCallback? videoPlayerListener;
 
-  XFile? videoFile;
-
   double minAvailableExposureOffset = 0.0;
   double maxAvailableExposureOffset = 0.0;
   double currentExposureOffset = 0.0;
+
+  late VideoPlayerController file;
 
   Future<void> initCamera() async {
     cameras = await availableCameras();
@@ -123,7 +123,7 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
       appBar: isVideoRecording == false ? AppBar(
         automaticallyImplyLeading: false,
         leading: IconButton(
-          icon: const Icon(CupertinoIcons.clear),
+          icon: const Icon(CupertinoIcons.chevron_back),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -151,7 +151,7 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
       ) : AppBar(
           automaticallyImplyLeading: false,
           systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
+            statusBarColor: Colors.black,
             statusBarIconBrightness: Brightness.light,
             systemNavigationBarColor: Colors.black,
             systemNavigationBarIconBrightness: Brightness.light,
@@ -180,8 +180,6 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
             ),
           )
       ),
-      extendBody: true,
-      extendBodyBehindAppBar: true,
       backgroundColor: Colors.black,
       body: isCameraInitialized == true && isLensChanging == false ? Column(
         children: [
@@ -201,9 +199,6 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
             ),
           ),
           bottomControls(),
-          const SizedBox(
-            height: 20,
-          )
         ],
       ) : Center(child: circularProgress(context, const Color(0xFF9C27B0)),
       )
@@ -218,11 +213,15 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
     }
 
     return Container(
+      width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.circular(20),
       ),
-      child: CameraPreview(controller!),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: CameraPreview(controller!),
+      ),
     );
   }
 
@@ -283,18 +282,22 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
                             });
                           });
                         } else {
-                          stopVideoRecording().then((XFile? video) => {
+                          stopVideoRecording().then((XFile? video) {
                             if (mounted) {
                               setState(() {
                                 isVideoRecording = false;
                                 cancelTimer();
-                              }),
+                              });
                               if (video != null) {
-                                videoFile = video,
-                                Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(builder: (BuildContext context) => VideoEditor(file: File(video.path)),
-                                ))
+                                file = VideoPlayerController.file(File(video.path));
+                                file.initialize();
+                                if(file.value.duration.inSeconds > 180 || file.value.duration.inSeconds < 15){
+                                  showSnackBar(msg: "Video should be between 15 seconds to 3 minutes.");
+                                  file.dispose();
+                                  File(video.path).delete();
+                                } else {
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => VideoEditor(file: File(video.path))));
+                                }
                               }
                             }
                           });

@@ -81,9 +81,11 @@ class _TextOverlayScreenState extends State<TextOverlayScreen> {
             IconButton(
               icon: const Icon(Icons.check),
               onPressed: () {
-                widget.controller.settextSize(widget.controller.textSize);
-                widget.controller.settextColor(widget.controller.textBgColor);
-                widget.controller.settextOverlay(true);
+                widget.controller.setText(widget.controller.text);
+                widget.controller.setTextSize(widget.controller.textSize);
+                widget.controller.setTextColor(widget.controller.textColor);
+                widget.controller.setTextAlign(widget.controller.textAlign);
+                widget.controller.setTextOverlay(true);
                 Navigator.pop(context);
               },
               color: Colors.white,
@@ -98,6 +100,7 @@ class _TextOverlayScreenState extends State<TextOverlayScreen> {
               const SizedBox(
                 height: 20,
               ),
+              // TODO:Fix init text color
               SizedBox(
                 height: size.height / 2.2,
                 child: TextField(
@@ -123,6 +126,11 @@ class _TextOverlayScreenState extends State<TextOverlayScreen> {
                   ),
                   textAlign: widget.controller.textAlign,
                   autofocus: true,
+                  onChanged: (text) {
+                    setState(() {
+                      widget.controller.text = text;
+                    });
+                  },
                 ),
               ),
               const SizedBox(
@@ -247,6 +255,7 @@ class _TextOverlayScreenState extends State<TextOverlayScreen> {
                           width: 300,
                           thumbColor: Colors.white,
                           cornerRadius: 10,
+                          initialColor: widget.controller.textColor,
                           pickMode: PickMode.grey,
                           colorListener: (int value) {
                             setState(() {

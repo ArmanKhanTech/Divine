@@ -69,7 +69,7 @@ class _PickFromGalleryScreenReelsState extends State<PickFromGalleryScreenReels>
         pathList: (path) {
           if (path.first.videoDuration > const Duration(minutes: 3) || path.first.videoDuration < const Duration(seconds: 15)){
             ScaffoldMessenger.of(context).removeCurrentSnackBar();
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Video too large or to small, should be 15 secs to 3 mins', textAlign: TextAlign.center, style: TextStyle(fontSize: 15),), backgroundColor: Colors.blue,
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Video should be between 15 seconds to 3 minutes.", textAlign: TextAlign.center, style: TextStyle(fontSize: 15),), backgroundColor: Colors.blue,
                 behavior: SnackBarBehavior.floating, duration: Duration(seconds: 2), padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -78,7 +78,9 @@ class _PickFromGalleryScreenReelsState extends State<PickFromGalleryScreenReels>
           } else{
             Navigator.push(
                 context,
-                CupertinoPageRoute(builder: (_) => VideoEditor(file: path.first.file!)));
+                CupertinoPageRoute(builder: (_) => VideoEditor(file: path.first.file!)
+                )
+            ).then((value) => Navigator.pop(context));
           }
         },
       ),
