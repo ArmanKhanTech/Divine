@@ -306,9 +306,7 @@ class _CropGridViewerState extends State<CropGridViewer> with CropPreviewMixin {
             onTapUp: (_) => onPanEnd(),
             child: const SizedBox.expand(
               child: DecoratedBox(
-                decoration: BoxDecoration(
-                    // color: Colors.redAccent.withOpacity(0.4), // dev only
-                    ),
+                decoration: BoxDecoration(),
               ),
             ),
           ),

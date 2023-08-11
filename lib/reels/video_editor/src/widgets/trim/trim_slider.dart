@@ -455,14 +455,14 @@ class _TrimSliderState extends State<TrimSlider>
   Widget build(BuildContext context) {
     super.build(context);
 
-    return LayoutBuilder(builder: (_, contrainst) {
+    return LayoutBuilder(builder: (_, constraint) {
       final Size trimLayout = Size(
-        contrainst.maxWidth - _horizontalMargin * 2,
-        contrainst.maxHeight,
+        constraint.maxWidth - _horizontalMargin * 2,
+        constraint.maxHeight,
       );
       _fullLayout = Size(
         trimLayout.width * (_isExtendTrim ? _viewportRatio : 1),
-        contrainst.maxHeight,
+        constraint.maxHeight,
       );
       if (_trimLayout != trimLayout) {
         _trimLayout = trimLayout;

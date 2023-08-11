@@ -45,8 +45,6 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
   double maxAvailableExposureOffset = 0.0;
   double currentExposureOffset = 0.0;
 
-  late VideoPlayerController file;
-
   Future<void> initCamera() async {
     cameras = await availableCameras();
     controller = CameraController(cameras.first, ResolutionPreset.high);
@@ -286,17 +284,17 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
                             if (mounted) {
                               setState(() {
                                 isVideoRecording = false;
-                                cancelTimer();
                               });
                               if (video != null) {
-                                file = VideoPlayerController.file(File(video.path));
-                                file.initialize();
-                                if(file.value.duration.inSeconds > 180 || file.value.duration.inSeconds < 15){
-                                  showSnackBar(msg: "Video should be between 15 seconds to 3 minutes.");
-                                  file.dispose();
-                                  File(video.path).delete();
-                                } else {
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => VideoEditor(file: File(video.path))));
+                                if (video.path.isNotEmpty) {
+                                  if (start > 180 || start < 15) {
+                                    showSnackBar(
+                                        msg: "Video should be between 15 seconds to 3 minutes.");
+                                    File(video.path).delete();
+                                  } else {
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => VideoEditor(file: File(video.path))));
+                                  }
+                                  cancelTimer();
                                 }
                               }
                             }
@@ -522,8 +520,9 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
     timer = Timer.periodic(oneSec,
           (Timer timer) => setState(() {
           if (start > 300) {
-            // TODO: Stop recording 5min limit
+            stopVideoRecording();
             timer.cancel();
+            showSnackBar(msg: "Video length cannot be more than 5 minutes");
           } else {
             start = start + 1;
             setState(() {
