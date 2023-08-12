@@ -1595,8 +1595,7 @@ class FilterAppliedImage extends StatelessWidget {
         return;
       }
 
-      final image_editor.ImageEditorOption option =
-      image_editor.ImageEditorOption();
+      final image_editor.ImageEditorOption option = image_editor.ImageEditorOption();
 
       option.addOption(image_editor.ColorOption(matrix: filter.matrix));
 

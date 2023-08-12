@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
-import '../controller.dart';
+import 'controller.dart';
 import '../models/cover_data.dart';
 
 Stream<List<Uint8List>> generateTrimThumbnails(

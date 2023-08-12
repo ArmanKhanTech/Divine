@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
-import '../controller.dart';
+import '../utilities/controller.dart';
 import '../models/file_format.dart';
 
 class FFmpegVideoEditorExecute {
@@ -60,11 +60,36 @@ abstract class FFmpegVideoEditorConfig {
     return transpose.isNotEmpty ? transpose.join(',') : "";
   }
 
+  // TODO: Continue here
+  String get textCmd {
+    final count = controller.rotation / 90;
+    if (count <= 0 || count >= 4) return "";
+
+    final List<String> transpose = [];
+    for (int i = 0; i < controller.rotation / 90; i++) {
+      transpose.add("transpose=2");
+    }
+
+    return transpose.isNotEmpty ? transpose.join(',') : "";
+  }
+
+  String get filterCmd {
+    final count = controller.rotation / 90;
+    if (count <= 0 || count >= 4) return "";
+
+    final List<String> transpose = [];
+    for (int i = 0; i < controller.rotation / 90; i++) {
+      transpose.add("transpose=2");
+    }
+
+    return transpose.isNotEmpty ? transpose.join(',') : "";
+  }
+
   String get scaleCmd => scale == 1.0 ? "" : "scale=iw*$scale:ih*$scale";
 
   List<String> getExportFilters() {
     if (!isFiltersEnabled) return [];
-    final List<String> filters = [cropCmd, scaleCmd, rotationCmd];
+    final List<String> filters = [cropCmd, scaleCmd, rotationCmd, filterCmd, textCmd];
     filters.removeWhere((item) => item.isEmpty);
 
     return filters;
@@ -138,8 +163,7 @@ class VideoFFmpegVideoEditorConfig extends FFmpegVideoEditorConfig {
   @override
   Future<FFmpegVideoEditorExecute> getExecuteConfig() async {
     final String videoPath = controller.file.path;
-    final String outputPath =
-        await getOutputPath(filePath: videoPath, format: format);
+    final String outputPath = await getOutputPath(filePath: videoPath, format: format);
     final List<String> filters = getExportFilters();
 
     return FFmpegVideoEditorExecute(

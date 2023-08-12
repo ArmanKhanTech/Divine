@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import '../../controller.dart';
+import '../../utilities/controller.dart';
 
 class TrimTimeline extends StatelessWidget {
   const TrimTimeline({

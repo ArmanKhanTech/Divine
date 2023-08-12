@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../../posts/image_editor/modules/color_picker.dart';
-import '../../controller.dart';
+import '../../utilities/controller.dart';
 
 class TextOverlayBottomSheet extends StatefulWidget {
   final VideoEditorController controller;

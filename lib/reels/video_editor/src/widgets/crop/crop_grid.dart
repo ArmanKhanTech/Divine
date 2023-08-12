@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import '../../controller.dart';
+import '../../utilities/controller.dart';
 import '../../models/transform_data.dart';
 import '../../utilities/helpers.dart';
 import 'crop_mixin.dart';

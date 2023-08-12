@@ -3,7 +3,7 @@ import 'package:divine/reels/video_editor/src/widgets/trim/thumbnail_slider.dart
 import 'package:divine/reels/video_editor/src/widgets/trim/trim_slider_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../controller.dart';
+import '../../utilities/controller.dart';
 
 enum _TrimBoundaries { left, right, inside, progress }
 

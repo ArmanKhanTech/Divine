@@ -10,14 +10,14 @@ class TrimSliderStyle {
     this.positionLineColor = Colors.white,
     this.positionLineWidth = 4,
     this.lineColor = Colors.white60,
-    this.onTrimmingColor = kDefaultSelectedColor,
-    this.onTrimmedColor = kDefaultSelectedColor,
+    this.onTrimmingColor = Colors.blue,
+    this.onTrimmedColor = Colors.white,
     this.lineWidth = 2,
-    this.borderRadius = 5.0,
+    this.borderRadius = 10.0,
     this.edgesType = TrimSliderEdgesType.bar,
     double? edgesSize,
     this.iconColor = Colors.black,
-    this.iconSize = 16,
+    this.iconSize = 15,
     this.leftIcon = Icons.arrow_back_ios_rounded,
     this.rightIcon = Icons.arrow_forward_ios_rounded,
   }) : edgesSize = edgesSize ?? (edgesType == TrimSliderEdgesType.bar ? 10 : 8);
@@ -45,6 +45,5 @@ class TrimSliderStyle {
   final IconData? leftIcon;
   final IconData? rightIcon;
 
-  double get edgeWidth =>
-      edgesType == TrimSliderEdgesType.bar ? edgesSize : lineWidth;
+  double get edgeWidth => edgesType == TrimSliderEdgesType.bar ? edgesSize : lineWidth;
 }

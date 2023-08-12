@@ -1,12 +1,14 @@
 import 'dart:io';
+import 'package:colorfilter_generator/presets.dart';
 import 'package:divine/reels/video_editor/src/utilities/helpers.dart';
 import 'package:divine/reels/video_editor/src/utilities/thumbnails.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-import 'models/cover_data.dart';
-import 'models/cover_style.dart';
-import 'models/crop_style.dart';
-import 'models/trim_style.dart';
+import 'package:colorfilter_generator/colorfilter_generator.dart';
+import '../models/cover_data.dart';
+import '../models/cover_style.dart';
+import '../models/crop_style.dart';
+import '../models/trim_style.dart';
 
 class VideoMinDurationError extends Error {
   final Duration minDuration;
@@ -63,9 +65,6 @@ class VideoEditorController extends ChangeNotifier {
   double textx1 = 100;
   double texty1 = 100;
 
-  double textx1Prev = 100;
-  double texty1Prev = 100;
-
   late String text;
 
   TextAlign textAlign = TextAlign.left;
@@ -85,6 +84,17 @@ class VideoEditorController extends ChangeNotifier {
 
   Duration _trimEnd = Duration.zero;
   Duration _trimStart = Duration.zero;
+
+  double filterOpacity = 1;
+
+  ColorFilterGenerator myFilter = ColorFilterGenerator(
+      name: "CustomFilter",
+      filters: [
+        PresetFilters.none.opacity(1).matrix,
+      ]
+  );
+
+  late ColorFilter colorFilter = ColorFilter.matrix(myFilter.matrix);
 
   final VideoPlayerController _video;
 
@@ -109,9 +119,6 @@ class VideoEditorController extends ChangeNotifier {
   double get textx1Value => textx1;
   double get texty1Value => texty1;
 
-  double get textx1PrevValue => textx1Prev;
-  double get texty1PrevValue => texty1Prev;
-
   String get textValue => text;
 
   TextAlign get textAlignValue => textAlign;
@@ -121,13 +128,18 @@ class VideoEditorController extends ChangeNotifier {
 
   bool get textOverlayValue => textOverlay;
 
+  void setFilterOpacity(double opacity){
+    filterOpacity = opacity;
+    notifyListeners();
+  }
+
   void setTextx1(double value) {
-    textx1 = value + textx1Prev;
+    textx1 = value;
     notifyListeners();
   }
 
   void setTexty1(double value) {
-    texty1 = value + texty1Prev;
+    texty1 = value;
     notifyListeners();
   }
 

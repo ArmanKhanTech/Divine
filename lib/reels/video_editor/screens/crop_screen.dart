@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fraction/fraction.dart';
-import '../src/controller.dart';
+import '../src/utilities/controller.dart';
 import '../src/models/crop_style.dart';
 import '../src/widgets/crop/crop_grid.dart';
 

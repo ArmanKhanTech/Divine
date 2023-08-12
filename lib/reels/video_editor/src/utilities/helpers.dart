@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 
-import '../controller.dart';
+import 'controller.dart';
 
 const kDefaultSelectedColor = Color(0xffffcc00);
 

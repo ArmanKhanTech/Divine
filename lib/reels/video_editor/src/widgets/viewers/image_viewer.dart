@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
-import '../controller.dart';
+import '../../utilities/controller.dart';
 
 class ImageViewer extends StatelessWidget {
   const ImageViewer({

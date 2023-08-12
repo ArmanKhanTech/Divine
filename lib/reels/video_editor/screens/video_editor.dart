@@ -7,7 +7,7 @@ import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../services/export_service.dart';
-import '../src/controller.dart';
+import '../src/utilities/controller.dart';
 import '../src/export/ffmpeg_export_config.dart';
 import '../src/models/cover_style.dart';
 import '../src/widgets/cover/cover_selection.dart';
@@ -16,6 +16,7 @@ import '../src/widgets/export_result.dart';
 import '../src/widgets/trim/trim_slider.dart';
 import '../src/widgets/trim/trim_timeline.dart';
 import 'crop_screen.dart';
+import 'filters_screen.dart';
 
 class VideoEditor extends StatefulWidget {
   final File file;
@@ -32,7 +33,7 @@ class _VideoEditorState extends State<VideoEditor> {
 
   final double height = 60;
 
-  bool isOnCover = false;
+  Offset offset = Offset.zero;
 
   late final VideoEditorController controller = VideoEditorController.file(
     widget.file,
@@ -41,7 +42,7 @@ class _VideoEditorState extends State<VideoEditor> {
     trimStyle: TrimSliderStyle(
        onTrimmedColor: Colors.blue,
        onTrimmingColor: Colors.blue,
-        iconColor: Colors.blue,
+       iconColor: Colors.white,
     )
   );
 
@@ -169,6 +170,7 @@ class _VideoEditorState extends State<VideoEditor> {
                   Expanded(
                     child: DefaultTabController(
                       length: 2,
+                      animationDuration: Duration.zero,
                       child: Column(
                         children: [
                           Expanded(
@@ -182,77 +184,87 @@ class _VideoEditorState extends State<VideoEditor> {
                               child: TabBarView(
                                 physics: const NeverScrollableScrollPhysics(),
                                 children: [
-                                  Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      CropGridViewer.preview(controller: controller),
-                                      AnimatedBuilder(
-                                        animation: controller.video,
-                                        builder: (_, __) => AnimatedOpacity(
-                                          opacity: controller.isPlaying ? 0 : 1,
-                                          duration: kThemeAnimationDuration,
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        ColorFiltered(
+                                          colorFilter: controller.colorFilter,
+                                          child: CropGridViewer.preview(controller: controller),
+                                        ),
+                                        AnimatedBuilder(
+                                          animation: controller.video,
+                                          builder: (_, __) => AnimatedOpacity(
+                                            opacity: controller.isPlaying ? 0 : 1,
+                                            duration: kThemeAnimationDuration,
+                                            child: GestureDetector(
+                                              onTap: controller.video.play,
+                                              child: Container(
+                                                width: 40,
+                                                height: 40,
+                                                decoration:
+                                                const BoxDecoration(
+                                                  color: Colors.white,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: const Icon(
+                                                  Icons.play_arrow,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        controller.textOverlay == true ? Positioned(
+                                          left: offset.dx,
+                                          top: offset.dy,
                                           child: GestureDetector(
-                                            onTap: controller.video.play,
+                                            onPanUpdate: (details) {
+                                              setState(() {
+                                                offset = Offset(
+                                                    offset.dx + details.delta.dx, offset.dy + details.delta.dy);
+                                              });
+                                              controller.setTextx1(offset.dx);
+                                              controller.setTexty1(offset.dy);
+                                            },
+                                            onTap: () {
+                                              showBottomDialog();
+                                            },
                                             child: Container(
-                                              width: 40,
-                                              height: 40,
-                                              decoration:
-                                              const BoxDecoration(
-                                                color: Colors.white,
-                                                shape: BoxShape.circle,
+                                              padding: const EdgeInsets.all(10),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(20),
+                                                color: controller.textBgColor,
                                               ),
-                                              child: const Icon(
-                                                Icons.play_arrow,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      controller.textOverlay == true ? Positioned(
-                                        left: controller.textx1,
-                                        top: controller.texty1,
-                                        child: GestureDetector(
-                                          onPanDown: (d) {
-                                            controller.textx1Prev = controller.textx1;
-                                            controller.texty1Prev = controller.texty1;
-                                            setState(() {});
-                                          },
-                                          onPanUpdate: (details) {
-                                            controller.textx1 = controller.textx1Prev + details.delta.dx;
-                                            controller.texty1 = controller.texty1Prev + details.delta.dy;
-                                            setState(() {});
-                                          },
-                                          onTap: () {
-                                            showBottomDialog();
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.all(10),
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(20),
-                                              color: controller.textBgColor,
-                                            ),
-                                            child: Text(
-                                              controller.text,
-                                              textAlign: controller.textAlign,
-                                              style: TextStyle(
-                                                fontSize: controller.textSize,
-                                                fontWeight: FontWeight.bold,
-                                                color: controller.textColor,
+                                              child: Text(
+                                                controller.text,
+                                                textAlign: controller.textAlign,
+                                                style: TextStyle(
+                                                  fontSize: controller.textSize,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: controller.textColor,
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      ) : Container(),
-                                    ],
+                                        ) : Container(),
+                                      ],
+                                    ),
                                   ),
-                                  CoverViewer(controller: controller)
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: ColorFiltered(
+                                      colorFilter: controller.colorFilter,
+                                      child: CoverViewer(controller: controller),
+                                    ),
+                                  )
                                 ],
                               ),
                             )
                           ),
                           Container(
-                            padding: const EdgeInsets.only(top: 10, left: 5, right: 5),
+                            padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
                             height: 180,
                             child: Column(
                               children: [
@@ -396,7 +408,14 @@ class _VideoEditorState extends State<VideoEditor> {
             Expanded(
               child: IconButton(
                 onPressed: () =>
-                    controller.rotate90Degrees(RotateDirection.right),
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (context) => FiltersScreen(controller: controller),
+                      ),
+                    ).then((value) {
+                      setState(() {});
+                    }),
                 icon: const Icon(Icons.filter, color: Colors.white),
                 tooltip: 'Filter',
               ),

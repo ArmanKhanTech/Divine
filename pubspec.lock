@@ -953,7 +953,7 @@ packages:
     source: hosted
     version: "0.2.0"
   matrix2d:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: matrix2d
       sha256: "188718dd3bc2a31e372cfd0791b0f77f4f13ea76164147342cc378d9132949e7"
