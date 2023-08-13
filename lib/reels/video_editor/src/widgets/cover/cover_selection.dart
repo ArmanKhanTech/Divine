@@ -7,7 +7,7 @@ import '../../models/transform_data.dart';
 import '../../utilities/helpers.dart';
 import '../../utilities/thumbnails.dart';
 import '../crop/crop_grid_painter.dart';
-import '../viewers/image_viewer.dart';
+import '../viewers/cover_viewer.dart';
 import '../../utilities/transform.dart';
 
 class CoverSelection extends StatefulWidget {
@@ -174,7 +174,7 @@ class _CoverSelectionState extends State<CoverSelection>
             children: [
               CropTransform(
                 transform: transform,
-                child: ImageViewer(
+                child: CoverViewer(
                   controller: widget.controller,
                   bytes: cover.thumbData!,
                   child: LayoutBuilder(builder: (_, constraints) {

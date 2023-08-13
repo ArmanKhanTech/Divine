@@ -387,7 +387,8 @@ class _MainViewState extends State<MainView> {
                               onTap: () {
                                 scrollProvider.pageController.animateToPage(0,
                                     duration: const Duration(milliseconds: 300),
-                                    curve: Curves.easeIn);
+                                    curve: Curves.easeIn
+                                );
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(

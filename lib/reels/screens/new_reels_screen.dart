@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:video_player/video_player.dart';
+import '../../audio/audio_overlay_bottom_sheet.dart';
 import '../video_editor/screens/video_editor.dart';
 
 class NewReelsScreen extends StatefulWidget {
@@ -187,7 +188,7 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
                 cameraWidget(),
                 isVideoRecording == false ? Positioned(
                     left: 15,
-                    bottom: MediaQuery.of(context).size.height * 0.5,
+                    bottom: MediaQuery.of(context).size.height * 0.3,
                     child: leftControls()
                 ) : Container(),
                 Center(
@@ -410,7 +411,7 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
   Widget leftControls() {
 
     return Container(
-      height: 100,
+      height: 150,
       decoration: BoxDecoration(
         color: Colors.black.withOpacity(0.2),
         borderRadius: BorderRadius.circular(20),
@@ -437,8 +438,44 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
             ),
           ),
           const Spacer(),
+          IconButton(
+            onPressed: () {
+              showDialog(context);
+            },
+            icon: const Icon(
+              Icons.audiotrack,
+              color: Colors.white,
+              size: 30,
+            ),
+          ),
+          const Spacer(),
         ],
       ),
+    );
+  }
+
+  void showDialog(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(20),
+            topLeft: Radius.circular(20),
+          ),
+        ),
+        builder: (BuildContext context) {
+
+          return SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: AudioOverlayBottomSheet(
+                  onDone: () {
+                    setState(() {});
+                  },
+                ),
+              )
+          );
+        }
     );
   }
 

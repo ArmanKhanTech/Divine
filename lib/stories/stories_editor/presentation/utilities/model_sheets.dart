@@ -187,7 +187,9 @@ _dispose({required context, required message}) {
     CupertinoPageRoute(
         builder: (_) => const MainScreen()
     )
-  );
+  ).then((value) {
+    Navigator.of(context).pop();
+  });
 }
 
 showToast(String msg, context) {

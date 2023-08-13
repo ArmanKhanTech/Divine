@@ -143,11 +143,8 @@ class _ConfirmStoryState extends State<ConfirmStory> {
                           setState(() {
                             loading = false;
                           });
-                          Navigator.of(context).pushReplacement(
-                            CupertinoPageRoute(
-                              builder: (_) => const MainScreen(),
-                            ),
-                          );
+                          Navigator.of(context).pushAndRemoveUntil(
+                              CupertinoPageRoute(builder: (_) => const MainScreen()), (route) => false);
                         } else {
                           String url = await uploadMedia(widget.uri);
                           StoryModel story = StoryModel(
@@ -161,11 +158,8 @@ class _ConfirmStoryState extends State<ConfirmStory> {
                           setState(() {
                             loading = false;
                           });
-                          Navigator.of(context).pushReplacement(
-                            CupertinoPageRoute(
-                              builder: (_) => const MainScreen(),
-                            ),
-                          );
+                          Navigator.of(context).pushAndRemoveUntil(
+                              CupertinoPageRoute(builder: (_) => const MainScreen()), (route) => false);
                         }
                       },
                     ),
@@ -192,8 +186,7 @@ class _ConfirmStoryState extends State<ConfirmStory> {
 
     File image = File(result!.path);
 
-    Reference storageReference =
-    storage.ref().child("status").child(uuid.v1()).child(uuid.v4());
+    Reference storageReference = storage.ref().child("status").child(uuid.v1()).child(uuid.v4());
     UploadTask uploadTask = storageReference.putFile(image);
     await uploadTask.whenComplete(() => null);
     String imageUrl = await storageReference.getDownloadURL();

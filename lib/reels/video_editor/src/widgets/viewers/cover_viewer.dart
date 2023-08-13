@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 import '../../utilities/controller.dart';
 
-class ImageViewer extends StatelessWidget {
-  const ImageViewer({
+class CoverViewer extends StatelessWidget {
+  const CoverViewer({
     super.key,
     required this.controller,
     required this.bytes,

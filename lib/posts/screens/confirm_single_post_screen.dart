@@ -26,6 +26,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
 
     exitDialog({required PostsViewModel viewModel}) {
 
+      // TODO: Fix it
       return showDialog(
         context: context,
         barrierColor: Colors.black38,
@@ -70,12 +71,11 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                     const SizedBox(
                       height: 40,
                     ),
-                    // TODO : Fix popping
                     AnimatedOnTapButton(
                       onTap: () async {
                         viewModel.resetPost();
-                        Navigator.of(context).popUntil((route) => route.isFirst);
-                        Navigator.of(context).pushReplacement(CupertinoPageRoute(builder: (context) => const MainScreen()));
+                        Navigator.of(context).pushAndRemoveUntil(
+                            CupertinoPageRoute(builder: (_) => const MainScreen()), (route) => false);
                       },
                       child: Text(
                         'Yes',

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../utilities/controller.dart';
 import '../../models/transform_data.dart';
 import '../../utilities/helpers.dart';
-import '../viewers/image_viewer.dart';
+import '../viewers/cover_viewer.dart';
 import '../../utilities/transform.dart';
 import '../viewers/video_viewer.dart';
 import 'crop_grid.dart';
@@ -84,7 +84,7 @@ mixin CropPreviewMixin<T extends StatefulWidget> on State<T> {
       child: CropTransformWithAnimation(
         shouldAnimate: layout != Size.zero,
         transform: transform,
-        child: ImageViewer(
+        child: CoverViewer(
           controller: controller,
           bytes: bytes,
           child:

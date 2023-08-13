@@ -60,36 +60,11 @@ abstract class FFmpegVideoEditorConfig {
     return transpose.isNotEmpty ? transpose.join(',') : "";
   }
 
-  // TODO: Continue here
-  String get textCmd {
-    final count = controller.rotation / 90;
-    if (count <= 0 || count >= 4) return "";
-
-    final List<String> transpose = [];
-    for (int i = 0; i < controller.rotation / 90; i++) {
-      transpose.add("transpose=2");
-    }
-
-    return transpose.isNotEmpty ? transpose.join(',') : "";
-  }
-
-  String get filterCmd {
-    final count = controller.rotation / 90;
-    if (count <= 0 || count >= 4) return "";
-
-    final List<String> transpose = [];
-    for (int i = 0; i < controller.rotation / 90; i++) {
-      transpose.add("transpose=2");
-    }
-
-    return transpose.isNotEmpty ? transpose.join(',') : "";
-  }
-
   String get scaleCmd => scale == 1.0 ? "" : "scale=iw*$scale:ih*$scale";
 
   List<String> getExportFilters() {
     if (!isFiltersEnabled) return [];
-    final List<String> filters = [cropCmd, scaleCmd, rotationCmd, filterCmd, textCmd];
+    final List<String> filters = [cropCmd, scaleCmd, rotationCmd];
     filters.removeWhere((item) => item.isEmpty);
 
     return filters;

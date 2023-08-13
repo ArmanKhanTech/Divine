@@ -216,6 +216,7 @@ class _VideoEditorState extends State<VideoEditor> {
                                             ),
                                           ),
                                         ),
+                                        // TODO: Add this inside video (hint : stack)
                                         controller.textOverlay == true ? Positioned(
                                           left: offset.dx,
                                           top: offset.dy,

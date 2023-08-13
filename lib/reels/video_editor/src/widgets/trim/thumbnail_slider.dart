@@ -5,7 +5,7 @@ import '../../models/transform_data.dart';
 import '../../utilities/helpers.dart';
 import '../../utilities/thumbnails.dart';
 import '../crop/crop_grid_painter.dart';
-import '../viewers/image_viewer.dart';
+import '../viewers/cover_viewer.dart';
 import '../../utilities/transform.dart';
 
 class ThumbnailSlider extends StatefulWidget {
@@ -146,7 +146,7 @@ class _ThumbnailSliderState extends State<ThumbnailSlider> {
       constraints: BoxConstraints.tight(maxLayout),
       child: CropTransform(
         transform: transform,
-        child: ImageViewer(
+        child: CoverViewer(
           controller: widget.controller,
           bytes: bytes,
           fadeIn: !isPlaceholder,
