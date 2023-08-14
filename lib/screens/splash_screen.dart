@@ -87,7 +87,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     'Divine',
                     style: const TextStyle(
                       fontSize: 50.0,
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w500,
                       fontFamily: 'Raleway'
                     ),
                     colors: const [

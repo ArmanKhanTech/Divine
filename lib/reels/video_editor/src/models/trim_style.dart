@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../utilities/helpers.dart';
-
 enum TrimSliderEdgesType { bar, circle }
 
 class TrimSliderStyle {

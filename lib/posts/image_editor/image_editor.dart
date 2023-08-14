@@ -16,7 +16,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:screenshot/screenshot.dart';
 import 'data/image_item.dart';
 import 'data/layer.dart';
-import 'data/color_filter_generator.dart' as color_filter_generator;
 import 'layers/background_blur_layer.dart';
 import 'layers/background_layer.dart';
 import 'layers/emoji_layer.dart';

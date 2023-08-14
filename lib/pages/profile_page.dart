@@ -404,14 +404,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     '• ${currentUser.name!}',
                     style: const TextStyle(
                       fontSize: 15.0,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.bold,
                     ),
                     maxLines: 1,
                   ) : Text(
                     '• ${currentUser.username!}',
                     style: const TextStyle(
                       fontSize: 15.0,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.bold,
                     ),
                     maxLines: 1,
                   ),
@@ -423,7 +423,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     style: const TextStyle(
                       fontSize: 15.0,
                       color: Colors.blue,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.bold,
                     ),
                     maxLines: 1,
                 ) : Text(
@@ -431,7 +431,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     style: const TextStyle(
                       fontSize: 15.0,
                       color: Colors.grey,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.bold,
                     ),
                     maxLines: 1,
                   ),
@@ -446,7 +446,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       '• ${currentUser.bio!}',
                       style: const TextStyle(
                         fontSize: 15.0,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -464,7 +464,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         '• ${currentUser.link!}',
                         style: const TextStyle(
                           fontSize: 15.0,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.bold,
                           color: Colors.deepPurpleAccent,
                         ),
                       ),

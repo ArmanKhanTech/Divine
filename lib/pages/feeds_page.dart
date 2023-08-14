@@ -379,7 +379,7 @@ class _FeedsPageState extends State<FeedsPage>{
           Constants.appName,
           style: const TextStyle(
               fontSize: 35.0,
-              fontWeight: FontWeight.w400,
+              fontWeight: FontWeight.w500,
              fontFamily: 'Raleway',
           ),
           colors: const [

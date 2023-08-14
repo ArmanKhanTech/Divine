@@ -241,7 +241,6 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                       )
                   )
                 ),
-                textAlign: TextAlign.center,
                 textAlignVertical: TextAlignVertical.center,
                 cursorColor: Colors.white,
                 maxLines: null,
@@ -281,7 +280,6 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                     onPressed: () => viewModel.getLocation(),
                   ),
                 ),
-                textAlign: TextAlign.center,
                 textAlignVertical: TextAlignVertical.center,
                 cursorColor: Colors.white,
                 maxLines: null,
@@ -310,7 +308,6 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                         )
                     )
                 ),
-                textAlign: TextAlign.center,
                 textAlignVertical: TextAlignVertical.center,
                 cursorColor: Colors.white,
                 maxLines: null,
@@ -337,7 +334,6 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                         )
                     )
                 ),
-                textAlign: TextAlign.center,
                 textAlignVertical: TextAlignVertical.center,
                 cursorColor: Colors.white,
                 maxLines: null,
