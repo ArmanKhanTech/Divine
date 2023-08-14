@@ -26,7 +26,6 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
 
     exitDialog({required PostsViewModel viewModel}) {
 
-      // TODO: Fix it
       return showDialog(
         context: context,
         barrierColor: Colors.black38,
@@ -170,7 +169,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                     top: 5,
                   ),
                   child: Icon(
-                    CupertinoIcons.check_mark_circled,
+                    CupertinoIcons.checkmark_alt,
                     size: 30.0,
                     color: Colors.blue,
                   ),
@@ -203,7 +202,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                     imageUrl: viewModel.imgLink,
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.width - 30,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fill,
                   ) : viewModel.mediaUrl == null ? const Center(
                     child: Text(
                       'Upload a Photo',
@@ -217,7 +216,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                     viewModel.mediaUrl!,
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.width - 30,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fill,
                   ),
                 )
               ),
@@ -233,15 +232,17 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                   enabled: true,
                   enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.blue),
-                      borderRadius: BorderRadius.all(Radius.circular(20.0)
+                      borderRadius: BorderRadius.all(Radius.circular(30.0)
                       )
                   ),
                   border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.blue, width: 0.0),
-                      borderRadius: BorderRadius.all(Radius.circular(20.0)
+                      borderRadius: BorderRadius.all(Radius.circular(30.0)
                       )
                   )
                 ),
+                textAlign: TextAlign.center,
+                textAlignVertical: TextAlignVertical.center,
                 cursorColor: Colors.white,
                 maxLines: null,
                 onChanged: (val) => viewModel.setDescription(val),
@@ -262,12 +263,12 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                     enabled: true,
                     enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue),
-                        borderRadius: BorderRadius.all(Radius.circular(20.0)
+                        borderRadius: BorderRadius.all(Radius.circular(30.0)
                         )
                     ),
                     border: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue, width: 0.0),
-                        borderRadius: BorderRadius.all(Radius.circular(20.0)
+                        borderRadius: BorderRadius.all(Radius.circular(30.0)
                         )
                     ),
                   suffixIcon: IconButton(
@@ -280,6 +281,8 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                     onPressed: () => viewModel.getLocation(),
                   ),
                 ),
+                textAlign: TextAlign.center,
+                textAlignVertical: TextAlignVertical.center,
                 cursorColor: Colors.white,
                 maxLines: null,
                 onChanged: (val) => viewModel.setLocation(val),
@@ -298,15 +301,17 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                     enabled: true,
                     enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue),
-                        borderRadius: BorderRadius.all(Radius.circular(20.0)
+                        borderRadius: BorderRadius.all(Radius.circular(30.0)
                         )
                     ),
                     border: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue, width: 0.0),
-                        borderRadius: BorderRadius.all(Radius.circular(20.0)
+                        borderRadius: BorderRadius.all(Radius.circular(30.0)
                         )
                     )
                 ),
+                textAlign: TextAlign.center,
+                textAlignVertical: TextAlignVertical.center,
                 cursorColor: Colors.white,
                 maxLines: null,
                 onChanged: (val) => viewModel.setMentions(val),
@@ -323,15 +328,17 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                     enabled: true,
                     enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue),
-                        borderRadius: BorderRadius.all(Radius.circular(20.0)
+                        borderRadius: BorderRadius.all(Radius.circular(30.0)
                         )
                     ),
                     border: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue, width: 0.0),
-                        borderRadius: BorderRadius.all(Radius.circular(20.0)
+                        borderRadius: BorderRadius.all(Radius.circular(30.0)
                         )
                     )
                 ),
+                textAlign: TextAlign.center,
+                textAlignVertical: TextAlignVertical.center,
                 cursorColor: Colors.white,
                 maxLines: null,
                 onChanged: (val) => viewModel.setHashtags(val),

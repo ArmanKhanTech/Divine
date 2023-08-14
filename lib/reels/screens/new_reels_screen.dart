@@ -463,6 +463,7 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
             topLeft: Radius.circular(20),
           ),
         ),
+        isScrollControlled: true,
         builder: (BuildContext context) {
 
           return SingleChildScrollView(

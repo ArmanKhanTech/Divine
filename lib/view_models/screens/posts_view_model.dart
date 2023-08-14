@@ -85,7 +85,6 @@ class PostsViewModel extends ChangeNotifier{
           pickedFile = file;
         });
       }
-      // TODO: Fix system mav colour android.
       image_cropper.CroppedFile? croppedFile = await image_cropper.ImageCropper().cropImage(
         sourcePath: pickedFile!.path,
         compressFormat: image_cropper.ImageCompressFormat.png,
@@ -187,14 +186,19 @@ class PostsViewModel extends ChangeNotifier{
     try {
       loading = true;
       notifyListeners();
+      if(mediaUrl == null) showSnackBar('Kindly select an image.', context);
+      description ??= '';
+      location ??= 'Unknown';
+      hashtagsList ??= [];
+      mentionsList ??= [];
       await postService.uploadSinglePost(mediaUrl!, location!, description!, hashtagsList, mentionsList);
       loading = false;
       resetPost();
+      showSnackBar('Uploaded successfully!', context);
       notifyListeners();
     } catch (e) {
       loading = false;
       resetPost();
-      showSnackBar('Uploaded successfully!', context);
       notifyListeners();
     }
   }
@@ -276,8 +280,6 @@ class PostsViewModel extends ChangeNotifier{
       quality: quality,
     );
 
-    print(image.length);
-    print(result.length);
     return result;
   }
 

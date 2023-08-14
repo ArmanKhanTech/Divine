@@ -1,6 +1,4 @@
-import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 class AudioOverlayBottomSheet extends StatefulWidget {
   final Function onDone;
@@ -25,7 +23,7 @@ class _AudioOverlayBottomSheetState extends State<AudioOverlayBottomSheet> {
   Widget build(BuildContext context) {
 
     return Container(
-      height: 620,
+      height: MediaQuery.of(context).size.height * 0.8,
       decoration: const BoxDecoration(
           color: Colors.black,
           borderRadius: BorderRadius.only(
@@ -75,7 +73,7 @@ class _AudioOverlayBottomSheetState extends State<AudioOverlayBottomSheet> {
           SizedBox(
             height: 550.0,
             child: DefaultTabController(
-              length: 3,
+              length: 2,
               child: Column(
                 children: <Widget>[
                   Container(
@@ -101,28 +99,18 @@ class _AudioOverlayBottomSheetState extends State<AudioOverlayBottomSheet> {
                             children: [
                               Padding(
                                   padding: EdgeInsets.all(2),
-                                  child: Icon(Icons.audiotrack, size: 18)
+                                  child: Icon(Icons.audiotrack, size: 20)
                               ),
-                              Text('Audio', style: TextStyle(fontSize: 15))
+                              Text('Audio', style: TextStyle(fontSize: 18))
                             ]),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Padding(
                                 padding: EdgeInsets.all(2),
-                                child: Icon(Icons.mic, size: 18)
+                                child: Icon(Icons.upload, size: 20)
                             ),
-                            Text('Voiceover', style: TextStyle(fontSize: 15))
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                                padding: EdgeInsets.all(2),
-                                child: Icon(Icons.upload, size: 18)
-                            ),
-                            Text('Upload', style: TextStyle(fontSize: 15))
+                            Text('Upload', style: TextStyle(fontSize: 18))
                           ],
                         ),
                       ],
@@ -133,32 +121,41 @@ class _AudioOverlayBottomSheetState extends State<AudioOverlayBottomSheet> {
                       children: <Widget>[
                         Center(
                           child: Container(
-                            height: 400.0,
-                            margin: const EdgeInsets.all(10.0),
-                            child: const Column(
+                            height: double.infinity,
+                            margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                            child: Column(
                               children: [
-                                /*TypeAheadField(
-                                  textFieldConfiguration: TextFieldConfiguration(
-                                      autofocus: true,
-                                      style: DefaultTextStyle.of(context).style.copyWith(
-                                          fontStyle: FontStyle.italic
-                                      ),
-                                      decoration: const InputDecoration(
-                                          border: OutlineInputBorder()
-                                      )
+                                SizedBox(
+                                  height: 65.0,
+                                  child: TextFormField(
+                                    style: const TextStyle(color: Colors.white),
+                                    decoration: const InputDecoration(
+                                        alignLabelWithHint: true,
+                                        labelText: 'Search',
+                                        labelStyle: TextStyle(color: Colors.white, fontSize: 18.0),
+                                        hintText: 'Any song, artist, or album',
+                                        hintStyle: TextStyle(color: Colors.white70),
+                                        enabled: true,
+                                        enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.white),
+                                            borderRadius: BorderRadius.all(Radius.circular(30.0)
+                                            )
+                                        ),
+                                        border: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.white, width: 0.0),
+                                            borderRadius: BorderRadius.all(Radius.circular(30.0)
+                                            )
+                                        )
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    textAlignVertical: TextAlignVertical.center,
+                                    cursorColor: Colors.white,
+                                    maxLines: null,
+                                    onChanged: (val) {
+                                      // do something
+                                    },
                                   ),
-                                  suggestionsCallback: (pattern) async {
-                                    return await BackendService.getSuggestions(pattern);
-                                  },
-                                  itemBuilder: (context, suggestion) {
-                                    return ListTile(
-                                      title: Text(suggestion.toString()),
-                                    );
-                                  },
-                                  onSuggestionSelected: (suggestion) {
-                                    //
-                                  },
-                                )*/
+                                )
                               ]
 
                             )
@@ -166,9 +163,6 @@ class _AudioOverlayBottomSheetState extends State<AudioOverlayBottomSheet> {
                         ),
                         const Center(
                           child: Icon(Icons.directions_transit, color: Colors.white),
-                        ),
-                        const Center(
-                          child: Icon(Icons.directions_bike, color: Colors.white),
                         ),
                       ],
                     ),

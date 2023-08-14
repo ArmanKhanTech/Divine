@@ -401,14 +401,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0),
                   child: currentUser.name!.isNotEmpty ? Text(
-                    currentUser.name!,
+                    '• ${currentUser.name!}',
                     style: const TextStyle(
                       fontSize: 15.0,
                       fontWeight: FontWeight.w600,
                     ),
                     maxLines: 1,
                   ) : Text(
-                    currentUser.username!,
+                    '• ${currentUser.username!}',
                     style: const TextStyle(
                       fontSize: 15.0,
                       fontWeight: FontWeight.w600,
@@ -419,7 +419,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0),
                   child: currentUser.profession!.isEmpty ? Text(
-                    currentUser.country!,
+                    '• ${currentUser.country!}',
                     style: const TextStyle(
                       fontSize: 15.0,
                       color: Colors.blue,
@@ -427,7 +427,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     maxLines: 1,
                 ) : Text(
-                    currentUser.profession![0].toUpperCase() + currentUser.profession!.substring(1),
+                    '• ${currentUser.profession![0].toUpperCase() + currentUser.profession!.substring(1)}',
                     style: const TextStyle(
                       fontSize: 15.0,
                       color: Colors.grey,
@@ -443,7 +443,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     width: 0.0,
                   ) : SizedBox(
                     child: Text(
-                      currentUser.bio!,
+                      '• ${currentUser.bio!}',
                       style: const TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.w600,
@@ -461,11 +461,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     width: 500,
                     child: GestureDetector(
                       child: Text(
-                        currentUser.link!,
+                        '• ${currentUser.link!}',
                         style: const TextStyle(
                           fontSize: 15.0,
                           fontWeight: FontWeight.w600,
-                          color: Colors.purple,
+                          color: Colors.deepPurpleAccent,
                         ),
                       ),
                     )
