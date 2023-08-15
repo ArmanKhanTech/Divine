@@ -1,1 +1,0 @@
-var webRecaptchaSiteKey = '6LcTMp4kAAAAAIw3kA-0ntDzbDY5wOWd5-QHi5Py';

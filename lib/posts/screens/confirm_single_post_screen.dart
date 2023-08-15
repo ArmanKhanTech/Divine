@@ -184,7 +184,6 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
               const SizedBox(height: 20.0),
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.width - 30,
                 decoration: BoxDecoration(
                   color: Colors.black,
                   borderRadius: const BorderRadius.all(
@@ -247,13 +246,15 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                 onChanged: (val) => viewModel.setDescription(val),
               ),
               const SizedBox(height: 20.0),
-              TextFormField(
-                textCapitalization: TextCapitalization.characters,
-                controller: viewModel.locationTEC,
-                style: const TextStyle(
-                    color: Colors.white
-                ),
-                decoration: InputDecoration(
+              SizedBox(
+                height: 60.0,
+                child: TextFormField(
+                  textCapitalization: TextCapitalization.characters,
+                  controller: viewModel.locationTEC,
+                  style: const TextStyle(
+                      color: Colors.white
+                  ),
+                  decoration: InputDecoration(
                     alignLabelWithHint: true,
                     labelText: 'Location',
                     labelStyle: const TextStyle(color: Colors.blue, fontSize: 18.0),
@@ -270,20 +271,24 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                         borderRadius: BorderRadius.all(Radius.circular(30.0)
                         )
                     ),
-                  suffixIcon: IconButton(
-                    tooltip: "Use your current location",
-                    icon: const Icon(
-                      CupertinoIcons.map_pin_ellipse,
+                    suffixIcon: IconButton(
+                      tooltip: "Use your current location",
+                      icon: const Icon(
+                        CupertinoIcons.map_pin_ellipse,
+                      ),
+                      iconSize: 30.0,
+                      color: Colors.blue,
+                      onPressed: () => viewModel.getLocation(),
                     ),
-                    iconSize: 30.0,
-                    color: Colors.blue,
-                    onPressed: () => viewModel.getLocation(),
+                    isDense: true,                      // Added this
+                    contentPadding: const EdgeInsets.all(10),
+                    isCollapsed: true,
                   ),
+                  textAlignVertical: TextAlignVertical.center,
+                  cursorColor: Colors.white,
+                  maxLines: null,
+                  onChanged: (val) => viewModel.setLocation(val),
                 ),
-                textAlignVertical: TextAlignVertical.center,
-                cursorColor: Colors.white,
-                maxLines: null,
-                onChanged: (val) => viewModel.setLocation(val),
               ),
               const SizedBox(height: 20.0),
               TextFormField(

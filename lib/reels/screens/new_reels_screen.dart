@@ -558,9 +558,21 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
     timer = Timer.periodic(oneSec,
           (Timer timer) => setState(() {
           if (start > 300) {
-            stopVideoRecording();
-            timer.cancel();
-            showSnackBar(msg: "Video length cannot be more than 5 minutes");
+            showSnackBar(
+                msg: "Video should be between 15 seconds to 3 minutes.");
+            stopVideoRecording().then((XFile? video) {
+              if (mounted) {
+                setState(() {
+                  isVideoRecording = false;
+                });
+                if (video != null) {
+                  if (video.path.isNotEmpty) {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => VideoEditor(file: File(video.path))));
+                    cancelTimer();
+                  }
+                }
+              }
+            });
           } else {
             start = start + 1;
             setState(() {

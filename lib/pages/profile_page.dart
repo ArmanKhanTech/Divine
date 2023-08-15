@@ -397,6 +397,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     const Spacer(),
                   ],
                 ),
+                // TODO: Add icons
                 const SizedBox(height: 10.0),
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0),

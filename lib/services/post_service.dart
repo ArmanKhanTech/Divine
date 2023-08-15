@@ -6,6 +6,7 @@ import 'package:uuid/uuid.dart';
 import '../utilities/firebase.dart';
 import '../services/services.dart';
 
+// TODO: Add post to hashtags collection.
 class PostService extends Service{
   String postId = const Uuid().v4();
 

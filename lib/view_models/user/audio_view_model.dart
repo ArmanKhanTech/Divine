@@ -1,26 +1,36 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 
 class AudioViewModel extends ChangeNotifier{
   bool audioLoading = false, audioLoaded = false;
 
   late File audioFile;
 
-  final player = AudioPlayer();
+  Duration? audioDuration = Duration.zero;
 
-  late Duration audioDuration;
+  double start = 0.0, end = 0.0;
 
   String audioName = '';
 
   void resetAudio() {
     audioLoading = false;
     audioLoaded = false;
+    audioFile = File('');
+    audioDuration = Duration.zero;
+    start = 0.0;
+    end = 0.0;
+    audioName = '';
     notifyListeners();
   }
 
-  void chooseAudio(BuildContext context) async {
+  @override
+  void dispose() {
+    resetAudio();
+    super.dispose();
+  }
+
+  Future<String> chooseAudio(BuildContext context) async {
     audioLoading = true;
     notifyListeners();
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -32,13 +42,27 @@ class AudioViewModel extends ChangeNotifier{
     if (result != null) {
       audioFile = File(result.files.single.path!);
       audioName = result.files.single.name;
-      audioDuration = (await player.setUrl(result.files.single.path!))!;
-      print('audioDuration: $audioDuration');
-      print('audioName: $audioName');
     } else {
-      showSnackBar(context, 'No file selected.');
+      showSnackBar(context, 'No audio selected.');
     }
     audioLoaded = true;
+    notifyListeners();
+
+    return audioFile.path;
+  }
+
+  void setStart(double value) {
+    start = value;
+    notifyListeners();
+  }
+
+  void setEnd(double value) {
+    end = value;
+    notifyListeners();
+  }
+
+  void setAudioDuration(Duration? duration) {
+    audioDuration = duration;
     notifyListeners();
   }
 

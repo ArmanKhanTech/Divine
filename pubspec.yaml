@@ -95,7 +95,7 @@ dependencies:
   ffmpeg_kit_flutter_min: ^5.1.0
   matrix2d: ^1.0.4
   file_picker: ^5.3.3
-  just_audio: ^0.9.34
+  audioplayers: ^5.1.0
   #google_mlkit_commons: ^0.5.0
   #google_mlkit_face_detection: ^0.8.0
   #google_mlkit_face_mesh_detection: ^0.0.1

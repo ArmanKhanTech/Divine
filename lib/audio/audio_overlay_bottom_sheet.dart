@@ -1,8 +1,8 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:divine/view_models/user/audio_view_model.dart';
 import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../widgets/wave_slider.dart';
 
 class AudioOverlayBottomSheet extends StatefulWidget {
@@ -19,6 +19,11 @@ class AudioOverlayBottomSheet extends StatefulWidget {
 class _AudioOverlayBottomSheetState extends State<AudioOverlayBottomSheet> {
   double slider = 0.0;
 
+  String buttonText = 'Play';
+  String currentPosition = '00:00';
+
+  final player = AudioPlayer();
+
   @override
   void initState() {
     super.initState();
@@ -26,7 +31,7 @@ class _AudioOverlayBottomSheetState extends State<AudioOverlayBottomSheet> {
 
   @override
   void dispose() {
-
+    player.dispose();
     super.dispose();
   }
 
@@ -200,6 +205,7 @@ class _AudioOverlayBottomSheetState extends State<AudioOverlayBottomSheet> {
                                           child: Column(
                                             children: [
                                               const Icon(Icons.upload, size: 50, color: Colors.white),
+                                              const SizedBox(height: 10),
                                               const Text(
                                                 'Upload Your Own Audio',
                                                 textAlign: TextAlign.center,
@@ -212,7 +218,43 @@ class _AudioOverlayBottomSheetState extends State<AudioOverlayBottomSheet> {
                                               const SizedBox(height: 10),
                                               TextButton(
                                                 onPressed: () async {
-                                                  viewModel.chooseAudio(context);
+                                                  viewModel.chooseAudio(context).then((value) async {
+                                                    await player.play(
+                                                      DeviceFileSource(value),
+                                                      position: Duration(seconds: viewModel.start.toInt()),
+                                                      mode: PlayerMode.mediaPlayer,
+                                                    );
+                                                    viewModel.setAudioDuration(await player.getDuration());
+                                                    player.onPositionChanged.listen((Duration duration) {
+                                                      setState(() {
+                                                        slider = duration.inSeconds.toDouble();
+                                                        if (slider == viewModel.end) {
+                                                          player.pause();
+                                                          setState(() {
+                                                            buttonText = 'Play';
+                                                          });
+                                                        }
+                                                        if (duration.inSeconds < 10) {
+                                                          currentPosition = '00:0${duration.inSeconds}';
+                                                        } else if (duration.inSeconds < 60) {
+                                                          currentPosition = '00:${duration.inSeconds}';
+                                                        } else if (duration.inSeconds < 600) {
+                                                          if (duration.inSeconds % 60 < 10) {
+                                                            currentPosition = '0${duration.inSeconds ~/ 60}:0${duration.inSeconds % 60}';
+                                                          } else {
+                                                            currentPosition = '0${duration.inSeconds ~/ 60}:${duration.inSeconds % 60}';
+                                                          }
+                                                        } else {
+                                                          if (duration.inSeconds % 60 < 10) {
+                                                            currentPosition = '${duration.inSeconds ~/ 60}:0${duration.inSeconds % 60}';
+                                                          } else {
+                                                            currentPosition = '${duration.inSeconds ~/ 60}:${duration.inSeconds % 60}';
+                                                          }
+                                                        }
+                                                      });
+                                                    });
+                                                  });
+
                                                 },
                                                 child: Container(
                                                   decoration: const BoxDecoration(
@@ -239,20 +281,181 @@ class _AudioOverlayBottomSheetState extends State<AudioOverlayBottomSheet> {
                                   viewModel.audioLoaded == true ? Center(
                                     child: Column(
                                       children: [
+                                        const SizedBox(height: 20),
+                                        Text(
+                                          viewModel.audioName,
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                            fontSize: 20.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
                                         WaveSlider(
                                           backgroundColor: Colors.black,
-                                          heightWaveSlider: 80,
-                                          widthWaveSlider: MediaQuery.of(context).size.width - 50,
+                                          heightWaveSlider: 100,
                                           sliderColor: Colors.red,
                                           wavActiveColor: Colors.blue,
                                           wavDeactiveColor: Colors.white,
-                                          duration: viewModel.audioDuration.inSeconds.toDouble(),
+                                          duration: viewModel.audioDuration!.inSeconds.toDouble(),
                                           callbackStart: (duration) {
-                                            print("Start $duration");
+                                            viewModel.setStart(duration);
                                           },
                                           callbackEnd: (duration) {
-                                            print("End $duration");
+                                            viewModel.setEnd(duration);
                                           },
+                                        ),
+                                        const SizedBox(height: 20),
+                                        Container(
+                                          margin: const EdgeInsets.symmetric(horizontal: 20),
+                                          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.white,
+                                              width: 1,
+                                            ),
+                                            borderRadius: const BorderRadius.all(Radius.circular(20)),
+                                            color: Colors.black,
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              '${viewModel.start} to ${viewModel.end} seconds',
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(
+                                                fontSize: 20.0,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          )
+                                        ),
+                                        const SizedBox(height: 10),
+                                        TextButton(
+                                          onPressed: () async {
+                                            if(player.state == PlayerState.paused) {
+                                              player.resume();
+                                              setState(() {
+                                                buttonText = 'Pause';
+                                              });
+                                            } else if (player.state == PlayerState.playing) {
+                                              player.pause();
+                                              setState(() {
+                                                buttonText = 'Play';
+                                              });
+                                            }
+                                          },
+                                          child: Container(
+                                            margin: const EdgeInsets.symmetric(horizontal: 10),
+                                            decoration: const BoxDecoration(
+                                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                                              color: Colors.white,
+                                            ),
+                                            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  buttonText,
+                                                  style: const TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 20.0,
+                                                      fontWeight: FontWeight.bold
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 10),
+                                                Container(
+                                                  color: Colors.black,
+                                                  height: 20,
+                                                  width: 1,
+                                                ),
+                                                const SizedBox(width: 10),
+                                                Text(
+                                                  currentPosition,
+                                                  style: const TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 20.0,
+                                                      fontWeight: FontWeight.bold
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Container(
+                                          height: 40,
+                                          margin: const EdgeInsets.symmetric(horizontal: 20),
+                                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.white,
+                                              width: 1,
+                                            ),
+                                            borderRadius: const BorderRadius.all(Radius.circular(20)),
+                                            color: Colors.black,
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              const Text(
+                                                '00:00',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontSize: 20.0,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 10),
+                                              SizedBox(
+                                                height: 20,
+                                                child: Slider(
+                                                  value: slider,
+                                                  onChanged: (value) {
+                                                    player.seek(Duration(seconds: value.toInt()));
+                                                    setState(() {
+                                                      slider = value;
+                                                    });
+                                                  },
+                                                  min: 0,
+                                                  max: viewModel.audioDuration!.inSeconds.toDouble(),
+                                                  activeColor: Colors.white,
+                                                  inactiveColor: Colors.white,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 10),
+                                              Text(
+                                                '0${viewModel.audioDuration?.inMinutes}:${viewModel.audioDuration!.inSeconds - (viewModel.audioDuration!.inMinutes * 60)}',
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                  fontSize: 20.0,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(height: 30),
+                                        TextButton(
+                                          onPressed: () {
+                                            //
+                                          },
+                                          child: Container(
+                                            margin: const EdgeInsets.symmetric(horizontal: 10),
+                                            decoration: const BoxDecoration(
+                                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                                              color: Colors.white,
+                                            ),
+                                            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                                            child: const Text(
+                                              'Upload & Use',
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 20.0,
+                                                  fontWeight: FontWeight.bold
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),

@@ -20,7 +20,7 @@ class WaveSlider extends StatefulWidget {
     required this.callbackStart,
     required this.callbackEnd,
     this.widthWaveSlider = 0,
-    this.heightWaveSlider = 0,
+    required this.heightWaveSlider,
     this.wavActiveColor = Colors.deepPurple,
     this.wavDeactiveColor = Colors.blueGrey,
     this.sliderColor = Colors.red,
@@ -96,7 +96,7 @@ class WaveSliderState extends State<WaveSlider> {
     int i = 0;
 
     return SizedBox(
-      width: widget.widthWaveSlider,
+      width: widthSlider,
       height: widget.heightWaveSlider,
       child: Column(
         children: [
@@ -112,7 +112,7 @@ class WaveSliderState extends State<WaveSlider> {
               width: double.infinity,
               decoration: BoxDecoration(
                 color: widget.backgroundColor,
-                border: Border.all(color: widget.sliderColor, width: 1),
+                border: Border.all(color: Colors.white, width: 1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Stack(
@@ -125,12 +125,14 @@ class WaveSliderState extends State<WaveSlider> {
                       Color color = i >= barStartPosition / barWidth && i <= barEndPosition / barWidth
                           ? widget.wavActiveColor
                           : widget.wavDeactiveColor;
-                      i++;
+                      if(i++ == bars.length - 1) {
+
+                      }
 
                       return Container(
                         color: color,
-                        height: height.toDouble(),
-                        width: 5.0,
+                        height: Random().nextInt(40).toDouble() + 10,
+                        width: 4.948,
                       );
                     }).toList(),
                   ),
@@ -218,9 +220,21 @@ class CenterBar extends StatelessWidget {
           width: width,
           child: Column(
             children: [
-              Container(height: 2, color: Colors.red),
-              Expanded(child: Container()),
-              Container(height: 2, color: Colors.red),
+              Container(
+                height: 3,
+                decoration: const BoxDecoration(
+                  color: Colors.blue,
+                )
+              ),
+              Expanded(child: Container(
+                color: Colors.transparent,
+              )),
+              Container(
+                  height: 3,
+                  decoration: const BoxDecoration(
+                    color: Colors.pink,
+                  )
+              ),
             ],
           ),
         ),
@@ -251,13 +265,22 @@ class Bar extends StatelessWidget {
         onHorizontalDragEnd: callbackEnd,
         child: Container(
           decoration: BoxDecoration(
-            color: colorBG ?? Colors.red,
+            gradient: const LinearGradient(
+              colors: [
+                Colors.blue,
+                Colors.pink,
+              ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: [0.0, 1.0],
+                tileMode: TileMode.clamp
+            ),
             borderRadius: side == 'left' ? const BorderRadius.only(
-              topLeft: Radius.circular(20),
-              bottomLeft: Radius.circular(20),
+              topLeft: Radius.circular(10),
+              bottomLeft: Radius.circular(10),
             ) : const BorderRadius.only(
-              topRight: Radius.circular(20),
-              bottomRight: Radius.circular(20),
+              topRight: Radius.circular(10),
+              bottomRight: Radius.circular(10),
             ),
           ),
           height: double.infinity,
