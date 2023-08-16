@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,12 +10,11 @@ import '../../components/custom_image.dart';
 import '../../stories/stories_editor/presentation/widgets/animated_on_tap_button.dart';
 import '../../view_models/screens/posts_view_model.dart';
 import '../../widgets/progress_indicators.dart';
-import '../../screens/main_screen.dart';
 
 class ConfirmSinglePostScreen extends  StatefulWidget{
-  final String? mediaUrl;
+  final File? postImage;
 
-  const ConfirmSinglePostScreen({Key? key, required this.mediaUrl}) : super(key: key);
+  const ConfirmSinglePostScreen({Key? key, required this.postImage}) : super(key: key);
 
   @override
   State<ConfirmSinglePostScreen> createState() => _ConfirmSinglePostScreenState();
@@ -23,7 +23,6 @@ class ConfirmSinglePostScreen extends  StatefulWidget{
 class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
   @override
   Widget build(BuildContext context) {
-
     exitDialog({required PostsViewModel viewModel}) {
 
       return showDialog(
@@ -72,9 +71,12 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                     ),
                     AnimatedOnTapButton(
                       onTap: () async {
-                        viewModel.resetPost();
-                        Navigator.of(context).pushAndRemoveUntil(
-                            CupertinoPageRoute(builder: (_) => const MainScreen()), (route) => false);
+                        await viewModel.resetPost();
+                        if(mounted){
+                          widget.postImage!.delete();
+                          Navigator.pop(c, true);
+                          Navigator.pop(context);
+                        }
                       },
                       child: Text(
                         'Yes',
@@ -159,9 +161,10 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
             actions: [
               GestureDetector(
                 onTap: () async {
-                  await viewModel.uploadSinglePost(context);
+                  await viewModel.uploadSinglePost(context, widget.postImage!);
+                  await viewModel.resetPost();
+                  widget.postImage!.delete();
                   Navigator.pop(context);
-                  viewModel.resetPost();
                 },
                 child: const Padding(
                   padding: EdgeInsets.only(
@@ -201,51 +204,58 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                     imageUrl: viewModel.imgLink,
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.width - 30,
-                    fit: BoxFit.fill,
-                  ) : viewModel.mediaUrl == null ? const Center(
+                    fit: BoxFit.fitWidth,
+                  ) : widget.postImage == null ? const Center(
                     child: Text(
                       'Upload a Photo',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.blue,
                         fontFamily: 'Raleway',
                         fontSize: 18.0,
                       ),
                     ),
                   ) : Image.file(
-                    viewModel.mediaUrl!,
+                    widget.postImage!,
+                    key: UniqueKey(),
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.width - 30,
-                    fit: BoxFit.fill,
+                    fit: BoxFit.fitWidth,
                   ),
                 )
               ),
               const SizedBox(height: 20.0),
-              TextFormField(
-                style: const TextStyle(color: Colors.white),
-                decoration: const InputDecoration(
-                  alignLabelWithHint: true,
-                  labelText: 'Caption',
-                  labelStyle: TextStyle(color: Colors.blue, fontSize: 18.0),
-                  hintText: 'Eg. This is very beautiful place!',
-                  hintStyle: TextStyle(color: Colors.white70),
-                  enabled: true,
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),
-                      borderRadius: BorderRadius.all(Radius.circular(30.0)
-                      )
+              SizedBox(
+                height: 60.0,
+                child: TextFormField(
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                      alignLabelWithHint: true,
+                      labelText: 'Caption',
+                      labelStyle: TextStyle(color: Colors.blue, fontSize: 18.0),
+                      hintText: 'Eg. This is very beautiful place!',
+                      hintStyle: TextStyle(color: Colors.white70),
+                      enabled: true,
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                          borderRadius: BorderRadius.all(Radius.circular(30.0)
+                          )
+                      ),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue, width: 0.0),
+                          borderRadius: BorderRadius.all(Radius.circular(30.0)
+                          )
+                      ),
+                    isDense: true,                      // Added this
+                    contentPadding: EdgeInsets.all(15),
+                    isCollapsed: true,
                   ),
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue, width: 0.0),
-                      borderRadius: BorderRadius.all(Radius.circular(30.0)
-                      )
-                  )
+                  textAlignVertical: TextAlignVertical.center,
+                  cursorColor: Colors.white,
+                  maxLines: null,
+                  onChanged: (val) => viewModel.setDescription(val),
                 ),
-                textAlignVertical: TextAlignVertical.center,
-                cursorColor: Colors.white,
-                maxLines: null,
-                onChanged: (val) => viewModel.setDescription(val),
               ),
-              const SizedBox(height: 20.0),
+              const SizedBox(height: 10.0),
               SizedBox(
                 height: 60.0,
                 child: TextFormField(
@@ -275,13 +285,14 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                       tooltip: "Use your current location",
                       icon: const Icon(
                         CupertinoIcons.map_pin_ellipse,
+                        size: 25,
                       ),
                       iconSize: 30.0,
                       color: Colors.blue,
                       onPressed: () => viewModel.getLocation(),
                     ),
                     isDense: true,                      // Added this
-                    contentPadding: const EdgeInsets.all(10),
+                    contentPadding: const EdgeInsets.all(15),
                     isCollapsed: true,
                   ),
                   textAlignVertical: TextAlignVertical.center,
@@ -290,60 +301,72 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                   onChanged: (val) => viewModel.setLocation(val),
                 ),
               ),
-              const SizedBox(height: 20.0),
-              TextFormField(
-                style: const TextStyle(
-                  color: Colors.pink,
+              const SizedBox(height: 10.0),
+              SizedBox(
+                height: 60.0,
+                child: TextFormField(
+                  style: const TextStyle(
+                    color: Colors.pink,
+                  ),
+                  decoration: const InputDecoration(
+                      alignLabelWithHint: true,
+                      labelText: 'Mentions',
+                      labelStyle: TextStyle(color: Colors.blue, fontSize: 18.0),
+                      hintText: 'Eg. @john @jane',
+                      hintStyle: TextStyle(color: Colors.white70),
+                      enabled: true,
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue),
+                          borderRadius: BorderRadius.all(Radius.circular(30.0)
+                          )
+                      ),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue, width: 0.0),
+                          borderRadius: BorderRadius.all(Radius.circular(30.0)
+                          )
+                      ),
+                    isDense: true,                      // Added this
+                    contentPadding: EdgeInsets.all(15),
+                    isCollapsed: true,
+                  ),
+                  textAlignVertical: TextAlignVertical.center,
+                  cursorColor: Colors.white,
+                  maxLines: null,
+                  onChanged: (val) => viewModel.setMentions(val),
                 ),
-                decoration: const InputDecoration(
-                    alignLabelWithHint: true,
-                    labelText: 'Mentions',
-                    labelStyle: TextStyle(color: Colors.blue, fontSize: 18.0),
-                    hintText: 'Eg. @john @jane',
-                    hintStyle: TextStyle(color: Colors.white70),
-                    enabled: true,
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
-                        borderRadius: BorderRadius.all(Radius.circular(30.0)
-                        )
-                    ),
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue, width: 0.0),
-                        borderRadius: BorderRadius.all(Radius.circular(30.0)
-                        )
-                    )
-                ),
-                textAlignVertical: TextAlignVertical.center,
-                cursorColor: Colors.white,
-                maxLines: null,
-                onChanged: (val) => viewModel.setMentions(val),
               ),
-              const SizedBox(height: 20.0),
-              TextFormField(
-                style: const TextStyle(color: Colors.blue),
-                decoration: const InputDecoration(
-                    alignLabelWithHint: true,
-                    labelText: 'Hashtags',
-                    labelStyle: TextStyle(color: Colors.blue, fontSize: 18.0),
-                    hintText: 'Eg. #nature #beauty',
-                    hintStyle: TextStyle(color: Colors.white70),
-                    enabled: true,
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
-                        borderRadius: BorderRadius.all(Radius.circular(30.0)
-                        )
-                    ),
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue, width: 0.0),
-                        borderRadius: BorderRadius.all(Radius.circular(30.0)
-                        )
-                    )
-                ),
-                textAlignVertical: TextAlignVertical.center,
-                cursorColor: Colors.white,
-                maxLines: null,
-                onChanged: (val) => viewModel.setHashtags(val),
-              ),
+              const SizedBox(height: 10.0),
+              SizedBox(
+                 height: 60.0,
+                 child:  TextFormField(
+                   style: const TextStyle(color: Colors.blue),
+                   decoration: const InputDecoration(
+                       alignLabelWithHint: true,
+                       labelText: 'Hashtags',
+                       labelStyle: TextStyle(color: Colors.blue, fontSize: 18.0),
+                       hintText: 'Eg. #nature #beauty',
+                       hintStyle: TextStyle(color: Colors.white70),
+                       enabled: true,
+                       enabledBorder: OutlineInputBorder(
+                           borderSide: BorderSide(color: Colors.blue),
+                           borderRadius: BorderRadius.all(Radius.circular(30.0)
+                           )
+                       ),
+                       border: OutlineInputBorder(
+                           borderSide: BorderSide(color: Colors.blue, width: 0.0),
+                           borderRadius: BorderRadius.all(Radius.circular(30.0)
+                           )
+                       ),
+                     isDense: true,                      // Added this
+                     contentPadding: EdgeInsets.all(15),
+                     isCollapsed: true,
+                   ),
+                   textAlignVertical: TextAlignVertical.center,
+                   cursorColor: Colors.white,
+                   maxLines: null,
+                   onChanged: (val) => viewModel.setHashtags(val),
+               ),
+              )
             ],
           ),
         ),

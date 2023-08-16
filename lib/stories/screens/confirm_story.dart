@@ -143,6 +143,7 @@ class _ConfirmStoryState extends State<ConfirmStory> {
                           setState(() {
                             loading = false;
                           });
+                          image.delete();
                           Navigator.of(context).pushAndRemoveUntil(
                               CupertinoPageRoute(builder: (_) => const MainScreen()), (route) => false);
                         } else {
@@ -158,6 +159,7 @@ class _ConfirmStoryState extends State<ConfirmStory> {
                           setState(() {
                             loading = false;
                           });
+                          image.delete();
                           Navigator.of(context).pushAndRemoveUntil(
                               CupertinoPageRoute(builder: (_) => const MainScreen()), (route) => false);
                         }

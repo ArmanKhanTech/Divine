@@ -213,7 +213,7 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                           color: Theme.of(context).colorScheme.background,
                         ),
                         clipBehavior: Clip.hardEdge,
-                        child: viewModel.mediaUrl == null ? Center(
+                        child: viewModel.media == null ? Center(
                           child: Text(
                             kIsWeb != true ?
                             'Tap to select your profile picture' : 'Click to select your profile picture',
@@ -224,12 +224,12 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                             ),
                           ),
                         ) : kIsWeb != true ? Image.file(
-                          viewModel.mediaUrl!,
+                          viewModel.media!,
                           width: MediaQuery.of(context).size.width,
                           height: MediaQuery.of(context).size.width - 30,
                           fit: BoxFit.contain,
                         ) : Image.network(
-                          viewModel.mediaUrl!.path,
+                          viewModel.media!.path,
                           width: MediaQuery.of(context).size.width,
                           height: MediaQuery.of(context).size.width - 30,
                           fit: BoxFit.contain,

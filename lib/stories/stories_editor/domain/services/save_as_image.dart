@@ -20,13 +20,13 @@ Future takePicture(
     Uint8List pngBytes = byteData!.buffer.asUint8List();
 
     final String dir = (await getApplicationDocumentsDirectory()).path;
-    String imagePath = '$dir/divine${DateTime.now()}.gif';
+    String imagePath = '$dir/divine${DateTime.timestamp()}.gif';
     File capturedFile = File(imagePath);
     await capturedFile.writeAsBytes(pngBytes);
 
     if (saveToGallery) {
       final result = await ImageGallerySaver.saveImage(pngBytes,
-          quality: 100, name: "divine${DateTime.now()}.gif");
+          quality: 100, name: "divine${DateTime.timestamp()}.gif");
       if (result != null) {
         return true;
       } else {

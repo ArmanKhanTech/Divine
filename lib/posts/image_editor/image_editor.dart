@@ -626,28 +626,18 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
           ],
         ),
         body: Stack(children: [
-          GestureDetector(
-            onScaleUpdate: (details) {
-              if (details.pointerCount == 1) {
-                x += details.focalPointDelta.dx;
-                y += details.focalPointDelta.dy;
-                setState(() {});
-              }
-              if (details.pointerCount == 2) {
-                if (details.horizontalScale != 1) {
-                  scaleFactor = lastScaleFactor *
-                      math.min(details.horizontalScale, details.verticalScale);
-                  setState(() {});
-                }
-              }
-            },
-            onScaleEnd: (details) {
-              lastScaleFactor = scaleFactor;
-            },
-            child: Center(
-              child: SizedBox(
-                height: currentImage.height / pixelRatio,
-                width: currentImage.width / pixelRatio,
+          Center(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.black,
+                border: Border.all(color: Colors.white),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              margin: const EdgeInsets.symmetric(horizontal: 10),
+              height: currentImage.height / pixelRatio,
+              width: currentImage.width / pixelRatio,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
                 child: Screenshot(
                   controller: screenshotController,
                   child: RotatedBox(
@@ -676,7 +666,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                     ),
                   ),
                 ),
-              ),
+              )
             ),
           ),
         ]),
@@ -1092,7 +1082,7 @@ class BottomButton extends StatelessWidget {
               text,
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 12,
+                fontSize: 15,
               ),
             ),
           ],
@@ -1311,6 +1301,7 @@ class _ImageCropperState extends State<ImageCropper> {
                             ),
                             icon: Icon(
                               Icons.portrait,
+                              size: 25,
                               color: isLandscape ? Colors.grey : Colors.white,
                             ),
                             onPressed: () {
@@ -1330,6 +1321,7 @@ class _ImageCropperState extends State<ImageCropper> {
                             ),
                             icon: Icon(
                               Icons.landscape,
+                              size: 25,
                               color: isLandscape ? Colors.white : Colors.grey,
                             ),
                             onPressed: () {
@@ -1403,6 +1395,7 @@ class _ImageCropperState extends State<ImageCropper> {
           child: Text(
             i18n(title),
             style: TextStyle(
+              fontSize: 18,
               color: aspectRatioOriginal == ratio ? Colors.white : Colors.grey,
             ),
           )),
@@ -1469,50 +1462,55 @@ class _ImageFiltersState extends State<ImageFilters> {
             ),
           ],
         ),
-        body: Center(
-          child: Screenshot(
-            controller: screenshotController,
-            child: Stack(
-              children: [
-                Image.memory(
-                  widget.image,
-                  fit: BoxFit.cover,
+        body: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 10),
+          child: Center(
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(20)),
+                child: Screenshot(
+                  controller: screenshotController,
+                  child: Stack(
+                    children: [
+                      Image.memory(
+                        widget.image,
+                        fit: BoxFit.cover,
+                      ),
+                      FilterAppliedImage(
+                        image: widget.image,
+                        filter: selectedFilter,
+                        fit: BoxFit.cover,
+                        opacity: filterOpacity,
+                        onProcess: (img) {
+                          filterAppliedImage = img;
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-                FilterAppliedImage(
-                  image: widget.image,
-                  filter: selectedFilter,
-                  fit: BoxFit.cover,
-                  opacity: filterOpacity,
-                  onProcess: (img) {
-                    filterAppliedImage = img;
-                  },
-                ),
-              ],
-            ),
+              )
           ),
         ),
         bottomNavigationBar: SafeArea(
           child: SizedBox(
             height: 160,
             child: Column(children: [
+              const SizedBox(
+                height: 20,
+              ),
               SizedBox(
-                height: 40,
-                child: selectedFilter == PresetFilters.none
-                    ? Container()
-                    : selectedFilter.build(
-                  Slider(
-                    min: 0,
-                    max: 1,
-                    divisions: 100,
-                    value: filterOpacity,
-                    activeColor: Colors.white,
-                    inactiveColor: Colors.grey,
-                    thumbColor: Colors.white,
-                    onChanged: (value) {
-                      filterOpacity = value;
-                      setState(() {});
-                    },
-                  ),
+                height: 20,
+                child: Slider(
+                  min: 0,
+                  max: 1,
+                  divisions: 100,
+                  value: filterOpacity,
+                  activeColor: Colors.white,
+                  inactiveColor: Colors.grey,
+                  thumbColor: Colors.white,
+                  onChanged: (value) {
+                    filterOpacity = value;
+                    setState(() {});
+                  },
                 ),
               ),
               SizedBox(
@@ -1565,7 +1563,7 @@ class _ImageFiltersState extends State<ImageFilters> {
         ),
         Text(
           i18n(name),
-          style: const TextStyle(fontSize: 12),
+          style: const TextStyle(fontSize: 15),
         ),
       ]),
     );

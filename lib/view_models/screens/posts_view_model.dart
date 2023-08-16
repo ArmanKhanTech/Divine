@@ -2,13 +2,16 @@ import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:divine/posts/screens/confirm_single_post_screen.dart';
+import 'package:divine/utilities/nsfw_detect.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:flutter_nude_detector/flutter_nude_detector.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_cropper/image_cropper.dart' as image_cropper;
+import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../models/post_model.dart';
@@ -35,7 +38,7 @@ class PostsViewModel extends ChangeNotifier{
   List<String> hashtagsList = [];
   List<String> mentionsList = [];
 
-  File? mediaUrl;
+  File? media;
 
   final picker = ImagePicker();
 
@@ -48,13 +51,13 @@ class PostsViewModel extends ChangeNotifier{
   TextEditingController locationTEC = TextEditingController();
 
   uploadProfilePicture(BuildContext context) async {
-    if (mediaUrl == null) {
+    if (media == null) {
       showSnackBar('Kindly select an image.', context);
     } else {
       try {
         loading = true;
         notifyListeners();
-        await postService.uploadProfilePicture(mediaUrl!, auth.currentUser!);
+        await postService.uploadProfilePicture(media!, auth.currentUser!);
         loading = false;
         DocumentSnapshot doc = await usersRef.doc(auth.currentUser!.uid).get();
         var users = UserModel.fromJson(doc.data() as Map<String, dynamic>);
@@ -125,7 +128,7 @@ class PostsViewModel extends ChangeNotifier{
           ),
         ],
       );
-      mediaUrl = File(croppedFile!.path);
+      media = File(croppedFile!.path);
       loading = false;
       notifyListeners();
     } catch (e) {
@@ -136,12 +139,12 @@ class PostsViewModel extends ChangeNotifier{
   }
 
   resetProfilePicture() {
-    mediaUrl = null;
+    media = null;
     notifyListeners();
   }
 
   resetPost() {
-    mediaUrl = null;
+    media = null;
     description = null;
     location = null;
     hashtags = null;
@@ -157,7 +160,6 @@ class PostsViewModel extends ChangeNotifier{
     description = post.description;
     imgLink = post.mediaUrl;
     location = post.location;
-
     edit = true;
     notifyListeners();
   }
@@ -182,23 +184,28 @@ class PostsViewModel extends ChangeNotifier{
     notifyListeners();
   }
 
-  uploadSinglePost(BuildContext context) async {
+  uploadSinglePost(BuildContext context, File? image) async {
     try {
       loading = true;
       notifyListeners();
-      if(mediaUrl == null) showSnackBar('Kindly select an image.', context);
+      if(image == null) showSnackBar('Kindly select an image.', context);
       description ??= '';
       location ??= 'Unknown';
       hashtagsList ??= [];
       mentionsList ??= [];
-      await postService.uploadSinglePost(mediaUrl!, location!, description!, hashtagsList, mentionsList);
+      final hasNudity = await FlutterNudeDetector.detect(path: image!.path);
+      print('hasNudity : $hasNudity');
+      /*await postService.uploadSinglePost(image, location!, description!, hashtagsList, mentionsList)
+          .then((value) {
+            if(hashtagsList.isNotEmpty) postService.addPostToHashtagsCollection(value, hashtagsList);
+      });
+      media!.delete();*/
+      showSnackBar('Uploaded Successfully!', context);
       loading = false;
-      resetPost();
-      showSnackBar('Uploaded successfully!', context);
       notifyListeners();
     } catch (e) {
-      loading = false;
       resetPost();
+      loading = false;
       notifyListeners();
     }
   }
@@ -249,13 +256,13 @@ class PostsViewModel extends ChangeNotifier{
             quality: 75,
           );
           final tempDir = await getTemporaryDirectory();
-          mediaUrl = await File('${tempDir.path}/image.png').create();
-          mediaUrl?.writeAsBytesSync(convertedImage);
+          media = await File('${tempDir.path}/divine${DateTime.timestamp()}image.png').create();
+          media?.writeAsBytesSync(convertedImage);
           Navigator.pushReplacement(
               context,
               CupertinoPageRoute(
                 builder: (context) => ConfirmSinglePostScreen(
-                  mediaUrl: mediaUrl!.path,
+                  postImage: media!,
                 ),
               )
           );

@@ -558,6 +558,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.2"
+  flutter_nude_detector:
+    dependency: "direct main"
+    description:
+      name: flutter_nude_detector
+      sha256: "134eb292766a21e25e3c796af152f9271abd7c05ab6a5f57e54c1f52269729c3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.4+1"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -720,6 +728,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.1"
+  google_mlkit_commons:
+    dependency: transitive
+    description:
+      name: google_mlkit_commons
+      sha256: "42173a8ba89f386486cc5b8249e84da4a4b861daa70498373627d985eb418689"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.0"
+  google_mlkit_image_labeling:
+    dependency: transitive
+    description:
+      name: google_mlkit_image_labeling
+      sha256: "4397ee9a0eac47b08cc4795b4b8793fc4cc63b499090ba460ef6219cd90a9196"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.8.0"
   google_mobile_ads:
     dependency: "direct main"
     description:

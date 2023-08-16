@@ -6,7 +6,6 @@ import 'package:uuid/uuid.dart';
 import '../utilities/firebase.dart';
 import '../services/services.dart';
 
-// TODO: Add post to hashtags collection.
 class PostService extends Service{
   String postId = const Uuid().v4();
 
@@ -20,7 +19,7 @@ class PostService extends Service{
     });
   }
 
-  uploadSinglePost(File image, String location, String description, List<String> hashtagsList, List<String> mentionsList) async {
+  Future<String> uploadSinglePost(File image, String location, String description, List<String> hashtagsList, List<String> mentionsList) async {
     String link = await uploadImage(posts, image);
 
     DocumentSnapshot doc = await usersRef.doc(auth.currentUser!.uid).get();
@@ -44,5 +43,18 @@ class PostService extends Service{
       "hashtags": hashtagsList,
       "mentions": mentionsList,
     }).catchError((e) {});
+
+    return ref.id;
+  }
+
+  addPostToHashtagsCollection(String postId, List<String> hashtagsList) async {
+    for (String hashtag in hashtagsList) {
+      await hashTagsRef.doc(hashtag).collection('posts').doc(postId).set({
+        "postId": postId,
+      });
+      await hashTagsRef.doc(hashtag).update({
+        "count": FieldValue.increment(1),
+      });
+    }
   }
 }
