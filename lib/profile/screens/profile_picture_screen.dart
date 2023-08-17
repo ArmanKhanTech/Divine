@@ -251,7 +251,6 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                                 borderRadius: BorderRadius.circular(20.0),
                               ),
                             ),
-                            elevation: MaterialStateProperty.all<double>(5.0),
                           ),
                           child: const Text('Upload',
                             textAlign: TextAlign.center,

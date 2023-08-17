@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
           TextFormBuilder(
             capitalization: false,
             enabled: !viewModel.loading,
-            prefix: CupertinoIcons.mail_solid,
+            prefix: CupertinoIcons.mail,
             hintText: 'Email',
             textInputAction: TextInputAction.next,
             validateFunction: Regex.validateEmail,

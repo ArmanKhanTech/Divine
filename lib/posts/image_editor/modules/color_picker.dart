@@ -92,10 +92,10 @@ class _BarColorPickerState extends State<BarColorPicker> {
       top: thumbTop,
       child: Container(
         padding: EdgeInsets.zero,
-        width: thumbRadius * 2,
-        height: thumbRadius * 2,
+        width: thumbRadius * 2.5,
+        height: thumbRadius * 2.5,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(thumbRadius),
+          borderRadius: BorderRadius.circular(30),
           boxShadow: const [
             BoxShadow(
               color: _kThumbShadowColor,
@@ -110,35 +110,33 @@ class _BarColorPickerState extends State<BarColorPicker> {
 
     double frameWidth, frameHeight;
     if (horizontal) {
-      frameWidth = barWidth + thumbRadius * 2;
-      frameHeight = thumbRadius * 2;
+      frameWidth = barWidth + thumbRadius * 2.5;
+      frameHeight = thumbRadius * 2.5;
     } else {
-      frameWidth = thumbRadius * 2;
-      frameHeight = barHeight + thumbRadius * 2;
+      frameWidth = thumbRadius * 2.5;
+      frameHeight = barHeight + thumbRadius * 2.5;
     }
     Widget frame = SizedBox(width: frameWidth, height: frameHeight);
 
     Gradient gradient;
-    double left, top;
+    double left;
     if (horizontal) {
       gradient = LinearGradient(colors: colors);
       left = thumbRadius;
-      top = (thumbRadius * 2 - barHeight) / 2;
     } else {
       gradient = LinearGradient(
           colors: colors,
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter);
       left = (thumbRadius * 2 - barWidth) / 2;
-      top = thumbRadius;
     }
     var content = Positioned(
       left: left,
-      top: top,
+      top: 7,
       child: Container(
         padding: EdgeInsets.zero,
         width: barWidth,
-        height: barHeight,
+        height: 5,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(widget.cornerRadius),
           gradient: gradient,

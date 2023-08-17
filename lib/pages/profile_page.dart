@@ -397,80 +397,159 @@ class _ProfilePageState extends State<ProfilePage> {
                     const Spacer(),
                   ],
                 ),
-                // TODO: Add icons
                 const SizedBox(height: 10.0),
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0),
-                  child: currentUser.name!.isNotEmpty ? Text(
-                    '• ${currentUser.name!}',
-                    style: const TextStyle(
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    maxLines: 1,
-                  ) : Text(
-                    '• ${currentUser.username!}',
-                    style: const TextStyle(
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    maxLines: 1,
-                  ),
+                  child: currentUser.name!.isNotEmpty ? Row(
+                    children: [
+                      const Center(
+                        child: Icon(
+                          CupertinoIcons.person,
+                          size: 12,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        currentUser.name!,
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 1,
+                      )
+                    ],
+                  ) : Row(
+                    children: [
+                      const Center(
+                        child: Icon(
+                          CupertinoIcons.person,
+                          size: 12,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        '• ${currentUser.username!}',
+                        style: const TextStyle(
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 1,
+                      ),
+                    ],
+                  )
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0),
-                  child: currentUser.profession!.isEmpty ? Text(
-                    '• ${currentUser.country!}',
-                    style: const TextStyle(
-                      fontSize: 15.0,
-                      color: Colors.blue,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    maxLines: 1,
-                ) : Text(
-                    '• ${currentUser.profession![0].toUpperCase() + currentUser.profession!.substring(1)}',
-                    style: const TextStyle(
-                      fontSize: 15.0,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    maxLines: 1,
-                  ),
+                  child: currentUser.profession!.isEmpty ? Row(
+                    children: [
+                      const Center(
+                        child: Icon(
+                          CupertinoIcons.globe,
+                          color: Colors.blue,
+                          size: 12,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        currentUser.country!,
+                        style: const TextStyle(
+                          fontSize: 15.0,
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 1,
+                      )
+                    ],
+                  ) : Row(
+                    children: [
+                      const Center(
+                        child: Icon(
+                          CupertinoIcons.briefcase,
+                          color: Colors.pink,
+                          size: 12,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        currentUser.profession![0].toUpperCase() + currentUser.profession!.substring(1),
+                        style: const TextStyle(
+                          fontSize: 15.0,
+                          color: Colors.pink,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 1,
+                      ),
+                    ],
+                  )
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0),
                   child: currentUser.bio!.isEmpty ? const SizedBox(
                     height: 0.0,
                     width: 0.0,
-                  ) : SizedBox(
-                    child: Text(
-                      '• ${currentUser.bio!}',
-                      style: const TextStyle(
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.bold,
+                  ) : Row(
+                    children: [
+                      const Center(
+                        child: Icon(
+                          CupertinoIcons.info_circle,
+                          size: 12,
+                        ),
                       ),
-                    ),
-                  ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      SizedBox(
+                        child: Text(
+                          currentUser.bio!,
+                          style: const TextStyle(
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
                 ),
-                // TODO: Implement open browser
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0),
                   child: currentUser.link!.isEmpty ? const SizedBox(
                     height: 0.0,
                     width: 0.0,
-                  ) : SizedBox(
-                    width: 500,
-                    child: GestureDetector(
-                      child: Text(
-                        '• ${currentUser.link!}',
-                        style: const TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.bold,
+                  ) : Row(
+                    children: [
+                      const Center(
+                        child: Icon(
+                          CupertinoIcons.link,
                           color: Colors.deepPurpleAccent,
+                          size: 12,
                         ),
                       ),
-                    )
-                  ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      SizedBox(
+                          width: 200,
+                          child: GestureDetector(
+                            child: Text(
+                              currentUser.link!,
+                              style: const TextStyle(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.deepPurpleAccent,
+                              ),
+                            ),
+                          )
+                      ),
+                    ],
+                  )
                 ),
                 const SizedBox(height: 10.0),
                 buildProfileButton(currentUser),

@@ -34,7 +34,7 @@ class _RegisterPageState extends State<RegisterPage>{
             TextFormBuilder(
               capitalization: false,
               enabled: !viewModel.loading,
-              prefix: CupertinoIcons.person_fill,
+              prefix: CupertinoIcons.person,
               hintText: "Username",
               textInputAction: TextInputAction.next,
               validateFunction: Regex.validateUsername,
@@ -49,7 +49,7 @@ class _RegisterPageState extends State<RegisterPage>{
             TextFormBuilder(
               capitalization: false,
               enabled: !viewModel.loading,
-              prefix: CupertinoIcons.mail_solid,
+              prefix: CupertinoIcons.mail,
               hintText: "Email",
               textInputAction: TextInputAction.next,
               validateFunction: Regex.validateEmail,

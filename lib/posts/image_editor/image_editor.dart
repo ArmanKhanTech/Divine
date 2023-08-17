@@ -13,6 +13,7 @@ import 'package:hand_signature/signature.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_editor/image_editor.dart' as image_editor;
 import 'package:image_picker/image_picker.dart';
+import 'package:image_pixels/image_pixels.dart';
 import 'package:screenshot/screenshot.dart';
 import 'data/image_item.dart';
 import 'data/layer.dart';
@@ -32,122 +33,36 @@ double viewportRatio = 1;
 List<Layer> layers = [], undoLayers = [], removedLayers = [];
 Map<String, String> _translations = {};
 
-String i18n(String sourceString) =>
-    _translations[sourceString.toLowerCase()] ?? sourceString;
+String i18n(String sourceString) => _translations[sourceString.toLowerCase()] ?? sourceString;
 
 // TODO : Dont allow image above 2MB, implement image adjustment
-class ImageEditor extends StatelessWidget {
-  final Uint8List? image;
-
-  final List? images;
-
-  final Directory? savePath;
-
-  final int maxLength;
-
-  final bool allowGallery, allowCamera, allowMultiple;
-
-  final ImageEditorFeatures features;
-
-  final List<AspectRatioOption> cropAvailableRatios;
-
-  const ImageEditor({
-    super.key,
-    this.image,
-    this.images,
-    this.savePath,
-    @Deprecated('Use features instead') this.allowCamera = false,
-    @Deprecated('Use features instead') this.allowGallery = false,
-    this.allowMultiple = false,
-    this.maxLength = 99,
-    Color? appBar,
-    this.features = const ImageEditorFeatures(
-      pickFromGallery: true,
-      captureFromCamera: true,
-      crop: true,
-      blur: true,
-      brush: true,
-      emoji: true,
-      filters: true,
-      flip: true,
-      rotate: true,
-      text: true,
+ThemeData theme = ThemeData(
+  scaffoldBackgroundColor: Colors.black,
+  colorScheme: const ColorScheme.dark(
+    background: Colors.black,
+  ),
+  appBarTheme: const AppBarTheme(
+    backgroundColor: Colors.black87,
+    iconTheme: IconThemeData(color: Colors.white),
+    systemOverlayStyle: SystemUiOverlayStyle(
+      statusBarColor: Colors.black,
+      statusBarIconBrightness: Brightness.light,
+      systemNavigationBarColor: Colors.black,
+      systemNavigationBarIconBrightness: Brightness.light,
     ),
-    this.cropAvailableRatios = const [
-      AspectRatioOption(title: 'Freeform'),
-      AspectRatioOption(title: '1:1', ratio: 1),
-      AspectRatioOption(title: '4:3', ratio: 4 / 3),
-      AspectRatioOption(title: '5:4', ratio: 5 / 4),
-      AspectRatioOption(title: '7:5', ratio: 7 / 5),
-      AspectRatioOption(title: '16:9', ratio: 16 / 9),
-    ],
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    if (images == null &&
-        image == null &&
-        !features.captureFromCamera &&
-        !features.pickFromGallery) {
-      throw Exception(
-          'No image to work with, provide an image or allow the image picker.');
-    }
-
-    if ((image == null || images != null) && allowMultiple == true) {
-
-      return MultiImageEditor(
-        images: images ?? [],
-        savePath: savePath,
-        allowMultiple: allowMultiple,
-        maxLength: maxLength,
-        features: features,
-        cropAvailableRatios: cropAvailableRatios,
-      );
-    } else {
-
-      return SingleImageEditor(
-        image: image,
-        savePath: savePath,
-        features: features,
-        cropAvailableRatios: cropAvailableRatios,
-      );
-    }
-  }
-
-  static i18n(Map<String, String> translations) {
-    translations.forEach((key, value) {
-      _translations[key.toLowerCase()] = value;
-    });
-  }
-
-  static ThemeData theme = ThemeData(
-    scaffoldBackgroundColor: Colors.black,
-    colorScheme: const ColorScheme.dark(
-      background: Colors.black,
-    ),
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.black87,
-      iconTheme: IconThemeData(color: Colors.white),
-      systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: Colors.black,
-        statusBarIconBrightness: Brightness.light,
-        systemNavigationBarColor: Colors.black,
-        systemNavigationBarIconBrightness: Brightness.light,
-      ),
-      toolbarTextStyle: TextStyle(color: Colors.white),
-      titleTextStyle: TextStyle(color: Colors.white),
-    ),
-    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: Colors.black,
-    ),
-    iconTheme: const IconThemeData(
-      color: Colors.white,
-    ),
-    textTheme: const TextTheme(
-      bodyMedium: TextStyle(color: Colors.white),
-    ),
-  );
-}
+    toolbarTextStyle: TextStyle(color: Colors.white),
+    titleTextStyle: TextStyle(color: Colors.white),
+  ),
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+    backgroundColor: Colors.black,
+  ),
+  iconTheme: const IconThemeData(
+    color: Colors.white,
+  ),
+  textTheme: const TextTheme(
+    bodyMedium: TextStyle(color: Colors.white),
+  ),
+);
 
 class MultiImageEditor extends StatefulWidget {
   final Directory? savePath;
@@ -210,7 +125,7 @@ class _MultiImageEditorState extends State<MultiImageEditor> {
     viewportSize = MediaQuery.of(context).size;
 
     return Theme(
-      data: ImageEditor.theme,
+      data: theme,
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -267,18 +182,19 @@ class _MultiImageEditorState extends State<MultiImageEditor> {
                       Stack(children: [
                         GestureDetector(
                           onTap: () async {
-                            var img = await Navigator.push(
+                            /*var img = await Navigator.push(
                               context,
                               CupertinoPageRoute(
                                 builder: (context) => SingleImageEditor(
                                   image: image,
+                                  imagePath: File(image.image),
                                 ),
                               ),
                             );
                             if (img != null) {
                               image.load(img);
                               setState(() {});
-                            }
+                            }*/
                           },
                           child: Container(
                             margin: const EdgeInsets.only(
@@ -383,6 +299,8 @@ class SingleImageEditor extends StatefulWidget {
 
   final List<AspectRatioOption> cropAvailableRatios;
 
+  final String imagePath;
+
   const SingleImageEditor({
     super.key,
     this.savePath,
@@ -409,7 +327,7 @@ class SingleImageEditor extends StatefulWidget {
       AspectRatioOption(title: '5:4', ratio: 5 / 4),
       AspectRatioOption(title: '7:5', ratio: 7 / 5),
       AspectRatioOption(title: '16:9', ratio: 16 / 9),
-    ],
+    ], required this.imagePath,
   });
 
   @override
@@ -429,6 +347,8 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
 
   ScreenshotController screenshotController = ScreenshotController();
 
+  late Color topColor, bottomColor;
+
   @override
   void dispose() {
     layers.clear();
@@ -440,6 +360,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
     if (widget.image != null) {
       loadImage(widget.image!);
     }
+    setState(() {});
     super.initState();
   }
 
@@ -544,16 +465,25 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
             systemNavigationBarColor: Colors.black,
             systemNavigationBarIconBrightness: Brightness.light,
           ),
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            icon: const Icon(CupertinoIcons.chevron_back),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            iconSize: 30.0,
+            color: Colors.white,
+          ),
           title: Text(
             i18n('Edit'),
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white, fontSize: 25),
           ),
           iconTheme: const IconThemeData(color: Colors.white),
           backgroundColor: Colors.black,
           actions: [
             IconButton(
               padding: const EdgeInsets.symmetric(horizontal: 8),
-              icon: Icon(Icons.undo,
+              icon: Icon(Icons.undo, size: 30,
                   color: layers.length > 1 || removedLayers.isNotEmpty
                       ? Colors.white
                       : Colors.grey),
@@ -573,7 +503,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
             ),
             IconButton(
               padding: const EdgeInsets.symmetric(horizontal: 8),
-              icon: Icon(Icons.redo,
+              icon: Icon(Icons.redo, size: 30,
                   color: undoLayers.isNotEmpty ? Colors.white : Colors.grey),
               onPressed: () {
                 if (undoLayers.isEmpty) {
@@ -583,35 +513,9 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                 setState(() {});
               },
             ),
-            if (widget.features.pickFromGallery)
-              IconButton(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                icon: const Icon(Icons.photo, color: Colors.white),
-                onPressed: () async {
-                  var image =
-                  await picker.pickImage(source: ImageSource.gallery);
-                  if (image == null) {
-                    return;
-                  }
-                  loadImage(image);
-                },
-              ),
-            if (widget.features.captureFromCamera)
-              IconButton(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                icon: const Icon(Icons.camera_alt, color: Colors.white),
-                onPressed: () async {
-                  var image =
-                  await picker.pickImage(source: ImageSource.camera);
-                  if (image == null) {
-                    return;
-                  }
-                  loadImage(image);
-                },
-              ),
             IconButton(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              icon: const Icon(Icons.check, color: Colors.white),
+              icon: const Icon(Icons.check, color: Colors.white, size: 30),
               onPressed: () async {
                 resetTransformation();
                 setState(() {});
@@ -625,51 +529,65 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
             ),
           ],
         ),
-        body: Stack(children: [
-          Center(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.black,
-                border: Border.all(color: Colors.white),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              margin: const EdgeInsets.symmetric(horizontal: 10),
-              height: currentImage.height / pixelRatio,
-              width: currentImage.width / pixelRatio,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Screenshot(
-                  controller: screenshotController,
-                  child: RotatedBox(
-                    quarterTurns: rotateValue,
-                    child: Transform(
-                      transform: Matrix4(
-                        1,
-                        0,
-                        0,
-                        0,
-                        0,
-                        1,
-                        0,
-                        0,
-                        0,
-                        0,
-                        1,
-                        0,
-                        x,
-                        y,
-                        0,
-                        1 / scaleFactor,
-                      )..rotateY(flipValue),
-                      alignment: FractionalOffset.center,
-                      child: layersStack,
-                    ),
+        body: ImagePixels(
+          imageProvider: FileImage(File(widget.imagePath)),
+          builder: (BuildContext context, ImgDetails img) {
+            topColor = img.pixelColorAtAlignment!(Alignment.topLeft);
+            bottomColor = img.pixelColorAtAlignment!(Alignment.bottomRight);
+
+            return Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [topColor, bottomColor],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
                   ),
+                  border: Border.all(color: Colors.white),
+                  borderRadius: BorderRadius.circular(20),
                 ),
-              )
-            ),
-          ),
-        ]),
+                margin: const EdgeInsets.symmetric(horizontal: 10),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Stack(children: [
+                    Center(
+                      child: SizedBox(
+                        height: currentImage.height / pixelRatio,
+                        width: currentImage.width / pixelRatio,
+                        child: Screenshot(
+                          controller: screenshotController,
+                          child: RotatedBox(
+                            quarterTurns: rotateValue,
+                            child: Transform(
+                              transform: Matrix4(
+                                1,
+                                0,
+                                0,
+                                0,
+                                0,
+                                1,
+                                0,
+                                0,
+                                0,
+                                0,
+                                1,
+                                0,
+                                x,
+                                y,
+                                0,
+                                1 / scaleFactor,
+                              )..rotateY(flipValue),
+                              alignment: FractionalOffset.center,
+                              child: layersStack,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ]),
+                )
+            );
+          },
+        ),
         bottomNavigationBar: Container(
           alignment: Alignment.bottomCenter,
           height: 86 + MediaQuery.of(context).padding.bottom,
@@ -696,6 +614,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
 
                         return;
                       }
+                      // TODO: Continue here
                       Uint8List? adjustedImage = await Navigator.push(
                         context,
                         CupertinoPageRoute(
@@ -827,28 +746,40 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                     height: 300,
                                     child: Column(
                                       children: [
-                                        Text(
-                                          i18n('Slider Color'),
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 18,
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 12),
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              i18n('Blur Color'),
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                              ),
                                             ),
+                                          ),
                                         ),
                                         Row(children: [
                                           Expanded(
-                                            child: BarColorPicker(
-                                              width: 300,
-                                              thumbColor: Colors.white,
-                                              cornerRadius: 10,
-                                              pickMode: PickMode.color,
-                                              colorListener: (int value) {
-                                                setS(() {
-                                                  setState(() {
-                                                    blurLayer.color = Color(value);
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(left: 15),
+                                              child: BarColorPicker(
+                                                width: 262,
+                                                thumbColor: Colors.white,
+                                                cornerRadius: 10,
+                                                pickMode: PickMode.color,
+                                                colorListener: (int value) {
+                                                  setS(() {
+                                                    setState(() {
+                                                      blurLayer.color = Color(value);
+                                                    });
                                                   });
-                                                });
-                                              },
+                                                },
+                                              ),
                                             ),
+                                          ),
+                                          const SizedBox(
+                                            width: 15
                                           ),
                                           TextButton(
                                             child: Text(
@@ -868,12 +799,18 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                             },
                                           ),
                                         ]),
-                                        const SizedBox(height: 20.0),
-                                        Text(
-                                          i18n('Blur Radius'),
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 18,
+                                        const SizedBox(height: 10.0),
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 12),
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              i18n('Blur Radius'),
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                              ),
+                                            ),
                                           ),
                                         ),
                                         Row(children: [
@@ -914,11 +851,17 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                         const SizedBox(
                                           height: 10.0,
                                         ),
-                                        Text(
-                                          i18n('Color Opacity'),
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 18,
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 12),
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              i18n('Blur Opacity'),
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                              ),
+                                            ),
                                           ),
                                         ),
                                         Row(children: [
@@ -1073,7 +1016,8 @@ class BottomButton extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: Colors.white
+              color: Colors.white,
+              size: 25
             ),
             const SizedBox(
               height: 4,
@@ -1113,7 +1057,7 @@ class _ImageAdjustState extends State<ImageAdjust>{
   Widget build(BuildContext context) {
 
     return Theme(
-      data: ImageEditor.theme,
+      data: theme,
       child: Scaffold(
         appBar: AppBar(
           actions: [
@@ -1227,21 +1171,30 @@ class _ImageCropperState extends State<ImageCropper> {
     }
 
     return Theme(
-      data: ImageEditor.theme,
+      data: theme,
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            icon: const Icon(CupertinoIcons.chevron_back),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            iconSize: 30.0,
+            color: Colors.white,
+          ),
           title: Text(
             i18n('Crop'),
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 20,
+              fontSize: 25,
               fontWeight: FontWeight.w600,
             ),
           ),
           actions: [
             IconButton(
               padding: const EdgeInsets.symmetric(horizontal: 8),
-              icon: const Icon(Icons.check),
+              icon: const Icon(Icons.check, size: 30),
               onPressed: () async {
                 var state = _controller.currentState;
                 if (state == null) {
@@ -1440,21 +1393,30 @@ class _ImageFiltersState extends State<ImageFilters> {
   Widget build(BuildContext context) {
 
     return Theme(
-      data: ImageEditor.theme,
+      data: theme,
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            icon: const Icon(CupertinoIcons.chevron_back),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            iconSize: 30.0,
+            color: Colors.white,
+          ),
           title: Text(
             i18n('Filters'),
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 20,
+              fontSize: 25,
               fontWeight: FontWeight.w600,
             ),
           ),
           actions: [
             IconButton(
               padding: const EdgeInsets.symmetric(horizontal: 8),
-              icon: const Icon(Icons.check),
+              icon: const Icon(Icons.check, size: 30),
               onPressed: () async {
                 var data = await screenshotController.capture();
                 if (mounted) Navigator.pop(context, data);
@@ -1462,32 +1424,26 @@ class _ImageFiltersState extends State<ImageFilters> {
             ),
           ],
         ),
-        body: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 10),
-          child: Center(
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(20)),
-                child: Screenshot(
-                  controller: screenshotController,
-                  child: Stack(
-                    children: [
-                      Image.memory(
-                        widget.image,
-                        fit: BoxFit.cover,
-                      ),
-                      FilterAppliedImage(
-                        image: widget.image,
-                        filter: selectedFilter,
-                        fit: BoxFit.cover,
-                        opacity: filterOpacity,
-                        onProcess: (img) {
-                          filterAppliedImage = img;
-                        },
-                      ),
-                    ],
-                  ),
+        body: Center(
+          child: Screenshot(
+            controller: screenshotController,
+            child: Stack(
+              children: [
+                Image.memory(
+                  widget.image,
+                  fit: BoxFit.cover,
                 ),
-              )
+                FilterAppliedImage(
+                  image: widget.image,
+                  filter: selectedFilter,
+                  fit: BoxFit.cover,
+                  opacity: filterOpacity,
+                  onProcess: (img) {
+                    filterAppliedImage = img;
+                  },
+                ),
+              ],
+            ),
           ),
         ),
         bottomNavigationBar: SafeArea(
@@ -1563,7 +1519,7 @@ class _ImageFiltersState extends State<ImageFilters> {
         ),
         Text(
           i18n(name),
-          style: const TextStyle(fontSize: 15),
+          style: const TextStyle(fontSize: 12),
         ),
       ]),
     );
@@ -1684,7 +1640,7 @@ class _ImageEditorDrawingState extends State<ImageEditorDrawing> {
   Widget build(BuildContext context) {
 
     return Theme(
-      data: ImageEditor.theme,
+      data: theme,
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,

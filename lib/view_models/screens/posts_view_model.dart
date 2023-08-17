@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:divine/posts/screens/confirm_single_post_screen.dart';
-import 'package:divine/utilities/nsfw_detect.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,6 @@ import 'package:flutter_nude_detector/flutter_nude_detector.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_cropper/image_cropper.dart' as image_cropper;
-import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../models/post_model.dart';
@@ -194,15 +192,21 @@ class PostsViewModel extends ChangeNotifier{
       hashtagsList ??= [];
       mentionsList ??= [];
       final hasNudity = await FlutterNudeDetector.detect(path: image!.path);
-      print('hasNudity : $hasNudity');
-      /*await postService.uploadSinglePost(image, location!, description!, hashtagsList, mentionsList)
-          .then((value) {
-            if(hashtagsList.isNotEmpty) postService.addPostToHashtagsCollection(value, hashtagsList);
-      });
-      media!.delete();*/
-      showSnackBar('Uploaded Successfully!', context);
-      loading = false;
-      notifyListeners();
+      if(hasNudity){
+        media!.delete();
+        showSnackBar('NSFW Content Detected.', context);
+        loading = false;
+        notifyListeners();
+      } else{
+        await postService.uploadSinglePost(image, location!, description!, hashtagsList, mentionsList)
+            .then((value) {
+          if(hashtagsList.isNotEmpty) postService.addPostToHashtagsCollection(value, hashtagsList);
+        });
+        media!.delete();
+        showSnackBar('Uploaded Successfully!', context);
+        loading = false;
+        notifyListeners();
+      }
     } catch (e) {
       resetPost();
       loading = false;
@@ -235,6 +239,7 @@ class PostsViewModel extends ChangeNotifier{
             CupertinoPageRoute(
               builder: (context) => SingleImageEditor(
                 image: bytes,
+                imagePath: pickedFile!.path,
                 features: const ImageEditorFeatures(
                   captureFromCamera: true,
                   pickFromGallery: true,

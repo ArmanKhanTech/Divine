@@ -356,14 +356,14 @@ class _VideoEditorState extends State<VideoEditor> {
             Expanded(
               child: IconButton(
                 onPressed: () => Navigator.of(context).pop(),
-                icon: const Icon(CupertinoIcons.back, color: Colors.white),
+                icon: const Icon(CupertinoIcons.back, color: Colors.white, size: 30),
                 tooltip: 'Leave Editor',
               ),
             ),
             Container(
               width: 1,
               height: 30,
-              color: Colors.blue,
+              color: Colors.white,
             ),
             Expanded(
               child: IconButton(
@@ -424,7 +424,7 @@ class _VideoEditorState extends State<VideoEditor> {
             Container(
               width: 1,
               height: 30,
-              color: Colors.blue,
+              color: Colors.white,
             ),
             const SizedBox(
               width: 5,
@@ -434,6 +434,7 @@ class _VideoEditorState extends State<VideoEditor> {
               icon: const Icon(
                 CupertinoIcons.checkmark_alt,
                 color: Colors.blue,
+                size: 30,
               )
             ),
             const SizedBox(

@@ -8,6 +8,8 @@ import '../../models/user_model.dart';
 import '../../utilities/firebase.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import '../../widgets/progress_indicators.dart';
+
 class StoryScreen extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
   final initPage, storiesId, storyId, userId;
@@ -78,14 +80,20 @@ class _StoryScreenState extends State<StoryScreen> {
                         .update({'viewers': allViewers});
                   }
 
-                  return SizedBox(
+                  return Container(
+                    color: Colors.black,
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width,
                     child: Stack(
                       children: [
-                       Center(
-                          child: getImage(stats.url!)
-                        ),
+                       SizedBox(
+                         child: ClipRRect(
+                           borderRadius: BorderRadius.circular(20),
+                           child: Center(
+                               child: getImage(stats.url!)
+                           ),
+                         )
+                       ),
                         Positioned(
                           top: 30.0,
                           left: 15.0,
@@ -196,15 +204,8 @@ class _StoryScreenState extends State<StoryScreen> {
               );
             }
 
-            return const Center(
-                child: Text(
-                  'Loading, Please wait...',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w500,
-                  ),
-                )
+            return Center(
+                child: circularProgress(context, const Color(0xffffffff)),
             );
           }
         ),
@@ -231,13 +232,7 @@ class _StoryScreenState extends State<StoryScreen> {
           }
 
           return Center(
-            child: CircularProgressIndicator(
-              value: loadingProgress.expectedTotalBytes != null
-                  ? loadingProgress.cumulativeBytesLoaded /
-                  loadingProgress.expectedTotalBytes!
-                  : null,
-              color: Colors.white,
-            ),
+            child: circularProgress(context, const Color(0xffffffff)),
           );
         },
       ),
