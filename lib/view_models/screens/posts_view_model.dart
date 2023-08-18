@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:divine/posts/screens/confirm_single_post_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,6 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_cropper/image_cropper.dart' as image_cropper;
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import '../../models/post_model.dart';
 import '../../models/user_model.dart';
 import '../../posts/image_editor/image_editor.dart';
@@ -214,73 +212,33 @@ class PostsViewModel extends ChangeNotifier{
     }
   }
 
-  uploadPostSingleImage({bool camera = false, BuildContext? context}) async {
-    loading = true;
-    notifyListeners();
+  uploadPostSingleImage({BuildContext? context, required XFile image}) async {
     try {
-      XFile? pickedFile;
-      if(camera == true){
-        pickedFile = await picker.pickImage(
-          source: camera ? ImageSource.camera : ImageSource.gallery,
-          preferredCameraDevice: CameraDevice.front,
-        );
-      } else {
-        await Navigator.push(context!, CupertinoPageRoute(builder: (_) => const PickFromGalleryScreenPosts()
-        )).then((file) {
-          pickedFile = file;
-        });
-      }
-      if(pickedFile != null){
-        await Future.delayed(const Duration(milliseconds: 500), () async {
-          Uint8List? bytes = await pickedFile?.readAsBytes();
-          bytes = await compressImage(bytes!, 50);
-          final editedImage = await Navigator.push(
-            context!,
-            CupertinoPageRoute(
-              builder: (context) => SingleImageEditor(
-                image: bytes,
-                imagePath: pickedFile!.path,
-                features: const ImageEditorFeatures(
-                  captureFromCamera: true,
-                  pickFromGallery: true,
-                  crop: true,
-                  rotate: true,
-                  brush: false,
-                  emoji: true,
-                  filters: true,
-                  flip: true,
-                  text: true,
-                  blur: true,
-                ),
-              ),
+      Uint8List? bytes = await image.readAsBytes();
+      bytes = await compressImage(bytes, 50);
+      Navigator.pushReplacement(
+        context!,
+        CupertinoPageRoute(
+          builder: (context) => SingleImageEditor(
+            image: bytes,
+            imagePath: image.path,
+            features: const ImageEditorFeatures(
+              captureFromCamera: true,
+              pickFromGallery: true,
+              crop: true,
+              rotate: true,
+              brush: false,
+              emoji: true,
+              filters: true,
+              flip: true,
+              text: true,
+              blur: true,
             ),
-          );
-          final convertedImage = await ImageUtils.convert(
-            editedImage,
-            format: 'png',
-            quality: 75,
-          );
-          final tempDir = await getTemporaryDirectory();
-          media = await File('${tempDir.path}/divine${DateTime.timestamp()}image.png').create();
-          media?.writeAsBytesSync(convertedImage);
-          Navigator.pushReplacement(
-              context,
-              CupertinoPageRoute(
-                builder: (context) => ConfirmSinglePostScreen(
-                  postImage: media!,
-                ),
-              )
-          );
-        });
-        loading = false;
-        notifyListeners();
-      } else {
-        loading = false;
-        notifyListeners();
-      }
+          ),
+        ),
+      );
     } catch (e) {
-      loading = false;
-      notifyListeners();
+      showSnackBar(e.toString(), context);
     }
   }
 

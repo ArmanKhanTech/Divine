@@ -1,4 +1,5 @@
 // ignore_for_file: unnecessary_null_comparison
+import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:photo_manager/photo_manager.dart';
@@ -116,7 +117,9 @@ class _GalleryMediaPickerState extends State<GalleryMediaPicker> {
                               });
                             },
                           ),
-                    ) : Container(),
+                    ) : Center(
+                      child: circularProgress(context, const Color(0xFFFFFFFF)),
+                    ),
                   ),
                 )
               )

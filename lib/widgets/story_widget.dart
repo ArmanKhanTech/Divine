@@ -197,6 +197,7 @@ class StoryWidget extends StatelessWidget {
                           ),
                         ),
                       ),
+                      const SizedBox(height: 4.0),
                       Text(
                         user.username!.toLowerCase(),
                         style: const TextStyle(

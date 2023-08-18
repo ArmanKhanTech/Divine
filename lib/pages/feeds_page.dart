@@ -434,6 +434,7 @@ class _FeedsPageState extends State<FeedsPage>{
                   height: 100,
                   child: AdWidget(ad: nativeAd!),
                 ),*/
+              const SizedBox(height: 5.0),
               SizedBox(
                 height: 1.0,
                 child: Container(

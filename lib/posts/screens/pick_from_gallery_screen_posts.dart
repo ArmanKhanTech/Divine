@@ -3,9 +3,11 @@ import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../../components/gallery_media_picker/src/data/models/gallery_params_model.dart';
 import '../../components/gallery_media_picker/src/presentation/pages/gallery_media_picker.dart';
+import '../../view_models/screens/posts_view_model.dart';
 
 class PickFromGalleryScreenPosts extends StatefulWidget {
   const PickFromGalleryScreenPosts({super.key});
@@ -17,6 +19,7 @@ class PickFromGalleryScreenPosts extends StatefulWidget {
 class _PickFromGalleryScreenPostsState extends State<PickFromGalleryScreenPosts> {
   @override
   Widget build(BuildContext context) {
+    PostsViewModel viewModel = Provider.of<PostsViewModel>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -77,8 +80,9 @@ class _PickFromGalleryScreenPostsState extends State<PickFromGalleryScreenPosts>
                 )
             ));
           } else{
+            // TODO: Implement multi image upload
             XFile file = XFile(path.first.path.toString());
-            Navigator.pop(context, file);
+            viewModel.uploadPostSingleImage(image: file, context: context);
           }
         },
       ),

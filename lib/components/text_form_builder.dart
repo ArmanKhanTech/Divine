@@ -53,7 +53,7 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
   Widget build(BuildContext context) {
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -63,7 +63,8 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
               data: ThemeData(
                 primaryColor: Theme.of(context).colorScheme.secondary,
                 colorScheme: ColorScheme.fromSwatch().copyWith(
-                    secondary: Theme.of(context).colorScheme.secondary),
+                    secondary: Theme.of(context).colorScheme.secondary
+                ),
               ),
               child: TextFormField(
                   cursorColor: Theme.of(context).colorScheme.secondary,
@@ -72,6 +73,7 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
                   enabled: widget.enabled,
                   style: TextStyle(
                     color: Theme.of(context).textTheme.bodyLarge!.color,
+                    fontSize: 18
                   ),
                   onChanged: (value) => {
                         error = widget.validateFunction!(value),
@@ -101,12 +103,12 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
                   decoration: InputDecoration(
                     prefixIcon: Icon(
                       widget.prefix,
-                      size: 20.0,
+                      size: 25.0,
                       color: widget.whichPage == "login" ? Colors.orange : Colors.blue,
                     ),
                     suffixIcon: Icon(
                       widget.suffix,
-                      size: 20.0,
+                      size: 25.0,
                       color: widget.whichPage == "login" ? Colors.orange : Colors.blue,
                     ),
                     filled: true,
@@ -119,7 +121,9 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
                     enabledBorder: border(context),
                     focusedBorder: focusBorder(context),
                     errorStyle: const TextStyle(height: 10.0, fontSize: 0.0),
-                  )),
+                  ),
+                textAlignVertical: TextAlignVertical.center,
+              ),
             ),
           ),
           Visibility(

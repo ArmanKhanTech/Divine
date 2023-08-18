@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:divine/profile/screens/user_info_screen.dart';
+import 'package:divine/widgets/custom_text.dart';
 import 'package:divine/widgets/progress_indicators.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -219,11 +220,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
                             onTap: () async {
                               await auth.signOut();
-                              Navigator.of(context).pushReplacement(
-                                  CupertinoPageRoute(
-                                      builder: (_) => const SplashScreen()
-                                  )
-                              );
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  CupertinoPageRoute(builder: (_) => const SplashScreen()), (route) => false);
                             },
                             title: Text('Logout', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
                             leading: const Icon(
@@ -400,123 +398,56 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(height: 10.0),
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0),
-                  child: currentUser.name!.isNotEmpty ? Row(
-                    children: [
-                      const Center(
-                        child: Icon(
-                          CupertinoIcons.person,
-                          size: 12,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        currentUser.name!,
-                        style: const TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        maxLines: 1,
-                      )
-                    ],
-                  ) : Row(
-                    children: [
-                      const Center(
-                        child: Icon(
-                          CupertinoIcons.person,
-                          size: 12,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        '• ${currentUser.username!}',
-                        style: const TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        maxLines: 1,
-                      ),
-                    ],
-                  )
+                  child: currentUser.name!.isNotEmpty ? Text(
+                    currentUser.name!,
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 1,
+                  ) : Text(
+                    currentUser.username!,
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 1,
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0),
-                  child: currentUser.profession!.isEmpty ? Row(
-                    children: [
-                      const Center(
-                        child: Icon(
-                          CupertinoIcons.globe,
-                          color: Colors.blue,
-                          size: 12,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        currentUser.country!,
-                        style: const TextStyle(
-                          fontSize: 15.0,
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        maxLines: 1,
-                      )
-                    ],
-                  ) : Row(
-                    children: [
-                      const Center(
-                        child: Icon(
-                          CupertinoIcons.briefcase,
-                          color: Colors.pink,
-                          size: 12,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        currentUser.profession![0].toUpperCase() + currentUser.profession!.substring(1),
-                        style: const TextStyle(
-                          fontSize: 15.0,
-                          color: Colors.pink,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        maxLines: 1,
-                      ),
-                    ],
-                  )
+                  child: currentUser.profession!.isEmpty ? Text(
+                    currentUser.country!,
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.blue,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLines: 1,
+                  ) : Text(
+                    currentUser.profession![0].toUpperCase() + currentUser.profession!.substring(1),
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.pink,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLines: 1,
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0),
                   child: currentUser.bio!.isEmpty ? const SizedBox(
                     height: 0.0,
                     width: 0.0,
-                  ) : Row(
-                    children: [
-                      const Center(
-                        child: Icon(
-                          CupertinoIcons.info_circle,
-                          size: 12,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      SizedBox(
-                        child: Text(
-                          currentUser.bio!,
-                          style: const TextStyle(
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
+                  ) : SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    child: CustomText(
+                      text: currentUser.bio!,
+                      size: 18.0,
+                      weight: FontWeight.w500,
+                      color: Theme.of(context).colorScheme.secondary
+                    ),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0),
@@ -525,25 +456,22 @@ class _ProfilePageState extends State<ProfilePage> {
                     width: 0.0,
                   ) : Row(
                     children: [
-                      const Center(
-                        child: Icon(
-                          CupertinoIcons.link,
-                          color: Colors.deepPurpleAccent,
-                          size: 12,
-                        ),
+                      const Icon(
+                        CupertinoIcons.link,
+                        color: Colors.deepPurple,
+                        size: 15,
                       ),
-                      const SizedBox(
-                        width: 5,
-                      ),
+                      const SizedBox(width: 5.0),
                       SizedBox(
                           width: 200,
                           child: GestureDetector(
                             child: Text(
                               currentUser.link!,
                               style: const TextStyle(
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.deepPurpleAccent,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.deepPurple,
+                                  height: 1.5
                               ),
                             ),
                           )
@@ -551,43 +479,79 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   )
                 ),
-                const SizedBox(height: 10.0),
+                // TODO: Show mutual followers
+                Visibility(
+                  visible: true,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20.0, top: 5),
+                    child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: Row(
+                          children: [
+                            GestureDetector(
+                              child: const Text(
+                                'Followed by ',
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              child: const Text(
+                                'username, username',
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 5.0),
                 buildProfileButton(currentUser),
-                const SizedBox(height: 10.0),
-                Row(
-                  children: [
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    const Text(
-                      'All Posts',
-                      style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18),
-                    ),
-                    const Spacer(),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (_) => ListPosts(
-                              userId: widget.profileId,
-                              username: currentUser.username,
+                const SizedBox(height: 5.0),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.50,
+                  child: DefaultTabController(
+                      length: 3,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 40,
+                            width: MediaQuery.of(context).size.width,
+                            child: TabBar(
+                              labelColor: Theme.of(context).colorScheme.secondary,
+                              unselectedLabelColor: Colors.grey,
+                              tabs: const [
+                                Tab(
+                                  icon: Icon(CupertinoIcons.grid, size: 25),
+                                ),
+                                Tab(
+                                  icon: Icon(CupertinoIcons.play_arrow_solid, size: 25),
+                                ),
+                                Tab(
+                                  icon: Icon(CupertinoIcons.list_bullet, size: 25),
+                                ),
+                              ],
                             ),
                           ),
-                        );
-                        },
-                      child: Icon(
-                      CupertinoIcons.grid_circle,
-                      color: Theme.of(context).colorScheme.secondary,
-                      size: 25,
+                          Expanded(
+                            child: TabBarView(
+                              children: [
+                                buildPostView(currentUser),
+                                Container(),
+                                Container()
+                              ],
+                            ),
+                          )
+                        ],
                       )
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                  ],
-                ),
-                buildPostView(currentUser),
+                  ),
+                )
               ],
             );
           }
@@ -611,18 +575,18 @@ class _ProfilePageState extends State<ProfilePage> {
           textAlign: TextAlign.end,
           style: const TextStyle(
             fontSize: 20.0,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.bold,
             fontFamily: 'Ubuntu-Regular',
           ),
         ),
         const SizedBox(height: 2.0),
         Text(
           label,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w400,
             fontFamily: 'Ubuntu-Regular',
-            color: Colors.grey,
+            color: Theme.of(context).colorScheme.secondary,
           ),
         )
       ],
@@ -684,7 +648,7 @@ class _ProfilePageState extends State<ProfilePage> {
             height: 40.0,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.0),
+              borderRadius: BorderRadius.circular(10.0),
               color: text == "Edit Profile" ? Colors.grey : text == "Follow" ? Colors.blue : Colors.red,
             ),
             child: Center(
@@ -693,7 +657,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    fontSize: 15
+                    fontSize: 18
                 ),
               ),
             ),

@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 import 'package:divine/components/gallery_media_picker/src/presentation/widgets/gallery_grid/thumbnail_widget.dart';
+import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 import '../../pages/gallery_media_picker_controller.dart';
@@ -30,6 +31,8 @@ class GalleryGridViewState extends State<GalleryGridView> {
     return {};
   }
 
+  bool loaded = false;
+
   var cacheMap = _createMap();
 
   final scrolling = ValueNotifier(false);
@@ -41,6 +44,12 @@ class GalleryGridViewState extends State<GalleryGridView> {
 
   @override
   Widget build(BuildContext context) {
+    Future.delayed(const Duration(milliseconds: 5000), () {
+      setState(() {
+        loaded = true;
+      });
+
+    });
 
     return widget.path != null
         ? NotificationListener<ScrollNotification>(
@@ -74,7 +83,40 @@ class GalleryGridViewState extends State<GalleryGridView> {
               ),
             ),
           )
-        : Container();
+        : SizedBox(
+            width: double.infinity,
+            child: loaded == true ? Column(
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.25
+                ),
+                const Icon(
+                  Icons.image,
+                  size: 100,
+                  color: Colors.white,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const Text(
+                  "Nothing to Show",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+              ],
+            ) : SizedBox(
+              child: Column(
+                children: [
+                  SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.3
+                  ),
+                  circularProgress(context, const Color(0xFFFFFFFF))
+                ],
+              )));
   }
 
   Widget _buildItem(

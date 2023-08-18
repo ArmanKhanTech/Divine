@@ -7,6 +7,7 @@ import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../../components/custom_image.dart';
+import '../../screens/main_screen.dart';
 import '../../stories/stories_editor/presentation/widgets/animated_on_tap_button.dart';
 import '../../view_models/screens/posts_view_model.dart';
 import '../../widgets/progress_indicators.dart';
@@ -164,7 +165,8 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                   await viewModel.uploadSinglePost(context, widget.postImage!);
                   await viewModel.resetPost();
                   widget.postImage!.delete();
-                  Navigator.pop(context);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      CupertinoPageRoute(builder: (_) => const MainScreen()), (route) => false);
                 },
                 child: const Padding(
                   padding: EdgeInsets.only(

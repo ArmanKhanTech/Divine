@@ -14,7 +14,9 @@ import 'package:image/image.dart' as img;
 import 'package:image_editor/image_editor.dart' as image_editor;
 import 'package:image_picker/image_picker.dart';
 import 'package:image_pixels/image_pixels.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
+import '../screens/confirm_single_post_screen.dart';
 import 'data/image_item.dart';
 import 'data/layer.dart';
 import 'layers/background_blur_layer.dart';
@@ -514,7 +516,10 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
               },
             ),
             IconButton(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.only(
+                left: 10,
+                right: 20,
+              ),
               icon: const Icon(Icons.check, color: Colors.white, size: 30),
               onPressed: () async {
                 resetTransformation();
@@ -523,7 +528,22 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                 var binaryIntList = await screenshotController.capture(pixelRatio: pixelRatio);
                 LoadingScreen(scaffoldGlobalKey).hide();
                 if (mounted) {
-                  Navigator.pop(context, binaryIntList);
+                  final convertedImage = await ImageUtils.convert(
+                    binaryIntList!,
+                    format: 'png',
+                    quality: 75,
+                  );
+                  final tempDir = await getTemporaryDirectory();
+                  File media = await File('${tempDir.path}/divine${DateTime.timestamp()}image.png').create();
+                  media.writeAsBytesSync(convertedImage);
+                  Navigator.pushReplacement(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => ConfirmSinglePostScreen(
+                          postImage: media,
+                        ),
+                      )
+                  );
                 }
               },
             ),
@@ -542,6 +562,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
                   ),
+                  color: Colors.black,
                   border: Border.all(color: Colors.white),
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -1062,7 +1083,10 @@ class _ImageAdjustState extends State<ImageAdjust>{
         appBar: AppBar(
           actions: [
             IconButton(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.only(
+                left: 10,
+                right: 20,
+              ),
               icon: const Icon(Icons.check),
               onPressed: () async {
                 var data = await screenshotController.capture();
@@ -1193,7 +1217,10 @@ class _ImageCropperState extends State<ImageCropper> {
           ),
           actions: [
             IconButton(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.only(
+                left: 10,
+                right: 20,
+              ),
               icon: const Icon(Icons.check, size: 30),
               onPressed: () async {
                 var state = _controller.currentState;
@@ -1415,7 +1442,10 @@ class _ImageFiltersState extends State<ImageFilters> {
           ),
           actions: [
             IconButton(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.only(
+                left: 10,
+                right: 20,
+              ),
               icon: const Icon(Icons.check, size: 30),
               onPressed: () async {
                 var data = await screenshotController.capture();
