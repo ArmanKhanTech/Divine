@@ -62,7 +62,7 @@ class _StoryScreenState extends State<StoryScreen> {
                 backgroundColor: Colors.black,
                 indicatorPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
                 indicatorHeight: 15.0,
-                initialPage: widget.initPage,
+                initialPage: 0,
                 onPageLimitReached: () {
                   Navigator.pop(context);
                 },
