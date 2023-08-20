@@ -76,6 +76,7 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
               (double value) => minAvailableExposureOffset = value);
       controller?.getMaxExposureOffset()
           .then((double value) => maxAvailableExposureOffset = value);
+      controller?.setFlashMode(FlashMode.off);
       setState(() {
         isCameraInitialized = true;
       });

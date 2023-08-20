@@ -62,6 +62,7 @@ class _NewPostScreenState extends State<NewPostScreen> with
               (double value) => minAvailableExposureOffset = value);
       controller?.getMaxExposureOffset()
           .then((double value) => maxAvailableExposureOffset = value);
+      controller?.setFlashMode(FlashMode.off);
       setState(() {
         isCameraInitialized = true;
       });
