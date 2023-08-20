@@ -50,7 +50,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                 capitalization: false,
                 enabled: !viewModel.loading,
                 initialValue: widget.user!.username,
-                prefix: CupertinoIcons.person,
+                prefix: CupertinoIcons.person_solid,
                 hintText: "Username",
                 textInputAction: TextInputAction.next,
                 validateFunction: Regex.validateUsername,

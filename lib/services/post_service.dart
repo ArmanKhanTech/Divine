@@ -39,7 +39,7 @@ class PostService extends Service{
       "description": description,
       "location": location,
       "timestamp": Timestamp.now(),
-      "likes": {},
+      "likes": {'count' : 0, 'userIds' : []},
       "hashtags": hashtagsList,
       "mentions": mentionsList,
     }).catchError((e) {});

@@ -162,10 +162,6 @@ flutter:
         fonts:
           - asset: assets/fonts/Rakkas-Regular.ttf
 
-      - family: ConcertOne
-        fonts:
-          - asset: assets/fonts/ConcertOne-Regular.ttf
-
       - family: YatraOne
         fonts:
           - asset: assets/fonts/YatraOne-Regular.ttf
@@ -193,7 +189,3 @@ flutter:
       - family: Sacramento
         fonts:
           - asset: assets/fonts/Sacramento-Regular.ttf
-
-      - family: PressStart2P
-        fonts:
-          - asset: assets/fonts/PressStart2P-Regular.ttf

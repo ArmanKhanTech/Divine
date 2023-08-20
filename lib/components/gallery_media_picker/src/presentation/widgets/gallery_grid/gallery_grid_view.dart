@@ -44,12 +44,11 @@ class GalleryGridViewState extends State<GalleryGridView> {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(milliseconds: 5000), () {
+    if(widget.provider.assetCount > 0){
       setState(() {
         loaded = true;
       });
-
-    });
+    }
 
     return widget.path != null
         ? NotificationListener<ScrollNotification>(
@@ -116,7 +115,9 @@ class GalleryGridViewState extends State<GalleryGridView> {
                   ),
                   circularProgress(context, const Color(0xFFFFFFFF))
                 ],
-              )));
+              )
+            )
+    );
   }
 
   Widget _buildItem(

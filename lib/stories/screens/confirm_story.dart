@@ -36,6 +36,7 @@ class _ConfirmStoryState extends State<ConfirmStory> {
     super.dispose();
   }
 
+  // TODO : Add music, location, mentions
   @override
   Widget build(BuildContext context) {
     StoryViewModel viewModel = Provider.of<StoryViewModel>(context);
@@ -83,7 +84,7 @@ class _ConfirmStoryState extends State<ConfirmStory> {
             children: [
               SizedBox(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                   child: Container(
                     height: MediaQuery.of(context).size.height * .8,
                     width: MediaQuery.of(context).size.width,
@@ -100,7 +101,7 @@ class _ConfirmStoryState extends State<ConfirmStory> {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                   child: Container(
                     height: MediaQuery.of(context).size.height * .05,
                     width: MediaQuery.of(context).size.width,

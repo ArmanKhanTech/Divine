@@ -14,7 +14,7 @@ import '../../models/post_model.dart';
 import '../../models/user_model.dart';
 import '../../posts/image_editor/image_editor.dart';
 import '../../posts/image_editor/utilities.dart';
-import '../../posts/screens/pick_from_gallery_screen_posts.dart';
+import '../../profile/screens/pick_from_gallery_profile_picture.dart';
 import '../../services/post_service.dart';
 import '../../services/user_service.dart';
 import '../../utilities/firebase.dart';
@@ -79,7 +79,7 @@ class PostsViewModel extends ChangeNotifier{
           preferredCameraDevice: CameraDevice.front,
         );
       } else {
-        await Navigator.push(context!, CupertinoPageRoute(builder: (_) => const PickFromGalleryScreenPosts()
+        await Navigator.push(context!, CupertinoPageRoute(builder: (_) => const PickFromGalleryProfilePicture()
         )).then((file) {
           pickedFile = file;
         });
@@ -192,7 +192,7 @@ class PostsViewModel extends ChangeNotifier{
       final hasNudity = await FlutterNudeDetector.detect(path: image!.path);
       if(hasNudity){
         media!.delete();
-        showSnackBar('NSFW Content Detected.', context);
+        showSnackBar('NSFW content detected.', context);
         loading = false;
         notifyListeners();
       } else{
@@ -201,7 +201,7 @@ class PostsViewModel extends ChangeNotifier{
           if(hashtagsList.isNotEmpty) postService.addPostToHashtagsCollection(value, hashtagsList);
         });
         media!.delete();
-        showSnackBar('Uploaded Successfully!', context);
+        showSnackBar('Uploaded successfully!', context);
         loading = false;
         notifyListeners();
       }

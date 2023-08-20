@@ -160,8 +160,8 @@ class _FeedsPageState extends State<FeedsPage>{
                               Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => StoriesEditor(
                                 giphyKey: 'C4dMA7Q19nqEGdpfj82T8ssbOeZIylD4',
                                 fontFamilyList: const ['Shizuru', 'Aladin', 'TitilliumWeb', 'Varela',
-                                  'Vollkorn', 'Rakkas', 'B612', 'ConcertOne', 'YatraOne', 'Tangerine',
-                                  'OldStandardTT', 'DancingScript', 'SedgwickAve', 'IndieFlower', 'Sacramento', 'PressStart2P'],
+                                  'Vollkorn', 'Rakkas', 'B612', 'YatraOne', 'Tangerine',
+                                  'OldStandardTT', 'DancingScript', 'SedgwickAve', 'IndieFlower', 'Sacramento'],
                                 galleryThumbnailQuality: 300,
                                 isCustomFontList: true,
                                 onDone: (uri) {

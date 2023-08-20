@@ -114,7 +114,7 @@ class _StoryScreenState extends State<StoryScreen> {
                                         padding:
                                         const EdgeInsets.all(1.0),
                                         child: CircleAvatar(
-                                          radius: 20.0,
+                                          radius: 25.0,
                                           backgroundColor: Colors.grey,
                                           backgroundImage:
                                           CachedNetworkImageProvider(
@@ -136,7 +136,7 @@ class _StoryScreenState extends State<StoryScreen> {
                                               user.username!.toLowerCase(),
                                               textAlign: TextAlign.start,
                                               style: TextStyle(
-                                                fontSize: 15.0,
+                                                fontSize: 18.0,
                                                 fontWeight: FontWeight.bold,
                                                 background: Paint()
                                                   ..color = Colors.transparent,
@@ -147,7 +147,7 @@ class _StoryScreenState extends State<StoryScreen> {
                                               timeago.format(
                                                   stats.time!.toDate()),
                                               style: TextStyle(
-                                                fontSize: 12.0,
+                                                fontSize: 15.0,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.white,
                                                 background: Paint()

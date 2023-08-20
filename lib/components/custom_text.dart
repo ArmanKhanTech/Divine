@@ -86,7 +86,6 @@ class _CustomTextState extends State<CustomText>{
           ),
         ));
       } else {
-        print(value);
         textSpans.add(TextSpan(
           text: '$value ',
           style: TextStyle(

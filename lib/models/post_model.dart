@@ -14,6 +14,8 @@ class PostModel {
 
   Timestamp? timestamp;
 
+  Likes? likes;
+
   PostModel({
     this.id,
     this.postId,
@@ -25,6 +27,7 @@ class PostModel {
     this.timestamp,
     this.mentions,
     this.hashtags,
+    this.likes,
   });
 
   PostModel.fromJson(Map<String, dynamic> json) {
@@ -38,6 +41,7 @@ class PostModel {
     timestamp = json['timestamp'];
     mentions = json['tags'].cast<String>();
     hashtags = json['hashtags'].cast<String>();
+    likes = Likes.fromJson(json['likes']);
   }
 
   Map<String, dynamic> toJson() {
@@ -52,6 +56,28 @@ class PostModel {
     data['username'] = username;
     data['tags'] = mentions;
     data['hashtags'] = hashtags;
+    data['likes'] = likes?.toJson();
+
+    return data;
+  }
+}
+
+class Likes {
+  int? count = 0;
+  List<String>? userIds = [];
+
+  Likes({
+    this.count, this.userIds});
+
+  Likes.fromJson(Map<String, dynamic> json) {
+    count = json['count'];
+    userIds = json['userIds'].cast<String>();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['count'] = count;
+    data['userIds'] = userIds;
 
     return data;
   }

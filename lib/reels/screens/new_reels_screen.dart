@@ -158,24 +158,22 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
           backgroundColor: Colors.transparent,
           centerTitle: true,
           title: Container(
-            height: 30,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            height: 35,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
             decoration: BoxDecoration(
               shape: BoxShape.rectangle,
-              color: isVideoRecordingPaused ? Colors.red : Colors.green,
-              border: Border.all(
-                color: Colors.white,
-                width: 1,
-              ),
+              color: isVideoRecordingPaused ? Colors.white : Colors.transparent,
               borderRadius: BorderRadius.circular(20),
             ),
-            child: Text(
+            child: GradientText(
               recordingTime,
-              textAlign: TextAlign.center,
               style: const TextStyle(
-                color: Colors.white,
-                fontSize: 15,
-              ),
+                fontSize: 25,
+                fontWeight: FontWeight.w400,
+              ), colors: const [
+              Colors.blue,
+              Colors.purple,
+            ],
             ),
           )
       ),
@@ -199,7 +197,10 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
           ),
           bottomControls(),
         ],
-      ) : Center(child: circularProgress(context, const Color(0xFF9C27B0)),
+      ) : Padding(
+          padding: const EdgeInsets.only(bottom: 50.0),
+          child: Center(child: circularProgress(context, const Color(0xFF9C27B0)),
+          )
       )
     );
   }
@@ -293,6 +294,12 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
                                         msg: "Video should be between 15 seconds to 3 minutes.");
                                     File(video.path).delete();
                                   } else {
+                                    if (controller!.value.isInitialized) {
+                                      controller!.setFlashMode(FlashMode.off);
+                                      setState(() {
+                                        isFlashOn = false;
+                                      });
+                                    }
                                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => VideoEditor(file: File(video.path))));
                                   }
                                   cancelTimer();
@@ -348,7 +355,7 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
                     icon: Icon(
                       !isVideoRecordingPaused ? CupertinoIcons.pause : Icons.play_arrow_sharp,
                       color: Colors.black,
-                      size: 25,
+                      size: 30,
                     ),
                   ),
                 ) : Container(),
@@ -427,6 +434,12 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
           const Spacer(),
           IconButton(
             onPressed: () {
+              if (controller!.value.isInitialized) {
+                controller!.setFlashMode(FlashMode.off);
+                setState(() {
+                  isFlashOn = false;
+                });
+              }
               Navigator.push(
                   context,
                   CupertinoPageRoute(builder: (_) => const PickFromGalleryScreenReels()));

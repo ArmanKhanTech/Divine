@@ -108,32 +108,6 @@ class _TopToolsState extends State<TopTools> {
                         )
                     )
                 ),
-                // TODO : Add music
-                /*ToolButton(
-                    backGroundColor: Colors.black12,
-                    onTap: () => createGiphyItem(
-                        context: context, giphyKey: controlNotifier.giphyKey),
-                    child: const Padding(
-                        padding: EdgeInsets.all(2.0),
-                        child:  Icon(
-                          CupertinoIcons.music_note,
-                          color: Colors.white,
-                          size: 28,
-                        )
-                    )
-                ),*/
-                /*ToolButton(
-                    backGroundColor: Colors.black12,
-                    onTap: () {
-                      Navigator.push(context,
-                        CupertinoPageRoute(builder: (context) => const CameraMainView())
-                      ).then((value) => widget.onDone(value));
-                    },
-                    child: const Icon(
-                      CupertinoIcons.camera,
-                      color: Colors.white,
-                      size: 25,
-                    )),*/
                 ToolButton(
                     backGroundColor: Colors.black12,
                     onTap: () {

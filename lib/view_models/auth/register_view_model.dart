@@ -21,6 +21,7 @@ class RegisterViewModel extends ChangeNotifier {
 
   AuthService auth = AuthService();
 
+  // TODO: Check for duplicate username
   register(BuildContext context) async {
     FormState form = registerFormKey.currentState!;
     form.save();
@@ -35,7 +36,7 @@ class RegisterViewModel extends ChangeNotifier {
         notifyListeners();
         try {
           bool success = await auth.createUser(
-            name: username,
+            username: username,
             email: email,
             password: password,
             country: country,

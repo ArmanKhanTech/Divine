@@ -24,13 +24,13 @@ class AuthService {
     }
   }
 
-  Future<bool> createUser({String? email, String? password, String? name, String? country, User? user}) async {
+  Future<bool> createUser({String? email, String? password, String? username, String? country, User? user}) async {
     var res = await auth.createUserWithEmailAndPassword(
       email: '$email',
       password: '$password',
     );
     if (res.user != null) {
-      await saveUserToFirestore(name!, res.user!, email!, country!);
+      await saveUserToFirestore(username!, res.user!, email!, country!);
 
       return true;
     } else {
@@ -39,10 +39,12 @@ class AuthService {
     }
   }
 
-  saveUserToFirestore(String name, User user, String email, String country) async {
+
+
+  saveUserToFirestore(String username, User user, String email, String country) async {
     await usersRef.doc(user.uid).set({
       'id': user.uid,
-      'name': name,
+      'username': username,
       'email': email,
       'country': country,
       'photoUrl': user.photoURL ?? '',
@@ -59,6 +61,7 @@ class AuthService {
       'verified': false,
       'profession': '',
       'link': '',
+      'name': '',
     });
   }
 
@@ -68,6 +71,18 @@ class AuthService {
 
   logOut() async {
     await auth.signOut();
+  }
+
+  Future<bool> checkUsername(String username) async {
+    var res = await usersRef.where('username', isEqualTo: username).get();
+
+    if (res.docs.isEmpty) {
+
+      return true;
+    } else {
+
+      return false;
+    }
   }
 
   String handleFirebaseAuthError(String e) {

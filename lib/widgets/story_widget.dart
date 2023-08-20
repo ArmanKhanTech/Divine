@@ -12,13 +12,13 @@ import '../utilities/firebase.dart';
 class StoryWidget extends StatelessWidget {
   const StoryWidget({Key? key}) : super(key: key);
 
-  // TODO: Sort stories by time i.e viewed stories at last, tags, location, tagged stories within stories.
+  // TODO: Sort stories by time i.e viewed stories at last, tags in stories, location in stories, tagged stories within stories.
   @override
   Widget build(BuildContext context) {
     int storyCounter = 0;
 
     return SizedBox(
-      height: 110.0,
+      height: 120.0,
       child: Padding(
         padding: const EdgeInsets.only(left: 5.0),
         child: StreamBuilder<QuerySnapshot>(
@@ -107,7 +107,10 @@ class StoryWidget extends StatelessWidget {
               }
             } else {
 
-              return Center(child: circularProgress(context, const Color(0xFFE91E63)));
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Center(child: circularProgress(context, const Color(0xFFE91E63)))
+              );
             }
           },
         ),
@@ -130,7 +133,7 @@ class StoryWidget extends StatelessWidget {
           UserModel user = UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
 
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: FutureBuilder<QuerySnapshot>(
               future: storyRef.doc(storiesId).collection('stories').get(),
               builder: (context, snapshot){
@@ -188,7 +191,7 @@ class StoryWidget extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.all(2.0),
                             child: CircleAvatar(
-                              radius: 35.0,
+                              radius: 40.0,
                               backgroundColor: Colors.grey,
                               backgroundImage: CachedNetworkImageProvider(
                                 user.photoUrl!,

@@ -1,11 +1,13 @@
 class Regex {
-  // TODO: Add more regex for validation.
   static String? validateUsername(String? value) {
-    if (value!.isEmpty) return 'Your username is required.';
-    final RegExp nameExp = RegExp(r'^[A-za-zğüşöçİĞÜŞÖÇ ]+$');
+    if (value!.isEmpty) {
+
+      return 'Your username is required.';
+    }
+    final RegExp nameExp = RegExp(r'^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-z0-9._]+(?<![_.])$');
     if (!nameExp.hasMatch(value)) {
 
-      return 'Please enter only alphabetical characters.';
+      return 'Please enter a valid username.';
     }
 
     return null;

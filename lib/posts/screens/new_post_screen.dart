@@ -1,16 +1,14 @@
 import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:divine/posts/screens/pick_from_gallery_screen_posts.dart';
-import 'package:divine/reels/screens/pick_from_gallery_screen_reels.dart';
+import 'package:divine/posts/screens/preview_image.dart';
 import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_editor/image_editor.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
-
 import '../../view_models/screens/posts_view_model.dart';
 
 class NewPostScreen extends StatefulWidget {
@@ -27,6 +25,7 @@ class _NewPostScreenState extends State<NewPostScreen> with
   bool isCameraInitialized = false;
   bool isFlashOn = false;
   bool isLensChanging = false;
+  bool pictureTaken = false;
 
   late final List<CameraDescription> cameras;
 
@@ -50,7 +49,7 @@ class _NewPostScreenState extends State<NewPostScreen> with
     controller?.addListener(() {
       if (mounted) setState(() {});
       if (controller!.value.hasError) {
-        showSnackBar(msg: 'Camera Error : ${controller!.value.errorDescription}');
+        showSnackBar(msg: 'Camera error : ${controller!.value.errorDescription}');
       }
     });
 
@@ -137,7 +136,7 @@ class _NewPostScreenState extends State<NewPostScreen> with
           ),
         ),
         backgroundColor: Colors.black,
-        body: isCameraInitialized == true && isLensChanging == false ? Column(
+        body: isCameraInitialized == true && isLensChanging == false && pictureTaken == false ? Column(
           children: [
             Expanded(
               child: Stack(
@@ -153,7 +152,10 @@ class _NewPostScreenState extends State<NewPostScreen> with
             ),
             bottomControls(viewModel),
           ],
-        ) : Center(child: circularProgress(context, const Color(0xFF9C27B0)),
+        ) : Padding(
+            padding: const EdgeInsets.only(bottom: 50.0),
+            child: Center(child: circularProgress(context, const Color(0xFF9C27B0))
+            )
         )
     );
   }
@@ -208,12 +210,31 @@ class _NewPostScreenState extends State<NewPostScreen> with
           // Capture Button
           GestureDetector(
             onTap: () async {
+              setState(() {
+                pictureTaken = true;
+              });
               final XFile? file = await takePicture();
               if (file == null) {
+                showSnackBar(msg: 'Error: No file found');
+                setState(() {
+                  pictureTaken = false;
+                });
 
                 return;
               } else{
-                viewModel.uploadPostSingleImage(image: file);
+                if (controller!.value.isInitialized) {
+                  controller!.setFlashMode(FlashMode.off);
+                  setState(() {
+                    isFlashOn = false;
+                  });
+                }
+                Navigator.push(
+                    context,
+                    CupertinoPageRoute(builder: (_) => PreviewImage(imageFile: file)
+                    )
+                ).then((value) => setState(() {
+                  pictureTaken = false;
+                }));
               }
             },
             child: Container(
@@ -297,6 +318,12 @@ class _NewPostScreenState extends State<NewPostScreen> with
           const Spacer(),
           IconButton(
             onPressed: () {
+              if (controller!.value.isInitialized) {
+                controller!.setFlashMode(FlashMode.off);
+                setState(() {
+                  isFlashOn = false;
+                });
+              }
               Navigator.push(
                   context,
                   CupertinoPageRoute(builder: (_) => const PickFromGalleryScreenPosts()));

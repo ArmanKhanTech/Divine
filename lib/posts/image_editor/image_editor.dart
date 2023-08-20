@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
+import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:colorfilter_generator/colorfilter_generator.dart';
 import 'package:colorfilter_generator/presets.dart';
 import 'package:divine/posts/image_editor/utilities.dart';
@@ -16,6 +17,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image_pixels/image_pixels.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
+import '../../stories/stories_editor/presentation/widgets/animated_on_tap_button.dart';
 import '../screens/confirm_single_post_screen.dart';
 import 'data/image_item.dart';
 import 'data/layer.dart';
@@ -349,7 +351,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
 
   ScreenshotController screenshotController = ScreenshotController();
 
-  late Color topColor, bottomColor;
+  late Color topLeftColor, topRightColor, bottomLeftColor, bottomRightColor;
 
   @override
   void dispose() {
@@ -394,6 +396,97 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
 
     return screenshotController.capture(
       pixelRatio: pixelRatio,
+    );
+  }
+
+  exitDialog(BuildContext context){
+
+    return showDialog(
+        context: context,
+        barrierColor: Colors.black38,
+        barrierDismissible: true,
+        builder: (c) =>
+            Dialog(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              insetAnimationDuration: const Duration(milliseconds: 300),
+              insetAnimationCurve: Curves.ease,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: BlurryContainer(
+                  height: 240,
+                  color: Colors.black.withOpacity(0.15),
+                  blur: 5,
+                  padding: const EdgeInsets.all(20),
+                  borderRadius: const BorderRadius.all(Radius.circular(20)),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      const Text(
+                        'Cancel?',
+                        style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                            letterSpacing: 0.5),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                        "If you go back now, you'll lose all the edits you've made.",
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white54,
+                            letterSpacing: 0.1),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      AnimatedOnTapButton(
+                        onTap: () async {
+                          if(mounted){
+                            Navigator.pop(c, true);
+                            Navigator.pop(context);
+                          }
+                        },
+                        child: Text(
+                          'Yes',
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.redAccent.shade200,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.1),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 22,
+                        child: Divider(
+                          color: Colors.white,
+                        ),
+                      ),
+                      AnimatedOnTapButton(
+                        onTap: () {
+                          Navigator.pop(c, true);
+                        },
+                        child: const Text(
+                          'No',
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.5),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
     );
   }
 
@@ -457,7 +550,12 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
     heightRatio = currentImage.height / viewportSize.height;
     pixelRatio = math.max(heightRatio, widthRatio);
 
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: () async {
+        exitDialog(context);
+        return false;
+      },
+      child: Scaffold(
         key: scaffoldGlobalKey,
         backgroundColor: Colors.black,
         appBar: AppBar(
@@ -552,15 +650,17 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
         body: ImagePixels(
           imageProvider: FileImage(File(widget.imagePath)),
           builder: (BuildContext context, ImgDetails img) {
-            topColor = img.pixelColorAtAlignment!(Alignment.topLeft);
-            bottomColor = img.pixelColorAtAlignment!(Alignment.bottomRight);
+            topLeftColor = img.pixelColorAtAlignment!(Alignment.topLeft);
+            topRightColor = img.pixelColorAtAlignment!(Alignment.topRight);
+            bottomLeftColor = img.pixelColorAtAlignment!(Alignment.bottomLeft);
+            bottomRightColor = img.pixelColorAtAlignment!(Alignment.bottomRight);
 
             return Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [topColor, bottomColor],
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
+                    colors: [topLeftColor, topRightColor, bottomLeftColor, bottomRightColor],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
                   color: Colors.black,
                   border: Border.all(color: Colors.white),
@@ -572,36 +672,38 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                   child: Stack(children: [
                     Center(
                       child: SizedBox(
-                        height: currentImage.height / pixelRatio,
-                        width: currentImage.width / pixelRatio,
-                        child: Screenshot(
-                          controller: screenshotController,
-                          child: RotatedBox(
-                            quarterTurns: rotateValue,
-                            child: Transform(
-                              transform: Matrix4(
-                                1,
-                                0,
-                                0,
-                                0,
-                                0,
-                                1,
-                                0,
-                                0,
-                                0,
-                                0,
-                                1,
-                                0,
-                                x,
-                                y,
-                                0,
-                                1 / scaleFactor,
-                              )..rotateY(flipValue),
-                              alignment: FractionalOffset.center,
-                              child: layersStack,
+                          height: currentImage.height / pixelRatio,
+                          width: currentImage.width / pixelRatio,
+                          child: Center(
+                            child: Screenshot(
+                              controller: screenshotController,
+                              child: RotatedBox(
+                                quarterTurns: rotateValue,
+                                child: Transform(
+                                  transform: Matrix4(
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    0,
+                                    x,
+                                    y,
+                                    0,
+                                    1 / scaleFactor,
+                                  )..rotateY(flipValue),
+                                  alignment: FractionalOffset.center,
+                                  child: layersStack,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
+                          )
                       ),
                     ),
                   ]),
@@ -612,7 +714,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
         bottomNavigationBar: Container(
           alignment: Alignment.bottomCenter,
           height: 86 + MediaQuery.of(context).padding.bottom,
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
           decoration: const BoxDecoration(
             color: Colors.black87,
             shape: BoxShape.rectangle,
@@ -752,10 +854,10 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                 return SingleChildScrollView(
                                   child: Container(
                                     decoration: const BoxDecoration(
-                                      color: Colors.black,
-                                      borderRadius: BorderRadius.only(
-                                          topRight: Radius.circular(20),
-                                          topLeft: Radius.circular(20)),
+                                        color: Colors.black,
+                                        borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(20),
+                                            topLeft: Radius.circular(20)),
                                         border: Border(
                                           top: BorderSide(width: 1, color: Colors.white),
                                           bottom: BorderSide(width: 0, color: Colors.white),
@@ -800,7 +902,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                             ),
                                           ),
                                           const SizedBox(
-                                            width: 15
+                                              width: 15
                                           ),
                                           TextButton(
                                             child: Text(
@@ -995,6 +1097,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
             ),
           ),
         ),
+      ),
     );
   }
 
@@ -1081,13 +1184,30 @@ class _ImageAdjustState extends State<ImageAdjust>{
       data: theme,
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            icon: const Icon(CupertinoIcons.chevron_back),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            iconSize: 30.0,
+            color: Colors.white,
+          ),
+          title: Text(
+            i18n('Adjust'),
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 25,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
           actions: [
             IconButton(
               padding: const EdgeInsets.only(
                 left: 10,
                 right: 20,
               ),
-              icon: const Icon(Icons.check),
+              icon: const Icon(Icons.check, size: 30),
               onPressed: () async {
                 var data = await screenshotController.capture();
                 if (mounted) Navigator.pop(context, data);

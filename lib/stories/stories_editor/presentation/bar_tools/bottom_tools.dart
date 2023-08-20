@@ -104,7 +104,7 @@ class BottomTools extends StatelessWidget {
                             Constants.appName,
                             style: const TextStyle(
                               fontSize: 35.0,
-                              fontWeight: FontWeight.w400,
+                              fontWeight: FontWeight.w500,
                               fontFamily: 'Raleway',
                             ),
                             colors: const [
@@ -118,7 +118,7 @@ class BottomTools extends StatelessWidget {
                             style: TextStyle(
                                 color: Colors.white38,
                                 letterSpacing: 1.5,
-                                fontSize: 9.2,
+                                fontSize: 12,
                                 fontWeight: FontWeight.bold),
                           ),
                         ],

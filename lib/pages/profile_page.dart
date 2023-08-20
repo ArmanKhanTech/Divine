@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:divine/profile/screens/user_info_screen.dart';
-import 'package:divine/widgets/custom_text.dart';
+import 'package:divine/components/custom_text.dart';
 import 'package:divine/widgets/progress_indicators.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -317,7 +317,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             currentUser.username![0].toUpperCase(),
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.primary,
-                              fontSize: 30.0,
+                              fontSize: 35.0,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
