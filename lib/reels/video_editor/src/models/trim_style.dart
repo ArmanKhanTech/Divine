@@ -5,7 +5,7 @@ enum TrimSliderEdgesType { bar, circle }
 class TrimSliderStyle {
   const TrimSliderStyle({
     this.background = Colors.black,
-    this.positionLineColor = Colors.blue,
+    this.positionLineColor = Colors.black,
     this.positionLineWidth = 5,
     this.lineColor = Colors.white,
     this.onTrimmingColor = Colors.white,
@@ -15,7 +15,7 @@ class TrimSliderStyle {
     this.edgesType = TrimSliderEdgesType.bar,
     double? edgesSize,
     this.iconColor = Colors.black,
-    this.iconSize = 15,
+    this.iconSize = 18,
     this.leftIcon = Icons.arrow_back_ios_rounded,
     this.rightIcon = Icons.arrow_forward_ios_rounded,
   }) : edgesSize = edgesSize ?? (edgesType == TrimSliderEdgesType.bar ? 10 : 8);
