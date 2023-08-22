@@ -5,6 +5,7 @@ import 'package:divine/admobs/adHelper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
@@ -132,15 +133,15 @@ class _FeedsPageState extends State<FeedsPage>{
                         padding: EdgeInsets.only(
                           top: 15.0,
                           bottom: 10.0,
+                          left: 25.0,
+                          right: 25.0,
                         ),
-                        child: Center(
-                          child:Text(
-                            'Choose',
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue,
-                            ),
+                        child:  Text(
+                          'Create',
+                          style: TextStyle(
+                            fontSize: 30.0,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.blue,
                           ),
                         ),
                       )
@@ -191,7 +192,7 @@ class _FeedsPageState extends State<FeedsPage>{
                                     Icon(
                                       CupertinoIcons.time,
                                       color: Colors.blue,
-                                      size: 30,
+                                      size: 35,
                                     ),
                                     SizedBox(
                                       height: 5.0,
@@ -199,8 +200,8 @@ class _FeedsPageState extends State<FeedsPage>{
                                     Text(
                                         'Story',
                                         style: TextStyle(
-                                            fontSize: 18.0,
-                                            fontWeight: FontWeight.w600,
+                                            fontSize: 20.0,
+                                            fontWeight: FontWeight.w500,
                                             color: Colors.blue
                                         )
                                     )
@@ -236,7 +237,7 @@ class _FeedsPageState extends State<FeedsPage>{
                                 Icon(
                                   CupertinoIcons.plus_circle,
                                   color: Colors.blue,
-                                  size: 30,
+                                  size: 35,
                                 ),
                                 SizedBox(
                                   height: 5.0,
@@ -244,8 +245,8 @@ class _FeedsPageState extends State<FeedsPage>{
                                 Text(
                                     'Post',
                                     style: TextStyle(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.w600,
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.w500,
                                         color: Colors.blue
                                     )
                                 )
@@ -288,7 +289,7 @@ class _FeedsPageState extends State<FeedsPage>{
                                     Icon(
                                       CupertinoIcons.play_circle,
                                       color: Colors.blue,
-                                      size: 30,
+                                      size: 35,
                                     ),
                                     SizedBox(
                                       height: 5.0,
@@ -296,8 +297,8 @@ class _FeedsPageState extends State<FeedsPage>{
                                     Text(
                                         'Reels',
                                         style: TextStyle(
-                                            fontSize: 18.0,
-                                            fontWeight: FontWeight.w600,
+                                            fontSize: 20.0,
+                                            fontWeight: FontWeight.w500,
                                             color: Colors.blue
                                         )
                                     )
@@ -330,7 +331,7 @@ class _FeedsPageState extends State<FeedsPage>{
                                 Icon(
                                   CupertinoIcons.equal_circle,
                                   color: Colors.blue,
-                                  size: 30,
+                                  size: 35,
                                 ),
                                 SizedBox(
                                   height: 5.0,
@@ -338,8 +339,8 @@ class _FeedsPageState extends State<FeedsPage>{
                                 Text(
                                     'Threads',
                                     style: TextStyle(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.w600,
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.w500,
                                         color: Colors.blue
                                     )
                                 )
@@ -377,10 +378,10 @@ class _FeedsPageState extends State<FeedsPage>{
         ),
         title: GradientText(
           Constants.appName,
-          style: const TextStyle(
-              fontSize: 35.0,
-              fontWeight: FontWeight.w500,
-             fontFamily: 'Raleway',
+          style: TextStyle(
+            fontSize: 35.0,
+            fontWeight: FontWeight.w500,
+            fontFamily: GoogleFonts.merriweather().fontFamily,
           ),
           colors: const [
             Colors.blue,
@@ -390,13 +391,13 @@ class _FeedsPageState extends State<FeedsPage>{
         ),
         actions: [
           IconButton(
-            icon: const Icon(
-              CupertinoIcons.add_circled,
-              size: 30.0,
-            ),
-            onPressed: () => {
-              chooseUpload(context, viewModel),
-            }
+              icon: const Icon(
+                CupertinoIcons.add_circled,
+                size: 30.0,
+              ),
+              onPressed: () => {
+                chooseUpload(context, viewModel),
+              }
           ),
           IconButton(
             icon: const Icon(
@@ -459,6 +460,7 @@ class _FeedsPageState extends State<FeedsPage>{
                     if (snapshot.hasData) {
                       var snap = snapshot.data;
                       List docs = snap!.docs;
+
                       return ListView.builder(
                         controller: scrollController,
                         itemCount: docs.length,
@@ -473,11 +475,13 @@ class _FeedsPageState extends State<FeedsPage>{
                         },
                       );
                     } else if (snapshot.connectionState == ConnectionState.waiting) {
+
                       return Center(
                         child: circularProgress(context, const Color(0XFF03A9F4)),
                       );
                     } else {
                       return const Center(
+
                         child: Text(
                           'Nothing to Show.',
                           style: TextStyle(

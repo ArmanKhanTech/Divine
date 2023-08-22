@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../../../../utilities/constants.dart';
@@ -102,10 +103,10 @@ class BottomTools extends StatelessWidget {
                         children: [
                           GradientText(
                             Constants.appName,
-                            style: const TextStyle(
-                              fontSize: 35.0,
+                            style: TextStyle(
+                              fontSize: 30.0,
                               fontWeight: FontWeight.w500,
-                              fontFamily: 'Raleway',
+                              fontFamily: GoogleFonts.merriweather().fontFamily,
                             ),
                             colors: const [
                               Colors.blue,
@@ -118,7 +119,7 @@ class BottomTools extends StatelessWidget {
                             style: TextStyle(
                                 color: Colors.white38,
                                 letterSpacing: 1.5,
-                                fontSize: 12,
+                                fontSize: 10,
                                 fontWeight: FontWeight.bold),
                           ),
                         ],

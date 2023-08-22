@@ -72,7 +72,7 @@ class _CustomTextState extends State<CustomText>{
             color: Colors.blue,
             fontWeight: widget.weight,
             fontSize: widget.size,
-            fontFamily: GoogleFonts.nunitoSans().fontFamily
+            fontFamily: 'Ubuntu-Regular',
           ),
         ));
       } else if (mentions.contains(value)) {
@@ -82,7 +82,7 @@ class _CustomTextState extends State<CustomText>{
             color: Colors.blue,
             fontWeight: widget.weight,
             fontSize: widget.size,
-            fontFamily: GoogleFonts.nunitoSans().fontFamily
+            fontFamily: 'Ubuntu-Regular',
           ),
         ));
       } else {
@@ -91,7 +91,7 @@ class _CustomTextState extends State<CustomText>{
           style: TextStyle(
             fontWeight: widget.weight,
             fontSize: widget.size,
-            fontFamily: GoogleFonts.nunitoSans().fontFamily,
+            fontFamily: 'Ubuntu-Regular',
             color: widget.color
           )
         ));

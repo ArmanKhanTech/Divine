@@ -38,7 +38,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
     buildForm(EditProfileViewModel viewModel, BuildContext context) {
 
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: Form(
           key: viewModel.editProfileFormKey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -189,7 +189,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                       onPressed: () {
                         viewModel.editProfile(context);
                       },
-                      iconSize: 25.0,
+                      iconSize: 28.0,
                       color: Theme.of(context).colorScheme.secondary,
                     ),
                     const SizedBox(

@@ -4,11 +4,11 @@ enum TrimSliderEdgesType { bar, circle }
 
 class TrimSliderStyle {
   const TrimSliderStyle({
-    this.background = Colors.black54,
-    this.positionLineColor = Colors.white,
-    this.positionLineWidth = 4,
-    this.lineColor = Colors.white60,
-    this.onTrimmingColor = Colors.blue,
+    this.background = Colors.black,
+    this.positionLineColor = Colors.blue,
+    this.positionLineWidth = 5,
+    this.lineColor = Colors.white,
+    this.onTrimmingColor = Colors.white,
     this.onTrimmedColor = Colors.white,
     this.lineWidth = 2,
     this.borderRadius = 10.0,

@@ -74,22 +74,21 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                           topLeft: Radius.circular(20)
                       ),
                     ),
-                    child: const Padding(
-                      padding: EdgeInsets.only(
-                        top: 15.0,
-                        bottom: 15.0,
-                      ),
-                      child: Center(
-                        child:Text(
-                          'Select From',
+                      child: const Padding(
+                        padding: EdgeInsets.only(
+                          top: 15.0,
+                          bottom: 15.0,
+                          left: 25.0,
+                        ),
+                        child:  Text(
+                          'Select from',
                           style: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 25.0,
+                            fontWeight: FontWeight.w500,
                             color: Colors.blue,
                           ),
                         ),
-                      ),
-                    ),
+                      )
                   ),
                   SizedBox(
                     height: 1,
@@ -102,7 +101,7 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                   ListTile(
                     dense: true,
                     contentPadding: const EdgeInsets.only(
-                      left: 20,
+                      left: 25,
                       top: 15,
                       bottom: 8,
                     ),
@@ -118,7 +117,7 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                   ListTile(
                     dense: true,
                     contentPadding: const EdgeInsets.only(
-                      left: 20,
+                      left: 25,
                       top: 8,
                       bottom: 8,
                     ),

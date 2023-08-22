@@ -39,7 +39,7 @@ Map<String, String> _translations = {};
 
 String i18n(String sourceString) => _translations[sourceString.toLowerCase()] ?? sourceString;
 
-// TODO : Dont allow image above 2MB, implement image adjustment
+// TODO : Implement image adjustment
 ThemeData theme = ThemeData(
   scaffoldBackgroundColor: Colors.black,
   colorScheme: const ColorScheme.dark(
@@ -351,7 +351,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
 
   ScreenshotController screenshotController = ScreenshotController();
 
-  late Color topLeftColor, topRightColor, bottomLeftColor, bottomRightColor;
+  late Color topLeftColor, bottomRightColor;
 
   @override
   void dispose() {
@@ -651,14 +651,12 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
           imageProvider: FileImage(File(widget.imagePath)),
           builder: (BuildContext context, ImgDetails img) {
             topLeftColor = img.pixelColorAtAlignment!(Alignment.topLeft);
-            topRightColor = img.pixelColorAtAlignment!(Alignment.topRight);
-            bottomLeftColor = img.pixelColorAtAlignment!(Alignment.bottomLeft);
             bottomRightColor = img.pixelColorAtAlignment!(Alignment.bottomRight);
 
             return Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [topLeftColor, topRightColor, bottomLeftColor, bottomRightColor],
+                    colors: [topLeftColor, bottomRightColor],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),

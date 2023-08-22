@@ -40,9 +40,7 @@ class _VideoEditorState extends State<VideoEditor> {
     minDuration: const Duration(seconds: 15),
     maxDuration: const Duration(seconds: 180),
     trimStyle: TrimSliderStyle(
-       onTrimmedColor: Colors.blue,
-       onTrimmingColor: Colors.blue,
-       iconColor: Colors.white,
+       iconColor: Colors.black,
     )
   );
 
@@ -179,7 +177,7 @@ class _VideoEditorState extends State<VideoEditor> {
                               decoration: BoxDecoration(
                                 color: Colors.black,
                                 borderRadius: BorderRadius.circular(20),
-                                border: Border.all(color: Colors.blue),
+                                border: Border.all(color: Colors.white),
                               ),
                               child: TabBarView(
                                 physics: const NeverScrollableScrollPhysics(),
@@ -275,11 +273,11 @@ class _VideoEditorState extends State<VideoEditor> {
                                     color: Colors.black,
                                   ),
                                   child: TabBar(
-                                    labelColor: Colors.white,
-                                    unselectedLabelColor: Colors.black,
+                                    labelColor: Colors.black,
+                                    unselectedLabelColor: Colors.white,
                                     indicator: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
-                                      color: Colors.blue,
+                                      color: Colors.white,
                                     ),
                                     tabs: const [
                                       Row(
@@ -287,16 +285,16 @@ class _VideoEditorState extends State<VideoEditor> {
                                           children: [
                                             Padding(
                                                 padding: EdgeInsets.all(5),
-                                                child: Icon(Icons.content_cut, color: Colors.white)),
-                                            Text('Trim', style: TextStyle(color: Colors.white))
+                                                child: Icon(Icons.content_cut)),
+                                            Text('Trim')
                                           ]),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
                                           Padding(
                                               padding: EdgeInsets.all(5),
-                                              child: Icon(Icons.video_label, color: Colors.white)),
-                                          Text('Cover', style: TextStyle(color: Colors.white))
+                                              child: Icon(Icons.video_label)),
+                                          Text('Cover')
                                         ],
                                       ),
                                     ],
@@ -386,14 +384,6 @@ class _VideoEditorState extends State<VideoEditor> {
             ),
             Expanded(
               child: IconButton(
-                onPressed: () =>
-                    controller.rotate90Degrees(RotateDirection.right),
-                icon: const Icon(Icons.music_note, color: Colors.white),
-                tooltip: 'Audio',
-              ),
-            ),
-            Expanded(
-              child: IconButton(
                 onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute<void>(
@@ -417,7 +407,7 @@ class _VideoEditorState extends State<VideoEditor> {
                     ).then((value) {
                       setState(() {});
                     }),
-                icon: const Icon(Icons.filter, color: Colors.white),
+                icon: const Icon(Icons.filter_vintage, color: Colors.white),
                 tooltip: 'Filter',
               ),
             ),
@@ -433,7 +423,7 @@ class _VideoEditorState extends State<VideoEditor> {
               onPressed: exportVideo,
               icon: const Icon(
                 CupertinoIcons.checkmark_alt,
-                color: Colors.blue,
+                color: Colors.white,
                 size: 30,
               )
             ),
@@ -465,19 +455,17 @@ class _VideoEditorState extends State<VideoEditor> {
 
           return Padding(
             padding: const EdgeInsets.only(
-              left: 10,
-              right: 10,
               bottom: 5
             ),
             child: Row(children: [
-              Text(formatter(Duration(seconds: pos.toInt())), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+              Text(formatter(Duration(seconds: pos.toInt())), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
               const Expanded(child: SizedBox()),
               AnimatedOpacity(
                 opacity: controller.isTrimming ? 1 : 0,
                 duration: kThemeAnimationDuration,
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  Text('${formatter(controller.startTrim)} - ', style: const TextStyle(color: Colors.white)),
-                  Text(formatter(controller.endTrim), style: const TextStyle(color: Colors.white)),
+                  Text('${formatter(controller.startTrim)} - ', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
+                  Text(formatter(controller.endTrim), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
                 ]),
               ),
             ]),
@@ -485,7 +473,7 @@ class _VideoEditorState extends State<VideoEditor> {
         },
       ),
       Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 0),
         width: MediaQuery.of(context).size.width,
         child: TrimSlider(
           controller: controller,

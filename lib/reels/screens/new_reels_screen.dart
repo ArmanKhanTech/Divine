@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:camera/camera.dart';
 import 'package:divine/reels/screens/pick_from_gallery_screen_reels.dart';
 import 'package:divine/widgets/progress_indicators.dart';
@@ -11,6 +12,7 @@ import 'package:lottie/lottie.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:video_player/video_player.dart';
 import '../../audio/audio_overlay_bottom_sheet.dart';
+import '../../stories/stories_editor/presentation/widgets/animated_on_tap_button.dart';
 import '../video_editor/screens/video_editor.dart';
 
 class NewReelsScreen extends StatefulWidget {
@@ -116,93 +118,192 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
     super.dispose();
   }
 
+  exitDialog(BuildContext context){
+
+    return showDialog(
+        context: context,
+        barrierColor: Colors.black38,
+        barrierDismissible: true,
+        builder: (c) =>
+            Dialog(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              insetAnimationDuration: const Duration(milliseconds: 300),
+              insetAnimationCurve: Curves.ease,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: BlurryContainer(
+                  height: 240,
+                  color: Colors.black.withOpacity(0.15),
+                  blur: 5,
+                  padding: const EdgeInsets.all(20),
+                  borderRadius: const BorderRadius.all(Radius.circular(20)),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      const Text(
+                        'Cancel?',
+                        style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                            letterSpacing: 0.5),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                        "If you go back now, you'll lose all the edits you've made.",
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white54,
+                            letterSpacing: 0.1),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      AnimatedOnTapButton(
+                        onTap: () async {
+                          if(mounted){
+                            Navigator.pop(c, true);
+                            Navigator.pop(context);
+                          }
+                        },
+                        child: Text(
+                          'Yes',
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.redAccent.shade200,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.1),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 22,
+                        child: Divider(
+                          color: Colors.white,
+                        ),
+                      ),
+                      AnimatedOnTapButton(
+                        onTap: () {
+                          Navigator.pop(c, true);
+                        },
+                        child: const Text(
+                          'No',
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.5),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      appBar: isVideoRecording == false ? AppBar(
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: const Icon(CupertinoIcons.chevron_back),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          iconSize: 30.0,
-          color: Colors.white,
-        ),
-        backgroundColor: Colors.transparent,
-        centerTitle: true,
-        systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.light,
-          systemNavigationBarColor: Colors.black,
-          systemNavigationBarIconBrightness: Brightness.light,
-        ),
-        title: GradientText(
-          'New Reels',
-          style: const TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.w300,
-          ), colors: const [
-          Colors.blue,
-          Colors.purple,
-        ],
-        ),
-      ) : AppBar(
-          automaticallyImplyLeading: false,
-          systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarColor: Colors.black,
-            statusBarIconBrightness: Brightness.light,
-            systemNavigationBarColor: Colors.black,
-            systemNavigationBarIconBrightness: Brightness.light,
-          ),
-          backgroundColor: Colors.transparent,
-          centerTitle: true,
-          title: Container(
-            height: 35,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: isVideoRecordingPaused ? Colors.white : Colors.transparent,
-              borderRadius: BorderRadius.circular(20),
+    return WillPopScope(
+      onWillPop: () async {
+        if(isVideoRecording == true){
+          exitDialog(context);
+        }
+        return isVideoRecording == false ? true : false;
+      },
+      child: Scaffold(
+          appBar: isVideoRecording == false ? AppBar(
+            automaticallyImplyLeading: false,
+            leading: IconButton(
+              icon: const Icon(CupertinoIcons.chevron_back),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              iconSize: 30.0,
+              color: Colors.white,
             ),
-            child: GradientText(
-              recordingTime,
+            backgroundColor: Colors.transparent,
+            centerTitle: true,
+            systemOverlayStyle: const SystemUiOverlayStyle(
+              statusBarColor: Colors.transparent,
+              statusBarIconBrightness: Brightness.light,
+              systemNavigationBarColor: Colors.black,
+              systemNavigationBarIconBrightness: Brightness.light,
+            ),
+            title: GradientText(
+              'New Reels',
               style: const TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.w400,
+                fontSize: 30,
+                fontWeight: FontWeight.w300,
               ), colors: const [
               Colors.blue,
               Colors.purple,
             ],
             ),
+          ) : AppBar(
+              automaticallyImplyLeading: false,
+              systemOverlayStyle: const SystemUiOverlayStyle(
+                statusBarColor: Colors.black,
+                statusBarIconBrightness: Brightness.light,
+                systemNavigationBarColor: Colors.black,
+                systemNavigationBarIconBrightness: Brightness.light,
+              ),
+              backgroundColor: Colors.transparent,
+              centerTitle: true,
+              title: Container(
+                height: 35,
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  color: isVideoRecordingPaused ? Colors.white : Colors.transparent,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: GradientText(
+                  recordingTime,
+                  style: const TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w400,
+                  ), colors: const [
+                  Colors.blue,
+                  Colors.purple,
+                ],
+                ),
+              )
+          ),
+          backgroundColor: Colors.black,
+          body: isCameraInitialized == true && isLensChanging == false ? Column(
+            children: [
+              Expanded(
+                child: Stack(
+                  children: [
+                    cameraWidget(),
+                    isVideoRecording == false ? Positioned(
+                        left: 15,
+                        bottom: MediaQuery.of(context).size.height * 0.3,
+                        child: leftControls()
+                    ) : Container(),
+                    Center(
+                      child: triggerTimerAnimation ? Lottie.asset("assets/lottie/timer.json") : Container(),
+                    ),
+                  ],
+                ),
+              ),
+              bottomControls(),
+            ],
+          ) : Padding(
+              padding: const EdgeInsets.only(bottom: 50.0),
+              child: Center(child: circularProgress(context, const Color(0xFF9C27B0)),
+              )
           )
       ),
-      backgroundColor: Colors.black,
-      body: isCameraInitialized == true && isLensChanging == false ? Column(
-        children: [
-          Expanded(
-            child: Stack(
-              children: [
-                cameraWidget(),
-                isVideoRecording == false ? Positioned(
-                    left: 15,
-                    bottom: MediaQuery.of(context).size.height * 0.3,
-                    child: leftControls()
-                ) : Container(),
-                Center(
-                  child: triggerTimerAnimation ? Lottie.asset("assets/lottie/timer.json") : Container(),
-                ),
-              ],
-            ),
-          ),
-          bottomControls(),
-        ],
-      ) : Padding(
-          padding: const EdgeInsets.only(bottom: 50.0),
-          child: Center(child: circularProgress(context, const Color(0xFF9C27B0)),
-          )
-      )
     );
   }
 
@@ -287,6 +388,7 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
                             if (mounted) {
                               setState(() {
                                 isVideoRecording = false;
+                                isVideoRecordingPaused = false;
                               });
                               if (video != null) {
                                 if (video.path.isNotEmpty) {
@@ -454,7 +556,7 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
           const Spacer(),
           IconButton(
             onPressed: () {
-              showDialog(context);
+              showAudioDialog(context);
             },
             icon: const Icon(
               Icons.audiotrack,
@@ -468,7 +570,7 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
     );
   }
 
-  void showDialog(BuildContext context) {
+  void showAudioDialog(BuildContext context) {
     showModalBottomSheet(
         context: context,
         shape: const RoundedRectangleBorder(

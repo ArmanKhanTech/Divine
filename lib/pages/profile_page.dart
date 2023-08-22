@@ -140,15 +140,14 @@ class _ProfilePageState extends State<ProfilePage> {
                       padding: EdgeInsets.only(
                         top: 15.0,
                         bottom: 10.0,
+                        left: 25.0,
                       ),
-                      child: Center(
-                        child:Text(
-                          'Menu',
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue,
-                          ),
+                      child:  Text(
+                        'Menu',
+                        style: TextStyle(
+                          fontSize: 30.0,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.blue,
                         ),
                       ),
                     )
@@ -162,7 +161,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ListTile(
                         dense: true,
                         contentPadding: const EdgeInsets.only(
-                          left: 20,
+                          left: 25,
                           top: 10,
                           bottom: 8,
                         ),
@@ -172,7 +171,15 @@ class _ProfilePageState extends State<ProfilePage> {
                           color: Theme.of(context).colorScheme.secondary,
                           size: 25,
                         ),
-                        title: Text('About This Account', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
+                        title: Text(
+                            'About this Account',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              color: Theme.of(context).colorScheme.secondary,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: 'Ubuntu-Regular',
+                            )
+                        ),
                         onTap: () {
                           Navigator.of(context).pushReplacement(
                             CupertinoPageRoute(
@@ -190,7 +197,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: ListTile(
                             dense: true,
                             contentPadding: const EdgeInsets.only(
-                              left: 20,
+                              left: 25,
                               top: 8,
                               bottom: 8,
                             ),
@@ -199,7 +206,15 @@ class _ProfilePageState extends State<ProfilePage> {
                               CupertinoIcons.settings,
                               color: Theme.of(context).colorScheme.secondary,
                             ),
-                            title: Text('Settings', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
+                            title: Text(
+                                'Settings',
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  color: Theme.of(context).colorScheme.secondary,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: 'Ubuntu-Regular',
+                                )
+                            ),
                             onTap: () async {
                               Navigator.of(context).pushReplacement(
                                   CupertinoPageRoute(
@@ -213,7 +228,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: ListTile(
                             dense: true,
                             contentPadding: const EdgeInsets.only(
-                              left: 20,
+                              left: 25,
                               top: 8,
                               bottom: 8,
                             ),
@@ -223,7 +238,15 @@ class _ProfilePageState extends State<ProfilePage> {
                               Navigator.of(context).pushAndRemoveUntil(
                                   CupertinoPageRoute(builder: (_) => const SplashScreen()), (route) => false);
                             },
-                            title: Text('Logout', style: TextStyle(fontSize: 18.0, color: Theme.of(context).colorScheme.secondary)),
+                            title: Text(
+                                'Sign Out',
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  color: Theme.of(context).colorScheme.secondary,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: 'Ubuntu-Regular',
+                                )
+                            ),
                             leading: const Icon(
                               Icons.logout,
                               color: Colors.red,
@@ -403,6 +426,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     style: const TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
+                      fontFamily: 'Ubuntu-Regular',
                     ),
                     maxLines: 1,
                   ) : Text(
@@ -410,18 +434,20 @@ class _ProfilePageState extends State<ProfilePage> {
                     style: const TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
+                      fontFamily: 'Ubuntu-Regular',
                     ),
                     maxLines: 1,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
+                  padding: const EdgeInsets.only(left: 20.0, top: 2),
                   child: currentUser.profession!.isEmpty ? Text(
                     currentUser.country!,
                     style: const TextStyle(
                       fontSize: 18.0,
                       color: Colors.blue,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w400,
+                      fontFamily: 'Ubuntu-Regular',
                     ),
                     maxLines: 1,
                   ) : Text(
@@ -429,13 +455,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     style: const TextStyle(
                       fontSize: 18.0,
                       color: Colors.pink,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w400,
+                      fontFamily: 'Ubuntu-Regular',
                     ),
                     maxLines: 1,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
+                  padding: const EdgeInsets.only(left: 20.0, top: 2),
                   child: currentUser.bio!.isEmpty ? const SizedBox(
                     height: 0.0,
                     width: 0.0,
@@ -444,13 +471,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: CustomText(
                       text: currentUser.bio!,
                       size: 18.0,
-                      weight: FontWeight.w500,
+                      weight: FontWeight.w400,
                       color: Theme.of(context).colorScheme.secondary
                     ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
+                  padding: const EdgeInsets.only(left: 20.0, top: 2),
                   child: currentUser.link!.isEmpty ? const SizedBox(
                     height: 0.0,
                     width: 0.0,
@@ -469,9 +496,9 @@ class _ProfilePageState extends State<ProfilePage> {
                               currentUser.link!,
                               style: const TextStyle(
                                   fontSize: 18.0,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: 'Ubuntu-Regular',
                                   color: Colors.deepPurple,
-                                  height: 1.5
                               ),
                             ),
                           )
@@ -493,7 +520,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 'Followed by ',
                                 style: TextStyle(
                                   fontSize: 18.0,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: 'Ubuntu-Regular',
                                 ),
                               ),
                             ),

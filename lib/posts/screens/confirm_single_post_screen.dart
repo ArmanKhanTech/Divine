@@ -205,7 +205,6 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                   child: viewModel.imgLink != null ? CustomImage(
                     imageUrl: viewModel.imgLink,
                     width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.width - 30,
                     fit: BoxFit.fitWidth,
                   ) : widget.postImage == null ? const Center(
                     child: Text(
@@ -220,7 +219,6 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                     widget.postImage!,
                     key: UniqueKey(),
                     width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.width - 30,
                     fit: BoxFit.fitWidth,
                   ),
                 )
