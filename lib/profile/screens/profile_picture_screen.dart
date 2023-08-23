@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../../widgets/progress_indicators.dart';
 
-// TODO: Delete previous profile picture from storage when new one is uploaded.
 class ProfilePictureScreen extends StatefulWidget{
   const ProfilePictureScreen({super.key});
 

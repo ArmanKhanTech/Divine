@@ -24,6 +24,19 @@ class AuthService {
     }
   }
 
+  Future<bool> checkUsernameExists(String username) async {
+    var res = await usersRef.where('username', isEqualTo: username).get();
+
+    if (res.docs.isEmpty) {
+
+      return false;
+    } else {
+
+      return true;
+    }
+  }
+
+
   Future<bool> createUser({String? email, String? password, String? username, String? country, User? user}) async {
     var res = await auth.createUserWithEmailAndPassword(
       email: '$email',

@@ -21,15 +21,15 @@ class RegisterViewModel extends ChangeNotifier {
 
   AuthService auth = AuthService();
 
-  // TODO: Check for duplicate username
   register(BuildContext context) async {
     FormState form = registerFormKey.currentState!;
     form.save();
     if (!form.validate()) {
       validate = true;
       notifyListeners();
-      showSnackBar(
-          'Kindly fix all the errors before proceeding.', context);
+      showSnackBar('Kindly fix all the errors before proceeding.', context);
+    } else if (await auth.checkUsernameExists(username!)) {
+      showSnackBar('Username already exists.', context);
     } else {
       if (password == cPassword) {
         loading = true;

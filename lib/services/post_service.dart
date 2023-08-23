@@ -9,7 +9,16 @@ import '../services/services.dart';
 class PostService extends Service{
   String postId = const Uuid().v4();
 
+  resetProfilePicture() async {
+    DocumentSnapshot doc = await usersRef.doc(auth.currentUser!.uid).get();
+    var user = UserModel.fromJson(doc.data() as Map<String, dynamic>);
+    if (user.photoUrl != null) {
+      await storage.refFromURL(user.photoUrl!).delete();
+    }
+  }
+
   uploadProfilePicture(File image, User user) async {
+    await resetProfilePicture();
     String link = await uploadImage(profilePic, image);
 
     var ref = usersRef.doc(user.uid);

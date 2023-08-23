@@ -180,6 +180,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               fontFamily: 'Ubuntu-Regular',
                             )
                         ),
+                        minLeadingWidth: 10,
                         onTap: () {
                           Navigator.of(context).pushReplacement(
                             CupertinoPageRoute(
@@ -215,6 +216,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   fontFamily: 'Ubuntu-Regular',
                                 )
                             ),
+                            minLeadingWidth: 10,
                             onTap: () async {
                               Navigator.of(context).pushReplacement(
                                   CupertinoPageRoute(
@@ -247,6 +249,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   fontFamily: 'Ubuntu-Regular',
                                 )
                             ),
+                            minLeadingWidth: 10,
                             leading: const Icon(
                               Icons.logout,
                               color: Colors.red,
@@ -488,7 +491,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         color: Colors.deepPurple,
                         size: 15,
                       ),
-                      const SizedBox(width: 5.0),
+                      const SizedBox(width: 4.0),
                       SizedBox(
                           width: 200,
                           child: GestureDetector(
@@ -510,7 +513,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Visibility(
                   visible: true,
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 20.0, top: 5),
+                    padding: const EdgeInsets.only(left: 20.0, top: 5, bottom: 5),
                     child: SizedBox(
                         width: MediaQuery.of(context).size.width * 0.8,
                         child: Row(
@@ -545,24 +548,28 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.50,
                   child: DefaultTabController(
-                      length: 3,
+                      length: 4,
                       child: Column(
                         children: [
                           SizedBox(
                             height: 40,
                             width: MediaQuery.of(context).size.width,
-                            child: TabBar(
-                              labelColor: Theme.of(context).colorScheme.secondary,
+                            child: const TabBar(
+                              labelColor: Colors.blue,
                               unselectedLabelColor: Colors.grey,
-                              tabs: const [
+                              indicatorColor: Colors.blue,
+                              tabs: [
                                 Tab(
-                                  icon: Icon(CupertinoIcons.grid, size: 25),
+                                  icon: Icon(CupertinoIcons.square_grid_2x2_fill, size: 25),
                                 ),
                                 Tab(
                                   icon: Icon(CupertinoIcons.play_arrow_solid, size: 25),
                                 ),
                                 Tab(
-                                  icon: Icon(CupertinoIcons.list_bullet, size: 25),
+                                  icon: Icon(CupertinoIcons.equal_circle_fill, size: 25),
+                                ),
+                                Tab(
+                                  icon: Icon(CupertinoIcons.rectangle_grid_1x2_fill, size: 22),
                                 ),
                               ],
                             ),
@@ -572,7 +579,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               children: [
                                 buildPostView(currentUser),
                                 Container(),
-                                Container()
+                                Container(),
+                                Container(),
                               ],
                             ),
                           )
@@ -592,6 +600,13 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   buildCount(String label, int count) {
+    if(count > 1000) {
+      count = (count / 1000).round();
+      label = '${label}K';
+    } else if(count > 1000000) {
+      count = (count / 1000000).round();
+      label = '${label}M';
+    }
 
     return Column(
       children: <Widget>[
@@ -602,7 +617,7 @@ class _ProfilePageState extends State<ProfilePage> {
           count.toString(),
           textAlign: TextAlign.end,
           style: const TextStyle(
-            fontSize: 20.0,
+            fontSize: 22.0,
             fontWeight: FontWeight.bold,
             fontFamily: 'Ubuntu-Regular',
           ),

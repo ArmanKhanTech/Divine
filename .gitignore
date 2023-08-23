@@ -28,6 +28,7 @@
 .pub-cache/
 .pub/
 /build/
+/lib/options_firebase.dart
 
 
 # Android related

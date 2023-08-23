@@ -12,7 +12,9 @@ import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../../view_models/screens/posts_view_model.dart';
 
 class NewPostScreen extends StatefulWidget {
-  const NewPostScreen({super.key});
+  final String title;
+
+  const NewPostScreen({super.key, required this.title});
 
   @override
   State<NewPostScreen> createState() => _NewPostScreenState();
@@ -26,6 +28,7 @@ class _NewPostScreenState extends State<NewPostScreen> with
   bool isFlashOn = false;
   bool isLensChanging = false;
   bool pictureTaken = false;
+  bool exposureLongPress = false;
 
   late final List<CameraDescription> cameras;
 
@@ -35,16 +38,20 @@ class _NewPostScreenState extends State<NewPostScreen> with
 
   Future<void> initCamera() async {
     cameras = await availableCameras();
-    controller = CameraController(cameras.first, ResolutionPreset.high);
-    await onNewCameraSelected(cameras.first);
+    controller = CameraController(widget.title != 'Profile Picture' ?
+    cameras.first : cameras.last, ResolutionPreset.high);
+    await onNewCameraSelected(widget.title != 'Profile Picture' ?
+    cameras.first : cameras.last);
   }
 
   Future<void> onNewCameraSelected(CameraDescription description) async {
-    controller = CameraController(
-      description,
-      ResolutionPreset.high,
-      imageFormatGroup: ImageFormatGroup.jpeg,
-    );
+    setState(() {
+      controller = CameraController(
+        description,
+        ResolutionPreset.high,
+        imageFormatGroup: ImageFormatGroup.jpeg,
+      );
+    });
 
     controller?.addListener(() {
       if (mounted) setState(() {});
@@ -126,7 +133,7 @@ class _NewPostScreenState extends State<NewPostScreen> with
             systemNavigationBarIconBrightness: Brightness.light,
           ),
           title: GradientText(
-            'New Post',
+            widget.title,
             style: const TextStyle(
               fontSize: 30,
               fontWeight: FontWeight.w300,
@@ -144,10 +151,17 @@ class _NewPostScreenState extends State<NewPostScreen> with
                 children: [
                   cameraWidget(),
                   Positioned(
-                      left: 15,
-                      bottom: MediaQuery.of(context).size.height * 0.3,
+                      left: 10,
+                      bottom: MediaQuery.of(context).size.height * 0.25,
                       child: leftControls()
                   ),
+                  exposureLongPress == true ? Positioned(
+                      bottom: 0,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: exposureControl(),
+                      )
+                  ) : Container(),
                 ],
               ),
             ),
@@ -178,6 +192,28 @@ class _NewPostScreenState extends State<NewPostScreen> with
         borderRadius: BorderRadius.circular(20),
         child: CameraPreview(controller!),
       ),
+    );
+  }
+
+  Widget exposureControl () {
+
+    return Slider(
+      value: currentExposureOffset,
+      min: minAvailableExposureOffset,
+      max: maxAvailableExposureOffset,
+      divisions: 100,
+      thumbColor: Colors.white,
+      activeColor: Colors.white,
+      onChanged: (double value) {
+        if (controller!.value.isInitialized) {
+          setExposureOffset(value);
+        }
+      },
+      onChangeEnd: (double value) {
+        setState(() {
+          exposureLongPress = false;
+        });
+      },
     );
   }
 
@@ -229,13 +265,26 @@ class _NewPostScreenState extends State<NewPostScreen> with
                     isFlashOn = false;
                   });
                 }
-                Navigator.push(
-                    context,
-                    CupertinoPageRoute(builder: (_) => PreviewImage(imageFile: file)
-                    )
-                ).then((value) => setState(() {
-                  pictureTaken = false;
-                }));
+                switch (widget.title) {
+                  case 'Profile Picture':
+                    //
+                    break;
+                  case 'New Story':
+                    //
+                    break;
+                  case 'New Post':
+                    Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                            builder: (_) => PreviewImage(imageFile: file))).then((value) {
+                              setState(() {
+                                pictureTaken = false;
+                              });
+                            });
+                    break;
+                  default:
+                    break;
+                }
               }
             },
             child: Container(
@@ -245,53 +294,34 @@ class _NewPostScreenState extends State<NewPostScreen> with
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(35),
               ),
-              child: const Center(
-                child: Icon(
-                  Icons.camera_alt,
-                  color: Colors.black,
-                  size: 30,
-                ),
-              ),
             ),
           ),
           const Spacer(),
           IconButton(
-            onPressed: () {
+            onPressed: () async {
               if (cameras.length <= 2) {
 
                 return;
               }
 
               final lensDirection = controller?.description.lensDirection;
-              if (lensDirection == CameraLensDirection.front)
-              {
+              if (lensDirection == CameraLensDirection.front) {
                 setState(() {
                   isLensChanging = true;
-                  controller = CameraController(
-                    cameras.first,
-                    ResolutionPreset.max,
-                  );
                 });
-              }
-              else
-              {
+
+                await onNewCameraSelected(cameras.first);
+              } else {
                 setState(() {
                   isLensChanging = true;
-                  controller = CameraController(
-                    cameras.last,
-                    ResolutionPreset.max,
-                  );
                 });
+
+                await onNewCameraSelected(cameras.last);
               }
+              print('Lens Direction: $lensDirection');
 
-              controller?.initialize().then((_) {
-                if (!mounted) {
-
-                  return;
-                }
-                setState(() {
-                  isLensChanging = false;
-                });
+              setState(() {
+                isLensChanging = false;
               });
             },
             icon: const Icon(
@@ -309,7 +339,7 @@ class _NewPostScreenState extends State<NewPostScreen> with
   Widget leftControls() {
 
     return Container(
-      height: 150,
+      height: 200,
       decoration: BoxDecoration(
         color: Colors.black.withOpacity(0.2),
         borderRadius: BorderRadius.circular(20),
@@ -333,6 +363,59 @@ class _NewPostScreenState extends State<NewPostScreen> with
               Icons.add_circle_outline_outlined,
               color: Colors.white,
               size: 30,
+            ),
+          ),
+          const Spacer(),
+          GestureDetector(
+            onTap: () {
+              if (controller!.value.isInitialized) {
+                if (controller!.value.exposureMode == ExposureMode.auto) {
+                  setExposureMode(ExposureMode.locked);
+                } else {
+                  setExposureMode(ExposureMode.auto);
+                }
+              }
+            },
+            onLongPress: () {
+              setState(() {
+                exposureLongPress = true;
+              });
+            },
+            child: Icon(
+              Icons.exposure,
+              color: controller!.value.exposureMode == ExposureMode.auto ?
+              Colors.white : Colors.blue,
+              size: 30,
+            ),
+          ),
+          const Spacer(),
+          IconButton(
+            onPressed: () {
+              if (controller!.value.isInitialized) {
+                if (controller!.value.focusMode == FocusMode.auto) {
+                  setFocusMode(FocusMode.locked);
+                } else {
+                  setFocusMode(FocusMode.auto);
+                }
+              }
+            },
+            icon: Icon(
+              Icons.filter_center_focus,
+              color: controller!.value.focusMode == FocusMode.auto ?
+              Colors.white : Colors.red,
+              size: 30,
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              if (controller!.value.isInitialized) {
+                onCaptureOrientationLockButtonPressed();
+              }
+            },
+            icon: Icon(
+              controller!.value.isCaptureOrientationLocked == true ? Icons.screen_lock_rotation : Icons.screen_rotation,
+              color: Colors.white,
+              size: 28,
             ),
           ),
           const Spacer(),
@@ -361,6 +444,68 @@ class _NewPostScreenState extends State<NewPostScreen> with
       showSnackBar(msg: 'Error: ${e.code}\n${e.description}');
 
       return null;
+    }
+  }
+
+  Future<void> setExposureMode(ExposureMode mode) async {
+    if (controller == null) {
+
+      return;
+    }
+
+    try {
+      await controller!.setExposureMode(mode);
+    } on CameraException {
+
+      rethrow;
+    }
+  }
+
+  Future<void> setExposureOffset(double offset) async {
+    if (controller == null) {
+
+      return;
+    }
+
+    setState(() {
+      currentExposureOffset = offset;
+    });
+    try {
+      offset = await controller!.setExposureOffset(offset);
+    } on CameraException {
+
+      rethrow;
+    }
+  }
+
+  Future<void> setFocusMode(FocusMode mode) async {
+    if (controller == null) {
+
+      return;
+    }
+
+    try {
+      await controller!.setFocusMode(mode);
+    } on CameraException {
+
+      rethrow;
+    }
+  }
+
+
+  Future<void> onCaptureOrientationLockButtonPressed() async {
+    try {
+      if (controller != null) {
+        final CameraController cameraController = controller!;
+        if (cameraController.value.isCaptureOrientationLocked) {
+          await cameraController.unlockCaptureOrientation();
+        } else {
+          await cameraController.lockCaptureOrientation();
+        }
+      }
+    } on CameraException {
+
+      rethrow;
     }
   }
 

@@ -100,7 +100,6 @@ class _TextOverlayScreenState extends State<TextOverlayScreen> {
               const SizedBox(
                 height: 20,
               ),
-              // TODO:Fix init text color
               SizedBox(
                 height: size.height / 2.2,
                 child: TextField(
