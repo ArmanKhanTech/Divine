@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:flutter_nude_detector/flutter_nude_detector.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
@@ -77,6 +78,75 @@ class _ConfirmStoryState extends State<ConfirmStory> {
           ),
           automaticallyImplyLeading: false,
           backgroundColor: Colors.black,
+          actions: [
+            RotatedBox(
+              quarterTurns: 1,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 5, left: 5, top: 5),
+                child: IconButton(
+                  // rotate icon
+                  icon: const Icon(Icons.file_upload_outlined),
+                  onPressed: () async {
+                    setState(() {
+                      loading = true;
+                    });
+                    final hasNudity = await FlutterNudeDetector.detect(path: widget.uri);
+                    if(hasNudity) {
+                      setState(() {
+                        loading = false;
+                      });
+                      viewModel.showSnackBar('NSFW content detected.', context);
+                      image.delete();
+                      Navigator.of(context).pushAndRemoveUntil(
+                          CupertinoPageRoute(builder: (_) => const MainScreen()), (route) => false);
+                    } else {
+                      QuerySnapshot snapshot = await storyRef
+                          .where('userId', isEqualTo: auth.currentUser!.uid)
+                          .get();
+                      if (snapshot.docs.isNotEmpty) {
+                        List storyList = snapshot.docs;
+                        DocumentSnapshot storyListSnapshot = storyList[0];
+                        String url = await uploadMedia(widget.uri);
+                        StoryModel story = StoryModel(
+                          url: url,
+                          time: Timestamp.now(),
+                          storyId: uuid.v1(),
+                          viewers: [],
+                        );
+                        await viewModel.sendStory(story, storyListSnapshot.id);
+                        viewModel.showSnackBar('Story uploaded successfully.', context);
+                        setState(() {
+                          loading = false;
+                        });
+                        image.delete();
+                        Navigator.of(context).pushAndRemoveUntil(
+                            CupertinoPageRoute(builder: (_) => const MainScreen()), (route) => false);
+                      } else {
+                        String url = await uploadMedia(widget.uri);
+                        StoryModel story = StoryModel(
+                          url: url,
+                          time: Timestamp.now(),
+                          storyId: uuid.v1(),
+                          viewers: [],
+                        );
+                        String id = await viewModel.sendFirstStory(story);
+                        await viewModel.sendStory(story, id);
+                        viewModel.showSnackBar('Story uploaded successfully.', context);
+                        setState(() {
+                          loading = false;
+                        });
+                        image.delete();
+                        Navigator.of(context).pushAndRemoveUntil(
+                            CupertinoPageRoute(builder: (_) => const MainScreen()), (route) => false);
+                      }
+                    }
+                  },
+                  iconSize: 32.0,
+                  color: Colors.blue,
+                ),
+              ),
+            )
+          ],
         ),
         backgroundColor: Colors.black,
         body: SizedBox(
@@ -84,7 +154,7 @@ class _ConfirmStoryState extends State<ConfirmStory> {
             children: [
               SizedBox(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                   child: Container(
                     height: MediaQuery.of(context).size.height * .8,
                     width: MediaQuery.of(context).size.width,
@@ -97,77 +167,6 @@ class _ConfirmStoryState extends State<ConfirmStory> {
                     ),
                   ),
                 )
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * .05,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      color: Colors.black12,
-                    ),
-                    child: FloatingActionButton(
-                      backgroundColor: Colors.blue,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: const Text(
-                          'Done',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          )
-                      ),
-                      onPressed: () async {
-                        setState(() {
-                          loading = true;
-                        });
-                        QuerySnapshot snapshot = await storyRef
-                            .where('userId', isEqualTo: auth.currentUser!.uid)
-                            .get();
-                        if (snapshot.docs.isNotEmpty) {
-                          List storyList = snapshot.docs;
-                          DocumentSnapshot storyListSnapshot = storyList[0];
-                          String url = await uploadMedia(widget.uri);
-                          StoryModel story = StoryModel(
-                            url: url,
-                            time: Timestamp.now(),
-                            storyId: uuid.v1(),
-                            viewers: [],
-                          );
-                          await viewModel.sendStory(story, storyListSnapshot.id);
-                          setState(() {
-                            loading = false;
-                          });
-                          image.delete();
-                          Navigator.of(context).pushAndRemoveUntil(
-                              CupertinoPageRoute(builder: (_) => const MainScreen()), (route) => false);
-                        } else {
-                          String url = await uploadMedia(widget.uri);
-                          StoryModel story = StoryModel(
-                            url: url,
-                            time: Timestamp.now(),
-                            storyId: uuid.v1(),
-                            viewers: [],
-                          );
-                          String id = await viewModel.sendFirstStory(story);
-                          await viewModel.sendStory(story, id);
-                          setState(() {
-                            loading = false;
-                          });
-                          image.delete();
-                          Navigator.of(context).pushAndRemoveUntil(
-                              CupertinoPageRoute(builder: (_) => const MainScreen()), (route) => false);
-                        }
-                      },
-                    ),
-                  )
-                ),
               ),
             ],
           )

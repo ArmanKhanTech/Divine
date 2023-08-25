@@ -107,16 +107,7 @@ class GalleryGridViewState extends State<GalleryGridView> {
                   ),
                 )
               ],
-            ) : SizedBox(
-              child: Column(
-                children: [
-                  SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.3
-                  ),
-                  circularProgress(context, const Color(0xFFFFFFFF))
-                ],
-              )
-            )
+            ) : Container()
     );
   }
 

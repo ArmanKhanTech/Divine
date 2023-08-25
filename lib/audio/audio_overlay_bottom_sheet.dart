@@ -3,8 +3,11 @@ import 'package:divine/view_models/user/audio_view_model.dart';
 import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../widgets/wave_slider.dart';
 
+
+// TODO: Continue here
 class AudioOverlayBottomSheet extends StatefulWidget {
   final Function onDone;
 
@@ -51,10 +54,10 @@ class _AudioOverlayBottomSheetState extends State<AudioOverlayBottomSheet> {
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(20), topLeft: Radius.circular(20)),
             border: Border(
-              top: BorderSide(width: 1, color: Colors.white),
-              bottom: BorderSide(width: 0, color: Colors.white),
-              left: BorderSide(width: 0, color: Colors.white),
-              right: BorderSide(width: 0, color: Colors.white),
+              top: BorderSide(width: 1, color: Colors.pink),
+              bottom: BorderSide(width: 0, color: Colors.pink),
+              left: BorderSide(width: 0, color: Colors.pink),
+              right: BorderSide(width: 0, color: Colors.pink),
             )
         ),
         child: Column(
@@ -68,25 +71,28 @@ class _AudioOverlayBottomSheetState extends State<AudioOverlayBottomSheet> {
                       topLeft: Radius.circular(20)
                   ),
                 ),
-                child: const Padding(
-                  padding: EdgeInsets.only(
+                child: Padding(
+                  padding: const EdgeInsets.only(
                     top: 15.0,
                     bottom: 10.0,
+                    left: 10
                   ),
-                  child: Center(
-                    child:Text(
-                      'Choose',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                  child: GradientText(
+                    'Divine Music',
+                    colors: const [
+                      Colors.pink,
+                      Colors.blue,
+                      Colors.pink,
+                    ],
+                    style: const TextStyle(
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 )
             ),
             const Divider(
-              color: Colors.white,
+              color: Colors.pink,
               thickness: 1,
             ),
             const SizedBox(
@@ -109,11 +115,11 @@ class _AudioOverlayBottomSheetState extends State<AudioOverlayBottomSheet> {
                         color: Colors.black,
                       ),
                       child: TabBar(
-                        labelColor: Colors.black,
-                        unselectedLabelColor: Colors.white,
+                        labelColor: Colors.white,
+                        unselectedLabelColor: Colors.pink,
                         indicator: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          color: Colors.white,
+                          color: Colors.pink,
                         ),
                         tabs: const [
                           Row(
@@ -148,32 +154,32 @@ class _AudioOverlayBottomSheetState extends State<AudioOverlayBottomSheet> {
                                 child: Column(
                                     children: [
                                       SizedBox(
-                                        height: 50.0,
+                                        height: 65.0,
                                         child: TextFormField(
-                                          style: const TextStyle(color: Colors.white),
+                                          style: const TextStyle(color: Colors.white, fontSize: 18.0),
                                           decoration: InputDecoration(
                                             alignLabelWithHint: true,
                                             labelText: 'Search',
                                             labelStyle: const TextStyle(color: Colors.white, fontSize: 18.0),
                                             hintText: 'Any song, artist, or album',
-                                            hintStyle: const TextStyle(color: Colors.white70),
+                                            hintStyle: const TextStyle(color: Colors.white70, fontSize: 18.0),
                                             enabled: true,
                                             enabledBorder: const OutlineInputBorder(
-                                                borderSide: BorderSide(color: Colors.white),
-                                                borderRadius: BorderRadius.all(Radius.circular(30.0)
+                                                borderSide: BorderSide(color: Colors.pink),
+                                                borderRadius: BorderRadius.all(Radius.circular(20.0)
                                                 )
                                             ),
                                             border: const OutlineInputBorder(
-                                                borderSide: BorderSide(color: Colors.white, width: 0.0),
-                                                borderRadius: BorderRadius.all(Radius.circular(30.0)
+                                                borderSide: BorderSide(color: Colors.pink, width: 0.0),
+                                                borderRadius: BorderRadius.all(Radius.circular(20.0)
                                                 )
                                             ),
                                             focusedBorder:OutlineInputBorder(
-                                              borderSide: const BorderSide(color: Colors.white, width: 1.0),
-                                              borderRadius: BorderRadius.circular(30.0),
+                                              borderSide: const BorderSide(color: Colors.pink, width: 1.0),
+                                              borderRadius: BorderRadius.circular(20.0),
                                             ),
                                             isDense: true,                      // Added this
-                                            contentPadding: const EdgeInsets.all(10),
+                                            contentPadding: const EdgeInsets.all(15),
                                             isCollapsed: true,
                                           ),
                                           textAlignVertical: TextAlignVertical.center,

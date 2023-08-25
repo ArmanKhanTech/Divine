@@ -522,7 +522,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               child: const Text(
                                 'Followed by ',
                                 style: TextStyle(
-                                  fontSize: 18.0,
+                                  fontSize: 15.0,
                                   fontWeight: FontWeight.w400,
                                   fontFamily: 'Ubuntu-Regular',
                                 ),
@@ -532,7 +532,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               child: const Text(
                                 'username, username',
                                 style: TextStyle(
-                                  fontSize: 18.0,
+                                  fontSize: 15.0,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),

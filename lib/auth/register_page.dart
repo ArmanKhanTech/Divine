@@ -112,12 +112,12 @@ class _RegisterPageState extends State<RegisterPage>{
               textAlign: TextAlign.center,
               'By signing up you agree to our Terms of Use \n& Privacy Policy.',
               style: TextStyle(
-                fontSize: 15.0,
+                fontSize: 18.0,
                 fontWeight: FontWeight.bold,
                 color: Colors.blue,
               ),
             ),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 30.0),
             SizedBox(
               height: 40.0,
               width: 200.0,
@@ -130,7 +130,7 @@ class _RegisterPageState extends State<RegisterPage>{
                   'Signup',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 20.0,
+                    fontSize: 25.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -196,7 +196,7 @@ class _RegisterPageState extends State<RegisterPage>{
                         const Text(
                           'Already have an account?',
                           style: TextStyle(
-                            fontSize: 15.0,
+                            fontSize: 18.0,
                           ),
                         ),
                         GestureDetector(
@@ -204,7 +204,7 @@ class _RegisterPageState extends State<RegisterPage>{
                           child: const Text(
                             ' Log In.',
                             style: TextStyle(
-                              fontSize: 15.0,
+                              fontSize: 18.0,
                               fontWeight: FontWeight.bold,
                               color: Colors.blue,
                             ),
@@ -216,7 +216,7 @@ class _RegisterPageState extends State<RegisterPage>{
                 )
             ));
       },
-      maximumSize: const Size(475.0, 812.0),
+      maximumSize: const Size(540.0, 960.0),
       enabled: kIsWeb,
       backgroundColor: Theme.of(context).colorScheme.background,
     );

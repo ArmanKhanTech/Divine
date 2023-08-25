@@ -47,6 +47,12 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
   double minAvailableExposureOffset = 0.0;
   double maxAvailableExposureOffset = 0.0;
   double currentExposureOffset = 0.0;
+  double minAvailableZoom = 1.0;
+  double maxAvailableZoom = 1.0;
+  double currentScale = 1.0;
+  double baseScale = 1.0;
+
+  int pointers = 0;
 
   Future<void> initCamera() async {
     cameras = await availableCameras();
@@ -79,6 +85,10 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
       controller?.getMaxExposureOffset()
           .then((double value) => maxAvailableExposureOffset = value);
       controller?.setFlashMode(FlashMode.off);
+      controller?.getMinZoomLevel().then(
+              (double value) => minAvailableZoom = value);
+      controller?.getMaxZoomLevel().then(
+              (double value) => maxAvailableZoom = value);
       setState(() {
         isCameraInitialized = true;
       });
@@ -322,9 +332,57 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
-        child: CameraPreview(controller!),
+        child: Listener(
+          onPointerDown: (_) => pointers++,
+          onPointerUp: (_) => pointers--,
+          child: CameraPreview(
+            controller!,
+            child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  return GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onScaleStart: handleScaleStart,
+                    onScaleUpdate: handleScaleUpdate,
+                    onTapDown: (TapDownDetails details) =>
+                        onViewFinderTap(details, constraints),
+                  );
+                }),
+          ),
+        ),
       ),
     );
+  }
+
+  void handleScaleStart(ScaleStartDetails details) {
+    baseScale = currentScale;
+  }
+
+  Future<void> handleScaleUpdate(ScaleUpdateDetails details) async {
+    if (controller == null || pointers != 2) {
+
+      return;
+    }
+
+    currentScale = (baseScale * details.scale)
+        .clamp(minAvailableZoom, maxAvailableZoom);
+
+    await controller!.setZoomLevel(currentScale);
+  }
+
+  void onViewFinderTap(TapDownDetails details, BoxConstraints constraints) {
+    if (controller == null) {
+
+      return;
+    }
+
+    final CameraController cameraController = controller!;
+
+    final Offset offset = Offset(
+      details.localPosition.dx / constraints.maxWidth,
+      details.localPosition.dy / constraints.maxHeight,
+    );
+    cameraController.setExposurePoint(offset);
+    cameraController.setFocusPoint(offset);
   }
 
   Widget bottomControls(){
@@ -521,19 +579,13 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
   Widget leftControls() {
 
     return Container(
-      height: 150,
+      height: 180,
       decoration: BoxDecoration(
         color: Colors.black.withOpacity(0.2),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
         children: [
-          const Spacer(),
-          IconButton(
-            icon: Icon(enableAudio ? Icons.volume_up : Icons.volume_mute, color: Colors.white, size: 30),
-            color: Colors.white,
-            onPressed: controller != null ? onAudioModeButtonPressed : null,
-          ),
           const Spacer(),
           IconButton(
             onPressed: () {
@@ -552,6 +604,12 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
               color: Colors.white,
               size: 30,
             ),
+          ),
+          const Spacer(),
+          IconButton(
+            icon: Icon(enableAudio ? Icons.volume_up : Icons.volume_mute, color: Colors.white, size: 30),
+            color: Colors.white,
+            onPressed: controller != null ? onAudioModeButtonPressed : null,
           ),
           const Spacer(),
           IconButton(

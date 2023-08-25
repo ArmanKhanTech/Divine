@@ -267,7 +267,7 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
           ),
         );
       },
-      maximumSize: const Size(475.0, 812.0),
+      maximumSize: const Size(540.0, 960.0),
       enabled: kIsWeb,
       backgroundColor: Theme.of(context).colorScheme.background,
     );

@@ -9,16 +9,29 @@ import '../models/user_model.dart';
 import '../stories/screens/story_screen.dart';
 import '../utilities/firebase.dart';
 
-class StoryWidget extends StatelessWidget {
+class StoryWidget extends StatefulWidget{
   const StoryWidget({Key? key}) : super(key: key);
+
+  @override
+  State<StoryWidget> createState() => _StoryWidgetState();
+}
+
+class _StoryWidgetState extends State<StoryWidget> {
 
   // TODO: Sort stories by time i.e viewed stories at last, tags in stories, location in stories, tagged stories within stories.
   @override
   Widget build(BuildContext context) {
     int storyCounter = 0;
+    double height = 125;
+
+    void setHeight(){
+      setState(() {
+        height = 0;
+      });
+    }
 
     return SizedBox(
-      height: 120.0,
+      height: height,
       child: Padding(
         padding: const EdgeInsets.only(left: 5.0),
         child: StreamBuilder<QuerySnapshot>(
@@ -48,31 +61,15 @@ class StoryWidget extends StatelessWidget {
                             users.remove(auth.currentUser!.uid);
                             storyCounter++;
 
-                            return _buildStatusAvatar(
+                            return buildStatusAvatar(
                                 storyListSnapshot.get('userId'),
                                 storyListSnapshot.id,
                                 story.storyId!,
-                                index);
+                                index,
+                            );
                           }
                           if(storyCounter == 0){
-                            return Padding(
-                                padding: const EdgeInsets.only(bottom: 20),
-                                child: SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    height: 110.0,
-                                    child: const Center(
-                                      child: Text(
-                                        'No story to show.',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 20.0,
-                                          color: Colors.grey,
-                                          fontFamily: 'Pacifico',
-                                        ),
-                                      ),
-                                    )
-                                )
-                            );
+                            setHeight();
                           }
 
                           return const SizedBox();
@@ -85,30 +82,14 @@ class StoryWidget extends StatelessWidget {
                   },
                 );
               } else {
+                setHeight();
 
-                return Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
-                    child: SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        height: 110.0,
-                        child: const Center(
-                          child: Text(
-                            'No story to show.',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              color: Colors.grey,
-                              fontFamily: 'Pacifico',
-                            ),
-                          ),
-                        )
-                    )
-                );
+                return const SizedBox();
               }
             } else {
 
               return Padding(
-                padding: const EdgeInsets.only(bottom: 10),
+                padding: const EdgeInsets.only(bottom: 20),
                 child: Center(child: circularProgress(context, const Color(0xFFE91E63)))
               );
             }
@@ -118,7 +99,7 @@ class StoryWidget extends StatelessWidget {
     );
   }
 
-  _buildStatusAvatar(
+  buildStatusAvatar(
       String userId,
       String storiesId,
       String storyId,
@@ -200,11 +181,11 @@ class StoryWidget extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 4.0),
+                      const SizedBox(height: 5.0),
                       Text(
                         user.username!.toLowerCase(),
                         style: const TextStyle(
-                          fontSize: 15.0,
+                          fontSize: 16.0,
                           fontWeight: FontWeight.w400,
                           fontFamily: 'Roboto',
                         ),

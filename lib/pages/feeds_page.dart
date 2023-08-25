@@ -10,7 +10,6 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../chats/screens/chat_screen.dart';
-import '../posts/screens/preview_image.dart';
 import '../reels/screens/new_reels_screen.dart';
 import '../stories/screens/confirm_story.dart';
 import '../stories/stories_editor/stories_editor.dart';
@@ -91,7 +90,7 @@ class _FeedsPageState extends State<FeedsPage>{
         builder: (BuildContext context) {
 
           return FractionallySizedBox(
-            heightFactor: .95,
+            heightFactor: .75,
             child: Container(
               decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.background,
@@ -138,7 +137,7 @@ class _FeedsPageState extends State<FeedsPage>{
                           right: 25.0,
                         ),
                         child:  Text(
-                          'Create',
+                          'Create a new',
                           style: TextStyle(
                             fontSize: 30.0,
                             fontWeight: FontWeight.w500,
@@ -151,104 +150,160 @@ class _FeedsPageState extends State<FeedsPage>{
                     color: Colors.blue,
                     thickness: 1,
                   ),
-                  const SizedBox(height: 20.0),
-                  Row(
-                    children: [
-                      const SizedBox(width: 25.0),
-                      Visibility(
-                          visible: !kIsWeb,
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => StoriesEditor(
-                                giphyKey: 'C4dMA7Q19nqEGdpfj82T8ssbOeZIylD4',
-                                fontFamilyList: const ['Shizuru', 'Aladin', 'TitilliumWeb', 'Varela',
-                                  'Vollkorn', 'Rakkas', 'B612', 'YatraOne', 'Tangerine',
-                                  'OldStandardTT', 'DancingScript', 'SedgwickAve', 'IndieFlower', 'Sacramento'],
-                                galleryThumbnailQuality: 300,
-                                isCustomFontList: true,
-                                onDone: (uri) {
-                                  Navigator.of(context).push(
-                                    CupertinoPageRoute(
-                                      builder: (_) => ConfirmStory(uri: uri),
-                                    ),
-                                  );
-                                },
-                              )));
-                            },
-                            child: Container(
-                                height: 150.0,
-                                width: MediaQuery.of(context).size.width * 0.4,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.background,
-                                  borderRadius: BorderRadius.circular(20.0),
-                                  border: Border.all(
-                                    color: Colors.blue,
-                                    width: 1.0,
-                                  ),
+                  const SizedBox(height: 10.0),
+                  Visibility(
+                      visible: !kIsWeb,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => StoriesEditor(
+                            giphyKey: 'C4dMA7Q19nqEGdpfj82T8ssbOeZIylD4',
+                            fontFamilyList: const ['Shizuru', 'Aladin', 'TitilliumWeb', 'Varela',
+                              'Vollkorn', 'Rakkas', 'B612', 'YatraOne', 'Tangerine',
+                              'OldStandardTT', 'DancingScript', 'SedgwickAve', 'IndieFlower', 'Sacramento'],
+                            galleryThumbnailQuality: 300,
+                            isCustomFontList: true,
+                            onDone: (uri) {
+                              Navigator.of(context).push(
+                                CupertinoPageRoute(
+                                  builder: (_) => ConfirmStory(uri: uri),
                                 ),
-                                child: const Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      CupertinoIcons.time,
-                                      color: Colors.blue,
-                                      size: 35,
-                                    ),
-                                    SizedBox(
-                                      height: 5.0,
-                                    ),
-                                    Text(
-                                        'Story',
-                                        style: TextStyle(
-                                            fontSize: 20.0,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.blue
-                                        )
-                                    )
-                                  ],
-                                )
+                              );
+                            },
+                          )));
+                        },
+                        child: Container(
+                            height: 30.0,
+                            padding: const EdgeInsets.only(
+                              left: 25.0,
+                              right: 25.0,
                             ),
-                          )
-                      ),
-                      const Spacer(),
-                      GestureDetector(
+                            width: MediaQuery.of(context).size.width,
+                            color: Theme.of(context).colorScheme.background,
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  CupertinoIcons.time,
+                                  color: Colors.blue,
+                                  size: 25,
+                                ),
+                                SizedBox(
+                                  width: 10.0,
+                                ),
+                                Text(
+                                    'Story',
+                                    style: TextStyle(
+                                        fontSize: 25.0,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.blue
+                                    )
+                                )
+                              ],
+                            )
+                        ),
+                      )
+                  ),
+                  const SizedBox(height: 12.0),
+                  const Padding(
+                    padding: EdgeInsets.only(
+                      left: 25.0,
+                      right: 25.0,
+                    ),
+                    child: Divider(
+                      color: Colors.blue,
+                      thickness: 1,
+                    ),
+                  ),
+                  const SizedBox(height: 12.0),
+                  GestureDetector(
+                    onTap: () async {
+                      Navigator.pushReplacement(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => const NewPostScreen(
+                                title: 'New Post',
+                              ))
+                      );
+                    },
+                    child: Container(
+                        height: 30.0,
+                        padding: const EdgeInsets.only(
+                          left: 25.0,
+                          right: 25.0,
+                        ),
+                        width: MediaQuery.of(context).size.width,
+                        color: Theme.of(context).colorScheme.background,
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              CupertinoIcons.plus_circle,
+                              color: Colors.blue,
+                              size: 25,
+                            ),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            Text(
+                                'Post',
+                                style: TextStyle(
+                                    fontSize: 25.0,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.blue
+                                )
+                            )
+                          ],
+                        )
+                    ),
+                  ),
+                  const SizedBox(height: 12.0),
+                  const Padding(
+                    padding: EdgeInsets.only(
+                      left: 25.0,
+                      right: 25.0,
+                    ),
+                    child: Divider(
+                      color: Colors.blue,
+                      thickness: 1,
+                    ),
+                  ),
+                  const SizedBox(height: 12.0),
+                  Visibility(
+                      visible: !kIsWeb,
+                      child: GestureDetector(
                         onTap: () async {
                           Navigator.pushReplacement(
                               context,
                               CupertinoPageRoute(
-                                  builder: (context) => const NewPostScreen(
-                                    title: 'New Post',
-                                  ))
+                                  builder: (context) => const NewReelsScreen())
                           );
                         },
                         child: Container(
-                            height: 150.0,
-                            width: MediaQuery.of(context).size.width * 0.4,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.background,
-                              borderRadius: BorderRadius.circular(20.0),
-                              border: Border.all(
-                                color: Colors.blue,
-                                width: 1.0,
-                              ),
+                            height: 30.0,
+                            padding: const EdgeInsets.only(
+                              left: 25.0,
+                              right: 25.0,
                             ),
-                            child: const Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                            width: MediaQuery.of(context).size.width,
+                            color: Theme.of(context).colorScheme.background,
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Icon(
-                                  CupertinoIcons.plus_circle,
+                                  CupertinoIcons.play_circle,
                                   color: Colors.blue,
-                                  size: 35,
+                                  size: 25,
                                 ),
                                 SizedBox(
-                                  height: 5.0,
+                                  width: 10.0,
                                 ),
                                 Text(
-                                    'Post',
+                                    'Reel',
                                     style: TextStyle(
-                                        fontSize: 20.0,
+                                        fontSize: 25.0,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.blue
                                     )
@@ -256,104 +311,58 @@ class _FeedsPageState extends State<FeedsPage>{
                               ],
                             )
                         ),
-                      ),
-                      const SizedBox(width: 25.0),
-                    ],
+                      )
                   ),
-                  const SizedBox(height: 30.0),
-                  Row(
-                    children: [
-                      const SizedBox(width: 25.0),
-                      Visibility(
-                          visible: !kIsWeb,
-                          child: GestureDetector(
-                            onTap: () async {
-                              Navigator.pushReplacement(
-                                  context,
-                                  CupertinoPageRoute(
-                                      builder: (context) => const NewReelsScreen())
-                              );
-                            },
-                            child: Container(
-                                height: 150.0,
-                                width: MediaQuery.of(context).size.width * 0.4,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.background,
-                                  borderRadius: BorderRadius.circular(20.0),
-                                  border: Border.all(
-                                    color: Colors.blue,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                child: const Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      CupertinoIcons.play_circle,
-                                      color: Colors.blue,
-                                      size: 35,
-                                    ),
-                                    SizedBox(
-                                      height: 5.0,
-                                    ),
-                                    Text(
-                                        'Reels',
-                                        style: TextStyle(
-                                            fontSize: 20.0,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.blue
-                                        )
-                                    )
-                                  ],
-                                )
-                            ),
-                          )
-                      ),
-                      const Spacer(),
-                      GestureDetector(
-                        /*onTap: () async {
+                  const SizedBox(height: 12.0),
+                  const Padding(
+                    padding: EdgeInsets.only(
+                      left: 25.0,
+                      right: 25.0,
+                    ),
+                    child: Divider(
+                      color: Colors.blue,
+                      thickness: 1,
+                    ),
+                  ),
+                  const SizedBox(height: 12.0),
+                  GestureDetector(
+                    /*onTap: () async {
                         // Navigator.pop(context);
                         await viewModel.pickImage(context: context);
                       },*/
-                        child: Container(
-                            height: 150.0,
-                            width: MediaQuery.of(context).size.width * 0.4,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.background,
-                              borderRadius: BorderRadius.circular(20.0),
-                              border: Border.all(
-                                color: Colors.blue,
-                                width: 1.0,
-                              ),
-                            ),
-                            child: const Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  CupertinoIcons.equal_circle,
-                                  color: Colors.blue,
-                                  size: 35,
-                                ),
-                                SizedBox(
-                                  height: 5.0,
-                                ),
-                                Text(
-                                    'Threads',
-                                    style: TextStyle(
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.blue
-                                    )
-                                )
-                              ],
-                            )
+                    child: Container(
+                        height: 30.0,
+                        padding: const EdgeInsets.only(
+                          left: 25.0,
+                          right: 25.0,
                         ),
-                      ),
-                      const SizedBox(width: 25.0),
-                    ],
-                  )
+                        width: MediaQuery.of(context).size.width,
+                        color: Theme.of(context).colorScheme.background,
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              CupertinoIcons.equal_circle,
+                              color: Colors.blue,
+                              size: 25,
+                            ),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            Text(
+                                'Thread',
+                                style: TextStyle(
+                                    fontSize: 25.0,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.blue
+                                )
+                            )
+                          ],
+                        )
+                    ),
+                  ),
+                  const SizedBox(height: 12.0),
                 ],
               ),
             )

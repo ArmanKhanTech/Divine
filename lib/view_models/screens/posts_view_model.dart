@@ -201,7 +201,7 @@ class PostsViewModel extends ChangeNotifier{
           if(hashtagsList.isNotEmpty) postService.addPostToHashtagsCollection(value, hashtagsList);
         });
         media!.delete();
-        showSnackBar('Uploaded successfully!', context);
+        showSnackBar('Post uploaded successfully!', context);
         loading = false;
         notifyListeners();
       }

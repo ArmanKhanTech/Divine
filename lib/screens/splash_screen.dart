@@ -2,12 +2,9 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../auth/login_page.dart';
-import '../utilities/constants.dart';
 import 'main_screen.dart';
 
 class SplashScreen extends StatefulWidget{
@@ -82,22 +79,11 @@ class _SplashScreenState extends State<SplashScreen> {
                     height: 65,
                     width: 1,
                   ),
-                  const SizedBox(
-                    width: 12,
-                  ),
-                  GradientText(
-                    Constants.appName,
-                    style: TextStyle(
-                      fontSize: 55.0,
-                      fontWeight: FontWeight.w500,
-                      fontFamily: GoogleFonts.merriweather().fontFamily,
-                    ),
-                    colors: const [
-                      Colors.blue,
-                      Colors.pink,
-                      Colors.purple
-                    ],
-                  ),
+                  Image.asset(
+                    "assets/images/app_name.png",
+                    width: 200,
+                    height: 200,
+                  )
                 ],
               ),
             )

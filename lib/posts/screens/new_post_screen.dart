@@ -35,6 +35,12 @@ class _NewPostScreenState extends State<NewPostScreen> with
   double minAvailableExposureOffset = 0.0;
   double maxAvailableExposureOffset = 0.0;
   double currentExposureOffset = 0.0;
+  double minAvailableZoom = 1.0;
+  double maxAvailableZoom = 1.0;
+  double currentScale = 1.0;
+  double baseScale = 1.0;
+
+  int pointers = 0;
 
   Future<void> initCamera() async {
     cameras = await availableCameras();
@@ -70,6 +76,10 @@ class _NewPostScreenState extends State<NewPostScreen> with
       controller?.getMaxExposureOffset()
           .then((double value) => maxAvailableExposureOffset = value);
       controller?.setFlashMode(FlashMode.off);
+      controller?.getMinZoomLevel().then(
+              (double value) => minAvailableZoom = value);
+      controller?.getMaxZoomLevel().then(
+              (double value) => maxAvailableZoom = value);
       setState(() {
         isCameraInitialized = true;
       });
@@ -151,8 +161,8 @@ class _NewPostScreenState extends State<NewPostScreen> with
                 children: [
                   cameraWidget(),
                   Positioned(
-                      left: 10,
-                      bottom: MediaQuery.of(context).size.height * 0.25,
+                      left: 15,
+                      bottom: MediaQuery.of(context).size.height * 0.3,
                       child: leftControls()
                   ),
                   exposureLongPress == true ? Positioned(
@@ -190,9 +200,57 @@ class _NewPostScreenState extends State<NewPostScreen> with
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
-        child: CameraPreview(controller!),
+        child: Listener(
+          onPointerDown: (_) => pointers++,
+          onPointerUp: (_) => pointers--,
+          child: CameraPreview(
+            controller!,
+            child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  return GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onScaleStart: handleScaleStart,
+                    onScaleUpdate: handleScaleUpdate,
+                    onTapDown: (TapDownDetails details) =>
+                        onViewFinderTap(details, constraints),
+                  );
+                }),
+          ),
+        ),
       ),
     );
+  }
+
+  void handleScaleStart(ScaleStartDetails details) {
+    baseScale = currentScale;
+  }
+
+  Future<void> handleScaleUpdate(ScaleUpdateDetails details) async {
+    if (controller == null || pointers != 2) {
+
+      return;
+    }
+
+    currentScale = (baseScale * details.scale)
+        .clamp(minAvailableZoom, maxAvailableZoom);
+
+    await controller!.setZoomLevel(currentScale);
+  }
+
+  void onViewFinderTap(TapDownDetails details, BoxConstraints constraints) {
+    if (controller == null) {
+
+      return;
+    }
+
+    final CameraController cameraController = controller!;
+
+    final Offset offset = Offset(
+      details.localPosition.dx / constraints.maxWidth,
+      details.localPosition.dy / constraints.maxHeight,
+    );
+    cameraController.setExposurePoint(offset);
+    cameraController.setFocusPoint(offset);
   }
 
   Widget exposureControl () {
@@ -318,8 +376,6 @@ class _NewPostScreenState extends State<NewPostScreen> with
 
                 await onNewCameraSelected(cameras.last);
               }
-              print('Lens Direction: $lensDirection');
-
               setState(() {
                 isLensChanging = false;
               });
@@ -339,7 +395,7 @@ class _NewPostScreenState extends State<NewPostScreen> with
   Widget leftControls() {
 
     return Container(
-      height: 200,
+      height: 180,
       decoration: BoxDecoration(
         color: Colors.black.withOpacity(0.2),
         borderRadius: BorderRadius.circular(20),
@@ -360,7 +416,7 @@ class _NewPostScreenState extends State<NewPostScreen> with
                   CupertinoPageRoute(builder: (_) => const PickFromGalleryScreenPosts()));
             },
             icon: const Icon(
-              Icons.add_circle_outline_outlined,
+              Icons.add_box_outlined,
               color: Colors.white,
               size: 30,
             ),
@@ -400,22 +456,10 @@ class _NewPostScreenState extends State<NewPostScreen> with
               }
             },
             icon: Icon(
-              Icons.filter_center_focus,
+              Icons.filter_center_focus_sharp,
               color: controller!.value.focusMode == FocusMode.auto ?
               Colors.white : Colors.red,
               size: 30,
-            ),
-          ),
-          IconButton(
-            onPressed: () {
-              if (controller!.value.isInitialized) {
-                onCaptureOrientationLockButtonPressed();
-              }
-            },
-            icon: Icon(
-              controller!.value.isCaptureOrientationLocked == true ? Icons.screen_lock_rotation : Icons.screen_rotation,
-              color: Colors.white,
-              size: 28,
             ),
           ),
           const Spacer(),
@@ -486,23 +530,6 @@ class _NewPostScreenState extends State<NewPostScreen> with
 
     try {
       await controller!.setFocusMode(mode);
-    } on CameraException {
-
-      rethrow;
-    }
-  }
-
-
-  Future<void> onCaptureOrientationLockButtonPressed() async {
-    try {
-      if (controller != null) {
-        final CameraController cameraController = controller!;
-        if (cameraController.value.isCaptureOrientationLocked) {
-          await cameraController.unlockCaptureOrientation();
-        } else {
-          await cameraController.lockCaptureOrientation();
-        }
-      }
     } on CameraException {
 
       rethrow;

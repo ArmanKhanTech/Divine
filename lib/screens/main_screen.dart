@@ -96,7 +96,7 @@ class _MainScreenState extends State<MainScreen>{
           ),
         );
       },
-      maximumSize: const Size(500.0, 825.0),
+      maximumSize: const Size(540.0, 960.0),
       enabled: kIsWeb,
       backgroundColor: Theme.of(context).colorScheme.background,
     );

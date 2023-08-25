@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../components/pass_form_builder.dart';
 import '../components/text_form_builder.dart';
@@ -65,13 +66,10 @@ class _LoginPageState extends State<LoginPage> {
             focusNode: viewModel.passwordFocusNode,
             whichPage: "login",
           ),
-          const SizedBox(
-            height: 10.0,
-          ),
           Align(
             alignment: Alignment.centerRight,
             child: Padding(
-              padding: const EdgeInsets.only(right: 50.0),
+              padding: const EdgeInsets.only(right: 30.0),
               child: InkWell(
                 onTap: () => viewModel.forgotPassword(context),
                 child: const Align(
@@ -80,6 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                     'Forgot Password?',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
+                      fontSize: 18
                     ),
                   ),
                 ),
@@ -87,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           const SizedBox(
-            height: 20.0,
+            height: 30.0,
           ),
           SizedBox(
             height: 40.0,
@@ -101,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                 'Login',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 20.0,
+                  fontSize: 25.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -134,11 +133,18 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.symmetric(vertical: 20.0),
               children: [
                 SizedBox(
-                  height: kIsWeb == false ? MediaQuery.of(context).size.height * 0.50 : MediaQuery.of(context).size.height * 0.40,
-                  width: MediaQuery.of(context).size.width,
-                  child: Image.asset(
-                    'assets/images/login_img.png',
+                  height: kIsWeb == false ? MediaQuery.of(context).size.height * 0.45 : MediaQuery.of(context).size.height * 0.35,
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Lottie.asset(
+                        'assets/lottie/login.json',
+                        fit: BoxFit.fill
+                    ),
                   ),
+                ),
+                const SizedBox(
+                  height: 20
                 ),
                 const Center(
                   child: Text(
@@ -166,7 +172,7 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text('Don\'t have an account yet?',
-                        style: TextStyle(fontSize: 15.0)),
+                        style: TextStyle(fontSize: 18.0)),
                     const SizedBox(width: 5.0),
                     GestureDetector(
                       onTap: () {
@@ -179,7 +185,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: const Text(
                         'Sign Up.',
                         style: TextStyle(
-                          fontSize: 15.0,
+                          fontSize: 18.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.orange,
                         ),
@@ -192,7 +198,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
         );
       },
-      maximumSize: const Size(475.0, 812.0),
+      maximumSize: const Size(540.0, 960.0),
       enabled: kIsWeb,
       backgroundColor: Theme.of(context).colorScheme.background,
     );

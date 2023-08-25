@@ -639,6 +639,8 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                       CupertinoPageRoute(
                         builder: (context) => ConfirmSinglePostScreen(
                           postImage: media,
+                          topColor: topLeftColor,
+                          bottomColor: bottomRightColor,
                         ),
                       )
                   );
