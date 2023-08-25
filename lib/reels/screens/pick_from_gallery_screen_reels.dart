@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import '../../components/gallery_media_picker/src/data/models/gallery_params_model.dart';
 import '../../components/gallery_media_picker/src/presentation/pages/gallery_media_picker.dart';
 
@@ -68,13 +70,12 @@ class _PickFromGalleryScreenReelsState extends State<PickFromGalleryScreenReels>
         ),
         pathList: (path) {
           if (path.first.videoDuration > const Duration(minutes: 3) || path.first.videoDuration < const Duration(seconds: 15)){
-            ScaffoldMessenger.of(context).removeCurrentSnackBar();
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Video should be between 15 seconds to 3 minutes.", textAlign: TextAlign.center, style: TextStyle(fontSize: 15),), backgroundColor: Colors.blue,
-                behavior: SnackBarBehavior.floating, duration: Duration(seconds: 2), padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(30)),
-                )
-            ));
+            showTopSnackBar(
+              Overlay.of(context),
+              const CustomSnackBar.error(
+                message: 'Video should be between 15 seconds to 3 minutes.',
+              ),
+            );
           } else{
             Navigator.push(
                 context,

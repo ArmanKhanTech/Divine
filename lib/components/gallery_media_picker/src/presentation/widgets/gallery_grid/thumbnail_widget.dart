@@ -1,78 +1,115 @@
 import 'dart:typed_data';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_pixels/image_pixels.dart';
 import 'package:photo_manager/photo_manager.dart';
 import '../../../core/decode_image.dart';
 import '../../pages/gallery_media_picker_controller.dart';
 
-class ThumbnailWidget extends StatelessWidget {
+class ThumbnailWidget extends StatefulWidget{
   final AssetEntity asset;
 
   final int index;
 
   final GalleryMediaPickerController provider;
+
   const ThumbnailWidget(
       {Key? key,
-      required this.index,
-      required this.asset,
-      required this.provider})
-      : super(key: key);
+        required this.index,
+        required this.asset,
+        required this.provider
+      }) : super(key: key);
+
+  @override
+  State<ThumbnailWidget> createState() => ThumbnailWidgetState();
+
+}
+
+class ThumbnailWidgetState extends State<ThumbnailWidget> {
+  late Color topLeftColor;
+  late Color bottomRightColor;
+
+  @override
+  void initState() {
+    setState(() {});
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+
     return Stack(
       alignment: Alignment.center,
       children: [
         Container(
-          decoration:
-              const BoxDecoration(color: Colors.transparent),
+          decoration: const BoxDecoration(
+              color: Colors.transparent
+          ),
         ),
 
-        if (asset.type == AssetType.image || asset.type == AssetType.video)
+        if (widget.asset.type == AssetType.image || widget.asset.type == AssetType.video)
           FutureBuilder<Uint8List?>(
-            future: asset.thumbnailData,
+            future: widget.asset.thumbnailData,
             builder: (_, data) {
               if (data.hasData) {
 
-                return Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.transparent,
-                  ),
-                  width: double.infinity,
-                  height: double.infinity,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image(
-                      image: DecodeImage(
-                          provider.pathList[
-                          provider.pathList.indexOf(provider.currentAlbum!)],
-                          thumbSize: provider.paramsModel.thumbnailQuality,
-                          index: index),
-                      gaplessPlayback: true,
-                      fit: provider.paramsModel.thumbnailBoxFix,
-                      filterQuality: FilterQuality.high,
-                    ),
-                  )
+                return ImagePixels(
+                  imageProvider: MemoryImage(data.data!),
+                  builder: (BuildContext context, ImgDetails img) {
+                    topLeftColor = img.pixelColorAtAlignment!(Alignment.topLeft);
+                    bottomRightColor = img.pixelColorAtAlignment!(Alignment.bottomRight);
+
+                    return Container(
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                topLeftColor, bottomRightColor
+                              ],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
+                            borderRadius: const BorderRadius.all(Radius.circular(20)),
+                        ),
+                        width: double.infinity,
+                        height: double.infinity,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image(
+                            image: DecodeImage(
+                                widget.provider.pathList[widget.provider.pathList.indexOf(widget.provider.currentAlbum!)],
+                                thumbSize: 200,
+                                index: widget.index
+                            ),
+                            gaplessPlayback: true,
+                            fit: BoxFit.fitWidth,
+                            filterQuality: FilterQuality.high,
+                          ),
+                        )
+                    );
+                  },
                 );
               } else {
 
-                return Container(
-                  color: provider.paramsModel.imageBackgroundColor,
+                return const Icon(
+                  Icons.error,
+                  color: Colors.grey,
+                  size: 30,
                 );
               }
             },
           ),
 
         AnimatedBuilder(
-            animation: provider,
+            animation: widget.provider,
             builder: (_, __) {
-              final pickIndex = provider.pickIndex(asset);
+              final pickIndex = widget.provider.pickIndex(widget.asset);
               final picked = pickIndex >= 0;
 
               return AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 decoration: BoxDecoration(
                   color: picked
-                      ? provider.paramsModel.selectedBackgroundColor
+                      ? widget.provider.paramsModel.selectedBackgroundColor
                           .withOpacity(0.3)
                       : Colors.transparent,
                 ),
@@ -84,9 +121,9 @@ class ThumbnailWidget extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(right: 5, top: 5),
             child: AnimatedBuilder(
-                animation: provider,
+                animation: widget.provider,
                 builder: (_, __) {
-                  final pickIndex = provider.pickIndex(asset);
+                  final pickIndex = widget.provider.pickIndex(widget.asset);
                   final picked = pickIndex >= 0;
 
                   return AnimatedOpacity(
@@ -98,16 +135,16 @@ class ThumbnailWidget extends StatelessWidget {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: picked
-                            ? provider.paramsModel.selectedCheckBackgroundColor
+                            ? widget.provider.paramsModel.selectedCheckBackgroundColor
                                 .withOpacity(0.6)
                             : Colors.transparent,
                         border: Border.all(
                             width: 1.5,
-                            color: provider.paramsModel.selectedCheckColor),
+                            color: widget.provider.paramsModel.selectedCheckColor),
                       ),
                       child: Icon(
                         Icons.check,
-                        color: provider.paramsModel.selectedCheckColor,
+                        color: widget.provider.paramsModel.selectedCheckColor,
                         size: 14,
                       ),
                     ),
@@ -116,7 +153,7 @@ class ThumbnailWidget extends StatelessWidget {
           ),
         ),
 
-        if (asset.type == AssetType.video)
+        if (widget.asset.type == AssetType.video)
           Align(
             alignment: Alignment.bottomRight,
             child: Padding(
@@ -126,8 +163,7 @@ class ThumbnailWidget extends StatelessWidget {
                       color: Colors.black.withOpacity(0.8),
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(color: Colors.white, width: 1)),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                  padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -139,14 +175,16 @@ class ThumbnailWidget extends StatelessWidget {
                         size: 10,
                       ),
                       const SizedBox(
-                        width: 3,
+                        width: 5,
                       ),
                       Text(
-                        _parseDuration(asset.videoDuration.inSeconds),
+                        parseDuration(widget.asset.videoDuration.inSeconds),
+                        textAlign: TextAlign.center,
                         style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
-                            fontSize: 8),
+                            fontSize: 8
+                        ),
                       ),
                     ],
                   )),
@@ -157,7 +195,7 @@ class ThumbnailWidget extends StatelessWidget {
   }
 }
 
-_parseDuration(int seconds) {
+parseDuration(int seconds) {
   if (seconds < 600) {
 
     return '${Duration(seconds: seconds)}'.toString().substring(3, 7);

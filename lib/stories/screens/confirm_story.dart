@@ -95,7 +95,7 @@ class _ConfirmStoryState extends State<ConfirmStory> {
                       setState(() {
                         loading = false;
                       });
-                      viewModel.showSnackBar('NSFW content detected.', context);
+                      viewModel.showSnackBar('NSFW content detected.', context, error: true);
                       image.delete();
                       Navigator.of(context).pushAndRemoveUntil(
                           CupertinoPageRoute(builder: (_) => const MainScreen()), (route) => false);
@@ -114,7 +114,7 @@ class _ConfirmStoryState extends State<ConfirmStory> {
                           viewers: [],
                         );
                         await viewModel.sendStory(story, storyListSnapshot.id);
-                        viewModel.showSnackBar('Story uploaded successfully.', context);
+                        viewModel.showSnackBar('Story uploaded successfully.', context, error: false);
                         setState(() {
                           loading = false;
                         });
@@ -131,7 +131,7 @@ class _ConfirmStoryState extends State<ConfirmStory> {
                         );
                         String id = await viewModel.sendFirstStory(story);
                         await viewModel.sendStory(story, id);
-                        viewModel.showSnackBar('Story uploaded successfully.', context);
+                        viewModel.showSnackBar('Story uploaded successfully.', context, error: false);
                         setState(() {
                           loading = false;
                         });

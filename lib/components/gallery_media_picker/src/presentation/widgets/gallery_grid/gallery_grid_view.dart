@@ -127,11 +127,11 @@ class GalleryGridViewState extends State<GalleryGridView> {
         }
       },
 
-      child: _buildScrollItem(context, index, provider),
+      child: buildScrollItem(context, index, provider),
     );
   }
 
-  Widget _buildScrollItem(
+  Widget buildScrollItem(
       BuildContext context, int index, GalleryMediaPickerController provider) {
     final asset = cacheMap[index];
     if (asset != null) {

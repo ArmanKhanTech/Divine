@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import '../../models/user_model.dart';
 import '../../services/user_service.dart';
 
@@ -36,7 +38,7 @@ class EditProfileViewModel extends ChangeNotifier{
     if (!form.validate()) {
       validate = true;
       notifyListeners();
-      showSnackBar('Kindly fix all the errors before submitting.', context);
+      showSnackBar('Kindly fix all the errors before submitting.', context, error: true);
     } else {
       try {
         loading = true;
@@ -69,7 +71,7 @@ class EditProfileViewModel extends ChangeNotifier{
       notifyListeners();
       bool success = await userService.updateProfileStatus(type: type);
       if (success) {
-        showSnackBar('Your account is now $type.', context);
+        showSnackBar('Your account is now $type.', context, error: false);
       }
     } catch (e) {
       notifyListeners();
@@ -132,17 +134,14 @@ class EditProfileViewModel extends ChangeNotifier{
     notifyListeners();
   }
 
-  showSnackBar(String msg, context) {
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15, color: Colors.white)), backgroundColor: Colors.blue,
-        behavior: kIsWeb == true ? SnackBarBehavior.fixed : SnackBarBehavior.floating, duration: const Duration(seconds: 2), padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        shape: const RoundedRectangleBorder(
-          borderRadius: kIsWeb == true ? BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ) : BorderRadius.all(Radius.circular(30)),
-        )
-    ));
+  showSnackBar(String msg, context, {required bool error}) {
+    showTopSnackBar(
+      Overlay.of(context),
+      error == false ? CustomSnackBar.success(
+        message: msg,
+      ) : CustomSnackBar.error(
+        message: msg,
+      ),
+    );
   }
 }

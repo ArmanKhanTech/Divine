@@ -207,7 +207,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                         .then((value) => setState(() {
                       viewModel.imgLink = value;
                       if(viewModel.imgLink != null) {
-                        viewModel.showSnackBar('Profile picture uploaded successfully.', context);
+                        viewModel.showSnackBar('Profile picture uploaded successfully.', context, error: false);
                       }
                     })),
                     child: Padding(

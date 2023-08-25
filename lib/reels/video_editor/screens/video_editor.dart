@@ -6,6 +6,8 @@ import 'package:divine/reels/video_editor/src/widgets/text/text_overlay_bottom_s
 import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import '../services/export_service.dart';
 import '../src/utilities/controller.dart';
 import '../src/export/ffmpeg_export_config.dart';
@@ -65,13 +67,12 @@ class _VideoEditorState extends State<VideoEditor> {
   }
 
   showSnackBar(String msg) {
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15, color: Colors.white)), backgroundColor: Colors.blue,
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(30)),
-        )
-    ));
+    showTopSnackBar(
+      Overlay.of(context),
+      CustomSnackBar.error(
+        message: msg,
+      ),
+    );
   }
 
   void exportVideo() async {

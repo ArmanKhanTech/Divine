@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import '../../models/story_model.dart';
 import '../../services/post_service.dart';
 import '../../services/story_service.dart';
@@ -51,16 +53,14 @@ class StoryViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  showSnackBar(String msg, context) {
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15, color: Colors.white)), backgroundColor: Colors.purpleAccent,
-        behavior: kIsWeb == true ? SnackBarBehavior.fixed : SnackBarBehavior.floating, duration: const Duration(seconds: 2), padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        shape: const RoundedRectangleBorder(
-          borderRadius: kIsWeb == true ? BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ) : BorderRadius.all(Radius.circular(30)),
-        )));
+  showSnackBar(String msg, context, {required bool error}) {
+    showTopSnackBar(
+      Overlay.of(context),
+      error == false ? CustomSnackBar.success(
+        message: msg,
+      ) : CustomSnackBar.error(
+        message: msg,
+      ),
+    );
   }
 }

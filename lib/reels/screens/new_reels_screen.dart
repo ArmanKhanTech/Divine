@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:video_player/video_player.dart';
 import '../../audio/audio_overlay_bottom_sheet.dart';
 import '../../stories/stories_editor/presentation/widgets/animated_on_tap_button.dart';
@@ -794,17 +796,12 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
   }
 
   showSnackBar({required String msg}) {
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15, color: Colors.white)), backgroundColor: Colors.blue,
-        behavior: kIsWeb == true ? SnackBarBehavior.fixed : SnackBarBehavior.floating, duration: const Duration(seconds: 2), padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        shape: const RoundedRectangleBorder(
-          borderRadius: kIsWeb == true ? BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ) : BorderRadius.all(Radius.circular(30)),
-        )
-    ));
+    showTopSnackBar(
+      Overlay.of(context),
+      CustomSnackBar.error(
+        message: msg,
+      ),
+    );
   }
 }
 

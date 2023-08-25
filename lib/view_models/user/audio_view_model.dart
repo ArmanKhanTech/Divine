@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class AudioViewModel extends ChangeNotifier{
   bool audioLoading = false, audioLoaded = false;
@@ -43,7 +45,7 @@ class AudioViewModel extends ChangeNotifier{
       audioFile = File(result.files.single.path!);
       audioName = result.files.single.name;
     } else {
-      showSnackBar(context, 'No audio selected.');
+      showSnackBar('No audio selected.', context, error: true);
     }
     audioLoaded = true;
     notifyListeners();
@@ -66,13 +68,14 @@ class AudioViewModel extends ChangeNotifier{
     notifyListeners();
   }
 
-  showSnackBar(BuildContext context, String msg) {
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15, color: Colors.white)), backgroundColor: Colors.blue,
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(30)),
-        )
-    ));
+  showSnackBar(String msg, context, {required bool error}) {
+    showTopSnackBar(
+      Overlay.of(context),
+      error == false ? CustomSnackBar.success(
+        message: msg,
+      ) : CustomSnackBar.error(
+        message: msg,
+      ),
+    );
   }
 }

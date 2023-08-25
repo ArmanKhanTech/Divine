@@ -10,6 +10,8 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_cropper/image_cropper.dart' as image_cropper;
 import 'package:image_picker/image_picker.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import '../../models/post_model.dart';
 import '../../models/user_model.dart';
 import '../../posts/image_editor/image_editor.dart';
@@ -48,7 +50,7 @@ class PostsViewModel extends ChangeNotifier{
 
   uploadProfilePicture(BuildContext context) async {
     if (media == null) {
-      showSnackBar('Kindly select an image.', context);
+      showSnackBar('Kindly select an image.', context, error: true);
     } else {
       try {
         loading = true;
@@ -62,7 +64,7 @@ class PostsViewModel extends ChangeNotifier{
         notifyListeners();
       } catch (e) {
         loading = false;
-        showSnackBar(e.toString(), context);
+        showSnackBar(e.toString(), context, error: true);
         notifyListeners();
       }
     }
@@ -130,7 +132,7 @@ class PostsViewModel extends ChangeNotifier{
     } catch (e) {
       loading = false;
       notifyListeners();
-      showSnackBar('Cancelled.', context);
+      showSnackBar('Cancelled.', context, error: true);
     }
   }
 
@@ -184,7 +186,7 @@ class PostsViewModel extends ChangeNotifier{
     try {
       loading = true;
       notifyListeners();
-      if(image == null) showSnackBar('Kindly select an image.', context);
+      if(image == null) showSnackBar('Kindly select an image.', context, error: true);
       description ??= '';
       location ??= 'Unknown';
       hashtagsList ??= [];
@@ -192,7 +194,7 @@ class PostsViewModel extends ChangeNotifier{
       final hasNudity = await FlutterNudeDetector.detect(path: image!.path);
       if(hasNudity){
         media!.delete();
-        showSnackBar('NSFW content detected.', context);
+        showSnackBar('NSFW content detected.', context, error: true);
         loading = false;
         notifyListeners();
       } else{
@@ -201,7 +203,7 @@ class PostsViewModel extends ChangeNotifier{
           if(hashtagsList.isNotEmpty) postService.addPostToHashtagsCollection(value, hashtagsList);
         });
         media!.delete();
-        showSnackBar('Post uploaded successfully!', context);
+        showSnackBar('Post uploaded successfully!', context, error: false);
         loading = false;
         notifyListeners();
       }
@@ -238,7 +240,7 @@ class PostsViewModel extends ChangeNotifier{
         ),
       );
     } catch (e) {
-      showSnackBar(e.toString(), context);
+      showSnackBar(e.toString(), context, error: true);
     }
   }
 
@@ -275,17 +277,14 @@ class PostsViewModel extends ChangeNotifier{
     notifyListeners();
   }
 
-  showSnackBar(String msg, context) {
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15, color: Colors.white)), backgroundColor: Colors.blue,
-        behavior: kIsWeb == true ? SnackBarBehavior.fixed : SnackBarBehavior.floating, duration: const Duration(seconds: 2), padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        shape: const RoundedRectangleBorder(
-          borderRadius: kIsWeb == true ? BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ) : BorderRadius.all(Radius.circular(30)),
-        )
-    ));
+  showSnackBar(String msg, context, {required bool error}) {
+    showTopSnackBar(
+      Overlay.of(context),
+      error == false ? CustomSnackBar.success(
+        message: msg,
+      ) : CustomSnackBar.error(
+        message: msg,
+      ),
+    );
   }
 }
