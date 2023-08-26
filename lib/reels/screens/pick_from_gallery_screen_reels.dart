@@ -29,6 +29,7 @@ class _PickFromGalleryScreenReelsState extends State<PickFromGalleryScreenReels>
           },
           iconSize: 30.0,
           color: Colors.white,
+          padding: const EdgeInsets.only(bottom: 2.0),
         ),
         backgroundColor: Colors.transparent,
         centerTitle: true,
@@ -66,7 +67,7 @@ class _PickFromGalleryScreenReelsState extends State<PickFromGalleryScreenReels>
           imageBackgroundColor: Colors.black,
           selectedBackgroundColor: Colors.transparent,
           selectedCheckColor: Colors.blue,
-          selectedCheckBackgroundColor: Colors.transparent,
+          selectedCheckBackgroundColor: Colors.blue,
         ),
         pathList: (path) {
           if (path.first.videoDuration > const Duration(minutes: 3) || path.first.videoDuration < const Duration(seconds: 15)){

@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_nude_detector/flutter_nude_detector.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../../models/story_model.dart';
@@ -68,6 +69,7 @@ class _ConfirmStoryState extends State<ConfirmStory> {
             },
             iconSize: 30.0,
             color: Colors.white,
+            padding: const EdgeInsets.only(bottom: 2.0),
           ),
           systemOverlayStyle: const SystemUiOverlayStyle(
             statusBarColor: Colors.black,
@@ -79,73 +81,72 @@ class _ConfirmStoryState extends State<ConfirmStory> {
           automaticallyImplyLeading: false,
           backgroundColor: Colors.black,
           actions: [
-            RotatedBox(
-              quarterTurns: 1,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 5, left: 5, top: 5),
-                child: IconButton(
-                  // rotate icon
-                  icon: const Icon(Icons.file_upload_outlined),
-                  onPressed: () async {
+            Padding(
+              padding: const EdgeInsets.only(right: 20, left: 5, top: 5),
+              child: GestureDetector(
+                onTap: () async {
+                  setState(() {
+                    loading = true;
+                  });
+                  final hasNudity = await FlutterNudeDetector.detect(path: widget.uri);
+                  if(hasNudity) {
                     setState(() {
-                      loading = true;
+                      loading = false;
                     });
-                    final hasNudity = await FlutterNudeDetector.detect(path: widget.uri);
-                    if(hasNudity) {
+                    viewModel.showSnackBar('NSFW content detected.', context, error: true);
+                    image.delete();
+                    Navigator.of(context).pushAndRemoveUntil(
+                        CupertinoPageRoute(builder: (_) => const MainScreen()), (route) => false);
+                  } else {
+                    QuerySnapshot snapshot = await storyRef
+                        .where('userId', isEqualTo: auth.currentUser!.uid)
+                        .get();
+                    if (snapshot.docs.isNotEmpty) {
+                      List storyList = snapshot.docs;
+                      DocumentSnapshot storyListSnapshot = storyList[0];
+                      String url = await uploadMedia(widget.uri);
+                      StoryModel story = StoryModel(
+                        url: url,
+                        time: Timestamp.now(),
+                        storyId: uuid.v1(),
+                        viewers: [],
+                      );
+                      await viewModel.sendStory(story, storyListSnapshot.id);
+                      viewModel.showSnackBar('Story uploaded successfully.', context, error: false);
                       setState(() {
                         loading = false;
                       });
-                      viewModel.showSnackBar('NSFW content detected.', context, error: true);
                       image.delete();
                       Navigator.of(context).pushAndRemoveUntil(
                           CupertinoPageRoute(builder: (_) => const MainScreen()), (route) => false);
                     } else {
-                      QuerySnapshot snapshot = await storyRef
-                          .where('userId', isEqualTo: auth.currentUser!.uid)
-                          .get();
-                      if (snapshot.docs.isNotEmpty) {
-                        List storyList = snapshot.docs;
-                        DocumentSnapshot storyListSnapshot = storyList[0];
-                        String url = await uploadMedia(widget.uri);
-                        StoryModel story = StoryModel(
-                          url: url,
-                          time: Timestamp.now(),
-                          storyId: uuid.v1(),
-                          viewers: [],
-                        );
-                        await viewModel.sendStory(story, storyListSnapshot.id);
-                        viewModel.showSnackBar('Story uploaded successfully.', context, error: false);
-                        setState(() {
-                          loading = false;
-                        });
-                        image.delete();
-                        Navigator.of(context).pushAndRemoveUntil(
-                            CupertinoPageRoute(builder: (_) => const MainScreen()), (route) => false);
-                      } else {
-                        String url = await uploadMedia(widget.uri);
-                        StoryModel story = StoryModel(
-                          url: url,
-                          time: Timestamp.now(),
-                          storyId: uuid.v1(),
-                          viewers: [],
-                        );
-                        String id = await viewModel.sendFirstStory(story);
-                        await viewModel.sendStory(story, id);
-                        viewModel.showSnackBar('Story uploaded successfully.', context, error: false);
-                        setState(() {
-                          loading = false;
-                        });
-                        image.delete();
-                        Navigator.of(context).pushAndRemoveUntil(
-                            CupertinoPageRoute(builder: (_) => const MainScreen()), (route) => false);
-                      }
+                      String url = await uploadMedia(widget.uri);
+                      StoryModel story = StoryModel(
+                        url: url,
+                        time: Timestamp.now(),
+                        storyId: uuid.v1(),
+                        viewers: [],
+                      );
+                      String id = await viewModel.sendFirstStory(story);
+                      await viewModel.sendStory(story, id);
+                      viewModel.showSnackBar('Story uploaded successfully.', context, error: false);
+                      setState(() {
+                        loading = false;
+                      });
+                      image.delete();
+                      Navigator.of(context).pushAndRemoveUntil(
+                          CupertinoPageRoute(builder: (_) => const MainScreen()), (route) => false);
                     }
-                  },
-                  iconSize: 32.0,
-                  color: Colors.blue,
+                  }
+                },
+                child: LottieBuilder.asset(
+                  'assets/lottie/done.json',
+                  height: 30,
+                  width: 30,
+                  fit: BoxFit.fitWidth,
                 ),
               ),
-            )
+            ),
           ],
         ),
         backgroundColor: Colors.black,
@@ -154,7 +155,7 @@ class _ConfirmStoryState extends State<ConfirmStory> {
             children: [
               SizedBox(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   child: Container(
                     height: MediaQuery.of(context).size.height * .8,
                     width: MediaQuery.of(context).size.width,

@@ -135,6 +135,7 @@ class _NewPostScreenState extends State<NewPostScreen> with
             },
             iconSize: 30.0,
             color: Colors.white,
+            padding: const EdgeInsets.only(bottom: 2.0),
           ),
           backgroundColor: Colors.transparent,
           centerTitle: true,
@@ -397,7 +398,7 @@ class _NewPostScreenState extends State<NewPostScreen> with
   Widget leftControls() {
 
     return Container(
-      height: 180,
+      height: 160,
       decoration: BoxDecoration(
         color: Colors.black.withOpacity(0.2),
         borderRadius: BorderRadius.circular(20),
@@ -418,12 +419,14 @@ class _NewPostScreenState extends State<NewPostScreen> with
                   CupertinoPageRoute(builder: (_) => const PickFromGalleryScreenPosts()));
             },
             icon: const Icon(
-              Icons.add_box_outlined,
+              Icons.add_a_photo_outlined,
               color: Colors.white,
               size: 30,
             ),
           ),
-          const Spacer(),
+          const SizedBox(
+            height: 10,
+          ),
           GestureDetector(
             onTap: () {
               if (controller!.value.isInitialized) {
@@ -446,7 +449,9 @@ class _NewPostScreenState extends State<NewPostScreen> with
               size: 30,
             ),
           ),
-          const Spacer(),
+          const SizedBox(
+            height: 10,
+          ),
           IconButton(
             onPressed: () {
               if (controller!.value.isInitialized) {

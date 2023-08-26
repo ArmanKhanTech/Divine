@@ -126,43 +126,45 @@ class _FiltersScreenState extends State<FiltersScreen> {
         widget.controller.colorFilter = ColorFilter.matrix(myFilter.matrix);
         setState(() {});
       },
-      child: Column(children: [
-        ColorFiltered(
-          colorFilter: ColorFilter.matrix(myFilter.matrix),
-          child: Container(
-              height: 65,
-              width: 65,
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(48),
-                border: Border.all(
-                  color: Colors.black,
-                  width: 2,
-                ),
-              ),
-              child: Container(// Border width
+      child: Column(
+          children: [
+          ColorFiltered(
+            colorFilter: ColorFilter.matrix(myFilter.matrix),
+            child: Container(
+                height: 65,
+                width: 65,
+                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
                 decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(48),
+                  border: Border.all(
                     color: Colors.black,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                        color: Colors.white,
-                        width: 1
-                    )
-                ),
-                child: ClipOval(
-                  child: SizedBox.fromSize(
-                    size: const Size.fromRadius(48), // Image radius
-                    child: CoverViewer(controller: widget.controller),
+                    width: 2,
                   ),
                 ),
-              )
+                child: Container(// Border width
+                  decoration: BoxDecoration(
+                      color: Colors.black,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                          color: Colors.white,
+                          width: 1
+                      )
+                  ),
+                  child: ClipOval(
+                    child: SizedBox.fromSize(
+                      size: const Size.fromRadius(48), // Image radius
+                      child: CoverViewer(controller: widget.controller),
+                    ),
+                  ),
+                )
+            ),
           ),
-        ),
-        Text(
-          name,
-          style: const TextStyle(fontSize: 12, color: Colors.white),
-        ),
-      ]),
+          Text(
+            name,
+            style: const TextStyle(fontSize: 12, color: Colors.white),
+          ),
+        ]
+      ),
     );
   }
 }

@@ -10,6 +10,7 @@ import 'package:timeago/timeago.dart' as timeago;
 
 import '../../widgets/progress_indicators.dart';
 
+// TODO: Goto next story when current story ends.
 class StoryScreen extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
   final initPage, storiesId, storyId, userId;

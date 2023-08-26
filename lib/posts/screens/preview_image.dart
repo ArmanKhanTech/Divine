@@ -32,6 +32,7 @@ class _PreviewImageState extends State<PreviewImage> {
           },
           iconSize: 30.0,
           color: Colors.white,
+          padding: const EdgeInsets.only(bottom: 2.0),
         ),
         backgroundColor: Colors.black,
         centerTitle: true,

@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_pixels/image_pixels.dart';
 import 'package:photo_manager/photo_manager.dart';
@@ -90,10 +89,8 @@ class ThumbnailWidgetState extends State<ThumbnailWidget> {
                 );
               } else {
 
-                return const Icon(
-                  Icons.error,
-                  color: Colors.grey,
-                  size: 30,
+                return Container(
+                  color: Colors.black,
                 );
               }
             },

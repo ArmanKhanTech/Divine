@@ -37,44 +37,42 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
 
     buildForm(EditProfileViewModel viewModel, BuildContext context) {
 
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: Form(
-          key: viewModel.editProfileFormKey,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              TextFormBuilder(
-                capitalization: false,
-                enabled: !viewModel.loading,
-                initialValue: widget.user!.username,
-                prefix: CupertinoIcons.person_solid,
-                hintText: "Username",
-                textInputAction: TextInputAction.next,
-                validateFunction: Regex.validateUsername,
-                onSaved: (String val) {
-                  viewModel.setUsername(val);
-                },
-                whichPage: 'signup',
-              ),
-              const SizedBox(height: 10.0),
-              TextFormBuilder(
-                capitalization: true,
-                enabled: !viewModel.loading,
-                initialValue: widget.user!.name,
-                prefix: CupertinoIcons.person,
-                hintText: "Name",
-                textInputAction: TextInputAction.next,
-                validateFunction: Regex.validateName,
-                onSaved: (String val) {
-                  viewModel.setName(val);
-                },
-                whichPage: 'signup',
-              ),
-              const SizedBox(height: 10.0),
-              TextFormBuilder(
+      return Form(
+        key: viewModel.editProfileFormKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            TextFormBuilder(
+              capitalization: false,
+              enabled: !viewModel.loading,
+              initialValue: widget.user!.username,
+              prefix: CupertinoIcons.person_solid,
+              hintText: "Username",
+              textInputAction: TextInputAction.next,
+              validateFunction: Regex.validateUsername,
+              onSaved: (String val) {
+                viewModel.setUsername(val);
+              },
+              whichPage: 'signup',
+            ),
+            const SizedBox(height: 10.0),
+            TextFormBuilder(
+              capitalization: true,
+              enabled: !viewModel.loading,
+              initialValue: widget.user!.name,
+              prefix: CupertinoIcons.person,
+              hintText: "Name",
+              textInputAction: TextInputAction.next,
+              validateFunction: Regex.validateName,
+              onSaved: (String val) {
+                viewModel.setName(val);
+              },
+              whichPage: 'signup',
+            ),
+            const SizedBox(height: 10.0),
+            TextFormBuilder(
                 capitalization: true,
                 initialValue: widget.user!.country,
                 enabled: !viewModel.loading,
@@ -86,65 +84,64 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                   viewModel.setCountry(val);
                 },
                 whichPage: 'signup'
-              ),
-              const SizedBox(height: 10.0),
-              TextFormBuilder(
-                  capitalization: true,
-                  initialValue: widget.user!.bio,
-                  enabled: !viewModel.loading,
-                  prefix: CupertinoIcons.info_circle,
-                  hintText: "Bio",
-                  textInputAction: TextInputAction.next,
-                  validateFunction: Regex.validateBio,
-                  onSaved: (String val) {
-                    viewModel.setBio(val);
-                  },
-                  whichPage: 'signup'
-              ),
-              const SizedBox(height: 10.0),
-              TextFormBuilder(
-                  capitalization: true,
-                  initialValue: widget.user!.profession,
-                  enabled: !viewModel.loading,
-                  prefix: CupertinoIcons.briefcase,
-                  hintText: "Profession",
-                  textInputAction: TextInputAction.next,
-                  validateFunction: Regex.validateProfession,
-                  onSaved: (String val) {
-                    viewModel.setProfession(val);
-                  },
-                  whichPage: 'signup'
-              ),
-              const SizedBox(height: 10.0),
-              TextFormBuilder(
-                  capitalization: true,
-                  initialValue: widget.user!.gender,
-                  enabled: !viewModel.loading,
-                  prefix: Icons.male,
-                  hintText: "Gender",
-                  textInputAction: TextInputAction.next,
-                  validateFunction: Regex.validateGender,
-                  onSaved: (String val) {
-                    viewModel.setGender(val);
-                  },
-                  whichPage: 'signup'
-              ),
-              const SizedBox(height: 10.0),
-              TextFormBuilder(
-                  capitalization: false,
-                  initialValue: widget.user!.link,
-                  enabled: !viewModel.loading,
-                  prefix: CupertinoIcons.link,
-                  hintText: "Link",
-                  textInputAction: TextInputAction.next,
-                  validateFunction: Regex.validateURL,
-                  onSaved: (String val) {
-                    viewModel.setLink(val);
-                  },
-                  whichPage: 'signup'
-              ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 10.0),
+            TextFormBuilder(
+                capitalization: true,
+                initialValue: widget.user!.bio,
+                enabled: !viewModel.loading,
+                prefix: CupertinoIcons.info_circle,
+                hintText: "Bio",
+                textInputAction: TextInputAction.next,
+                validateFunction: Regex.validateBio,
+                onSaved: (String val) {
+                  viewModel.setBio(val);
+                },
+                whichPage: 'signup'
+            ),
+            const SizedBox(height: 10.0),
+            TextFormBuilder(
+                capitalization: true,
+                initialValue: widget.user!.profession,
+                enabled: !viewModel.loading,
+                prefix: CupertinoIcons.briefcase,
+                hintText: "Profession",
+                textInputAction: TextInputAction.next,
+                validateFunction: Regex.validateProfession,
+                onSaved: (String val) {
+                  viewModel.setProfession(val);
+                },
+                whichPage: 'signup'
+            ),
+            const SizedBox(height: 10.0),
+            TextFormBuilder(
+                capitalization: true,
+                initialValue: widget.user!.gender,
+                enabled: !viewModel.loading,
+                prefix: Icons.male,
+                hintText: "Gender",
+                textInputAction: TextInputAction.next,
+                validateFunction: Regex.validateGender,
+                onSaved: (String val) {
+                  viewModel.setGender(val);
+                },
+                whichPage: 'signup'
+            ),
+            const SizedBox(height: 10.0),
+            TextFormBuilder(
+                capitalization: false,
+                initialValue: widget.user!.link,
+                enabled: !viewModel.loading,
+                prefix: CupertinoIcons.link,
+                hintText: "Link",
+                textInputAction: TextInputAction.next,
+                validateFunction: Regex.validateURL,
+                onSaved: (String val) {
+                  viewModel.setLink(val);
+                },
+                whichPage: 'signup'
+            ),
+          ],
         ),
       );
     }
@@ -180,6 +177,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                 },
                 iconSize: 30.0,
                 color: Theme.of(context).colorScheme.secondary,
+                padding: const EdgeInsets.only(bottom: 2.0),
               ),
              actions: [
                 Row(
@@ -297,6 +295,9 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                       ),
                     )
                   ),
+                ),
+                const SizedBox(
+                  height: 10
                 ),
                 buildForm(viewModel, context)
               ],

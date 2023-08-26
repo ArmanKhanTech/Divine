@@ -39,6 +39,7 @@ class _UserInfoScreenState extends State<UserInfoScreen>{
           },
           iconSize: 30.0,
           color: Theme.of(context).colorScheme.secondary,
+          padding: const EdgeInsets.only(bottom: 2.0),
         ),
       ),
       backgroundColor: Theme.of(context).colorScheme.background,

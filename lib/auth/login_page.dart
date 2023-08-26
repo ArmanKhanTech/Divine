@@ -132,6 +132,9 @@ class _LoginPageState extends State<LoginPage> {
             body: ListView(
               padding: const EdgeInsets.symmetric(vertical: 20.0),
               children: [
+                const SizedBox(
+                  height: 20
+                ),
                 SizedBox(
                   height: kIsWeb == false ? MediaQuery.of(context).size.height * 0.45 : MediaQuery.of(context).size.height * 0.35,
                   width: MediaQuery.of(context).size.width * 0.5,

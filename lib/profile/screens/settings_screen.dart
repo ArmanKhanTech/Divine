@@ -31,6 +31,7 @@ class _SettingsScreenState extends State<SettingsScreen>{
           },
           iconSize: 30.0,
           color: Theme.of(context).colorScheme.secondary,
+          padding: const EdgeInsets.only(bottom: 2.0),
         ),
         backgroundColor: Theme.of(context).colorScheme.background,
         elevation: 0.0,

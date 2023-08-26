@@ -184,6 +184,7 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                   },
                   iconSize: 30.0,
                   color: Theme.of(context).colorScheme.secondary,
+                  padding: const EdgeInsets.only(bottom: 2.0),
                 ),
               ),
               body: ListView(

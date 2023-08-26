@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../../components/custom_image.dart';
@@ -141,6 +142,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
               },
               iconSize: 30.0,
               color: Colors.white,
+              padding: const EdgeInsets.only(bottom: 2.0),
             ),
             systemOverlayStyle: const SystemUiOverlayStyle(
               systemNavigationBarColor: Colors.black,
@@ -161,32 +163,31 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
             backgroundColor: Colors.black,
             centerTitle: true,
             actions: [
-              RotatedBox(
-                quarterTurns: 1,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 5, left: 5, top: 5),
-                  child: IconButton(
-                    // rotate icon
-                    icon: const Icon(Icons.file_upload_outlined),
-                    onPressed: () async {
-                      await viewModel.uploadSinglePost(context, widget.postImage!);
-                      await viewModel.resetPost();
-                      widget.postImage!.delete();
-                      Navigator.of(context).pushAndRemoveUntil(
-                          CupertinoPageRoute(builder: (_) => const MainScreen()), (route) => false);
-                    },
-                    iconSize: 32.0,
-                    color: Colors.blue,
+              Padding(
+                padding: const EdgeInsets.only(right: 20, left: 5, top: 5),
+                child: GestureDetector(
+                  onTap: () async {
+                    await viewModel.uploadSinglePost(context, widget.postImage!);
+                    await viewModel.resetPost();
+                    widget.postImage!.delete();
+                    Navigator.of(context).pushAndRemoveUntil(
+                        CupertinoPageRoute(builder: (_) => const MainScreen()), (route) => false);
+                  },
+                  child: LottieBuilder.asset(
+                    'assets/lottie/done.json',
+                    height: 30,
+                    width: 30,
+                    fit: BoxFit.fitWidth,
                   ),
                 ),
-              )
+              ),
             ],
           ),
           backgroundColor: Colors.black,
           body: ListView(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             children: [
-              const SizedBox(height: 20.0),
+              const SizedBox(height: 10.0),
               Container(
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
@@ -320,7 +321,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                       enabled: true,
                       enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.blue),
-                          borderRadius: BorderRadius.all(Radius.circular(20.0)
+                          borderRadius: BorderRadius.all(Radius.circular(18.0)
                           )
                       ),
                       border: OutlineInputBorder(

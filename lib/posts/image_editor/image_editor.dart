@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
 import 'package:blurrycontainer/blurrycontainer.dart';
+import 'package:colorfilter_generator/addons.dart';
 import 'package:colorfilter_generator/colorfilter_generator.dart';
 import 'package:colorfilter_generator/presets.dart';
 import 'package:divine/posts/image_editor/utilities.dart';
@@ -569,7 +570,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
           leading: IconButton(
             icon: const Icon(CupertinoIcons.chevron_back),
             onPressed: () {
-              Navigator.of(context).pop();
+              exitDialog(context);
             },
             iconSize: 30.0,
             color: Colors.white,
@@ -732,12 +733,10 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                       resetTransformation();
                       LoadingScreen(scaffoldGlobalKey).show();
                       var mergedImage = await getMergedImage();
-                      LoadingScreen(scaffoldGlobalKey).hide();
                       if (!mounted) {
 
                         return;
                       }
-                      // TODO: Continue here
                       Uint8List? adjustedImage = await Navigator.push(
                         context,
                         CupertinoPageRoute(
@@ -746,6 +745,18 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                           ),
                         ),
                       );
+                      LoadingScreen(scaffoldGlobalKey).hide();
+                      if (adjustedImage == null) {
+
+                        return;
+                      }
+                      removedLayers.clear();
+                      undoLayers.clear();
+                      var layer = BackgroundLayerData(
+                        file: ImageItem(adjustedImage),
+                      );
+                      layers.add(layer);
+                      await layer.file.status;
                       setState(() {});
                     },
                   ),
@@ -1041,6 +1052,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                         LoadingScreen(scaffoldGlobalKey).show();
                         var mergedImage = await getMergedImage();
                         if (!mounted) {
+
                           return;
                         }
                         Uint8List? filterAppliedImage = await Navigator.push(
@@ -1053,6 +1065,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                         );
                         LoadingScreen(scaffoldGlobalKey).hide();
                         if (filterAppliedImage == null) {
+
                           return;
                         }
                         removedLayers.clear();
@@ -1177,6 +1190,22 @@ class _ImageAdjustState extends State<ImageAdjust>{
 
   Uint8List adjustedImage = Uint8List.fromList([]);
 
+  double brightness = 0.0;
+  double contrast = 0.0;
+  double saturation = 0.0;
+
+  double current = 0;
+  String currentFilter = 'Brightness';
+
+  ColorFilterGenerator myFilter = ColorFilterGenerator(
+      name: "CustomFilter",
+      filters: [
+        ColorFilterAddons.brightness(0),
+        ColorFilterAddons.contrast(0),
+        ColorFilterAddons.saturation(0),
+      ]
+  );
+
   @override
   Widget build(BuildContext context) {
 
@@ -1220,48 +1249,113 @@ class _ImageAdjustState extends State<ImageAdjust>{
             controller: screenshotController,
             child: Stack(
               children: [
-                Image.memory(
-                  widget.image,
-                  fit: BoxFit.cover,
+                ColorFiltered(
+                  colorFilter: ColorFilter.matrix(myFilter.matrix),
+                  child: Image.memory(
+                    widget.image,
+                    fit: BoxFit.contain,
+                  ),
                 ),
-                /*ImageAdjustment(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(imageUrl),
-                      ),
-                    )
-                  )
-                )*/
               ],
             ),
           ),
         ),
-        bottomNavigationBar: Container(
-          alignment: Alignment.bottomCenter,
-          height: 86 + MediaQuery.of(context).padding.bottom,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          decoration: const BoxDecoration(
-            color: Colors.black87,
-            shape: BoxShape.rectangle,
-          ),
-          child: SafeArea(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
+        bottomNavigationBar: SizedBox(
+          height: 115,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const SizedBox(
+                  height: 10
+              ),
+              SizedBox(
+                height: 20,
+                child: Slider(
+                  min: 0.0,
+                  max: 1.0,
+                  value: current,
+                  activeColor: Colors.white,
+                  inactiveColor: Colors.grey,
+                  thumbColor: Colors.white,
+                  onChanged: (value) {
+                    current = value;
+                    if(currentFilter == 'Brightness'){
+                      brightness = value;
+                      myFilter = ColorFilterGenerator(
+                          name: "CustomFilter",
+                          filters: [
+                            ColorFilterAddons.brightness(brightness),
+                            ColorFilterAddons.contrast(contrast),
+                            ColorFilterAddons.saturation(saturation),
+                          ]
+                      );
+                    } else if(currentFilter == 'Contrast'){
+                      contrast = value;
+                      myFilter = ColorFilterGenerator(
+                          name: "CustomFilter",
+                          filters: [
+                            ColorFilterAddons.brightness(brightness),
+                            ColorFilterAddons.contrast(contrast),
+                            ColorFilterAddons.saturation(saturation),
+                          ]
+                      );
+                    } else if(currentFilter == 'Saturation'){
+                      saturation = value;
+                      myFilter = ColorFilterGenerator(
+                          name: "CustomFilter",
+                          filters: [
+                            ColorFilterAddons.brightness(brightness),
+                            ColorFilterAddons.contrast(contrast),
+                            ColorFilterAddons.saturation(saturation),
+                          ]
+                      );
+                    }
+                    setState(() {});
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 10
+              ),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
+                children: [
                   BottomButton(
                     icon: CupertinoIcons.brightness,
                     text: 'Brightness',
                     onTap: () async {
-                      setState(() {});
+                      setState(() {
+                        current = brightness;
+                        currentFilter = 'Brightness';
+                      });
+                    },
+                  ),
+                  BottomButton(
+                    icon: Icons.contrast,
+                    text: 'Contrast',
+                    onTap: () async {
+                      setState(() {
+                        current = contrast / 100;
+                        currentFilter = 'Contrast';
+                      });
+                    },
+                  ),
+                  BottomButton(
+                    icon: CupertinoIcons.circle_grid_hex,
+                    text: 'Saturation',
+                    onTap: () async {
+                      setState(() {
+                        current = saturation;
+                        currentFilter = 'Saturation';
+                      });
                     },
                   ),
                 ],
               ),
-            ),
+              const SizedBox(
+                  height: 15
+              ),
+            ],
           ),
         ),
       ),

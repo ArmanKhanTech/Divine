@@ -183,10 +183,15 @@ class _FeedsPageState extends State<FeedsPage>{
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Icon(
-                                  CupertinoIcons.time,
-                                  color: Colors.blue,
-                                  size: 25,
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    top: 3.0,
+                                  ),
+                                  child: Icon(
+                                    CupertinoIcons.time,
+                                    color: Colors.blue,
+                                    size: 25,
+                                  ),
                                 ),
                                 SizedBox(
                                   width: 10.0,
@@ -238,10 +243,15 @@ class _FeedsPageState extends State<FeedsPage>{
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(
-                              CupertinoIcons.plus_circle,
-                              color: Colors.blue,
-                              size: 25,
+                            Padding(
+                              padding: EdgeInsets.only(
+                                top: 3.0,
+                              ),
+                              child: Icon(
+                                CupertinoIcons.plus_circle,
+                                color: Colors.blue,
+                                size: 25,
+                              ),
                             ),
                             SizedBox(
                               width: 10.0,
@@ -292,10 +302,15 @@ class _FeedsPageState extends State<FeedsPage>{
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Icon(
-                                  CupertinoIcons.play_circle,
-                                  color: Colors.blue,
-                                  size: 25,
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    top: 3.0,
+                                  ),
+                                  child: Icon(
+                                    CupertinoIcons.play_circle,
+                                    color: Colors.blue,
+                                    size: 25,
+                                  ),
                                 ),
                                 SizedBox(
                                   width: 10.0,
@@ -342,10 +357,15 @@ class _FeedsPageState extends State<FeedsPage>{
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(
-                              CupertinoIcons.equal_circle,
-                              color: Colors.blue,
-                              size: 25,
+                            Padding(
+                              padding: EdgeInsets.only(
+                                top: 3.0,
+                              ),
+                              child: Icon(
+                                CupertinoIcons.equal_circle,
+                                color: Colors.blue,
+                                size: 25,
+                              ),
                             ),
                             SizedBox(
                               width: 10.0,

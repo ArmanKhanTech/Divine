@@ -104,7 +104,7 @@ class BottomTools extends StatelessWidget {
                           GradientText(
                             Constants.appName,
                             style: TextStyle(
-                              fontSize: 30.0,
+                              fontSize: 40.0,
                               fontWeight: FontWeight.w500,
                               fontFamily: GoogleFonts.merriweather().fontFamily,
                             ),
@@ -119,7 +119,7 @@ class BottomTools extends StatelessWidget {
                             style: TextStyle(
                                 color: Colors.white38,
                                 letterSpacing: 1.5,
-                                fontSize: 10,
+                                fontSize: 15,
                                 fontWeight: FontWeight.bold),
                           ),
                         ],

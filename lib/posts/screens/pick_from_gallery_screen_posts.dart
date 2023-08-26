@@ -33,6 +33,7 @@ class _PickFromGalleryScreenPostsState extends State<PickFromGalleryScreenPosts>
           },
           iconSize: 30.0,
           color: Colors.white,
+          padding: const EdgeInsets.only(bottom: 2.0),
         ),
         backgroundColor: Colors.transparent,
         centerTitle: true,
@@ -70,7 +71,7 @@ class _PickFromGalleryScreenPostsState extends State<PickFromGalleryScreenPosts>
           imageBackgroundColor: Colors.black,
           selectedBackgroundColor: Colors.transparent,
           selectedCheckColor: Colors.blue,
-          selectedCheckBackgroundColor: Colors.transparent,
+          selectedCheckBackgroundColor: Colors.blue,
         ),
         pathList: (path) {
           final file = File(path.first.path.toString());

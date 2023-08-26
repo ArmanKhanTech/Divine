@@ -30,6 +30,7 @@ class _PickFromGalleryProfilePictureState extends State<PickFromGalleryProfilePi
           },
           iconSize: 30.0,
           color: Colors.white,
+          padding: const EdgeInsets.only(bottom: 2.0),
         ),
         backgroundColor: Colors.transparent,
         centerTitle: true,
@@ -67,7 +68,7 @@ class _PickFromGalleryProfilePictureState extends State<PickFromGalleryProfilePi
           imageBackgroundColor: Colors.black,
           selectedBackgroundColor: Colors.transparent,
           selectedCheckColor: Colors.blue,
-          selectedCheckBackgroundColor: Colors.transparent,
+          selectedCheckBackgroundColor: Colors.blue,
         ),
         pathList: (path) {
           final file = File(path.first.path.toString());

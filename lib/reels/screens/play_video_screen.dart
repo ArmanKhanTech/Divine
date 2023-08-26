@@ -62,6 +62,7 @@ class _PlayVideoScreenState extends State<PlayVideoScreen> {
           },
           iconSize: 30.0,
           color: Colors.white,
+          padding: const EdgeInsets.only(bottom: 2.0),
         ),
         elevation: 0,
         backgroundColor: Colors.black,

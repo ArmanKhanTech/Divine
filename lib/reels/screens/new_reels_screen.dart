@@ -241,6 +241,7 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
               },
               iconSize: 30.0,
               color: Colors.white,
+              padding: const EdgeInsets.only(bottom: 2.0),
             ),
             backgroundColor: Colors.transparent,
             centerTitle: true,
@@ -581,15 +582,18 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
   Widget leftControls() {
 
     return Container(
-      height: 180,
+      height: 160,
       decoration: BoxDecoration(
         color: Colors.black.withOpacity(0.2),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
         children: [
-          const Spacer(),
+          const SizedBox(
+            height: 10,
+          ),
           IconButton(
+            padding: const EdgeInsets.all(0),
             onPressed: () {
               if (controller!.value.isInitialized) {
                 controller!.setFlashMode(FlashMode.off);
@@ -602,29 +606,31 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
                   CupertinoPageRoute(builder: (_) => const PickFromGalleryScreenReels()));
             },
             icon: const Icon(
-              Icons.add_circle_outline_outlined,
+              Icons.add_a_photo_outlined,
               color: Colors.white,
               size: 30,
             ),
           ),
-          const Spacer(),
           IconButton(
+            padding: const EdgeInsets.all(0),
             icon: Icon(enableAudio ? Icons.volume_up : Icons.volume_mute, color: Colors.white, size: 30),
             color: Colors.white,
             onPressed: controller != null ? onAudioModeButtonPressed : null,
           ),
-          const Spacer(),
           IconButton(
             onPressed: () {
               showAudioDialog(context);
             },
+            padding: const EdgeInsets.all(0),
             icon: const Icon(
               Icons.audiotrack,
               color: Colors.white,
               size: 30,
             ),
           ),
-          const Spacer(),
+          const SizedBox(
+            height: 5,
+          ),
         ],
       ),
     );

@@ -160,6 +160,7 @@ class _RegisterPageState extends State<RegisterPage>{
                     },
                     iconSize: 30.0,
                     color: Theme.of(context).colorScheme.secondary,
+                    padding: const EdgeInsets.only(bottom: 2.0),
                   ),
                 ),
                 extendBodyBehindAppBar: true,
