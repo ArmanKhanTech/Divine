@@ -1261,12 +1261,25 @@ class _ImageAdjustState extends State<ImageAdjust>{
           ),
         ),
         bottomNavigationBar: SizedBox(
-          height: 115,
+          height: 135,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               const SizedBox(
-                  height: 10
+                height: 10
+              ),
+              Center(
+                child: Text(
+                  currentFilter,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                  ),
+                )
+              ),
+              const SizedBox(
+                height: 10
               ),
               SizedBox(
                 height: 20,

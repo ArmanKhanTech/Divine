@@ -175,8 +175,8 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                   },
                   child: LottieBuilder.asset(
                     'assets/lottie/done.json',
-                    height: 30,
-                    width: 30,
+                    height: 28,
+                    width: 28,
                     fit: BoxFit.fitWidth,
                   ),
                 ),
