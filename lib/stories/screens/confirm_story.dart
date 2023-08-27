@@ -82,7 +82,7 @@ class _ConfirmStoryState extends State<ConfirmStory> {
           backgroundColor: Colors.black,
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 20, left: 5, top: 5),
+              padding: const EdgeInsets.only(right: 20, left: 5),
               child: GestureDetector(
                 onTap: () async {
                   setState(() {

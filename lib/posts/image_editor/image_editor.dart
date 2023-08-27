@@ -664,7 +664,6 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                     end: Alignment.bottomRight,
                   ),
                   color: Colors.black,
-                  border: Border.all(color: Colors.white),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 margin: const EdgeInsets.symmetric(horizontal: 10),

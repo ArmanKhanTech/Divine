@@ -164,7 +164,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
             centerTitle: true,
             actions: [
               Padding(
-                padding: const EdgeInsets.only(right: 20, left: 5, top: 5),
+                padding: const EdgeInsets.only(right: 20, left: 5),
                 child: GestureDetector(
                   onTap: () async {
                     await viewModel.uploadSinglePost(context, widget.postImage!);
