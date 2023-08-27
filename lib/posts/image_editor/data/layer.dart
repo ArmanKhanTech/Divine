@@ -3,6 +3,7 @@ import 'image_item.dart';
 
 class Layer {
   late Offset offset;
+
   late double rotation, scale, opacity;
 
   Layer({
