@@ -138,14 +138,15 @@ class _TextEditorImageState extends State<TextEditorImage> {
                   ),
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 20,
                 ),
                 Container(
                   color: Colors.black,
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 30),
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
@@ -157,28 +158,22 @@ class _TextEditorImageState extends State<TextEditorImage> {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 15,
-                          right: 15,
-                        ),
-                        child: Slider(
-                            activeColor: Colors.white,
-                            inactiveColor: Colors.grey,
-                            value: slider,
-                            min: 0.0,
-                            max: 100.0,
-                            onChangeEnd: (v) {
-                              setState(() {
-                                slider = v;
-                              });
-                            },
-                            onChanged: (v) {
-                              setState(() {
-                                slider = v;
-                              });
-                            }),
-                      )
+                      Slider(
+                        activeColor: Colors.white,
+                        inactiveColor: Colors.grey,
+                        value: slider,
+                        min: 0.0,
+                        max: 100.0,
+                        onChangeEnd: (v) {
+                          setState(() {
+                            slider = v;
+                          });
+                        },
+                        onChanged: (v) {
+                          setState(() {
+                            slider = v;
+                          });
+                        }),
                     ],
                   ),
                 ),
@@ -187,39 +182,34 @@ class _TextEditorImageState extends State<TextEditorImage> {
                 ),
                 Container(
                   color: Colors.transparent,
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 30),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            i18n('Text Color'),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                            ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          i18n('Text Color'),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
                           ),
                         ),
                       ),
                       Row(children: [
                         Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 30),
-                            child: BarColorPicker(
-                              thumbColor: Colors.white,
-                              cornerRadius: 10,
-                              pickMode: PickMode.color,
-                              colorListener: (int value) {
-                                setState(() {
-                                  currentColor = Color(value);
-                                });
-                              },
-                            ),
+                          child: BarColorPicker(
+                            thumbColor: Colors.white,
+                            cornerRadius: 10,
+                            pickMode: PickMode.color,
+                            colorListener: (int value) {
+                              setState(() {
+                                currentColor = Color(value);
+                              });
+                            },
                           ),
                         ),
                         const SizedBox(
-                            width: 15
+                          width: 10,
                         ),
                         TextButton(
                           onPressed: () {
@@ -235,44 +225,35 @@ class _TextEditorImageState extends State<TextEditorImage> {
                             )
                           ),
                         ),
-                        const SizedBox(
-                            width: 15
-                        ),
                       ]),
                       const SizedBox(
                           height: 10.0
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 30),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            i18n('Black/White Color'),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                            ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          i18n('Black/White Color'),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
                           ),
                         ),
                       ),
                       Row(children: [
                         Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 30),
-                            child: BarColorPicker(
-                              thumbColor: Colors.white,
-                              cornerRadius: 10,
-                              pickMode: PickMode.grey,
-                              colorListener: (int value) {
-                                setState(() {
-                                  currentColor = Color(value);
-                                });
-                              },
-                            ),
+                          child: BarColorPicker(
+                            thumbColor: Colors.white,
+                            cornerRadius: 10,
+                            pickMode: PickMode.grey,
+                            colorListener: (int value) {
+                              setState(() {
+                                currentColor = Color(value);
+                              });
+                            },
                           ),
                         ),
                         const SizedBox(
-                            width: 15
+                          width: 10,
                         ),
                         TextButton(
                           onPressed: () {
@@ -287,9 +268,6 @@ class _TextEditorImageState extends State<TextEditorImage> {
                                 fontSize: 15,
                               )
                           )
-                        ),
-                        const SizedBox(
-                            width: 15
                         ),
                       ]),
                     ],

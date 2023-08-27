@@ -879,6 +879,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                     height: 270,
                                     child: Column(
                                       children: [
+                                        const SizedBox(height: 5.0),
                                         Padding(
                                           padding: const EdgeInsets.only(left: 15),
                                           child: Align(
@@ -911,7 +912,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                             ),
                                           ),
                                           const SizedBox(
-                                              width: 15
+                                              width: 10
                                           ),
                                           TextButton(
                                             child: Text(
@@ -929,6 +930,9 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                                 });
                                               });
                                             },
+                                          ),
+                                          const SizedBox(
+                                              width: 15
                                           ),
                                         ]),
                                         const SizedBox(height: 10.0),
@@ -962,6 +966,9 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                               },
                                             ),
                                           ),
+                                          const SizedBox(
+                                              width: 10
+                                          ),
                                           TextButton(
                                             child: Text(
                                               i18n('Reset'),
@@ -978,6 +985,9 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                                 });
                                               });
                                             },
+                                          ),
+                                          const SizedBox(
+                                              width: 15
                                           ),
                                         ]),
                                         const SizedBox(
@@ -1013,6 +1023,9 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                               },
                                             ),
                                           ),
+                                          const SizedBox(
+                                              width: 10
+                                          ),
                                           TextButton(
                                             child: Text(
                                               i18n('Reset'),
@@ -1029,6 +1042,9 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                                 });
                                               });
                                             },
+                                          ),
+                                          const SizedBox(
+                                              width: 15
                                           ),
                                         ]),
                                       ],

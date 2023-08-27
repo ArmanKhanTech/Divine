@@ -32,7 +32,7 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
 
     return Container(
       height: 380,
-      padding: const EdgeInsets.symmetric(horizontal: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 15),
       decoration: const BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.only(
@@ -46,9 +46,11 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
       ),
       child: Column(
         children: [
-          const SizedBox(height: 20),
+          const SizedBox(
+            height: 20,
+          ),
           Padding(
-            padding: const EdgeInsets.only(left: 25),
+            padding: const EdgeInsets.only(left: 15),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -60,68 +62,55 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 10,
-              right: 10,
-            ),
-            child: Slider(
-                activeColor: Colors.white,
-                inactiveColor: Colors.grey,
-                value: widget.layer.size,
-                min: 0.0,
-                max: 100.0,
-                onChangeEnd: (v) {
-                  setState(() {
-                    widget.layer.size = v.toDouble();
-                    widget.onUpdate();
-                  });
-                },
-                onChanged: (v) {
-                  setState(() {
-                    slider = v;
-                    widget.layer.size = v.toDouble();
-                    widget.onUpdate();
-                  });
-                }),
-          ),
+          Slider(
+              activeColor: Colors.white,
+              inactiveColor: Colors.grey,
+              value: widget.layer.size,
+              min: 0.0,
+              max: 100.0,
+              onChangeEnd: (v) {
+                setState(() {
+                  widget.layer.size = v.toDouble();
+                  widget.onUpdate();
+                });
+              },
+              onChanged: (v) {
+                setState(() {
+                  slider = v;
+                  widget.layer.size = v.toDouble();
+                  widget.onUpdate();
+                });
+              }),
           const SizedBox(height: 10),
           Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Container(
-                padding: const EdgeInsets.only(left: 25),
-                child: Text(
-                  i18n('Text Color'),
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                  ),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(
+                i18n('Text Color'),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
                 ),
               ),
               Row(children: [
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 25),
-                    child: BarColorPicker(
-                      thumbColor: Colors.white,
-                      initialColor: widget.layer.color,
-                      cornerRadius: 10,
-                      pickMode: PickMode.color,
-                      colorListener: (int value) {
-                        setState(() {
-                          widget.layer.color = Color(value);
-                          widget.onUpdate();
-                        });
-                      },
-                    ),
+                  child: BarColorPicker(
+                    thumbColor: Colors.white,
+                    initialColor: widget.layer.color,
+                    cornerRadius: 10,
+                    pickMode: PickMode.color,
+                    colorListener: (int value) {
+                      setState(() {
+                        widget.layer.color = Color(value);
+                        widget.onUpdate();
+                      });
+                    },
                   ),
                 ),
                 const SizedBox(
-                    width: 15
+                    width: 10
                 ),
                 TextButton(
                   onPressed: () {
@@ -138,42 +127,32 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
                       )
                   ),
                 ),
-                const SizedBox(
-                    width: 10
-                ),
               ]),
               const SizedBox(height: 10),
-              Container(
-                padding: const EdgeInsets.only(left: 25),
-                child: Text(
-                  i18n('Text Background Color'),
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                    ),
+              Text(
+                i18n('Text Background Color'),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
                 ),
               ),
               Row(children: [
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 25),
-                    child: BarColorPicker(
-                      initialColor: widget.layer.background,
-                      thumbColor: Colors.white,
-                      cornerRadius: 10,
-                      pickMode: PickMode.color,
-                      colorListener: (int value) {
-                        setState(() {
-                          widget.layer.background = Color(value);
-                          widget.onUpdate();
-                        });
-                      },
-                    ),
+                  child: BarColorPicker(
+                    initialColor: widget.layer.background,
+                    thumbColor: Colors.white,
+                    cornerRadius: 10,
+                    pickMode: PickMode.color,
+                    colorListener: (int value) {
+                      setState(() {
+                        widget.layer.background = Color(value);
+                        widget.onUpdate();
+                      });
+                    },
                   ),
                 ),
                 const SizedBox(
-                    width: 15
+                    width: 10
                 ),
                 TextButton(
                   onPressed: () {
@@ -191,43 +170,36 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                    width: 10
-                ),
               ]),
-              const SizedBox(height: 10),
-              Container(
-                padding: const EdgeInsets.only(left: 25),
-                child: Text(
-                  i18n('Text Background Opacity'),
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                    ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 10,
-                  right: 10,
-                ),
-                child: Slider(
-                    activeColor: Colors.white,
-                    inactiveColor: Colors.grey,
-                    value: widget.layer.backgroundOpacity.toDouble(),
-                    thumbColor: Colors.white,
-                    min: 0.0,
-                    max: 100.0,
-                    onChanged: (v) {
-                      setState(() {
-                        widget.layer.backgroundOpacity = v.toInt();
-                        widget.onUpdate();
-                      });
-                    }),
-              ),
             ]),
           ),
+          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.only(left: 15),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                i18n('Text Background Opacity'),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+          ),
+          Slider(
+              activeColor: Colors.white,
+              inactiveColor: Colors.grey,
+              value: widget.layer.backgroundOpacity.toDouble(),
+              thumbColor: Colors.white,
+              min: 0.0,
+              max: 100.0,
+              onChanged: (v) {
+                setState(() {
+                  widget.layer.backgroundOpacity = v.toInt();
+                  widget.onUpdate();
+                });
+              }),
           Row(children: [
             Expanded(
               child: TextButton(
