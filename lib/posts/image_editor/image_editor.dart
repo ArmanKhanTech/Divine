@@ -113,10 +113,10 @@ class MultiImageEditor extends StatefulWidget {
   });
 
   @override
-  createState() => _MultiImageEditorState();
+  createState() => MultiImageEditorState();
 }
 
-class _MultiImageEditorState extends State<MultiImageEditor> {
+class MultiImageEditorState extends State<MultiImageEditor> {
   List<ImageItem> images = [];
 
   @override
@@ -897,7 +897,6 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                             child: Padding(
                                               padding: const EdgeInsets.only(left: 15),
                                               child: BarColorPicker(
-                                                width: 270,
                                                 thumbColor: Colors.white,
                                                 cornerRadius: 10,
                                                 pickMode: PickMode.color,
@@ -912,7 +911,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                             ),
                                           ),
                                           const SizedBox(
-                                              width: 10
+                                              width: 15
                                           ),
                                           TextButton(
                                             child: Text(
@@ -1776,7 +1775,7 @@ class _ImageFiltersState extends State<ImageFilters> {
             borderRadius: BorderRadius.circular(48),
             border: Border.all(
               color: Colors.black,
-              width: 2,
+              width: 1,
             ),
           ),
           child: ClipRRect(

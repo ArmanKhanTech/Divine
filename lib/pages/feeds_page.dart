@@ -118,7 +118,6 @@ class _FeedsPageState extends State<FeedsPage>{
                   )
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                       width: MediaQuery.of(context).size.width,

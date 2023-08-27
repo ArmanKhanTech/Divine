@@ -54,7 +54,7 @@ class _ColorPickersSliderState extends State<ColorPickersSlider> {
             ],
           ),
           const SizedBox(height: 5),
-          Text(i18n('Slider Opicity'),
+          Text(i18n('Slider Opacity'),
               style: const TextStyle(color: Colors.white)),
           const SizedBox(height: 10),
           Row(children: [

@@ -160,7 +160,7 @@ class _TextEditorImageState extends State<TextEditorImage> {
                       Padding(
                         padding: const EdgeInsets.only(
                           left: 15,
-                          right: 12,
+                          right: 15,
                         ),
                         child: Slider(
                             activeColor: Colors.white,
@@ -203,18 +203,19 @@ class _TextEditorImageState extends State<TextEditorImage> {
                         ),
                       ),
                       Row(children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 30),
-                          child: BarColorPicker(
-                            width: 260,
-                            thumbColor: Colors.white,
-                            cornerRadius: 10,
-                            pickMode: PickMode.color,
-                            colorListener: (int value) {
-                              setState(() {
-                                currentColor = Color(value);
-                              });
-                            },
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 30),
+                            child: BarColorPicker(
+                              thumbColor: Colors.white,
+                              cornerRadius: 10,
+                              pickMode: PickMode.color,
+                              colorListener: (int value) {
+                                setState(() {
+                                  currentColor = Color(value);
+                                });
+                              },
+                            ),
                           ),
                         ),
                         const SizedBox(
@@ -234,12 +235,15 @@ class _TextEditorImageState extends State<TextEditorImage> {
                             )
                           ),
                         ),
+                        const SizedBox(
+                            width: 15
+                        ),
                       ]),
                       const SizedBox(
                           height: 10.0
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 30, right: 30),
+                        padding: const EdgeInsets.only(left: 30),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
@@ -252,18 +256,19 @@ class _TextEditorImageState extends State<TextEditorImage> {
                         ),
                       ),
                       Row(children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 30),
-                          child: BarColorPicker(
-                            width: 260,
-                            thumbColor: Colors.white,
-                            cornerRadius: 10,
-                            pickMode: PickMode.grey,
-                            colorListener: (int value) {
-                              setState(() {
-                                currentColor = Color(value);
-                              });
-                            },
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 30),
+                            child: BarColorPicker(
+                              thumbColor: Colors.white,
+                              cornerRadius: 10,
+                              pickMode: PickMode.grey,
+                              colorListener: (int value) {
+                                setState(() {
+                                  currentColor = Color(value);
+                                });
+                              },
+                            ),
                           ),
                         ),
                         const SizedBox(
@@ -281,7 +286,10 @@ class _TextEditorImageState extends State<TextEditorImage> {
                                 color: Colors.blue,
                                 fontSize: 15,
                               )
-                          ),
+                          )
+                        ),
+                        const SizedBox(
+                            width: 15
                         ),
                       ]),
                     ],

@@ -63,7 +63,7 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
           Padding(
             padding: const EdgeInsets.only(
               left: 10,
-              right: 7,
+              right: 10,
             ),
             child: Slider(
                 activeColor: Colors.white,
@@ -107,7 +107,6 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 25),
                     child: BarColorPicker(
-                      width: 260,
                       thumbColor: Colors.white,
                       initialColor: widget.layer.color,
                       cornerRadius: 10,
@@ -122,7 +121,7 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
                   ),
                 ),
                 const SizedBox(
-                    width: 5
+                    width: 15
                 ),
                 TextButton(
                   onPressed: () {
@@ -140,7 +139,7 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
                   ),
                 ),
                 const SizedBox(
-                    width: 20
+                    width: 10
                 ),
               ]),
               const SizedBox(height: 10),
@@ -160,7 +159,6 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 25),
                     child: BarColorPicker(
-                      width: 260,
                       initialColor: widget.layer.background,
                       thumbColor: Colors.white,
                       cornerRadius: 10,
@@ -175,7 +173,7 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
                   ),
                 ),
                 const SizedBox(
-                    width: 5
+                    width: 15
                 ),
                 TextButton(
                   onPressed: () {
@@ -194,7 +192,7 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
                   ),
                 ),
                 const SizedBox(
-                    width: 20
+                    width: 10
                 ),
               ]),
               const SizedBox(height: 10),
@@ -212,7 +210,7 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
               Padding(
                 padding: const EdgeInsets.only(
                   left: 10,
-                  right: 7,
+                  right: 10,
                 ),
                 child: Slider(
                     activeColor: Colors.white,
