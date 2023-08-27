@@ -715,7 +715,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
         bottomNavigationBar: Container(
           alignment: Alignment.bottomCenter,
           height: 86 + MediaQuery.of(context).padding.bottom,
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
           decoration: const BoxDecoration(
             color: Colors.black87,
             shape: BoxShape.rectangle,
@@ -876,12 +876,12 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                           right: BorderSide(width: 0, color: Colors.white),
                                         )
                                     ),
-                                    padding: const EdgeInsets.all(20),
-                                    height: 300,
+                                    padding: const EdgeInsets.all(15),
+                                    height: 270,
                                     child: Column(
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 12),
+                                          padding: const EdgeInsets.only(left: 15),
                                           child: Align(
                                             alignment: Alignment.centerLeft,
                                             child: Text(
@@ -898,7 +898,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                             child: Padding(
                                               padding: const EdgeInsets.only(left: 15),
                                               child: BarColorPicker(
-                                                width: 262,
+                                                width: 270,
                                                 thumbColor: Colors.white,
                                                 cornerRadius: 10,
                                                 pickMode: PickMode.color,
@@ -913,7 +913,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                             ),
                                           ),
                                           const SizedBox(
-                                              width: 15
+                                              width: 10
                                           ),
                                           TextButton(
                                             child: Text(
@@ -935,7 +935,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                         ]),
                                         const SizedBox(height: 10.0),
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 12),
+                                          padding: const EdgeInsets.only(left: 15),
                                           child: Align(
                                             alignment: Alignment.centerLeft,
                                             child: Text(
@@ -986,7 +986,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                                           height: 10.0,
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 12),
+                                          padding: const EdgeInsets.only(left: 15),
                                           child: Align(
                                             alignment: Alignment.centerLeft,
                                             child: Text(
@@ -1261,7 +1261,7 @@ class _ImageAdjustState extends State<ImageAdjust>{
           ),
         ),
         bottomNavigationBar: SizedBox(
-          height: 135,
+          height: 150,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -1328,7 +1328,7 @@ class _ImageAdjustState extends State<ImageAdjust>{
                 ),
               ),
               const SizedBox(
-                height: 10
+                height: 15
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -1366,7 +1366,7 @@ class _ImageAdjustState extends State<ImageAdjust>{
                 ],
               ),
               const SizedBox(
-                  height: 15
+                  height: 10
               ),
             ],
           ),
@@ -1705,10 +1705,22 @@ class _ImageFiltersState extends State<ImageFilters> {
         ),
         bottomNavigationBar: SafeArea(
           child: SizedBox(
-            height: 160,
+            height: 180,
             child: Column(children: [
               const SizedBox(
-                height: 20,
+                height: 10,
+              ),
+              // CURRENT FILTER Text
+              Text(
+                selectedFilter.name,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
+                ),
+              ),
+              const SizedBox(
+                height: 10,
               ),
               SizedBox(
                 height: 20,
@@ -1727,7 +1739,7 @@ class _ImageFiltersState extends State<ImageFilters> {
                 ),
               ),
               SizedBox(
-                height: 120,
+                height: 100,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: <Widget>[
@@ -1738,6 +1750,9 @@ class _ImageFiltersState extends State<ImageFilters> {
                       ),
                   ],
                 ),
+              ),
+              const SizedBox(
+                height: 10,
               ),
             ]),
           ),
@@ -1755,9 +1770,9 @@ class _ImageFiltersState extends State<ImageFilters> {
       },
       child: Column(children: [
         Container(
-          height: 64,
-          width: 64,
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          height: 60,
+          width: 60,
+          margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(48),
             border: Border.all(
@@ -1776,7 +1791,7 @@ class _ImageFiltersState extends State<ImageFilters> {
         ),
         Text(
           i18n(name),
-          style: const TextStyle(fontSize: 12),
+          style: const TextStyle(fontSize: 14,)
         ),
       ]),
     );

@@ -160,6 +160,7 @@ class _TextEditorImageState extends State<TextEditorImage> {
                       Padding(
                         padding: const EdgeInsets.only(
                           left: 15,
+                          right: 12,
                         ),
                         child: Slider(
                             activeColor: Colors.white,
@@ -205,7 +206,7 @@ class _TextEditorImageState extends State<TextEditorImage> {
                         Padding(
                           padding: const EdgeInsets.only(left: 30),
                           child: BarColorPicker(
-                            width: 270,
+                            width: 260,
                             thumbColor: Colors.white,
                             cornerRadius: 10,
                             pickMode: PickMode.color,
@@ -238,7 +239,7 @@ class _TextEditorImageState extends State<TextEditorImage> {
                           height: 10.0
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 30),
+                        padding: const EdgeInsets.only(left: 30, right: 30),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
@@ -254,7 +255,7 @@ class _TextEditorImageState extends State<TextEditorImage> {
                         Padding(
                           padding: const EdgeInsets.only(left: 30),
                           child: BarColorPicker(
-                            width: 270,
+                            width: 260,
                             thumbColor: Colors.white,
                             cornerRadius: 10,
                             pickMode: PickMode.grey,
@@ -282,9 +283,6 @@ class _TextEditorImageState extends State<TextEditorImage> {
                               )
                           ),
                         ),
-                        const SizedBox(
-                            width: 10.0
-                        )
                       ]),
                     ],
                   ),

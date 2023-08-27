@@ -327,6 +327,8 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
       return Container();
     }
 
+    final size = MediaQuery.of(context).size;
+
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
@@ -336,21 +338,27 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: Listener(
-          onPointerDown: (_) => pointers++,
-          onPointerUp: (_) => pointers--,
-          child: CameraPreview(
-            controller!,
-            child: LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                  return GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onScaleStart: handleScaleStart,
-                    onScaleUpdate: handleScaleUpdate,
-                    onTapDown: (TapDownDetails details) =>
-                        onViewFinderTap(details, constraints),
-                  );
-                }),
-          ),
+            onPointerDown: (_) => pointers++,
+            onPointerUp: (_) => pointers--,
+            child: Transform.scale(
+              scale: 1,
+              child: AspectRatio(
+                aspectRatio: size.aspectRatio,
+                child: CameraPreview(
+                  controller!,
+                  child: LayoutBuilder(
+                      builder: (BuildContext context, BoxConstraints constraints) {
+                        return GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onScaleStart: handleScaleStart,
+                          onScaleUpdate: handleScaleUpdate,
+                          onTapDown: (TapDownDetails details) =>
+                              onViewFinderTap(details, constraints),
+                        );
+                      }),
+                ),
+              ),
+            )
         ),
       ),
     );
