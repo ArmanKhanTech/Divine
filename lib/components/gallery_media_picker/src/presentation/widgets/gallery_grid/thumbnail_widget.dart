@@ -67,12 +67,12 @@ class ThumbnailWidgetState extends State<ThumbnailWidget> {
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                             ),
-                            borderRadius: const BorderRadius.all(Radius.circular(20)),
+                            borderRadius: const BorderRadius.all(Radius.circular(10)),
                         ),
                         width: double.infinity,
                         height: double.infinity,
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(10),
                           child: Image(
                             image: DecodeImage(
                                 widget.provider.pathList[widget.provider.pathList.indexOf(widget.provider.currentAlbum!)],

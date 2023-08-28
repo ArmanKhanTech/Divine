@@ -31,7 +31,11 @@ class _FeedsPageState extends State<FeedsPage>{
   NativeAd? nativeAd;
 
   int page = 5;
+
+  double height = 125;
+
   bool loadingMore = false;
+
   ScrollController scrollController = ScrollController();
 
   @override
@@ -74,6 +78,10 @@ class _FeedsPageState extends State<FeedsPage>{
   @override
   Widget build(BuildContext context) {
     StoryViewModel viewModel = Provider.of<StoryViewModel>(context);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {});
+    });
 
     chooseUpload(BuildContext context, StoryViewModel viewModel) {
 
@@ -244,7 +252,7 @@ class _FeedsPageState extends State<FeedsPage>{
                           children: [
                             Padding(
                               padding: EdgeInsets.only(
-                                top: 3.0,
+                                top: 2.0,
                               ),
                               child: Icon(
                                 CupertinoIcons.plus_circle,
@@ -303,7 +311,7 @@ class _FeedsPageState extends State<FeedsPage>{
                               children: [
                                 Padding(
                                   padding: EdgeInsets.only(
-                                    top: 3.0,
+                                    top: 2.0,
                                   ),
                                   child: Icon(
                                     CupertinoIcons.play_circle,
@@ -358,7 +366,7 @@ class _FeedsPageState extends State<FeedsPage>{
                           children: [
                             Padding(
                               padding: EdgeInsets.only(
-                                top: 3.0,
+                                top: 2.0,
                               ),
                               child: Icon(
                                 CupertinoIcons.equal_circle,
@@ -459,7 +467,16 @@ class _FeedsPageState extends State<FeedsPage>{
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const StoryWidget(),
+              SizedBox(
+                height: height,
+                child: StoryWidget(
+                  onDone: (value) {
+                    if(value == true){
+                      height = 0;
+                    }
+                  },
+                ),
+              ),
              // TODO: Fix Native Ad & implement it for iOS.
              /* if (nativeAd != null && Platform.isAndroid == true)
                 SizedBox(

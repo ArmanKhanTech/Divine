@@ -25,7 +25,6 @@ import '../painting_view/widgets/sketcher.dart';
 import '../text_editor_widget/text_editor.dart';
 import '../utilities/constants/app_enum.dart';
 import '../utilities/model_sheets.dart';
-import '../widgets/animated_on_tap_button.dart';
 import '../widgets/scrollable_page_view.dart';
 import 'package:divine/widgets/progress_indicators.dart';
 
@@ -371,46 +370,21 @@ class _MainViewState extends State<MainView> {
                     ),
                     gallery: GalleryMediaPicker(
                       mediaPickerParams: MediaPickerParamsModel(
-                        gridViewController: scrollProvider.gridController,
-                        thumbnailQuality: 200,
-                        singlePick: false,
-                        onlyImages: true,
-                        appBarColor: widget.editorBackgroundColor ?? Colors.black,
-                        gridViewPhysics: itemProvider.draggableWidget.isEmpty
-                            ? const NeverScrollableScrollPhysics()
-                            : const ScrollPhysics(),
-                        appBarLeadingWidget: Padding(
-                          padding: const EdgeInsets.only(bottom: 15, right: 15),
-                          child: Align(
-                            alignment: Alignment.bottomRight,
-                            child: AnimatedOnTapButton(
-                              onTap: () {
-                                scrollProvider.pageController.animateToPage(0,
-                                    duration: const Duration(milliseconds: 300),
-                                    curve: Curves.easeIn
-                                );
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 2),
-                                decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                      color: Colors.white,
-                                      width: 1.2,
-                                    )),
-                                child: const Text(
-                                  'Cancel',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                              ),
-                            ),
-                          ),
+                        gridViewController: ScrollController(
+                          initialScrollOffset: 0,
                         ),
+                        maxPickImages: 1,
+                        thumbnailQuality: 200,
+                        singlePick: true,
+                        onlyImages: true,
+                        appBarColor: Colors.black,
+                        gridViewPhysics: const ScrollPhysics(),
+                        appBarLeadingWidget: null,
+                        appBarHeight: 45,
+                        imageBackgroundColor: Colors.black,
+                        selectedBackgroundColor: Colors.transparent,
+                        selectedCheckColor: Colors.blue,
+                        selectedCheckBackgroundColor: Colors.blue,
                       ),
                       pathList: (path) {
                         final file = File(path.first.path.toString());

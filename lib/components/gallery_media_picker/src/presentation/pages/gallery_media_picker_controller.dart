@@ -30,11 +30,14 @@ mixin PhotoDataController on ChangeNotifier {
     AssetPathEntity b,
   ) {
     if (a.isAll) {
+
       return -1;
     }
     if (b.isAll) {
+
       return 1;
     }
+
     return 0;
   }
 
@@ -56,11 +59,13 @@ mixin PhotoDataController on ChangeNotifier {
   }
 }
 
-class GalleryMediaPickerController extends ChangeNotifier
-    with PhotoDataController {
+class GalleryMediaPickerController extends ChangeNotifier with PhotoDataController {
   final maxNotifier = ValueNotifier(0);
+
   int get max => maxNotifier.value;
+
   set max(int value) => maxNotifier.value = value;
+
   final onPickMax = ChangeNotifier();
 
   bool get singlePickMode => _singlePickMode;
@@ -118,6 +123,7 @@ class GalleryMediaPickerController extends ChangeNotifier
       } else {
         if (pickedFile.length == max) {
           onPickMax.notifyListeners();
+
           return;
         }
         pickedFile.add(path);
@@ -135,6 +141,7 @@ class GalleryMediaPickerController extends ChangeNotifier
 
   int _assetCount = 0;
   get assetCount => _assetCount;
+
   final assetCountNotifier = ValueNotifier<int>(0);
 
   setAssetCount() async {

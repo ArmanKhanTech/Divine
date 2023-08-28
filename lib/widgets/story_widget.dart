@@ -10,91 +10,87 @@ import '../stories/screens/story_screen.dart';
 import '../utilities/firebase.dart';
 
 class StoryWidget extends StatefulWidget{
-  const StoryWidget({Key? key}) : super(key: key);
+  final Function onDone;
+
+  const StoryWidget({Key? key, required this.onDone}) : super(key: key);
 
   @override
   State<StoryWidget> createState() => _StoryWidgetState();
 }
 
 class _StoryWidgetState extends State<StoryWidget> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   // TODO: Sort stories by time i.e viewed stories at last, tags in stories, location in stories, tagged stories within stories.
   @override
   Widget build(BuildContext context) {
     int storyCounter = 0;
-    double height = 125;
 
-    void setHeight(){
-      setState(() {
-        height = 0;
-      });
-    }
+    return Padding(
+      padding: const EdgeInsets.only(left: 5.0),
+      child: StreamBuilder<QuerySnapshot>(
+        stream: viewerListStream(auth.currentUser!.uid),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List storyList = snapshot.data!.docs;
+            if (storyList.isNotEmpty) {
 
-    return SizedBox(
-      height: height,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 5.0),
-        child: StreamBuilder<QuerySnapshot>(
-          stream: viewerListStream(auth.currentUser!.uid),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              List storyList = snapshot.data!.docs;
-              if (storyList.isNotEmpty) {
+              return ListView.builder(
+                padding: const EdgeInsets.symmetric(vertical: 5.0),
+                itemCount: storyList.length,
+                scrollDirection: Axis.horizontal,
+                physics: const AlwaysScrollableScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) {
+                  DocumentSnapshot storyListSnapshot = storyList[index];
 
-                return ListView.builder(
-                  padding: const EdgeInsets.symmetric(vertical: 5.0),
-                  itemCount: storyList.length,
-                  scrollDirection: Axis.horizontal,
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  itemBuilder: (BuildContext context, int index) {
-                    DocumentSnapshot storyListSnapshot = storyList[index];
+                  return StreamBuilder<QuerySnapshot>(
+                    stream: storyListStream(storyListSnapshot.id),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        List stories = snapshot.data!.docs;
+                        StoryModel story = StoryModel.fromJson(stories.first.data());
+                        List users = storyListSnapshot.get('whoCanSee');
+                        String uploadUserId = storyListSnapshot.get('userId');
+                        if(users.contains(auth.currentUser!.uid) && uploadUserId != auth.currentUser!.uid){
+                          users.remove(auth.currentUser!.uid);
+                          storyCounter++;
 
-                    return StreamBuilder<QuerySnapshot>(
-                      stream: storyListStream(storyListSnapshot.id),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          List stories = snapshot.data!.docs;
-                          StoryModel story = StoryModel.fromJson(stories.first.data());
-                          List users = storyListSnapshot.get('whoCanSee');
-                          String uploadUserId = storyListSnapshot.get('userId');
-                          if(users.contains(auth.currentUser!.uid) && uploadUserId != auth.currentUser!.uid){
-                            users.remove(auth.currentUser!.uid);
-                            storyCounter++;
-
-                            return buildStatusAvatar(
-                                storyListSnapshot.get('userId'),
-                                storyListSnapshot.id,
-                                story.storyId!,
-                                index,
-                            );
-                          }
-                          if(storyCounter == 0){
-                            setHeight();
-                          }
-
-                          return const SizedBox();
-                        } else {
-
-                          return const SizedBox();
+                          return buildStatusAvatar(
+                            storyListSnapshot.get('userId'),
+                            storyListSnapshot.id,
+                            story.storyId!,
+                            index,
+                          );
                         }
-                      },
-                    );
-                  },
-                );
-              } else {
-                setHeight();
+                        if(storyCounter == 0){
+                          widget.onDone(true);
+                        }
 
-                return const SizedBox();
-              }
+                        return const SizedBox();
+                      } else {
+
+                        return const SizedBox();
+                      }
+                    },
+                  );
+                },
+              );
             } else {
+              widget.onDone(true);
 
-              return Padding(
+              return const SizedBox();
+            }
+          } else {
+
+            return Padding(
                 padding: const EdgeInsets.only(bottom: 20),
                 child: Center(child: circularProgress(context, const Color(0xFFE91E63)))
-              );
-            }
-          },
-        ),
+            );
+          }
+        },
       ),
     );
   }

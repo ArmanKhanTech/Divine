@@ -82,7 +82,6 @@ class _PickFromGalleryProfilePictureState extends State<PickFromGalleryProfilePi
               ),
             );
           } else{
-            // TODO: Implement multi image upload
             XFile file = XFile(path.first.path.toString());
             Navigator.of(context).pop(file);
           }

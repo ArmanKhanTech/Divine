@@ -344,7 +344,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             currentUser.username![0].toUpperCase(),
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.primary,
-                              fontSize: 35.0,
+                              fontSize: 30.0,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -785,7 +785,6 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
-  // TODO: Implement private profile button
   handleFollowRequest() async {
     DocumentSnapshot doc = await usersRef.doc(currentUserId()).get();
 

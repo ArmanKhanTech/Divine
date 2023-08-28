@@ -21,7 +21,7 @@ class SelectedPathDropdownButton extends StatelessWidget {
     return AnimatedBuilder(
       animation: provider.currentAlbumNotifier,
       builder: (_, __) => Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
           child: DropDown<AssetPathEntity>(
@@ -58,7 +58,7 @@ class SelectedPathDropdownButton extends StatelessWidget {
           color: Colors.white,
           width: 1,
         ),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(10),
     );
 
     if (provider.pathList.isEmpty || provider.currentAlbum == null) {
@@ -66,8 +66,10 @@ class SelectedPathDropdownButton extends StatelessWidget {
     }
 
     if (provider.currentAlbum == null) {
+
       return Container();
     } else {
+
       return Container(
         decoration: decoration,
         alignment: Alignment.center,
