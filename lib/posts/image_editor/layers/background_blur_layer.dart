@@ -1,10 +1,11 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import '../data/image_item.dart';
 import '../data/layer.dart';
 
 class BackgroundBlurLayer extends StatefulWidget {
   final BackgroundBlurLayerData layerData;
+
   final VoidCallback? onUpdate;
 
   const BackgroundBlurLayer({
@@ -27,6 +28,7 @@ class _BackgroundBlurLayerState extends State<BackgroundBlurLayer> {
           sigmaX: widget.layerData.radius,
           sigmaY: widget.layerData.radius,
         ),
+        // fade effect
         child: Container(
           color: widget.layerData.color
               .withAlpha((widget.layerData.opacity * 100).toInt()),

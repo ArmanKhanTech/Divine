@@ -331,7 +331,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Row(
                   children: [
                     const SizedBox(
-                      width: 20.0,
+                      width: 18.0,
                     ),
                     // TODO: Implement user story widget & view profile picture.
                     Padding(
@@ -355,7 +355,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           height: 90,
                           width: 90,
                           decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.all(Radius.circular(50)),
+                            borderRadius: const BorderRadius.all(Radius.circular(45)),
                             image: DecorationImage(
                               image: imageProvider,
                               fit: BoxFit.cover,
@@ -430,7 +430,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     style: const TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'Ubuntu-Regular',
                     ),
                     maxLines: 1,
                   ) : Text(
@@ -438,7 +437,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     style: const TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'Ubuntu-Regular',
                     ),
                     maxLines: 1,
                   ),
@@ -451,7 +449,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       fontSize: 18.0,
                       color: Colors.blue,
                       fontWeight: FontWeight.w400,
-                      fontFamily: 'Ubuntu-Regular',
                     ),
                     maxLines: 1,
                   ) : Text(
@@ -460,7 +457,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       fontSize: 18.0,
                       color: Colors.pink,
                       fontWeight: FontWeight.w400,
-                      fontFamily: 'Ubuntu-Regular',
                     ),
                     maxLines: 1,
                   ),
@@ -501,7 +497,6 @@ class _ProfilePageState extends State<ProfilePage> {
                               style: const TextStyle(
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.w400,
-                                  fontFamily: 'Ubuntu-Regular',
                                   color: Colors.deepPurple,
                               ),
                             ),
@@ -620,7 +615,6 @@ class _ProfilePageState extends State<ProfilePage> {
           style: const TextStyle(
             fontSize: 22.0,
             fontWeight: FontWeight.bold,
-            fontFamily: 'Ubuntu-Regular',
           ),
         ),
         const SizedBox(height: 2.0),
@@ -629,7 +623,6 @@ class _ProfilePageState extends State<ProfilePage> {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w400,
-            fontFamily: 'Ubuntu-Regular',
             color: Theme.of(context).colorScheme.secondary,
           ),
         )

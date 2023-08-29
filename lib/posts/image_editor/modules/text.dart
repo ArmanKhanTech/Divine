@@ -95,7 +95,7 @@ class _TextEditorImageState extends State<TextEditorImage> {
               },
               color: Colors.white,
               padding: const EdgeInsets.only(
-                right: 20,
+                right: 22,
                 left: 10
               ),
             )

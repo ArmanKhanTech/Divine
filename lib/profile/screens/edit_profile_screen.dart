@@ -226,14 +226,18 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                             ),
                           ],
                         ),
-                        child: widget.user!.photoUrl!.isEmpty ? const Padding(
-                          padding: EdgeInsets.all(1.0),
-                          child: CircleAvatar(
-                            radius: 50.0,
-                            backgroundImage: AssetImage('assets/images/profile_png.png'),
-                            backgroundColor: Colors.transparent,
-                          ),
-                        ) : viewModel.imgLink != null ? Padding(
+                        child: widget.user!.photoUrl!.isEmpty ? Padding(
+                          padding: const EdgeInsets.all(1.0),
+                          child: Center(
+                            child: Text(
+                              widget.user!.username![0].toUpperCase(),
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontSize: 30.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          )) : viewModel.imgLink != null ? Padding(
                           padding: const EdgeInsets.all(1.0),
                           child: CachedNetworkImage(
                             imageUrl: viewModel.imgLink!,

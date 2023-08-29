@@ -53,7 +53,7 @@ class _StoryWidgetState extends State<StoryWidget> {
                         List stories = snapshot.data!.docs;
                         StoryModel story = StoryModel.fromJson(stories.first.data());
                         List users = storyListSnapshot.get('whoCanSee');
-                        String uploadUserId = storyListSnapshot.get('userId');
+                        String uploadUserId = storyListSnapshot.get('userId') ?? '';
                         if(users.contains(auth.currentUser!.uid) && uploadUserId != auth.currentUser!.uid){
                           users.remove(auth.currentUser!.uid);
                           storyCounter++;

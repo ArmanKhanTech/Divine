@@ -126,12 +126,17 @@ class _RegisterPageState extends State<RegisterPage>{
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
-                child: const Text(
-                  'Signup',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25.0,
-                    fontWeight: FontWeight.bold,
+                child: const Padding(
+                  padding: EdgeInsets.only(
+                    bottom: 2
+                  ),
+                  child: Text(
+                      'Signup',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                   ),
                 ),
                 onPressed: () => viewModel.register(context),

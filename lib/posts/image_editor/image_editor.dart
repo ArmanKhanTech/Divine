@@ -165,7 +165,7 @@ class MultiImageEditorState extends State<MultiImageEditor> {
                 },
               ),
             IconButton(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 22),
               icon: const Icon(Icons.check),
               onPressed: () async {
                 Navigator.pop(context, images);
@@ -617,9 +617,9 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
             IconButton(
               padding: const EdgeInsets.only(
                 left: 10,
-                right: 20,
+                right: 22
               ),
-              icon: const Icon(Icons.check, color: Colors.white, size: 30),
+              icon: const Icon(Icons.done, color: Colors.white, size: 30),
               onPressed: () async {
                 resetTransformation();
                 setState(() {});
@@ -810,6 +810,38 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                         removedLayers.clear();
                         layers.add(layer);
                         setState(() {});
+                      },
+                    ),
+                  if (widget.features.brush)
+                    BottomButton(
+                      icon: Icons.brush,
+                      text: 'Brush',
+                      onTap: () async {
+                        var drawing = await Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => ImageEditorDrawing(
+                              image: currentImage,
+                            ),
+                          ),
+                        );
+
+                        if (drawing != null) {
+                          undoLayers.clear();
+                          removedLayers.clear();
+
+                          layers.add(
+                            ImageLayerData(
+                              image: ImageItem(drawing),
+                              offset: Offset(
+                                -currentImage.width / 4,
+                                -currentImage.height / 4,
+                              ),
+                            ),
+                          );
+
+                          setState(() {});
+                        }
                       },
                     ),
                   if (widget.features.flip)
@@ -1248,7 +1280,7 @@ class _ImageAdjustState extends State<ImageAdjust>{
             IconButton(
               padding: const EdgeInsets.only(
                 left: 10,
-                right: 20,
+                right: 22,
               ),
               icon: const Icon(Icons.check, size: 30),
               onPressed: () async {
@@ -1460,7 +1492,7 @@ class _ImageCropperState extends State<ImageCropper> {
             IconButton(
               padding: const EdgeInsets.only(
                 left: 10,
-                right: 20,
+                right: 22,
               ),
               icon: const Icon(Icons.check, size: 30),
               onPressed: () async {
@@ -1685,7 +1717,7 @@ class _ImageFiltersState extends State<ImageFilters> {
             IconButton(
               padding: const EdgeInsets.only(
                 left: 10,
-                right: 20,
+                right: 22,
               ),
               icon: const Icon(Icons.check, size: 30),
               onPressed: () async {
@@ -1975,7 +2007,7 @@ class _ImageEditorDrawingState extends State<ImageEditorDrawing> {
               },
             ),
             IconButton(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 22),
               icon: const Icon(Icons.check),
               onPressed: () async {
                 if (control.paths.isEmpty) {

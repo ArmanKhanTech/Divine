@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../auth/login_page.dart';
 import 'main_screen.dart';
 
@@ -36,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           return const LoginPage();
                         }
                       }),
-                    ),)));
+                    ))));
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -79,12 +80,26 @@ class _SplashScreenState extends State<SplashScreen> {
                     height: 65,
                     width: 1,
                   ),
+                  const SizedBox(
+                    width: 15,
+                  ),
                   Image.asset(
                     "assets/images/app_name.png",
                     width: 200,
                     height: 200,
                   )
                 ],
+              ),
+            ),
+            Positioned(
+              bottom: 30,
+              child: GradientText(
+                "We the People",
+                colors: const <Color>[Colors.pink, Colors.blue],
+                style: const TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             )
           ],

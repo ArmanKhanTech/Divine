@@ -25,24 +25,32 @@ class ConfirmStory extends StatefulWidget {
   State<ConfirmStory> createState() => _ConfirmStoryState();
 }
 
-class _ConfirmStoryState extends State<ConfirmStory> {
+class _ConfirmStoryState extends State<ConfirmStory> with TickerProviderStateMixin{
   bool loading = false;
+
+  AnimationController? animationController;
+
+  @override
+  void dispose() {
+    if(animationController != null){
+      animationController!.dispose();
+    }
+    super.dispose();
+  }
 
   @override
   void initState() {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   // TODO : Add music, location, mentions
   @override
   Widget build(BuildContext context) {
     StoryViewModel viewModel = Provider.of<StoryViewModel>(context);
+
     final File image = File(widget.uri);
+
+    animationController = AnimationController(vsync: this, duration: const Duration(seconds: 2))..repeat();
 
     return LoadingOverlay(
       isLoading: loading,
@@ -82,7 +90,7 @@ class _ConfirmStoryState extends State<ConfirmStory> {
           backgroundColor: Colors.black,
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 20, left: 5),
+              padding: const EdgeInsets.only(right: 15, left: 5),
               child: GestureDetector(
                 onTap: () async {
                   setState(() {
@@ -141,9 +149,10 @@ class _ConfirmStoryState extends State<ConfirmStory> {
                 },
                 child: LottieBuilder.asset(
                   'assets/lottie/done.json',
-                  height: 28,
-                  width: 28,
+                  height: 32,
+                  width: 32,
                   fit: BoxFit.fitWidth,
+                  controller: animationController,
                 ),
               ),
             ),

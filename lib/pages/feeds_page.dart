@@ -418,9 +418,9 @@ class _FeedsPageState extends State<FeedsPage>{
         title: GradientText(
           Constants.appName,
           style: TextStyle(
-            fontSize: 35.0,
-            fontWeight: FontWeight.w500,
-            fontFamily: GoogleFonts.merriweather().fontFamily,
+            fontSize: 40.0,
+            fontWeight: FontWeight.w600,
+            fontFamily: GoogleFonts.ubuntu().fontFamily,
           ),
           colors: const [
             Colors.blue,

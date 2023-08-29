@@ -23,9 +23,21 @@ class ConfirmSinglePostScreen extends  StatefulWidget{
   State<ConfirmSinglePostScreen> createState() => _ConfirmSinglePostScreenState();
 }
 
-class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
+class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with TickerProviderStateMixin{
+  AnimationController? animationController;
+
+  @override
+  void dispose() {
+    if(animationController != null){
+      animationController!.dispose();
+    }
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    animationController = AnimationController(vsync: this, duration: const Duration(seconds: 2))..repeat();
+
     exitDialog({required PostsViewModel viewModel}) {
 
       return showDialog(
@@ -164,7 +176,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
             centerTitle: true,
             actions: [
               Padding(
-                padding: const EdgeInsets.only(right: 20, left: 5),
+                padding: const EdgeInsets.only(right: 15, left: 5),
                 child: GestureDetector(
                   onTap: () async {
                     await viewModel.uploadSinglePost(context, widget.postImage!);
@@ -175,9 +187,10 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                   },
                   child: LottieBuilder.asset(
                     'assets/lottie/done.json',
-                    height: 28,
-                    width: 28,
+                    height: 32,
+                    width: 32,
                     fit: BoxFit.fitWidth,
+                    controller: animationController,
                   ),
                 ),
               ),
@@ -221,7 +234,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> {
                     widget.postImage!,
                     key: UniqueKey(),
                     width: MediaQuery.of(context).size.width,
-                    fit: BoxFit.fitWidth,
+                    fit: BoxFit.cover,
                   ),
                 )
               ),
