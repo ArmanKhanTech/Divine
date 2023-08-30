@@ -70,7 +70,7 @@ ThemeData theme = ThemeData(
 );
 
 class MultiImageEditor extends StatefulWidget {
-  final Directory? savePath;
+  final List savePaths;
 
   final List images;
 
@@ -85,7 +85,6 @@ class MultiImageEditor extends StatefulWidget {
   const MultiImageEditor({
     super.key,
     this.images = const [],
-    this.savePath,
     @Deprecated('Use features instead') this.allowCamera = false,
     @Deprecated('Use features instead') this.allowGallery = false,
     this.allowMultiple = false,
@@ -110,6 +109,7 @@ class MultiImageEditor extends StatefulWidget {
       AspectRatioOption(title: '7:5', ratio: 7 / 5),
       AspectRatioOption(title: '16:9', ratio: 16 / 9),
     ],
+    required this.savePaths,
   });
 
   @override
@@ -137,33 +137,6 @@ class MultiImageEditorState extends State<MultiImageEditor> {
           actions: [
             const BackButton(color: Colors.white),
             const Spacer(),
-            if (images.length < widget.maxLength &&
-                widget.features.pickFromGallery)
-              IconButton(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                icon: const Icon(Icons.photo),
-                onPressed: () async {
-                  var selected = await picker.pickMultiImage();
-
-                  images.addAll(selected.map((e) => ImageItem(e)).toList());
-                  setState(() {});
-                },
-              ),
-            if (images.length < widget.maxLength &&
-                widget.features.captureFromCamera)
-              IconButton(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                icon: const Icon(Icons.camera_alt),
-                onPressed: () async {
-                  var selected =
-                  await picker.pickImage(source: ImageSource.camera);
-
-                  if (selected == null) return;
-
-                  images.add(ImageItem(selected));
-                  setState(() {});
-                },
-              ),
             IconButton(
               padding: const EdgeInsets.symmetric(horizontal: 22),
               icon: const Icon(Icons.check),
@@ -187,19 +160,19 @@ class MultiImageEditorState extends State<MultiImageEditor> {
                       Stack(children: [
                         GestureDetector(
                           onTap: () async {
-                            /*var img = await Navigator.push(
+                            var img = await Navigator.push(
                               context,
                               CupertinoPageRoute(
                                 builder: (context) => SingleImageEditor(
                                   image: image,
-                                  imagePath: File(image.image),
+                                  imagePath: widget.savePaths[images.indexOf(image)],
                                 ),
                               ),
                             );
                             if (img != null) {
                               image.load(img);
                               setState(() {});
-                            }*/
+                            }
                           },
                           child: Container(
                             margin: const EdgeInsets.only(
@@ -288,7 +261,6 @@ class MultiImageEditorState extends State<MultiImageEditor> {
     );
   }
 
-  final picker = ImagePicker();
 }
 
 class SingleImageEditor extends StatefulWidget {

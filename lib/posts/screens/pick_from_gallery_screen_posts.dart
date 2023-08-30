@@ -1,13 +1,13 @@
 import 'dart:io';
 import 'package:camera/camera.dart';
+import 'package:divine/view_models/user/gallery_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import '../../components/gallery_media_picker/src/data/models/gallery_params_model.dart';
+import '../../components/gallery_media_picker/src/data/models/picked_asset_model.dart';
 import '../../components/gallery_media_picker/src/presentation/pages/gallery_media_picker.dart';
 import '../../view_models/screens/posts_view_model.dart';
 
@@ -20,6 +20,11 @@ class PickFromGalleryScreenPosts extends StatefulWidget {
 
 class _PickFromGalleryScreenPostsState extends State<PickFromGalleryScreenPosts> {
   List<XFile> imageList = [];
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,83 +62,64 @@ class _PickFromGalleryScreenPostsState extends State<PickFromGalleryScreenPosts>
         ),
       ),
       backgroundColor: Colors.black,
-      body: Stack(
-        children: [
-          GalleryMediaPicker(
-            mediaPickerParams: MediaPickerParamsModel(
-              gridViewController: ScrollController(
-                initialScrollOffset: 0,
-              ),
-              maxPickImages: 5,
-              thumbnailQuality: 200,
-              singlePick: false,
-              onlyImages: true,
-              appBarColor: Colors.black,
-              gridViewPhysics: const ScrollPhysics(),
-              appBarLeadingWidget: null,
-              appBarHeight: 45,
-              imageBackgroundColor: Colors.black,
-              selectedBackgroundColor: Colors.transparent,
-              selectedCheckColor: Colors.white,
-              selectedCheckBackgroundColor: Colors.blue,
-            ),
-            // TODO : continue here
-            pathList: (path) {
-              double sizeInMb;
-              String? imagePath;
-              if (path.isEmpty) {
-
-                return;
-              }
-
-              if(imageList.isEmpty) {
-                imagePath = path.first.path.toString();
-              } else if(imageList.isNotEmpty) {
-                imagePath = path.last.path.toString();
-              }
-              final file = File(imagePath!);
-              int sizeInBytes = file.lengthSync();
-              sizeInMb = sizeInBytes / (1024 * 1024);
-              if (sizeInMb > 4) {
-                showTopSnackBar(
-                  Overlay.of(context),
-                  const CustomSnackBar.error(
-                    message: 'File size is too large ( > 2 MB)',
+      body: Consumer<GalleryViewModel>(
+        builder: (context, galleryViewModel, child) {
+          return Stack(
+            children: [
+              GalleryMediaPicker(
+                mediaPickerParams: MediaPickerParamsModel(
+                  gridViewController: ScrollController(
+                    initialScrollOffset: 0,
                   ),
-                );
-              } else {
-                XFile file = XFile(path.last.path.toString());
-                if(imageList.isEmpty) {
-                  imageList.add(file);
-                } else if (imageList.isNotEmpty){
-                  for (int i = 0; i < imageList.length; i++){
-                    XFile temp = imageList[i];
-                    if (temp.path == file.path){
-                      imageList.removeAt(i);
-                    } else{
-                      imageList.add(file);
-                    }
+                  maxPickImages: 5,
+                  thumbnailQuality: 200,
+                  singlePick: false,
+                  onlyImages: true,
+                  appBarColor: Colors.black,
+                  gridViewPhysics: const ScrollPhysics(),
+                  appBarLeadingWidget: null,
+                  appBarHeight: 45,
+                  imageBackgroundColor: Colors.black,
+                  selectedBackgroundColor: Colors.transparent,
+                  selectedCheckColor: Colors.white,
+                  selectedCheckBackgroundColor: Colors.blue,
+                ),
+                // TODO : continue here
+                pathList: (List<PickedAssetModel> paths) {
+                  setState(() {
+                    galleryViewModel.pickedFile = paths;
+                  });
+                  if(galleryViewModel.exceedsLimit) {
+                    galleryViewModel.showSnackBar('Image size exceeds 4MB.', context);
                   }
-                }
-                print(imageList.length);
-                setState(() {});
-                //viewModel.uploadPostSingleImage(image: file, context: context);
-              }
-            },
-          ),
-          imageList.isNotEmpty ? Positioned(
-            bottom: 20,
-            right: 20,
-            child: FloatingActionButton(
-              onPressed: () {
-                // viewModel.uploadPostMultipleImages(images: imageList, context: context);
-              },
-              backgroundColor: Colors.blue,
-              child: const Icon(Icons.check),
-            ),
-          ) : Container(),
-        ],
-      )
+                },
+              ),
+              galleryViewModel.pickedFile.isNotEmpty ? Positioned(
+                bottom: 20,
+                right: 20,
+                child: FloatingActionButton(
+                  onPressed: () {
+                    if(galleryViewModel.pickedFile.isNotEmpty) {
+                      if(galleryViewModel.pickedFile.length == 1){
+                        XFile file = XFile(galleryViewModel.pickedFile.first.path.toString());
+                        viewModel.uploadPostSingleImage(image: file, context: context);
+                      } else {
+                        List<XFile> images = [];
+                        for(int i = 0; i < galleryViewModel.pickedFile.length; i++){
+                          images.add(XFile(galleryViewModel.pickedFile[i].path.toString()));
+                        }
+                        viewModel.uploadPostMultipleImages(images: images, context: context);
+                      }
+                    }
+                  },
+                  backgroundColor: Colors.blue,
+                  child: const Icon(Icons.check),
+                ),
+              ) : Container(),
+            ],
+          );
+        },
+      ),
     );
   }
 }

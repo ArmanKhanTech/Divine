@@ -244,6 +244,40 @@ class PostsViewModel extends ChangeNotifier{
     }
   }
 
+  uploadPostMultipleImages({BuildContext? context, required List<XFile> images}) async {
+    try {
+      List<Uint8List?> bytes = [];
+      List<String> imagePaths = [];
+      for(int i = 0; i < images.length; i++){
+        bytes.add(await images[i].readAsBytes());
+        bytes[i] = await compressImage(bytes[i]!, 50);
+        imagePaths.add(images[i].path);
+      }
+      Navigator.pushReplacement(
+        context!,
+        CupertinoPageRoute(
+          builder: (context) => MultiImageEditor(
+            images: bytes,
+            savePaths: imagePaths,
+            features: const ImageEditorFeatures(
+              crop: true,
+              rotate: true,
+              brush: false,
+              emoji: true,
+              filters: true,
+              flip: true,
+              text: true,
+              blur: true,
+            ),
+            maxLength: 5,
+          ),
+        ),
+      );
+    } catch (e) {
+      showSnackBar(e.toString(), context, error: true);
+    }
+  }
+
   Future<Uint8List?> compressImage(Uint8List image, int quality) async {
     var result = await FlutterImageCompress.compressWithList(
       image,
