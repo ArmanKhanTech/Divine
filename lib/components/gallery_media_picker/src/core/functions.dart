@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:oktoast/oktoast.dart';
 import 'package:photo_manager/photo_manager.dart';
+import 'package:oktoast/oktoast.dart';
 import '../presentation/pages/gallery_media_picker_controller.dart';
 import '../presentation/widgets/select_album_path/dropdown.dart';
 import '../presentation/widgets/select_album_path/overlay_drop_down.dart';
@@ -54,7 +54,7 @@ class GalleryFunctions {
   }
 
   static onPickMax(GalleryMediaPickerController provider) {
-    provider.onPickMax.addListener(() => showToast("Already pick ${provider.max} items."));
+    provider.onPickMax.addListener(() => showToast("Already picked ${provider.max} images."));
   }
 
   static getPermission(setState, GalleryMediaPickerController provider) async {

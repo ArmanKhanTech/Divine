@@ -415,7 +415,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: BlurryContainer(
-                  height: 240,
+                  height: 220,
                   color: Colors.black.withOpacity(0.15),
                   blur: 5,
                   padding: const EdgeInsets.all(20),
@@ -713,10 +713,15 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
         ),
         bottomNavigationBar: Container(
           alignment: Alignment.bottomCenter,
-          height: 86 + MediaQuery.of(context).padding.bottom,
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+          height: 85 + MediaQuery.of(context).padding.bottom,
+          padding: const EdgeInsets.only(
+            left: 10,
+            right: 10,
+            bottom: 10,
+            top: 15
+          ),
           decoration: const BoxDecoration(
-            color: Colors.black87,
+            color: Colors.black,
             shape: BoxShape.rectangle,
           ),
           child: SafeArea(
@@ -1119,7 +1124,7 @@ class _SingleImageEditorState extends State<SingleImageEditor> {
                         var layer = BackgroundLayerData(
                           file: ImageItem(filterAppliedImage),
                         );
-                        layers.add(layer);
+                        layers.insert(1, layer);
                         await layer.file.status;
                         setState(() {});
                       },
@@ -1200,7 +1205,7 @@ class BottomButton extends StatelessWidget {
             Icon(
               icon,
               color: Colors.white,
-              size: 25
+              size: 30
             ),
             const SizedBox(
               height: 4,
@@ -1209,7 +1214,7 @@ class BottomButton extends StatelessWidget {
               text,
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 15,
+                fontSize: 16,
               ),
             ),
           ],
@@ -1374,7 +1379,7 @@ class _ImageAdjustState extends State<ImageAdjust>{
                 ),
               ),
               const SizedBox(
-                height: 15
+                height: 10
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -1797,9 +1802,6 @@ class _ImageFiltersState extends State<ImageFilters> {
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
             ]),
           ),
         ),
@@ -1818,7 +1820,7 @@ class _ImageFiltersState extends State<ImageFilters> {
         Container(
           height: 60,
           width: 60,
-          margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
+          margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(48),
             border: Border.all(
@@ -1827,7 +1829,7 @@ class _ImageFiltersState extends State<ImageFilters> {
             ),
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(48),
+            borderRadius: BorderRadius.circular(30),
             child: FilterAppliedImage(
               image: widget.image,
               filter: filter,
@@ -1837,7 +1839,7 @@ class _ImageFiltersState extends State<ImageFilters> {
         ),
         Text(
           i18n(name),
-          style: const TextStyle(fontSize: 14,)
+          style: const TextStyle(fontSize: 15)
         ),
       ]),
     );

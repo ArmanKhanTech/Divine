@@ -8,8 +8,11 @@ import '../image_editor.dart';
 class ImageItem {
   int width = 300;
   int height = 300;
+
   Uint8List image = Uint8List.fromList([]);
+
   double viewportRatio = 1;
+
   Completer loader = Completer();
 
   ImageItem([dynamic img]) {

@@ -53,7 +53,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: BlurryContainer(
-                height: 240,
+                height: 220,
                 color: Colors.black.withOpacity(0.15),
                 blur: 5,
                 padding: const EdgeInsets.all(20),
@@ -240,7 +240,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
               ),
               const SizedBox(height: 20.0),
               SizedBox(
-                height: 75.0,
+                height: 65.0,
                 child: TextFormField(
                   style: const TextStyle(color: Colors.white, fontSize: 18.0),
                   decoration: const InputDecoration(
@@ -261,7 +261,12 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                           )
                       ),
                     isDense: true,                      // Added this
-                    contentPadding: EdgeInsets.all(20),
+                    contentPadding: EdgeInsets.only(
+                      left: 20,
+                      right: 20,
+                      top: 15,
+                      bottom: 18,
+                    ),
                     isCollapsed: true,
                   ),
                   textAlignVertical: TextAlignVertical.center,
@@ -272,7 +277,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
               ),
               const SizedBox(height: 10.0),
               SizedBox(
-                height: 75.0,
+                height: 65.0,
                 child: TextFormField(
                   textCapitalization: TextCapitalization.characters,
                   controller: viewModel.locationTEC,
@@ -308,7 +313,12 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                       onPressed: () => viewModel.getLocation(),
                     ),
                     isDense: true,                      // Added this
-                    contentPadding: const EdgeInsets.all(20),
+                    contentPadding: const EdgeInsets.only(
+                      left: 20,
+                      right: 20,
+                      top: 15,
+                      bottom: 18,
+                    ),
                     isCollapsed: true,
                   ),
                   textAlignVertical: TextAlignVertical.center,
@@ -319,7 +329,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
               ),
               const SizedBox(height: 10.0),
               SizedBox(
-                height: 75.0,
+                height: 65.0,
                 child: TextFormField(
                   style: const TextStyle(
                       color: Colors.pink,
@@ -343,7 +353,12 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                           )
                       ),
                     isDense: true,                      // Added this
-                    contentPadding: EdgeInsets.all(20),
+                    contentPadding: EdgeInsets.only(
+                      left: 20,
+                      right: 20,
+                      top: 15,
+                      bottom: 18,
+                    ),
                     isCollapsed: true,
                   ),
                   textAlignVertical: TextAlignVertical.center,
@@ -354,7 +369,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
               ),
               const SizedBox(height: 10.0),
               SizedBox(
-                 height: 75.0,
+                 height: 65.0,
                  child:  TextFormField(
                    style: const TextStyle(color: Colors.blue, fontSize: 18.0),
                    decoration: const InputDecoration(
@@ -375,7 +390,12 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                            )
                        ),
                      isDense: true,                      // Added this
-                     contentPadding: EdgeInsets.all(20),
+                     contentPadding: EdgeInsets.only(
+                       left: 20,
+                       right: 20,
+                       top: 15,
+                       bottom: 18,
+                     ),
                      isCollapsed: true,
                    ),
                    textAlignVertical: TextAlignVertical.center,

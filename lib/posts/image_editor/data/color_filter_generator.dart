@@ -5,6 +5,7 @@ class ColorFilterGenerator {
     value = value * pi;
 
     if (value == 0) {
+
       return [
         1,0,0,0,0,
         0,1,0,0,0,
@@ -32,6 +33,7 @@ class ColorFilterGenerator {
     }
 
     if (value == 0) {
+
       return [
         1, 0, 0, 0, 0,
         0, 1, 0, 0, 0,
@@ -49,6 +51,7 @@ class ColorFilterGenerator {
     value = value * 100;
 
     if (value == 0) {
+
       return [
         1,0,0,0,0,
         0,1,0,0,0,
