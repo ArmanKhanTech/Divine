@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:divine/view_models/user/gallery_view_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -84,7 +83,6 @@ class _PickFromGalleryScreenPostsState extends State<PickFromGalleryScreenPosts>
                   selectedCheckColor: Colors.white,
                   selectedCheckBackgroundColor: Colors.blue,
                 ),
-                // TODO : continue here
                 pathList: (List<PickedAssetModel> paths) {
                   setState(() {
                     galleryViewModel.pickedFile = paths;

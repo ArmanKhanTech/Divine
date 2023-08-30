@@ -14,6 +14,7 @@ class GalleryViewModel extends ChangeNotifier {
   @override
   void dispose() {
     pickedFileNotifier.dispose();
+    pickedFile.clear();
     super.dispose();
   }
 
