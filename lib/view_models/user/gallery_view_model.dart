@@ -11,20 +11,21 @@ class GalleryViewModel extends ChangeNotifier {
 
   bool exceedsLimit = false;
 
-  @override
-  void dispose() {
-    pickedFileNotifier.dispose();
+  void reset() {
     pickedFile.clear();
-    super.dispose();
+    pickedFileNotifier.dispose();
   }
 
   void pickPath(PickedAssetModel path) {
     File file = File(path.path);
-    if (file.lengthSync() > 4096) {
+    if (file.lengthSync() > 4000000) {
       exceedsLimit = true;
       notifyListeners();
 
       return;
+    } else {
+      exceedsLimit = false;
+      notifyListeners();
     }
     if (pickedFile.where((element) => element.id == path.id).isNotEmpty) {
       pickedFile.removeWhere((val) => val.id == path.id);

@@ -27,14 +27,6 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
   AnimationController? animationController;
 
   @override
-  void dispose() {
-    if(animationController != null){
-      animationController!.dispose();
-    }
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     animationController = AnimationController(vsync: this, duration: const Duration(seconds: 2))..repeat();
 
@@ -89,8 +81,10 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                         await viewModel.resetPost();
                         if(mounted){
                           widget.postImage!.delete();
+                          animationController!.dispose();
                           Navigator.pop(c, true);
-                          Navigator.pop(context);
+                          Navigator.of(context).pushAndRemoveUntil(
+                              CupertinoPageRoute(builder: (_) => const MainScreen()), (route) => false);
                         }
                       },
                       child: Text(
@@ -181,7 +175,8 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                   onTap: () async {
                     await viewModel.uploadSinglePost(context, widget.postImage!);
                     await viewModel.resetPost();
-                    widget.postImage!.delete();
+                    await widget.postImage!.delete();
+                    animationController!.dispose();
                     Navigator.of(context).pushAndRemoveUntil(
                         CupertinoPageRoute(builder: (_) => const MainScreen()), (route) => false);
                   },

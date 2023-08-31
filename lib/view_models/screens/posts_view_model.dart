@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:divine/view_models/user/gallery_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -218,15 +219,14 @@ class PostsViewModel extends ChangeNotifier{
     try {
       Uint8List? bytes = await image.readAsBytes();
       bytes = await compressImage(bytes, 50);
-      Navigator.pushReplacement(
+      Navigator.push(
         context!,
         CupertinoPageRoute(
           builder: (context) => SingleImageEditor(
             image: bytes,
             imagePath: image.path,
+            multiImages: false,
             features: const ImageEditorFeatures(
-              captureFromCamera: true,
-              pickFromGallery: true,
               crop: true,
               rotate: true,
               brush: false,
@@ -244,7 +244,11 @@ class PostsViewModel extends ChangeNotifier{
     }
   }
 
-  uploadPostMultipleImages({BuildContext? context, required List<XFile> images}) async {
+  uploadPostMultipleImages({
+    BuildContext? context,
+    required List<XFile> images,
+    required GalleryViewModel viewModel,
+  }) async {
     try {
       List<Uint8List?> bytes = [];
       List<String> imagePaths = [];
@@ -253,7 +257,7 @@ class PostsViewModel extends ChangeNotifier{
         bytes[i] = await compressImage(bytes[i]!, 50);
         imagePaths.add(images[i].path);
       }
-      Navigator.pushReplacement(
+      Navigator.push(
         context!,
         CupertinoPageRoute(
           builder: (context) => MultiImageEditor(
@@ -270,6 +274,9 @@ class PostsViewModel extends ChangeNotifier{
               blur: true,
             ),
             maxLength: 5,
+            onDone: () {
+              viewModel.reset();
+            },
           ),
         ),
       );
