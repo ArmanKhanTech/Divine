@@ -383,7 +383,7 @@ class _MainViewState extends State<MainView> {
                         appBarHeight: 45,
                         imageBackgroundColor: Colors.black,
                         selectedBackgroundColor: Colors.transparent,
-                        selectedCheckColor: Colors.blue,
+                        selectedCheckColor: Colors.white,
                         selectedCheckBackgroundColor: Colors.blue,
                       ),
                       pathList: (path) {

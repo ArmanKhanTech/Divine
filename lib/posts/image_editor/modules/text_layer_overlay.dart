@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../data/layer.dart';
-import '../image_editor.dart';
+import '../image_editor_pro.dart';
 import 'color_picker.dart';
 
 class TextLayerOverlay extends StatefulWidget {
@@ -122,8 +122,7 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
                   child: Text(i18n('Reset'),
                       style: const TextStyle(
                         color: Colors.blue,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
                       )
                   ),
                 ),
@@ -165,8 +164,7 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
                     i18n('Reset'),
                     style: const TextStyle(
                       color: Colors.blue,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
                     ),
                   ),
                 ),

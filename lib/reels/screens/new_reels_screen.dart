@@ -252,7 +252,7 @@ class _NewReelsScreenState extends State<NewReelsScreen> with
               systemNavigationBarIconBrightness: Brightness.light,
             ),
             title: GradientText(
-              'New Reels',
+              'Create a Reel',
               style: const TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.w300,

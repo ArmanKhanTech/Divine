@@ -234,7 +234,7 @@ class _FeedsPageState extends State<FeedsPage>{
                           context,
                           CupertinoPageRoute(
                               builder: (context) => const NewPostScreen(
-                                title: 'New Post',
+                                title: 'Create a Post',
                               ))
                       );
                     },
@@ -243,6 +243,7 @@ class _FeedsPageState extends State<FeedsPage>{
                         padding: const EdgeInsets.only(
                           left: 25.0,
                           right: 25.0,
+                          bottom: 2,
                         ),
                         width: MediaQuery.of(context).size.width,
                         color: Theme.of(context).colorScheme.background,
@@ -252,7 +253,7 @@ class _FeedsPageState extends State<FeedsPage>{
                           children: [
                             Padding(
                               padding: EdgeInsets.only(
-                                top: 2.0,
+                                top: 3.0,
                               ),
                               child: Icon(
                                 CupertinoIcons.plus_circle,
@@ -302,6 +303,7 @@ class _FeedsPageState extends State<FeedsPage>{
                             padding: const EdgeInsets.only(
                               left: 25.0,
                               right: 25.0,
+                              bottom: 2,
                             ),
                             width: MediaQuery.of(context).size.width,
                             color: Theme.of(context).colorScheme.background,
@@ -311,7 +313,7 @@ class _FeedsPageState extends State<FeedsPage>{
                               children: [
                                 Padding(
                                   padding: EdgeInsets.only(
-                                    top: 2.0,
+                                    top: 3.0,
                                   ),
                                   child: Icon(
                                     CupertinoIcons.play_circle,
@@ -357,6 +359,7 @@ class _FeedsPageState extends State<FeedsPage>{
                         padding: const EdgeInsets.only(
                           left: 25.0,
                           right: 25.0,
+                          bottom: 2,
                         ),
                         width: MediaQuery.of(context).size.width,
                         color: Theme.of(context).colorScheme.background,
@@ -366,7 +369,7 @@ class _FeedsPageState extends State<FeedsPage>{
                           children: [
                             Padding(
                               padding: EdgeInsets.only(
-                                top: 2.0,
+                                top: 3.0,
                               ),
                               child: Icon(
                                 CupertinoIcons.equal_circle,

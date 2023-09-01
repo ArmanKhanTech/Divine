@@ -3,6 +3,7 @@ import '../data/layer.dart';
 
 class BackgroundLayer extends StatefulWidget {
   final BackgroundLayerData layerData;
+
   final VoidCallback? onUpdate;
 
   const BackgroundLayer({
@@ -19,10 +20,9 @@ class _BackgroundLayerState extends State<BackgroundLayer> {
   @override
   Widget build(BuildContext context) {
 
-    return Container(
+    return SizedBox(
       width: widget.layerData.file.width.toDouble(),
       height: widget.layerData.file.height.toDouble(),
-      padding: EdgeInsets.zero,
       child: Image.memory(widget.layerData.file.image),
     );
   }

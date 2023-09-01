@@ -79,7 +79,6 @@ class _GalleryMediaPickerState extends State<GalleryMediaPicker> {
                   padding: const EdgeInsets.only(
                     left: 10,
                     right: 10,
-                    bottom: 10,
                   ),
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height,

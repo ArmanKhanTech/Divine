@@ -4,7 +4,6 @@ import 'package:divine/posts/screens/pick_from_gallery_screen_posts.dart';
 import 'package:divine/posts/screens/preview_image.dart';
 import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../data/layer.dart';
-import '../image_editor.dart';
+import '../image_editor_pro.dart';
 
 class ImageLayerOverlay extends StatefulWidget {
   final int index;
@@ -62,7 +62,6 @@ class _ImageLayerOverlayState extends State<ImageLayerOverlay> {
               onChanged: (v) {
                 setState(() {
                   slider = v;
-                  // print(v.toDouble());
                   widget.layerData.scale = v.toDouble();
                   widget.onUpdate();
                 });

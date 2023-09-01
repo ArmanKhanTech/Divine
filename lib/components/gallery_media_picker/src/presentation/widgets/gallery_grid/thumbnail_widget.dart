@@ -160,7 +160,7 @@ class ThumbnailWidgetState extends State<ThumbnailWidget> {
                       color: Colors.black.withOpacity(0.8),
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(color: Colors.white, width: 1)),
-                  padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -172,7 +172,7 @@ class ThumbnailWidgetState extends State<ThumbnailWidget> {
                         size: 10,
                       ),
                       const SizedBox(
-                        width: 5,
+                        width: 2,
                       ),
                       Text(
                         parseDuration(widget.asset.videoDuration.inSeconds),
@@ -180,7 +180,7 @@ class ThumbnailWidgetState extends State<ThumbnailWidget> {
                         style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
-                            fontSize: 8
+                            fontSize: 10
                         ),
                       ),
                     ],

@@ -7,13 +7,10 @@ import '../../components/gallery_media_picker/src/data/models/picked_asset_model
 class GalleryViewModel extends ChangeNotifier {
   List<PickedAssetModel> pickedFile = [];
 
-  final pickedFileNotifier = ValueNotifier<List<PickedAssetModel>>([]);
-
   bool exceedsLimit = false;
 
   void reset() {
     pickedFile.clear();
-    pickedFileNotifier.dispose();
   }
 
   void pickPath(PickedAssetModel path) {
@@ -32,8 +29,6 @@ class GalleryViewModel extends ChangeNotifier {
     } else {
       pickedFile.add(path);
     }
-    pickedFileNotifier.value = pickedFile;
-    pickedFileNotifier.notifyListeners();
     notifyListeners();
   }
 

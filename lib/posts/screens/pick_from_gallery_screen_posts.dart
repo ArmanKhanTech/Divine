@@ -40,7 +40,7 @@ class PickFromGalleryScreenPostsState extends State<PickFromGalleryScreenPosts> 
 
     return WillPopScope(
       onWillPop: () async {
-        onBackPressed();
+        await onBackPressed();
         return false;
       },
       child: Scaffold(
@@ -64,7 +64,7 @@ class PickFromGalleryScreenPostsState extends State<PickFromGalleryScreenPosts> 
             systemNavigationBarIconBrightness: Brightness.light,
           ),
           title: GradientText(
-            'Select',
+            'Pick from Gallery',
             style: const TextStyle(
               fontSize: 30,
               fontWeight: FontWeight.w300,
@@ -111,26 +111,40 @@ class PickFromGalleryScreenPostsState extends State<PickFromGalleryScreenPosts> 
                   },
                 ),
                 media.pickedFile.isNotEmpty ? Positioned(
-                  bottom: 20,
-                  right: 20,
-                  child: FloatingActionButton(
-                    onPressed: () {
-                      if(media.pickedFile.isNotEmpty) {
-                        if(media.pickedFile.length == 1){
-                          XFile file = XFile(media.pickedFile.first.path.toString());
-                          viewModel.uploadPostSingleImage(image: file, context: context);
-                        } else {
-                          List<XFile> images = [];
-                          for(int i = 0; i < media.pickedFile.length; i++){
-                            images.add(XFile(media.pickedFile[i].path.toString()));
+                  bottom: 10,
+                  right: 10,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.0),
+                      color: Colors.blue,
+                    ),
+                    padding: const EdgeInsets.all(12),
+                    child: GestureDetector(
+                      onTap: () {
+                        if(media.pickedFile.isNotEmpty) {
+                          if(media.pickedFile.length == 1){
+                            XFile file = XFile(media.pickedFile.first.path.toString());
+                            viewModel.uploadPostSingleImage(image: file, context: context);
+                          } else {
+                            List<XFile> images = [];
+                            for(int i = 0; i < media.pickedFile.length; i++){
+                              images.add(XFile(media.pickedFile[i].path.toString()));
+                            }
+                            viewModel.uploadPostMultipleImages(images: images, context: context).then((value) {
+                              media.reset();
+                            });
                           }
-                          viewModel.uploadPostMultipleImages(images: images, context: context, viewModel: media);
                         }
-                      }
-                    },
-                    backgroundColor: Colors.blue,
-                    child: const Icon(Icons.check),
-                  ),
+                      },
+                        child: const Center(
+                          child: Icon(
+                            Icons.done,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                        )
+                    ),
+                  )
                 ) : Container(),
               ],
             );

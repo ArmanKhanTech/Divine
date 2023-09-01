@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:divine/view_models/user/gallery_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +14,8 @@ import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import '../../models/post_model.dart';
 import '../../models/user_model.dart';
-import '../../posts/image_editor/image_editor.dart';
-import '../../posts/image_editor/utilities.dart';
+import '../../posts/image_editor/image_editor_pro.dart';
+import '../../posts/image_editor/utilities/utilities.dart';
 import '../../profile/screens/pick_from_gallery_profile_picture.dart';
 import '../../services/post_service.dart';
 import '../../services/user_service.dart';
@@ -44,8 +43,6 @@ class PostsViewModel extends ChangeNotifier{
   Position? position;
 
   Placemark? placemark;
-
-  File? userDp;
 
   TextEditingController locationTEC = TextEditingController();
 
@@ -183,27 +180,32 @@ class PostsViewModel extends ChangeNotifier{
     notifyListeners();
   }
 
-  uploadSinglePost(BuildContext context, File? image) async {
+  uploadPost(BuildContext context, {required List<File> images}) async {
     try {
       loading = true;
       notifyListeners();
-      if(image == null) showSnackBar('Kindly select an image.', context, error: true);
       description ??= '';
       location ??= 'Unknown';
       hashtagsList ??= [];
       mentionsList ??= [];
-      final hasNudity = await FlutterNudeDetector.detect(path: image!.path);
+      bool hasNudity = false;
+      for(int i = 0; i < images.length; i++){
+        final result = await FlutterNudeDetector.detect(path: images[i].path);
+        if(result){
+          hasNudity = true;
+
+          break;
+        }
+      }
       if(hasNudity){
-        media!.delete();
         showSnackBar('NSFW content detected.', context, error: true);
         loading = false;
         notifyListeners();
       } else{
-        await postService.uploadSinglePost(image, location!, description!, hashtagsList, mentionsList)
+        await postService.uploadPost(images, location!, description!, hashtagsList, mentionsList)
             .then((value) {
           if(hashtagsList.isNotEmpty) postService.addPostToHashtagsCollection(value, hashtagsList);
         });
-        media!.delete();
         showSnackBar('Post uploaded successfully!', context, error: false);
         loading = false;
         notifyListeners();
@@ -247,7 +249,6 @@ class PostsViewModel extends ChangeNotifier{
   uploadPostMultipleImages({
     BuildContext? context,
     required List<XFile> images,
-    required GalleryViewModel viewModel,
   }) async {
     try {
       List<Uint8List?> bytes = [];
@@ -274,9 +275,6 @@ class PostsViewModel extends ChangeNotifier{
               blur: true,
             ),
             maxLength: 5,
-            onDone: () {
-              viewModel.reset();
-            },
           ),
         ),
       );

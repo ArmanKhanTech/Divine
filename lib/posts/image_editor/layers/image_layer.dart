@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import '../data/layer.dart';
-import '../image_editor.dart';
+import '../image_editor_pro.dart';
 import '../modules/image_layer_overlay.dart';
 
 class ImageLayer extends StatefulWidget {
   final ImageLayerData layerData;
+
   final VoidCallback? onUpdate;
 
   const ImageLayer({
@@ -14,10 +15,10 @@ class ImageLayer extends StatefulWidget {
   });
 
   @override
-  createState() => _ImageLayerState();
+  createState() => ImageLayerState();
 }
 
-class _ImageLayerState extends State<ImageLayer> {
+class ImageLayerState extends State<ImageLayer> {
   double initialSize = 0;
   double initialRotation = 0;
 
@@ -86,7 +87,9 @@ class _ImageLayerState extends State<ImageLayer> {
           child: SizedBox(
             width: widget.layerData.image.width.toDouble(),
             height: widget.layerData.image.height.toDouble(),
-            child: Image.memory(widget.layerData.image.image),
+            child: Image.memory(
+                widget.layerData.image.image,
+            ),
           ),
         ),
       ),

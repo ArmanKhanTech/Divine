@@ -40,7 +40,7 @@ class _PickFromGalleryScreenReelsState extends State<PickFromGalleryScreenReels>
           systemNavigationBarIconBrightness: Brightness.light,
         ),
         title: GradientText(
-          'Select',
+          'Pick from Gallery',
           style: const TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.w300,
@@ -66,7 +66,7 @@ class _PickFromGalleryScreenReelsState extends State<PickFromGalleryScreenReels>
           appBarHeight: 45,
           imageBackgroundColor: Colors.black,
           selectedBackgroundColor: Colors.transparent,
-          selectedCheckColor: Colors.blue,
+          selectedCheckColor: Colors.white,
           selectedCheckBackgroundColor: Colors.blue,
         ),
         pathList: (path) {

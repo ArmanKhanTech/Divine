@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../data/layer.dart';
-import '../image_editor.dart';
+import '../image_editor_pro.dart';
 
 class EmojiLayerOverlay extends StatefulWidget {
   final int index;

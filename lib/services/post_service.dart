@@ -36,8 +36,13 @@ class PostService extends Service{
     });
   }
 
-  Future<String> uploadSinglePost(File image, String location, String description, List<String> hashtagsList, List<String> mentionsList) async {
-    String link = await uploadImage(posts, image);
+  Future<String> uploadPost(List<File> image, String location, String description, List<String> hashtagsList, List<String> mentionsList) async {
+    List<String> postLink = [];
+
+    for (File img in image) {
+      String link = await uploadImage(posts, img);
+      postLink.add(link);
+    }
 
     DocumentSnapshot doc = await usersRef.doc(auth.currentUser!.uid).get();
 
@@ -52,7 +57,7 @@ class PostService extends Service{
       "postId": ref.id,
       "username": user.username,
       "ownerId": auth.currentUser!.uid,
-      "mediaUrl": link,
+      "mediaUrl": postLink,
       "description": description,
       "location": location,
       "timestamp": Timestamp.now(),

@@ -39,7 +39,7 @@ class ChangePathWidgetState extends State<ChangePathWidget> {
 
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(10),
         border: Border.all(
           color: Colors.white,
           width: 1

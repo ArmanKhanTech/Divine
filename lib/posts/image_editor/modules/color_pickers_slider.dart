@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../image_editor.dart';
+import '../image_editor_pro.dart';
 import 'color_picker.dart';
 
 class ColorPickersSlider extends StatefulWidget {
