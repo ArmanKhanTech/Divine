@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -178,46 +179,49 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                   itemCount: widget.postImages.length,
                   itemBuilder: (BuildContext context, int index) {
 
-                    return ImagePixels(
-                      imageProvider: FileImage(widget.postImages[index]),
-                      builder: (BuildContext context, ImgDetails img) {
-                        topLeftColor = img.pixelColorAtAlignment!(Alignment.topLeft);
-                        bottomRightColor = img.pixelColorAtAlignment!(Alignment.bottomRight);
-
-                        return Stack(
+                    return Container(
+                      width: MediaQuery.of(context).size.width * 0.95,
+                      height: MediaQuery.of(context).size.height * 0.9,
+                      margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: FileImage(widget.postImages[index]),
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(20.0),
+                        ),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(20.0),
+                        ),
+                        child: Stack(alignment: Alignment.center,
                           children: [
-                            Container(
-                                width: MediaQuery.of(context).size.width * 0.95,
-                                height: MediaQuery.of(context).size.height * 0.9,
-                                margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [topLeftColor!, bottomRightColor!],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  ),
-                                  color: Colors.black,
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(20.0),
-                                  ),
+                            Positioned.fill(
+                              child: BackdropFilter(
+                                filter: ImageFilter.blur(
+                                  sigmaX: 10.0,
+                                  sigmaY: 10.0,
                                 ),
-                                clipBehavior: Clip.hardEdge,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                  child: viewModel.imgLink != null ? CustomImage(
-                                    imageUrl: viewModel.imgLink,
-                                    width: MediaQuery.of(context).size.width,
-                                    fit: BoxFit.contain,
-                                  ) :  Image.file(
-                                    widget.postImages[index],
-                                    key: UniqueKey(),
-                                    width: MediaQuery.of(context).size.width,
-                                    fit: BoxFit.contain,
-                                  ),
-                                )
+                                child: Container(
+                                  color: Colors.black.withOpacity(0.2),
+                                ),
+                              ),
+                            ),
+                            viewModel.imgLink != null ? CustomImage(
+                              imageUrl: viewModel.imgLink,
+                              width: MediaQuery.of(context).size.width,
+                              fit: BoxFit.contain,
+                            ) :  Image.file(
+                              widget.postImages[index],
+                              key: UniqueKey(),
+                              width: MediaQuery.of(context).size.width,
+                              fit: BoxFit.contain,
                             ),
                             widget.postImages.length > 1 ? Positioned(
-                              left: 10.0,
+                              top: 0,
+                              left: 0,
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: Colors.black.withOpacity(0.5),
@@ -237,8 +241,8 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                               ),
                             ) : const SizedBox.shrink(),
                           ],
-                        );
-                      },
+                        ),
+                      )
                     );
                   },
                 ),
@@ -269,11 +273,6 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          /*SizedBox(width: 10.0),
-                          Icon(
-                            Icons.done,
-                            size: 30,
-                          ),*/
                         ],
                       )
                     ),

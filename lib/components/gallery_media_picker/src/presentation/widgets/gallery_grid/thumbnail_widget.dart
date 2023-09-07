@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:image_pixels/image_pixels.dart';
 import 'package:photo_manager/photo_manager.dart';
@@ -40,52 +41,36 @@ class ThumbnailWidgetState extends State<ThumbnailWidget> {
     return Stack(
       alignment: Alignment.center,
       children: [
-        Container(
-          decoration: const BoxDecoration(
-              color: Colors.transparent
-          ),
-        ),
-
         if (widget.asset.type == AssetType.image || widget.asset.type == AssetType.video)
           FutureBuilder<Uint8List?>(
             future: widget.asset.thumbnailData,
             builder: (_, data) {
               if (data.hasData) {
 
-                return ImagePixels(
-                  imageProvider: MemoryImage(data.data!),
-                  builder: (BuildContext context, ImgDetails img) {
-                    topLeftColor = img.pixelColorAtAlignment!(Alignment.topLeft);
-                    bottomRightColor = img.pixelColorAtAlignment!(Alignment.bottomRight);
-
-                    return Container(
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                topLeftColor, bottomRightColor
-                              ],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                            ),
-                            borderRadius: const BorderRadius.all(Radius.circular(10)),
+                return Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: MemoryImage(data.data!),
+                        fit: BoxFit.cover,
+                      ),
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    ),
+                    width: double.infinity,
+                    height: double.infinity,
+                    padding: const EdgeInsets.all(0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image(
+                        image: DecodeImage(
+                            widget.provider.pathList[widget.provider.pathList.indexOf(widget.provider.currentAlbum!)],
+                            thumbSize: 200,
+                            index: widget.index
                         ),
-                        width: double.infinity,
-                        height: double.infinity,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image(
-                            image: DecodeImage(
-                                widget.provider.pathList[widget.provider.pathList.indexOf(widget.provider.currentAlbum!)],
-                                thumbSize: 200,
-                                index: widget.index
-                            ),
-                            gaplessPlayback: true,
-                            fit: BoxFit.fitWidth,
-                            filterQuality: FilterQuality.high,
-                          ),
-                        )
-                    );
-                  },
+                        gaplessPlayback: true,
+                        fit: BoxFit.cover,
+                        filterQuality: FilterQuality.high,
+                      ),
+                    )
                 );
               } else {
 

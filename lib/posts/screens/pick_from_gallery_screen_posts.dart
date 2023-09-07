@@ -20,8 +20,6 @@ class PickFromGalleryScreenPosts extends StatefulWidget {
 class PickFromGalleryScreenPostsState extends State<PickFromGalleryScreenPosts> {
   List<XFile> imageList = [];
 
-  bool backPressed = false;
-
   @override
   void dispose() {
     super.dispose();
@@ -30,10 +28,11 @@ class PickFromGalleryScreenPostsState extends State<PickFromGalleryScreenPosts> 
   @override
   Widget build(BuildContext context) {
     PostsViewModel viewModel = Provider.of<PostsViewModel>(context);
+    GalleryViewModel media = Provider.of<GalleryViewModel>(context);
 
     Future<void> onBackPressed() async {
       setState(() {
-        backPressed = true;
+        media.reset();
       });
       Navigator.of(context).pop();
     }
@@ -75,80 +74,75 @@ class PickFromGalleryScreenPostsState extends State<PickFromGalleryScreenPosts> 
           ),
         ),
         backgroundColor: Colors.black,
-        body: Consumer<GalleryViewModel>(
-          builder: (context, media, child) {
-            if(backPressed) {
-              media.reset();
-            }
-
-            return Stack(
-              children: [
-                GalleryMediaPicker(
-                  mediaPickerParams: MediaPickerParamsModel(
-                    gridViewController: ScrollController(
-                      initialScrollOffset: 0,
-                    ),
-                    maxPickImages: 5,
-                    thumbnailQuality: 200,
-                    singlePick: false,
-                    onlyImages: true,
-                    appBarColor: Colors.black,
-                    gridViewPhysics: const ScrollPhysics(),
-                    appBarLeadingWidget: null,
-                    appBarHeight: 45,
-                    imageBackgroundColor: Colors.black,
-                    selectedBackgroundColor: Colors.transparent,
-                    selectedCheckColor: Colors.white,
-                    selectedCheckBackgroundColor: Colors.blue,
-                  ),
-                  pathList: (List<PickedAssetModel> paths) {
-                    setState(() {
-                      media.pickedFile = paths;
-                    });
-                    if(media.exceedsLimit) {
-                      media.showSnackBar('Image size exceeds 4MB.', context);
-                    }
-                  },
+        body: Stack(
+          children: [
+            GalleryMediaPicker(
+              mediaPickerParams: MediaPickerParamsModel(
+                gridViewController: ScrollController(
+                  initialScrollOffset: 0,
                 ),
-                media.pickedFile.isNotEmpty ? Positioned(
-                  bottom: 10,
-                  right: 10,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.0),
-                      color: Colors.blue,
-                    ),
-                    padding: const EdgeInsets.all(12),
-                    child: GestureDetector(
-                      onTap: () {
-                        if(media.pickedFile.isNotEmpty) {
-                          if(media.pickedFile.length == 1){
-                            XFile file = XFile(media.pickedFile.first.path.toString());
-                            viewModel.uploadPostSingleImage(image: file, context: context);
-                          } else {
-                            List<XFile> images = [];
-                            for(int i = 0; i < media.pickedFile.length; i++){
-                              images.add(XFile(media.pickedFile[i].path.toString()));
-                            }
-                            viewModel.uploadPostMultipleImages(images: images, context: context).then((value) {
-                              media.reset();
-                            });
+                maxPickImages: 5,
+                thumbnailQuality: 200,
+                singlePick: false,
+                onlyImages: true,
+                appBarColor: Colors.black,
+                gridViewPhysics: const ScrollPhysics(),
+                appBarLeadingWidget: null,
+                appBarHeight: 45,
+                imageBackgroundColor: Colors.black,
+                selectedBackgroundColor: Colors.transparent,
+                selectedCheckColor: Colors.white,
+                selectedCheckBackgroundColor: Colors.blue,
+                stories: false,
+              ),
+              pathList: (List<PickedAssetModel> paths) {
+                setState(() {
+                  media.pickedFile = paths;
+                });
+                if(media.exceedsLimit) {
+                  media.showSnackBar('Image size exceeds 4MB.', context);
+                }
+              },
+            ),
+            Positioned(
+              bottom: 5,
+              right: 15,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                  color: Colors.blue,
+                ),
+                padding: const EdgeInsets.all(12),
+                child: GestureDetector(
+                    onTap: () {
+                      if(media.pickedFile.isNotEmpty) {
+                        if(media.pickedFile.length == 1){
+                          XFile file = XFile(media.pickedFile.first.path.toString());
+                          viewModel.uploadPostSingleImage(image: file, context: context);
+                        } else {
+                          List<XFile> images = [];
+                          for(int i = 0; i < media.pickedFile.length; i++){
+                            images.add(XFile(media.pickedFile[i].path.toString()));
                           }
+                          viewModel.uploadPostMultipleImages(images: images, context: context).then((value) {
+                            media.reset();
+                          });
                         }
-                      },
-                        child: const Center(
-                          child: Icon(
-                            Icons.done,
-                            color: Colors.white,
-                            size: 30,
-                          ),
-                        )
-                    ),
-                  )
-                ) : Container(),
-              ],
-            );
-          },
+                      } else{
+                        media.showSnackBar('Please select an image.', context);
+                      }
+                    },
+                    child: const Center(
+                      child: Icon(
+                        Icons.done,
+                        color: Colors.white,
+                        size: 35,
+                      ),
+                    )
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -1,6 +1,5 @@
 // ignore_for_file: deprecated_member_use
 import 'package:divine/components/gallery_media_picker/src/presentation/widgets/gallery_grid/thumbnail_widget.dart';
-import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 import '../../pages/gallery_media_picker_controller.dart';
@@ -52,7 +51,7 @@ class GalleryGridViewState extends State<GalleryGridView> {
 
     return widget.path != null
         ? NotificationListener<ScrollNotification>(
-            onNotification: _onScroll,
+            onNotification: onScroll,
             child: AnimatedBuilder(
               animation: widget.provider.assetCountNotifier,
               builder: (_, __) => Container(
@@ -73,9 +72,8 @@ class GalleryGridViewState extends State<GalleryGridView> {
                     mainAxisSpacing: 2.5,
                     crossAxisSpacing: 2.5,
                   ),
-
                   itemBuilder: (context, index) =>
-                      _buildItem(context, index, widget.provider),
+                      buildItem(context, index, widget.provider),
                   itemCount: widget.provider.assetCount,
                   addRepaintBoundaries: true,
                 ),
@@ -111,7 +109,7 @@ class GalleryGridViewState extends State<GalleryGridView> {
     );
   }
 
-  Widget _buildItem(
+  Widget buildItem(
       BuildContext context, index, GalleryMediaPickerController provider) {
 
     return GestureDetector(
@@ -166,7 +164,7 @@ class GalleryGridViewState extends State<GalleryGridView> {
     }
   }
 
-  bool _onScroll(ScrollNotification notification) {
+  bool onScroll(ScrollNotification notification) {
     if (notification is ScrollEndNotification) {
       scrolling.value = false;
     } else if (notification is ScrollStartNotification) {

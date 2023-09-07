@@ -226,7 +226,6 @@ class PostsViewModel extends ChangeNotifier{
         CupertinoPageRoute(
           builder: (context) => SingleImageEditor(
             image: bytes,
-            imagePath: image.path,
             multiImages: false,
             features: const ImageEditorFeatures(
               crop: true,
@@ -252,18 +251,15 @@ class PostsViewModel extends ChangeNotifier{
   }) async {
     try {
       List<Uint8List?> bytes = [];
-      List<String> imagePaths = [];
       for(int i = 0; i < images.length; i++){
         bytes.add(await images[i].readAsBytes());
         bytes[i] = await compressImage(bytes[i]!, 50);
-        imagePaths.add(images[i].path);
       }
       Navigator.push(
         context!,
         CupertinoPageRoute(
           builder: (context) => MultiImageEditor(
             images: bytes,
-            savePaths: imagePaths,
             features: const ImageEditorFeatures(
               crop: true,
               rotate: true,

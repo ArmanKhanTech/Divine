@@ -121,14 +121,11 @@ class _TextEditorImageState extends State<TextEditorImage> {
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   contentPadding: const EdgeInsets.all(30),
-                  hintText: Text(
-                    i18n('Enter Text'),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ).data,
+                  hintText: 'Enter your text here',
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontSize: slider,
+                  ),
                   alignLabelWithHint: true,
                 ),
                 scrollPadding: const EdgeInsets.all(20.0),

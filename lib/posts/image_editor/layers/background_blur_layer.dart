@@ -28,13 +28,10 @@ class _BackgroundBlurLayerState extends State<BackgroundBlurLayer> {
           sigmaY: widget.layerData.radius,
         ),
         blendMode: BlendMode.srcOver,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Container(
-            color: widget.layerData.color
-                .withAlpha((widget.layerData.opacity * 100).toInt()),
-          ),
-        )
+        child: Container(
+          color: widget.layerData.color
+              .withAlpha((widget.layerData.opacity * 100).toInt()),
+        ),
       ),
     );
   }

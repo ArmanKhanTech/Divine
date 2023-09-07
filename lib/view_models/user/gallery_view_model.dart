@@ -24,6 +24,7 @@ class GalleryViewModel extends ChangeNotifier {
       exceedsLimit = false;
       notifyListeners();
     }
+
     if (pickedFile.where((element) => element.id == path.id).isNotEmpty) {
       pickedFile.removeWhere((val) => val.id == path.id);
     } else {

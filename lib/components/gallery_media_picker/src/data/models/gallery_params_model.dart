@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class MediaPickerParamsModel {
   MediaPickerParamsModel(
       {this.maxPickImages = 2,
+      this.stories = false,
       this.singlePick = true,
       this.appBarColor = Colors.black,
       this.albumBackGroundColor = Colors.black,
@@ -74,4 +75,6 @@ class MediaPickerParamsModel {
   final bool onlyImages;
 
   final int thumbnailQuality;
+
+  final bool stories;
 }

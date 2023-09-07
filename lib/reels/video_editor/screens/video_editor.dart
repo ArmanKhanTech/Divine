@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 import 'package:divine/reels/video_editor/screens/text_overlay_screen.dart';
 import 'package:divine/reels/video_editor/src/models/trim_style.dart';
 import 'package:divine/reels/video_editor/src/widgets/crop/crop_grid.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
+import 'package:video_player/video_player.dart';
 import '../services/export_service.dart';
 import '../src/utilities/controller.dart';
 import '../src/export/ffmpeg_export_config.dart';
@@ -42,7 +44,7 @@ class _VideoEditorState extends State<VideoEditor> {
     minDuration: const Duration(seconds: 15),
     maxDuration: const Duration(seconds: 180),
     trimStyle: TrimSliderStyle(
-       iconColor: Colors.black,
+       iconColor: Colors.blue,
     )
   );
 
@@ -174,11 +176,9 @@ class _VideoEditorState extends State<VideoEditor> {
                         children: [
                           Expanded(
                             child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              margin: const EdgeInsets.symmetric(vertical: 5),
                               decoration: BoxDecoration(
-                                color: Colors.black,
                                 borderRadius: BorderRadius.circular(20),
-                                border: Border.all(color: Colors.white),
                               ),
                               child: TabBarView(
                                 physics: const NeverScrollableScrollPhysics(),
@@ -188,9 +188,59 @@ class _VideoEditorState extends State<VideoEditor> {
                                     child: Stack(
                                       alignment: Alignment.center,
                                       children: [
+                                        SizedBox(
+                                          height: MediaQuery.of(context).size.height,
+                                          width: MediaQuery.of(context).size.width,
+                                          child: VideoPlayer(controller.video),
+                                        ),
+                                        Positioned.fill(
+                                          child: BackdropFilter(
+                                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                                            child: Container(
+                                              color: Colors.black.withOpacity(0.2),
+                                            ),
+                                          ),
+                                        ),
                                         ColorFiltered(
                                           colorFilter: controller.colorFilter,
-                                          child: CropGridViewer.preview(controller: controller),
+                                          child: Stack(
+                                            children: [
+                                              CropGridViewer.preview(controller: controller),
+                                              controller.textOverlay == true ? Positioned(
+                                                left: offset.dx,
+                                                top: offset.dy,
+                                                child: GestureDetector(
+                                                  onPanUpdate: (details) {
+                                                    setState(() {
+                                                      offset = Offset(
+                                                          offset.dx + details.delta.dx, offset.dy + details.delta.dy);
+                                                    });
+                                                    controller.setTextx1(offset.dx);
+                                                    controller.setTexty1(offset.dy);
+                                                  },
+                                                  onTap: () {
+                                                    showBottomDialog();
+                                                  },
+                                                  child: Container(
+                                                    padding: const EdgeInsets.all(10),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(20),
+                                                      color: controller.textBgColor,
+                                                    ),
+                                                    child: Text(
+                                                      controller.text,
+                                                      textAlign: controller.textAlign,
+                                                      style: TextStyle(
+                                                        fontSize: controller.textSize,
+                                                        fontWeight: FontWeight.bold,
+                                                        color: controller.textColor,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ) : Container(),
+                                            ],
+                                          ),
                                         ),
                                         AnimatedBuilder(
                                           animation: controller.video,
@@ -216,39 +266,6 @@ class _VideoEditorState extends State<VideoEditor> {
                                           ),
                                         ),
                                         // TODO: Add this inside video (hint : stack)
-                                        controller.textOverlay == true ? Positioned(
-                                          left: offset.dx,
-                                          top: offset.dy,
-                                          child: GestureDetector(
-                                            onPanUpdate: (details) {
-                                              setState(() {
-                                                offset = Offset(
-                                                    offset.dx + details.delta.dx, offset.dy + details.delta.dy);
-                                              });
-                                              controller.setTextx1(offset.dx);
-                                              controller.setTexty1(offset.dy);
-                                            },
-                                            onTap: () {
-                                              showBottomDialog();
-                                            },
-                                            child: Container(
-                                              padding: const EdgeInsets.all(10),
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(20),
-                                                color: controller.textBgColor,
-                                              ),
-                                              child: Text(
-                                                controller.text,
-                                                textAlign: controller.textAlign,
-                                                style: TextStyle(
-                                                  fontSize: controller.textSize,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: controller.textColor,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ) : Container(),
                                       ],
                                     ),
                                   ),
@@ -286,16 +303,24 @@ class _VideoEditorState extends State<VideoEditor> {
                                           children: [
                                             Padding(
                                                 padding: EdgeInsets.all(5),
-                                                child: Icon(Icons.content_cut)),
-                                            Text('Trim')
+                                                child: Icon(Icons.content_cut)
+                                            ),
+                                            Text(
+                                              'Trim',
+                                              style: TextStyle(fontSize: 16),
+                                            )
                                           ]),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
                                           Padding(
                                               padding: EdgeInsets.all(5),
-                                              child: Icon(Icons.video_label)),
-                                          Text('Cover')
+                                              child: Icon(Icons.video_label)
+                                          ),
+                                          Text(
+                                            'Cover',
+                                            style: TextStyle(fontSize: 16),
+                                          )
                                         ],
                                       ),
                                     ],

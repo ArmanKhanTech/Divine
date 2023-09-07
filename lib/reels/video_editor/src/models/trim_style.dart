@@ -5,17 +5,17 @@ enum TrimSliderEdgesType { bar, circle }
 class TrimSliderStyle {
   const TrimSliderStyle({
     this.background = Colors.black,
-    this.positionLineColor = Colors.black,
-    this.positionLineWidth = 5,
+    this.positionLineColor = Colors.blue,
+    this.positionLineWidth = 4,
     this.lineColor = Colors.white,
     this.onTrimmingColor = Colors.white,
-    this.onTrimmedColor = Colors.white,
+    this.onTrimmedColor = Colors.white70,
     this.lineWidth = 2,
     this.borderRadius = 10.0,
     this.edgesType = TrimSliderEdgesType.bar,
     double? edgesSize,
     this.iconColor = Colors.black,
-    this.iconSize = 18,
+    this.iconSize = 15,
     this.leftIcon = Icons.arrow_back_ios_rounded,
     this.rightIcon = Icons.arrow_forward_ios_rounded,
   }) : edgesSize = edgesSize ?? (edgesType == TrimSliderEdgesType.bar ? 10 : 8);

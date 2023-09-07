@@ -69,6 +69,7 @@ class _PickFromGalleryProfilePictureState extends State<PickFromGalleryProfilePi
           selectedBackgroundColor: Colors.transparent,
           selectedCheckColor: Colors.white,
           selectedCheckBackgroundColor: Colors.blue,
+          stories: false,
         ),
         pathList: (path) {
           final file = File(path.first.path.toString());

@@ -385,6 +385,7 @@ class _MainViewState extends State<MainView> {
                         selectedBackgroundColor: Colors.transparent,
                         selectedCheckColor: Colors.white,
                         selectedCheckBackgroundColor: Colors.blue,
+                        stories: true,
                       ),
                       pathList: (path) {
                         final file = File(path.first.path.toString());

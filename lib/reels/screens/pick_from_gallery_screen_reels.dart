@@ -68,6 +68,7 @@ class _PickFromGalleryScreenReelsState extends State<PickFromGalleryScreenReels>
           selectedBackgroundColor: Colors.transparent,
           selectedCheckColor: Colors.white,
           selectedCheckBackgroundColor: Colors.blue,
+          stories: false,
         ),
         pathList: (path) {
           if (path.first.videoDuration > const Duration(minutes: 3) || path.first.videoDuration < const Duration(seconds: 15)){
