@@ -72,14 +72,18 @@ class _MainScreenState extends State<MainScreen>{
           ),
           bottomNavigationBar: Container(
             decoration: const BoxDecoration(
-              border: Border(
-                top: BorderSide(
-                  color: Colors.blue,
-                  width: 1,
-                ),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Colors.blue,
+                  Colors.pink,
+                ],
               ),
             ),
-            padding: const EdgeInsets.all(0),
+            padding: const EdgeInsets.only(
+              top: 1
+            ),
             child: BottomNavigationBar(
               backgroundColor: Theme.of(context).colorScheme.background,
               selectedLabelStyle: const TextStyle(fontSize: 0),
@@ -179,7 +183,7 @@ class _MainScreenState extends State<MainScreen>{
               ],
               currentIndex: _page,
               unselectedIconTheme: const IconThemeData(size: 35, color: Colors.blue),
-              selectedIconTheme: const IconThemeData(size: 35, color: Colors.blue),
+              selectedIconTheme: const IconThemeData(size: 35,),
               elevation: 0,
               onTap: (int index) {
                 setState(() {

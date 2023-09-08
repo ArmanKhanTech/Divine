@@ -79,4 +79,78 @@ class PostService extends Service{
       });
     }
   }
+
+  uploadComment(String currentUserId, String comment, String postId,
+      String ownerId, String mediaUrl) async {
+    DocumentSnapshot doc = await usersRef.doc(currentUserId).get();
+    UserModel user = UserModel.fromJson(doc.data() as Map<String, dynamic>);
+    await commentRef.doc(postId).collection("comments").add({
+      "username": user.username,
+      "comment": comment,
+      "timestamp": Timestamp.now(),
+      "userDp": user.photoUrl,
+      "userId": user.id,
+    });
+    bool isNotMe = ownerId != currentUserId;
+    if (isNotMe) {
+      addCommentToNotification("comment", comment, user.username!, user.id!,
+          postId, mediaUrl, ownerId, user.photoUrl!);
+    }
+  }
+
+  addCommentToNotification(
+      String type,
+      String commentData,
+      String username,
+      String userId,
+      String postId,
+      String mediaUrl,
+      String ownerId,
+      String userDp) async {
+    await notificationRef.doc(ownerId).collection('notifications').add({
+      "type": type,
+      "commentData": commentData,
+      "username": username,
+      "userId": userId,
+      "userDp": userDp,
+      "postId": postId,
+      "mediaUrl": mediaUrl,
+      "timestamp": Timestamp.now(),
+    });
+  }
+
+  addLikesToNotification(String type, String username, String userId,
+      String postId, String mediaUrl, String ownerId, String userDp) async {
+    await notificationRef
+        .doc(ownerId)
+        .collection('notifications')
+        .doc(postId)
+        .set({
+      "type": type,
+      "username": username,
+      "userId": auth.currentUser!.uid,
+      "userDp": userDp,
+      "postId": postId,
+      "mediaUrl": mediaUrl,
+      "timestamp": Timestamp.now(),
+    });
+  }
+
+  removeLikeFromNotification(
+      String ownerId, String postId, String currentUser) async {
+    bool isNotMe = currentUser != ownerId;
+
+    if (isNotMe) {
+      DocumentSnapshot doc = await usersRef.doc(currentUser).get();
+      UserModel user = UserModel.fromJson(doc.data() as Map<String, dynamic>);
+      notificationRef
+          .doc(ownerId)
+          .collection('notifications')
+          .doc(postId)
+          .get()
+          .then((doc) => {
+        if (doc.exists) {doc.reference.delete()}
+      });
+    }
+  }
 }

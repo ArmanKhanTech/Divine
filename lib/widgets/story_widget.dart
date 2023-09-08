@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import '../models/story_model.dart';
 import '../models/user_model.dart';
+import '../stories/screens/confirm_story.dart';
 import '../stories/screens/story_screen.dart';
+import '../stories/stories_editor/stories_editor.dart';
 import '../utilities/firebase.dart';
 
 class StoryWidget extends StatefulWidget{
@@ -36,43 +38,49 @@ class _StoryWidgetState extends State<StoryWidget> {
 
             return ListView.builder(
               padding: const EdgeInsets.only(top: 4),
-              itemCount: storyList.length,
+              itemCount: storyList.length + 1,
               scrollDirection: Axis.horizontal,
               physics: const AlwaysScrollableScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
-                DocumentSnapshot storyListSnapshot = storyList[index];
+                // show own story at first position
+                if(index == 0){
 
-                return StreamBuilder<QuerySnapshot>(
-                  stream: storyListStream(storyListSnapshot.id),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      List stories = snapshot.data!.docs;
-                      StoryModel story = StoryModel.fromJson(stories.first.data());
-                      List users = storyListSnapshot.get('whoCanSee');
-                      String uploadUserId = storyListSnapshot.get('userId') ?? '';
-                      if(users.contains(auth.currentUser!.uid) && uploadUserId != auth.currentUser!.uid){
-                        users.remove(auth.currentUser!.uid);
-                        storyCounter = users.length;
+                  return buildOwnStoryAvatar();
+                } else{
+                  DocumentSnapshot storyListSnapshot = storyList[index - 1];
 
-                        return buildStatusAvatar(
-                          storyListSnapshot.get('userId'),
-                          storyListSnapshot.id,
-                          story.storyId!,
-                          index,
-                        );
-                      }
-                      if(storyCounter == 0){
+                  return StreamBuilder<QuerySnapshot>(
+                    stream: storyListStream(storyListSnapshot.id),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        List stories = snapshot.data!.docs;
+                        StoryModel story = StoryModel.fromJson(stories.first.data());
+                        List users = storyListSnapshot.get('whoCanSee');
+                        String uploadUserId = storyListSnapshot.get('userId') ?? '';
+                        if(users.contains(auth.currentUser!.uid) && uploadUserId != auth.currentUser!.uid){
+                          users.remove(auth.currentUser!.uid);
+                          storyCounter++;
+
+                          return buildStatusAvatar(
+                            storyListSnapshot.get('userId'),
+                            storyListSnapshot.id,
+                            story.storyId!,
+                            index,
+                          );
+                        }
+                        if(storyCounter == 0){
+
+                          return const SizedBox();
+                        }
+
+                        return const SizedBox();
+                      } else {
 
                         return const SizedBox();
                       }
-
-                      return const SizedBox();
-                    } else {
-
-                      return const SizedBox();
-                    }
-                  },
-                );
+                    },
+                  );
+                }
               },
             );
           } else {
@@ -102,7 +110,7 @@ class _StoryWidgetState extends State<StoryWidget> {
           UserModel user = UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
 
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 5.0),
             child: FutureBuilder<QuerySnapshot>(
               future: storyRef.doc(storiesId).collection('stories').get(),
               builder: (context, snapshot){
@@ -171,7 +179,7 @@ class _StoryWidgetState extends State<StoryWidget> {
                       ),
                       const SizedBox(height: 4.0),
                       Text(
-                        user.username!.length > 8 ? '${user.username!.substring(0, 10)}...' : user.username!,
+                        user.username!.length > 8 ? '${user.username!.substring(0, 8).toLowerCase()}...' : user.username!.toLowerCase(),
                         style: const TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.w400,
@@ -192,6 +200,105 @@ class _StoryWidgetState extends State<StoryWidget> {
             return const SizedBox();
           }
       },
+    );
+  }
+
+  buildOwnStoryAvatar() {
+
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            left: 20.0,
+            right: 5.0,
+            bottom: 5.0,
+          ),
+          child: StreamBuilder(
+              stream: usersRef.doc(auth.currentUser!.uid).snapshots(),
+              builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                if (snapshot.hasData) {
+                  UserModel profileImage = UserModel.fromJson(
+                      snapshot.data!.data() as Map<String,
+                          dynamic>);
+
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => StoriesEditor(
+                        giphyKey: 'C4dMA7Q19nqEGdpfj82T8ssbOeZIylD4',
+                        fontFamilyList: const ['Shizuru', 'Aladin', 'TitilliumWeb', 'Varela',
+                          'Vollkorn', 'Rakkas', 'B612', 'YatraOne', 'Tangerine',
+                          'OldStandardTT', 'DancingScript', 'SedgwickAve', 'IndieFlower', 'Sacramento'],
+                        galleryThumbnailQuality: 300,
+                        isCustomFontList: true,
+                        onDone: (uri) {
+                          Navigator.of(context).push(
+                            CupertinoPageRoute(
+                              builder: (_) => ConfirmStory(uri: uri),
+                            ),
+                          );
+                        },
+                      )));
+                    },
+                    child: Stack(
+                      alignment: Alignment.centerRight,
+                      children: [
+                        CircleAvatar(
+                          radius: 48.0,
+                          backgroundColor: Colors.grey[200],
+                          backgroundImage: profileImage.photoUrl!.isNotEmpty ? CachedNetworkImageProvider(
+                              profileImage.photoUrl!) : null,
+                          child: profileImage.photoUrl!.isEmpty ? Text(
+                            profileImage.username![0].toUpperCase(),
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 30.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ) : null,
+                        ),
+                        Positioned(
+                          bottom: 0.0,
+                          right: 0.0,
+                          child: Container(
+                            height: 25.0,
+                            width: 25.0,
+                            decoration: const BoxDecoration(
+                              color: Colors.blue,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.add,
+                              color: Colors.white,
+                              size: 15.0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  );
+                } else{
+
+                  return const SizedBox();
+                }
+              }
+          ),
+        ),
+        const Row(
+          children: [
+            SizedBox(
+              width: 15.0,
+            ),
+            Text(
+              'Your story',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ],
+        )
+      ],
     );
   }
 

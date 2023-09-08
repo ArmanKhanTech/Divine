@@ -1,5 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:divine/models/user_model.dart';
 import 'package:divine/posts/screens/new_post_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,6 +19,7 @@ import '../utilities/firebase.dart';
 import '../view_models/user/story_view_model.dart';
 import '../widgets/progress_indicators.dart';
 import '../widgets/story_widget.dart';
+import '../widgets/user_post.dart';
 
 class FeedsPage extends StatefulWidget{
   const FeedsPage({super.key});
@@ -465,107 +464,22 @@ class _FeedsPageState extends State<FeedsPage>{
       extendBody: false,
       body: RefreshIndicator(
         color: Theme.of(context).colorScheme.secondary,
-        onRefresh: () =>
-            postRef.orderBy('timestamp', descending: true).limit(page).get(),
+        onRefresh: () => postRef.orderBy('timestamp', descending: true).limit(page).get(),
+        displacement: 50,
         child: SingleChildScrollView(
           physics: const NeverScrollableScrollPhysics(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 130,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Stack(
-                            children: [
-                              StreamBuilder(
-                                  stream: usersRef.doc(auth.currentUser!.uid).snapshots(),
-                                  builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                                    if (snapshot.hasData) {
-                                      UserModel profileImage = UserModel.fromJson(
-                                          snapshot.data!.data() as Map<String,
-                                              dynamic>);
-
-                                      return GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(context, CupertinoPageRoute(builder: (context) => StoriesEditor(
-                                            giphyKey: 'C4dMA7Q19nqEGdpfj82T8ssbOeZIylD4',
-                                            fontFamilyList: const ['Shizuru', 'Aladin', 'TitilliumWeb', 'Varela',
-                                              'Vollkorn', 'Rakkas', 'B612', 'YatraOne', 'Tangerine',
-                                              'OldStandardTT', 'DancingScript', 'SedgwickAve', 'IndieFlower', 'Sacramento'],
-                                            galleryThumbnailQuality: 300,
-                                            isCustomFontList: true,
-                                            onDone: (uri) {
-                                              Navigator.of(context).push(
-                                                CupertinoPageRoute(
-                                                  builder: (_) => ConfirmStory(uri: uri),
-                                                ),
-                                              );
-                                            },
-                                          )));
-                                        },
-                                        child: CircleAvatar(
-                                          radius: 48.0,
-                                          backgroundColor: Colors.grey[200],
-                                          backgroundImage: profileImage.photoUrl!.isNotEmpty ? CachedNetworkImageProvider(
-                                              profileImage.photoUrl!) : null,
-                                          child: profileImage.photoUrl!.isEmpty ? Text(
-                                            profileImage.username![0].toUpperCase(),
-                                            style: TextStyle(
-                                              color: Theme.of(context).colorScheme.primary,
-                                              fontSize: 30.0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ) : null,
-                                        ),
-                                      );
-                                    } else{
-
-                                      return const SizedBox();
-                                    }
-                                  }
-                              ),
-                              Positioned(
-                                bottom: 0.0,
-                                right: 0.0,
-                                child: Container(
-                                  height: 25.0,
-                                  width: 25.0,
-                                  decoration: const BoxDecoration(
-                                    color: Colors.blue,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: const Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                    size: 15.0,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Text(
-                          'Your Story',
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Expanded(
+                    Expanded(
                       child: StoryWidget()
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -607,9 +521,9 @@ class _FeedsPageState extends State<FeedsPage>{
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           PostModel posts = PostModel.fromJson(docs[index].data());
-                          return const Padding(
-                            padding: EdgeInsets.all(10.0),
-                            //child: UserPost(post: posts),
+                          return Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: UserPost(post: posts),
                           );
                         },
                       );
