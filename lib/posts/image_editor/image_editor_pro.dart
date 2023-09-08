@@ -30,7 +30,7 @@ import 'layers/text_layer.dart';
 import 'widgets/loading_screen.dart';
 import 'modules/all_emojies.dart';
 import 'modules/color_picker.dart';
-import 'modules/text.dart';
+import 'modules/text_overlay_screen.dart';
 
 late Size viewportSize;
 
@@ -694,7 +694,7 @@ class SingleImageEditorState extends State<SingleImageEditor> {
                         sigmaY: 10,
                       ),
                       child: Container(
-                        color: Colors.white.withOpacity(0.2),
+                        color: Colors.black.withOpacity(0.2),
                       ),
                     ),
                   ),
@@ -745,8 +745,6 @@ class SingleImageEditorState extends State<SingleImageEditor> {
           alignment: Alignment.bottomCenter,
           height: 72 + MediaQuery.of(context).padding.bottom,
           padding: const EdgeInsets.only(
-            left: 10,
-            right: 10,
             top: 15
           ),
           decoration: const BoxDecoration(
@@ -1219,12 +1217,16 @@ class BottomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double left = 10, right = 10;
 
     return GestureDetector(
       onTap: onTap,
       onLongPress: onLongPress,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: EdgeInsets.only(
+          left: left,
+          right: right,
+        ),
         child: Column(
           children: [
             Icon(
@@ -1343,10 +1345,13 @@ class ImageAdjustState extends State<ImageAdjust>{
         ),
       ),
       bottomNavigationBar: SizedBox(
-        height: 87,
+        height: 97,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            const SizedBox(
+                height: 10
+            ),
             SizedBox(
               height: 20,
               child: Slider(
@@ -1783,8 +1788,11 @@ class ImageFiltersState extends State<ImageFilters> {
       ),
       bottomNavigationBar: SafeArea(
         child: SizedBox(
-          height: 120,
+          height: 130,
           child: Column(children: [
+            const SizedBox(
+                height: 10
+            ),
             SizedBox(
               height: 20,
               child: Slider(

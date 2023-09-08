@@ -7,10 +7,10 @@ class PostModel {
   String? username;
   String? location;
   String? description;
-  String? mediaUrl;
 
-  List<String>? mentions = [];
-  List<String>? hashtags = [];
+  List<dynamic>? mediaUrl = [];
+  List<dynamic>? mentions = [];
+  List<dynamic>? hashtags = [];
 
   Timestamp? timestamp;
 
@@ -37,9 +37,13 @@ class PostModel {
     location = json['location'];
     username= json['username'];
     description = json['description'];
-    mediaUrl = json['mediaUrl'];
+    mediaUrl = json['mediaUrl'].cast<String>();
     timestamp = json['timestamp'];
-    mentions = json['tags'].cast<String>();
+    if (json['tags'] != null) {
+      mentions = json['tags'].cast<String>();
+    } else {
+      mentions = [];
+    }
     hashtags = json['hashtags'].cast<String>();
     likes = Likes.fromJson(json['likes']);
   }
@@ -71,7 +75,11 @@ class Likes {
 
   Likes.fromJson(Map<String, dynamic> json) {
     count = json['count'];
-    userIds = json['userIds'].cast<String>();
+    if (json['userIds'] != null) {
+      userIds = json['userIds'].cast<String>();
+    } else {
+      userIds = [];
+    }
   }
 
   Map<String, dynamic> toJson() {

@@ -336,7 +336,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     Padding(
                       padding: const EdgeInsets.only(top: 5.0),
                       child: currentUser.photoUrl!.isEmpty ? CircleAvatar(
-                        radius: 45.0,
+                        radius: 48.0,
                         backgroundColor: Theme.of(context).colorScheme.secondary,
                         child: Center(
                           child: Text(
@@ -351,10 +351,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       ) : CachedNetworkImage(
                         imageUrl: '${currentUser.photoUrl}',
                         imageBuilder: (context, imageProvider) => Container(
-                          height: 90,
-                          width: 90,
+                          height: 96,
+                          width: 96,
                           decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.all(Radius.circular(45)),
+                            borderRadius: const BorderRadius.all(Radius.circular(48)),
                             image: DecorationImage(
                               image: imageProvider,
                               fit: BoxFit.cover,
@@ -363,8 +363,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         progressIndicatorBuilder: (context, url, downloadProgress) =>
                             SizedBox(
-                              height: 90,
-                              width: 90,
+                              height: 96,
+                              width: 96,
                               child: CircularProgressIndicator(
                                   value: downloadProgress.progress,
                                   color: Colors.blue
@@ -586,8 +586,12 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             );
           }
+
           return Center(
-            child: circularProgress(context, const Color(0XFF03A9F4)),
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 20.0),
+              child: circularProgress(context, const Color(0XFF03A9F4)),
+            ),
           );
         },
       ),

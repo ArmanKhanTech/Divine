@@ -35,7 +35,10 @@ class _VideoEditorState extends State<VideoEditor> {
   final exportingProgress = ValueNotifier<double>(0.0);
   final isExporting = ValueNotifier<bool>(false);
 
-  final double height = 60;
+  final double height = 75;
+  double quantity = 8;
+
+  ScrollController scrollController = ScrollController();
 
   Offset offset = Offset.zero;
 
@@ -57,6 +60,11 @@ class _VideoEditorState extends State<VideoEditor> {
         .catchError((error) {
       Navigator.pop(context, true);
     }, test: (e) => e is VideoMinDurationError);
+    scrollController.addListener(() {
+      setState(() {
+        quantity = scrollController.position.maxScrollExtent / 10;
+      });
+    });
   }
 
   @override
@@ -204,6 +212,7 @@ class _VideoEditorState extends State<VideoEditor> {
                                         ColorFiltered(
                                           colorFilter: controller.colorFilter,
                                           child: Stack(
+                                            alignment: Alignment.center,
                                             children: [
                                               CropGridViewer.preview(controller: controller),
                                               controller.textOverlay == true ? Positioned(
@@ -265,7 +274,6 @@ class _VideoEditorState extends State<VideoEditor> {
                                             ),
                                           ),
                                         ),
-                                        // TODO: Add this inside video (hint : stack)
                                       ],
                                     ),
                                   ),
@@ -281,8 +289,8 @@ class _VideoEditorState extends State<VideoEditor> {
                             )
                           ),
                           Container(
-                            padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-                            height: 180,
+                            padding: const EdgeInsets.only(top: 10),
+                            height: 190,
                             child: Column(
                               children: [
                                 Container(
@@ -331,10 +339,16 @@ class _VideoEditorState extends State<VideoEditor> {
                                     physics: const NeverScrollableScrollPhysics(),
                                     children: [
                                       Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: _trimSlider(),
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Expanded(
+                                            child: Column(
+                                              children: trimSlider(),
+                                            ),
+                                          )
+                                        ]
                                       ),
-                                      _coverSelection(),
+                                      coverSelection(),
                                     ],
                                   ),
                                 ),
@@ -382,6 +396,7 @@ class _VideoEditorState extends State<VideoEditor> {
                 onPressed: () => Navigator.of(context).pop(),
                 icon: const Icon(CupertinoIcons.back, color: Colors.white, size: 30),
                 tooltip: 'Leave Editor',
+                padding: const EdgeInsets.only(bottom: 3),
               ),
             ),
             Container(
@@ -392,7 +407,7 @@ class _VideoEditorState extends State<VideoEditor> {
             Expanded(
               child: IconButton(
                 onPressed: () => controller.rotate90Degrees(RotateDirection.right),
-                icon: const Icon(Icons.rotate_right, color: Colors.white),
+                icon: const Icon(Icons.rotate_left, color: Colors.white, size: 30),
                 tooltip: 'Rotate Clockwise',
               ),
             ),
@@ -404,7 +419,7 @@ class _VideoEditorState extends State<VideoEditor> {
                     builder: (context) => CropScreen(controller: controller),
                   ),
                 ),
-                icon: const Icon(Icons.crop, color: Colors.white),
+                icon: const Icon(Icons.crop, color: Colors.white, size: 30),
                 tooltip: 'Crop',
               ),
             ),
@@ -418,8 +433,17 @@ class _VideoEditorState extends State<VideoEditor> {
                 ).then((value) {
                   setState(() {});
                 }),
-                icon: const Icon(Icons.text_fields, color: Colors.white),
+                icon: const Icon(Icons.text_fields, color: Colors.white, size: 30),
                 tooltip: 'Text',
+              ),
+            ),
+            Expanded(
+              child: IconButton(
+                onPressed: () {
+
+                },
+                icon: const Icon(Icons.speed, color: Colors.white, size: 30),
+                tooltip: 'Speed',
               ),
             ),
             Expanded(
@@ -433,7 +457,7 @@ class _VideoEditorState extends State<VideoEditor> {
                     ).then((value) {
                       setState(() {});
                     }),
-                icon: const Icon(Icons.filter_vintage, color: Colors.white),
+                icon: const Icon(Icons.photo_filter_outlined, color: Colors.white, size: 30),
                 tooltip: 'Filter',
               ),
             ),
@@ -448,14 +472,15 @@ class _VideoEditorState extends State<VideoEditor> {
             IconButton(
               onPressed: exportVideo,
               icon: const Icon(
-                CupertinoIcons.checkmark_alt,
+                Icons.done,
                 color: Colors.white,
                 size: 30,
-              )
+              ),
+              padding: const EdgeInsets.only(
+                  left: 10,
+                  right: 22
+              ),
             ),
-            const SizedBox(
-              width: 10,
-            )
           ],
         ),
       ),
@@ -467,7 +492,7 @@ class _VideoEditorState extends State<VideoEditor> {
     duration.inSeconds.remainder(60).toString().padLeft(2, '0')
   ].join(":");
 
-  List<Widget> _trimSlider() {
+  List<Widget> trimSlider() {
 
     return [
       AnimatedBuilder(
@@ -481,7 +506,10 @@ class _VideoEditorState extends State<VideoEditor> {
 
           return Padding(
             padding: const EdgeInsets.only(
-              bottom: 5
+              bottom: 12,
+              left: 10,
+              right: 10,
+              top: 10,
             ),
             child: Row(children: [
               Text(formatter(Duration(seconds: pos.toInt())), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
@@ -498,24 +526,27 @@ class _VideoEditorState extends State<VideoEditor> {
           );
         },
       ),
-      Container(
-        padding: const EdgeInsets.symmetric(horizontal: 0),
-        width: MediaQuery.of(context).size.width,
-        child: TrimSlider(
-          controller: controller,
-          height: height,
-          hasHaptic: true,
-          child: TrimTimeline(
-            controller: controller,
-            padding: const EdgeInsets.only(top: 10),
-            quantity: 8,
-          ),
+      SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            width: MediaQuery.of(context).size.width,
+            child: TrimSlider(
+              controller: controller,
+              height: height,
+              scrollController: scrollController,
+              child: TrimTimeline(
+                controller: controller,
+                padding: const EdgeInsets.only(top: 10),
+                quantity: 8,
+              ),
+            ),
         ),
       ),
     ];
   }
 
-  Widget _coverSelection() {
+  Widget coverSelection() {
 
     return SingleChildScrollView(
       child: Center(

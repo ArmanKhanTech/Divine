@@ -23,14 +23,14 @@ class CropScreen extends StatelessWidget {
                 child: IconButton(
                   onPressed: () =>
                       controller.rotate90Degrees(RotateDirection.left),
-                  icon: const Icon(Icons.rotate_left, color: Colors.white),
+                  icon: const Icon(Icons.rotate_left, color: Colors.white, size: 30),
                 ),
               ),
               Expanded(
                 child: IconButton(
                   onPressed: () =>
                       controller.rotate90Degrees(RotateDirection.right),
-                  icon: const Icon(Icons.rotate_right, color: Colors.white),
+                  icon: const Icon(Icons.rotate_right, color: Colors.white, size: 30),
                 ),
               )
             ]),
@@ -51,7 +51,7 @@ class CropScreen extends StatelessWidget {
                   icon: const Center(
                     child: Text(
                       "Cancel",
-                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red, fontSize: 20),
                     ),
                   ),
                 ),
@@ -88,8 +88,8 @@ class CropScreen extends StatelessWidget {
                             icon: controller.preferredCropAspectRatio != null &&
                                 controller.preferredCropAspectRatio! > 1
                                 ? const Icon(
-                                Icons.panorama_horizontal_select_rounded, color: Colors.white)
-                                : const Icon(Icons.panorama_horizontal_rounded, color: Colors.white),
+                                Icons.panorama_horizontal_select_rounded, color: Colors.white, size: 30)
+                                : const Icon(Icons.panorama_horizontal_rounded, color: Colors.white, size: 30),
                           ),
                         ],
                       ),
@@ -119,6 +119,7 @@ class CropScreen extends StatelessWidget {
                       style: TextStyle(
                         color: const CropGridStyle().selectedBoundariesColor,
                         fontWeight: FontWeight.bold,
+                        fontSize: 20,
                       ),
                     ),
                   ),
@@ -148,7 +149,7 @@ class CropScreen extends StatelessWidget {
           textStyle: Theme.of(context).textTheme.bodySmall,
         ),
         onPressed: () => controller.preferredCropAspectRatio = f?.toDouble(),
-        child: Text(f == null ? 'Free' : '${f.numerator}:${f.denominator}'),
+        child: Text(f == null ? 'Free' : '${f.numerator}:${f.denominator}', style: const TextStyle(color: Colors.white, fontSize: 16)),
       ),
     );
   }

@@ -31,7 +31,9 @@ class PostsViewModel extends ChangeNotifier{
   bool loading = false;
   bool edit = false;
 
-  String? username, location, bio, description, email, commentData, ownerId, userId, type, imgLink, id, hashtags, mentions;
+  String? username, location, bio, description, email, commentData, ownerId, userId, type, id, hashtags, mentions;
+
+  List<dynamic>? mediaUrl = [];
 
   List<String> hashtagsList = [];
   List<String> mentionsList = [];
@@ -154,7 +156,7 @@ class PostsViewModel extends ChangeNotifier{
   // TODO: Set initial values for editing post.
   setPost(PostModel post) {
     description = post.description;
-    imgLink = post.mediaUrl;
+    mediaUrl = post.mediaUrl;
     location = post.location;
     edit = true;
     notifyListeners();

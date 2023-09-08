@@ -1,14 +1,17 @@
 import 'package:camera/camera.dart';
-import 'package:divine/view_models/user/gallery_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import '../../components/gallery_media_picker/src/data/models/gallery_params_model.dart';
 import '../../components/gallery_media_picker/src/data/models/picked_asset_model.dart';
 import '../../components/gallery_media_picker/src/presentation/pages/gallery_media_picker.dart';
 import '../../view_models/screens/posts_view_model.dart';
+import '../../widgets/progress_indicators.dart';
 
 class PickFromGalleryScreenPosts extends StatefulWidget {
   const PickFromGalleryScreenPosts({super.key});
@@ -18,7 +21,9 @@ class PickFromGalleryScreenPosts extends StatefulWidget {
 }
 
 class PickFromGalleryScreenPostsState extends State<PickFromGalleryScreenPosts> {
-  List<XFile> imageList = [];
+  List<PickedAssetModel> pickedImages = [];
+
+  bool loading = false;
 
   @override
   void dispose() {
@@ -28,27 +33,30 @@ class PickFromGalleryScreenPostsState extends State<PickFromGalleryScreenPosts> 
   @override
   Widget build(BuildContext context) {
     PostsViewModel viewModel = Provider.of<PostsViewModel>(context);
-    GalleryViewModel media = Provider.of<GalleryViewModel>(context);
 
-    Future<void> onBackPressed() async {
-      setState(() {
-        media.reset();
-      });
-      Navigator.of(context).pop();
+    showSnackBar(String message, BuildContext context) {
+      showTopSnackBar(
+        Overlay.of(context),
+        CustomSnackBar.error(
+          message: message,
+        ),
+      );
     }
 
-    return WillPopScope(
-      onWillPop: () async {
-        await onBackPressed();
-        return false;
-      },
+    return LoadingOverlay(
+      isLoading: loading,
+      progressIndicator: circularProgress(
+        context,
+        Colors.blue,
+      ),
+      opacity: 0.5,
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
           leading: IconButton(
             icon: const Icon(CupertinoIcons.chevron_back),
             onPressed: () {
-              onBackPressed();
+              Navigator.pop(context);
             },
             iconSize: 30.0,
             color: Colors.white,
@@ -82,7 +90,7 @@ class PickFromGalleryScreenPostsState extends State<PickFromGalleryScreenPosts> 
                   initialScrollOffset: 0,
                 ),
                 maxPickImages: 5,
-                thumbnailQuality: 200,
+                thumbnailQuality: 1000,
                 singlePick: false,
                 onlyImages: true,
                 appBarColor: Colors.black,
@@ -97,11 +105,8 @@ class PickFromGalleryScreenPostsState extends State<PickFromGalleryScreenPosts> 
               ),
               pathList: (List<PickedAssetModel> paths) {
                 setState(() {
-                  media.pickedFile = paths;
+                  pickedImages = paths;
                 });
-                if(media.exceedsLimit) {
-                  media.showSnackBar('Image size exceeds 4MB.', context);
-                }
               },
             ),
             Positioned(
@@ -115,21 +120,25 @@ class PickFromGalleryScreenPostsState extends State<PickFromGalleryScreenPosts> 
                 padding: const EdgeInsets.all(12),
                 child: GestureDetector(
                     onTap: () {
-                      if(media.pickedFile.isNotEmpty) {
-                        if(media.pickedFile.length == 1){
-                          XFile file = XFile(media.pickedFile.first.path.toString());
+                      if(pickedImages.isNotEmpty) {
+                        setState(() {
+                          loading = true;
+                        });
+                        if(pickedImages.length == 1){
+                          XFile file = XFile(pickedImages.first.path.toString());
                           viewModel.uploadPostSingleImage(image: file, context: context);
                         } else {
                           List<XFile> images = [];
-                          for(int i = 0; i < media.pickedFile.length; i++){
-                            images.add(XFile(media.pickedFile[i].path.toString()));
+                          for(int i = 0; i < pickedImages.length; i++){
+                            images.add(XFile(pickedImages[i].path.toString()));
                           }
-                          viewModel.uploadPostMultipleImages(images: images, context: context).then((value) {
-                            media.reset();
-                          });
+                          viewModel.uploadPostMultipleImages(images: images, context: context);
                         }
+                        setState(() {
+                          loading = false;
+                        });
                       } else{
-                        media.showSnackBar('Please select an image.', context);
+                        showSnackBar('Please select an image.', context);
                       }
                     },
                     child: const Center(

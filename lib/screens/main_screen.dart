@@ -1,5 +1,4 @@
 import 'package:animations/animations.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -71,29 +70,124 @@ class _MainScreenState extends State<MainScreen>{
             },
             child: pages[_page]['page'],
           ),
-          // Navigation Bar.
-          bottomNavigationBar: CurvedNavigationBar(
-            index: 0,
-            height: kIsWeb != true ? 50.0 : 60.0,
-            items: <Widget>[
-              Icon((_page == 0) ? CupertinoIcons.house_fill : CupertinoIcons.house, size: 30, color: (_page == 0) ? Colors.white : Colors.blue,),
-              Icon((_page == 1) ? CupertinoIcons.search : CupertinoIcons.search, size: 30, color: (_page == 1) ? Colors.white : Colors.blue,),
-              Icon((_page == 2) ? CupertinoIcons.play_circle_fill : CupertinoIcons.play_circle, size: 30, color: (_page == 2) ? Colors.white : Colors.blue,),
-              Icon((_page == 3) ? CupertinoIcons.bell_fill : CupertinoIcons.bell, size: 30, color: (_page == 3) ? Colors.white : Colors.blue,),
-              Icon((_page == 4) ? CupertinoIcons.person_fill : CupertinoIcons.person, size: 30, color: (_page == 4) ? Colors.white : Colors.blue,),
-            ],
-            color: Theme.of(context).colorScheme.background,
-            buttonBackgroundColor: Colors.pink,
-            backgroundColor: Colors.blue,
-            animationCurve: Curves.easeIn,
-            animationDuration: const Duration(milliseconds: 500),
-            onTap: (index) {
-              setState(() {
-                _page = index;
-              });
-            },
-            letIndexChange: (index) => true,
-          ),
+          bottomNavigationBar: Container(
+            decoration: const BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  color: Colors.blue,
+                  width: 1,
+                ),
+              ),
+            ),
+            padding: const EdgeInsets.all(0),
+            child: BottomNavigationBar(
+              backgroundColor: Theme.of(context).colorScheme.background,
+              selectedLabelStyle: const TextStyle(fontSize: 0),
+              unselectedLabelStyle: const TextStyle(fontSize: 0),
+              type: BottomNavigationBarType.fixed,
+              items: <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: const Icon(CupertinoIcons.home),
+                  activeIcon: ShaderMask(
+                    blendMode: BlendMode.srcIn,
+                    shaderCallback: (Rect bounds) => const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Colors.blue,
+                        Colors.pink,
+                      ],
+                    ).createShader(bounds),
+                    child: const Icon(
+                      CupertinoIcons.home,
+                    ),
+                  ),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: const Icon(CupertinoIcons.search),
+                  activeIcon: ShaderMask(
+                    blendMode: BlendMode.srcIn,
+                    shaderCallback: (Rect bounds) => const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Colors.pink,
+                        Colors.blue,
+                      ],
+                    ).createShader(bounds),
+                    child: const Icon(
+                      CupertinoIcons.search,
+                    ),
+                  ),
+                  label: 'Search',
+                ),
+                BottomNavigationBarItem(
+                  icon: const Icon(CupertinoIcons.play_circle),
+                  activeIcon: ShaderMask(
+                    blendMode: BlendMode.srcIn,
+                    shaderCallback: (Rect bounds) => const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Colors.pink,
+                        Colors.blue,
+                      ],
+                    ).createShader(bounds),
+                    child: const Icon(
+                      CupertinoIcons.play_circle_fill,
+                    ),
+                  ),
+                  label: 'Reels',
+                ),
+                BottomNavigationBarItem(
+                  icon: const Icon(CupertinoIcons.bell),
+                  activeIcon: ShaderMask(
+                    blendMode: BlendMode.srcIn,
+                    shaderCallback: (Rect bounds) => const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Colors.pink,
+                        Colors.blue,
+                      ],
+                    ).createShader(bounds),
+                    child: const Icon(
+                      CupertinoIcons.bell_fill,
+                    ),
+                  ),
+                  label: 'Activity',
+                ),
+                BottomNavigationBarItem(
+                  icon: const Icon(CupertinoIcons.person),
+                  activeIcon: ShaderMask(
+                    blendMode: BlendMode.srcIn,
+                    shaderCallback: (Rect bounds) => const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Colors.pink,
+                        Colors.blue,
+                      ],
+                    ).createShader(bounds),
+                    child: const Icon(
+                      CupertinoIcons.person_fill,
+                    ),
+                  ),
+                  label: 'Profile',
+                ),
+              ],
+              currentIndex: _page,
+              unselectedIconTheme: const IconThemeData(size: 35, color: Colors.blue),
+              selectedIconTheme: const IconThemeData(size: 35, color: Colors.blue),
+              elevation: 0,
+              onTap: (int index) {
+                setState(() {
+                  _page = index;
+                });
+              },
+            ),
+          )
         );
       },
       maximumSize: const Size(540.0, 960.0),

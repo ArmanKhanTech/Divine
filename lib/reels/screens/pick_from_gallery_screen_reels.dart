@@ -56,7 +56,7 @@ class _PickFromGalleryScreenReelsState extends State<PickFromGalleryScreenReels>
           gridViewController: ScrollController(
             initialScrollOffset: 0,
           ),
-          thumbnailQuality: 200,
+          thumbnailQuality: 1000,
           singlePick: true,
           onlyVideos: true,
           onlyImages: false,

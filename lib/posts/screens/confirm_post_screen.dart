@@ -209,8 +209,8 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                                 ),
                               ),
                             ),
-                            viewModel.imgLink != null ? CustomImage(
-                              imageUrl: viewModel.imgLink,
+                            viewModel.mediaUrl != null ? CustomImage(
+                              imageUrl: viewModel.mediaUrl![index],
                               width: MediaQuery.of(context).size.width,
                               fit: BoxFit.contain,
                             ) :  Image.file(
@@ -247,48 +247,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                   },
                 ),
               ),
-              const SizedBox(height: 20.0),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: SizedBox(
-                  height: 40.0,
-                  child: FloatingActionButton(
-                    backgroundColor: Colors.blue,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.only(
-                          bottom: 2
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Upload',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 25.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      )
-                    ),
-                    onPressed: () async {
-                      await viewModel.uploadPost(context, images: widget.postImages);
-                      await viewModel.resetPost();
-                      for(int i = 0; i < widget.postImages.length; i++){
-                        await widget.postImages[i].delete();
-                      }
-                      Navigator.of(context).pushAndRemoveUntil(
-                          CupertinoPageRoute(builder: (_) => const MainScreen()), (route) => false);
-                    },
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20.0),
+              const SizedBox(height: 15.0),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: SizedBox(
@@ -328,7 +287,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                   ),
                 ),
               ),
-              const SizedBox(height: 10.0),
+              const SizedBox(height: 5.0),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: SizedBox(
@@ -383,7 +342,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                   ),
                 ),
               ),
-              const SizedBox(height: 10.0),
+              const SizedBox(height: 5.0),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: SizedBox(
@@ -426,7 +385,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                   ),
                 ),
               ),
-              const SizedBox(height: 10.0),
+              const SizedBox(height: 5.0),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: SizedBox(
@@ -463,6 +422,48 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                     cursorColor: Colors.white,
                     maxLines: null,
                     onChanged: (val) => viewModel.setHashtags(val),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 5.0),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.3),
+                child: SizedBox(
+                  height: 40.0,
+                  child: FloatingActionButton(
+                    backgroundColor: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    elevation: 5,
+                    child: const Padding(
+                        padding: EdgeInsets.only(
+                            bottom: 2
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Upload',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 25.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        )
+                    ),
+                    onPressed: () async {
+                      await viewModel.uploadPost(context, images: widget.postImages);
+                      await viewModel.resetPost();
+                      for(int i = 0; i < widget.postImages.length; i++){
+                        await widget.postImages[i].delete();
+                      }
+                      Navigator.of(context).pushAndRemoveUntil(
+                          CupertinoPageRoute(builder: (_) => const MainScreen()), (route) => false);
+                    },
                   ),
                 ),
               ),

@@ -58,7 +58,6 @@ dependencies:
   image_cropper: ^5.0.0
   firebase_app_check: ^0.1.5+1
   animations: ^2.0.7
-  curved_navigation_bar: ^1.0.3
   story: ^0.8.0
   story_view: ^0.14.0
   timeago: ^3.5.0

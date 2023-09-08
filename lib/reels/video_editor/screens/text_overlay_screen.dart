@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -16,7 +17,6 @@ class TextOverlayScreen extends StatefulWidget {
 class _TextOverlayScreenState extends State<TextOverlayScreen> {
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
 
     return Scaffold(
         appBar: AppBar(
@@ -24,18 +24,19 @@ class _TextOverlayScreenState extends State<TextOverlayScreen> {
             'Text',
             style: TextStyle(
               color: Colors.white,
-              fontSize: 20,
+              fontSize: 30,
               fontWeight: FontWeight.w600,
             ),
           ),
           automaticallyImplyLeading: false,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
+            icon: const Icon(CupertinoIcons.chevron_back),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.of(context).pop();
             },
+            iconSize: 30.0,
             color: Colors.white,
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.only(bottom: 3),
           ),
           systemOverlayStyle: const SystemUiOverlayStyle(
             statusBarColor: Colors.black,
@@ -79,7 +80,7 @@ class _TextOverlayScreenState extends State<TextOverlayScreen> {
               },
             ),
             IconButton(
-              icon: const Icon(Icons.check),
+              icon: const Icon(Icons.check, size: 30),
               onPressed: () {
                 widget.controller.setText(widget.controller.text);
                 widget.controller.setTextSize(widget.controller.textSize);
@@ -89,7 +90,10 @@ class _TextOverlayScreenState extends State<TextOverlayScreen> {
                 Navigator.pop(context);
               },
               color: Colors.white,
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.only(
+                  right: 22,
+                  left: 10
+              ),
             )
           ],
         ),
@@ -101,16 +105,15 @@ class _TextOverlayScreenState extends State<TextOverlayScreen> {
                 height: 20,
               ),
               SizedBox(
-                height: size.height / 2.2,
+                height: MediaQuery.of(context).size.height * 0.55,
                 child: TextField(
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     border: InputBorder.none,
-                    contentPadding: EdgeInsets.all(15),
-                    hintText: 'Enter Text',
+                    contentPadding: const EdgeInsets.all(30),
+                    hintText: 'Enter your text here',
                     hintStyle: TextStyle(
                       color: Colors.grey,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
+                      fontSize: widget.controller.textSize,
                     ),
                     alignLabelWithHint: true,
                   ),
@@ -121,30 +124,35 @@ class _TextOverlayScreenState extends State<TextOverlayScreen> {
                   style: TextStyle(
                     color: widget.controller.textColor,
                     fontSize: widget.controller.textSize,
-                    fontWeight: FontWeight.bold
                   ),
                   textAlign: widget.controller.textAlign,
                   autofocus: true,
-                  onChanged: (text) {
+                  cursorColor: Colors.white,
+                  onChanged: (value) {
                     setState(() {
-                      widget.controller.text = text;
+                      widget.controller.text = value;
                     });
                   },
                 ),
               ),
               const SizedBox(
-                height: 30,
+                height: 20,
               ),
               Container(
                 color: Colors.black,
+                padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Column(
                   children: [
-                    const Center(
-                      child: Text(
-                        'Text Size',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Text Size',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
                         ),
                       ),
                     ),
@@ -161,52 +169,45 @@ class _TextOverlayScreenState extends State<TextOverlayScreen> {
                         },
                         onChanged: (v) {
                           setState(() {
-                            widget.controller.textSize = v;
+                            widget.controller.textSize  = v;
                           });
                         }),
                   ],
                 ),
               ),
               const SizedBox(
-                height: 20,
+                height: 10,
               ),
               Container(
                 color: Colors.transparent,
+                padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Column(
                   children: [
-                    const Padding(
-                        padding: EdgeInsets.only(
-                            left: 20
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Text Color',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
                         ),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Text Color',
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                            ),
-                          ),
-                        )
+                      ),
                     ),
                     Row(children: [
-                      const SizedBox(
-                        width: 10.0,
-                      ),
                       Expanded(
                         child: BarColorPicker(
-                          width: 300,
                           thumbColor: Colors.white,
                           cornerRadius: 10,
                           pickMode: PickMode.color,
-                          initialColor: widget.controller.textColor,
                           colorListener: (int value) {
                             setState(() {
                               widget.controller.textColor = Color(value);
                             });
                           },
                         ),
+                      ),
+                      const SizedBox(
+                        width: 10,
                       ),
                       TextButton(
                         onPressed: () {
@@ -218,43 +219,29 @@ class _TextOverlayScreenState extends State<TextOverlayScreen> {
                             'Reset',
                             style: TextStyle(
                               color: Colors.blue,
-                              fontSize: 15,
+                              fontSize: 18,
                             )
                         ),
                       ),
-                      const SizedBox(
-                          width: 10.0
-                      )
                     ]),
                     const SizedBox(
                         height: 10.0
                     ),
-                    const Padding(
-                        padding: EdgeInsets.only(
-                            left: 20
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Black/White Color',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
                         ),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Text Black/White Color',
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                            ),
-                          ),
-                        )
+                      ),
                     ),
                     Row(children: [
-                      const SizedBox(
-                        width: 10.0,
-                      ),
                       Expanded(
                         child: BarColorPicker(
-                          width: 300,
                           thumbColor: Colors.white,
                           cornerRadius: 10,
-                          initialColor: widget.controller.textColor,
                           pickMode: PickMode.grey,
                           colorListener: (int value) {
                             setState(() {
@@ -263,23 +250,23 @@ class _TextOverlayScreenState extends State<TextOverlayScreen> {
                           },
                         ),
                       ),
-                      TextButton(
-                        onPressed: () {
-                          setState(() {
-                            widget.controller.textColor = const Color(0xFFFFFFFF);
-                          });
-                        },
-                        child: const Text(
-                            'Reset',
-                            style: TextStyle(
-                              color: Colors.blue,
-                              fontSize: 15,
-                            )
-                        ),
-                      ),
                       const SizedBox(
-                          width: 10.0
-                      )
+                        width: 10,
+                      ),
+                      TextButton(
+                          onPressed: () {
+                            setState(() {
+                              widget.controller.textColor = const Color(0xFFFFFFFF);
+                            });
+                          },
+                          child: const Text(
+                              'Reset',
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontSize: 18,
+                              )
+                          )
+                      ),
                     ]),
                   ],
                 ),

@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:divine/models/user_model.dart';
 import 'package:divine/posts/screens/new_post_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,6 +12,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../chats/screens/chat_screen.dart';
+import '../models/post_model.dart';
 import '../reels/screens/new_reels_screen.dart';
 import '../stories/screens/confirm_story.dart';
 import '../stories/stories_editor/stories_editor.dart';
@@ -471,13 +474,99 @@ class _FeedsPageState extends State<FeedsPage>{
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: height,
-                child: StoryWidget(
-                  onDone: (value) {
-                    if(value == true){
-                      height = 0;
-                    }
-                  },
+                height: 130,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      width: 12,
+                    ),
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Stack(
+                            children: [
+                              StreamBuilder(
+                                  stream: usersRef.doc(auth.currentUser!.uid).snapshots(),
+                                  builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                                    if (snapshot.hasData) {
+                                      UserModel profileImage = UserModel.fromJson(
+                                          snapshot.data!.data() as Map<String,
+                                              dynamic>);
+
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(context, CupertinoPageRoute(builder: (context) => StoriesEditor(
+                                            giphyKey: 'C4dMA7Q19nqEGdpfj82T8ssbOeZIylD4',
+                                            fontFamilyList: const ['Shizuru', 'Aladin', 'TitilliumWeb', 'Varela',
+                                              'Vollkorn', 'Rakkas', 'B612', 'YatraOne', 'Tangerine',
+                                              'OldStandardTT', 'DancingScript', 'SedgwickAve', 'IndieFlower', 'Sacramento'],
+                                            galleryThumbnailQuality: 300,
+                                            isCustomFontList: true,
+                                            onDone: (uri) {
+                                              Navigator.of(context).push(
+                                                CupertinoPageRoute(
+                                                  builder: (_) => ConfirmStory(uri: uri),
+                                                ),
+                                              );
+                                            },
+                                          )));
+                                        },
+                                        child: CircleAvatar(
+                                          radius: 48.0,
+                                          backgroundColor: Colors.grey[200],
+                                          backgroundImage: profileImage.photoUrl!.isNotEmpty ? CachedNetworkImageProvider(
+                                              profileImage.photoUrl!) : null,
+                                          child: profileImage.photoUrl!.isEmpty ? Text(
+                                            profileImage.username![0].toUpperCase(),
+                                            style: TextStyle(
+                                              color: Theme.of(context).colorScheme.primary,
+                                              fontSize: 30.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ) : null,
+                                        ),
+                                      );
+                                    } else{
+
+                                      return const SizedBox();
+                                    }
+                                  }
+                              ),
+                              Positioned(
+                                bottom: 0.0,
+                                right: 0.0,
+                                child: Container(
+                                  height: 25.0,
+                                  width: 25.0,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.blue,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                    size: 15.0,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Text(
+                          'Your Story',
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Expanded(
+                      child: StoryWidget()
+                    )
+                  ],
                 ),
               ),
              // TODO: Fix Native Ad & implement it for iOS.
@@ -517,8 +606,7 @@ class _FeedsPageState extends State<FeedsPage>{
                         itemCount: docs.length,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
-                          //PostModel posts =
-                          //PostModel.fromJson(docs[index].data());
+                          PostModel posts = PostModel.fromJson(docs[index].data());
                           return const Padding(
                             padding: EdgeInsets.all(10.0),
                             //child: UserPost(post: posts),
@@ -544,7 +632,7 @@ class _FeedsPageState extends State<FeedsPage>{
                     }
                   },
                 ),
-              ),
+              )
             ],
           ),
         ),

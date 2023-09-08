@@ -9,16 +9,16 @@ class TrimSliderStyle {
     this.positionLineWidth = 4,
     this.lineColor = Colors.white,
     this.onTrimmingColor = Colors.white,
-    this.onTrimmedColor = Colors.white70,
+    this.onTrimmedColor = Colors.white,
     this.lineWidth = 2,
     this.borderRadius = 10.0,
-    this.edgesType = TrimSliderEdgesType.bar,
+    this.edgesType = TrimSliderEdgesType.circle,
     double? edgesSize,
     this.iconColor = Colors.black,
     this.iconSize = 15,
     this.leftIcon = Icons.arrow_back_ios_rounded,
     this.rightIcon = Icons.arrow_forward_ios_rounded,
-  }) : edgesSize = edgesSize ?? (edgesType == TrimSliderEdgesType.bar ? 10 : 8);
+  }) : edgesSize = edgesSize ?? (edgesType == TrimSliderEdgesType.bar ? 15 : 10);
 
   final Color background;
   final Color positionLineColor;

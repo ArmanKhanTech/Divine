@@ -58,7 +58,7 @@ class _PickFromGalleryProfilePictureState extends State<PickFromGalleryProfilePi
             initialScrollOffset: 0,
           ),
           maxPickImages: 1,
-          thumbnailQuality: 200,
+          thumbnailQuality: 1000,
           singlePick: true,
           onlyImages: true,
           appBarColor: Colors.black,
