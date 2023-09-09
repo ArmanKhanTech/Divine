@@ -7,7 +7,8 @@ class CustomImage extends StatelessWidget{
   final double width;
   final BoxFit fit;
 
-  CustomImage({
+  const CustomImage({
+    super.key,
     this.imageUrl,
     this.height = 100.0,
     this.width = double.infinity,

@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../chats/screens/chat_screen.dart';
 import '../models/post_model.dart';
+import '../models/user_model.dart';
 import '../reels/screens/new_reels_screen.dart';
 import '../stories/screens/confirm_story.dart';
 import '../stories/stories_editor/stories_editor.dart';
@@ -30,15 +31,20 @@ class FeedsPage extends StatefulWidget{
 
 class _FeedsPageState extends State<FeedsPage>{
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
   NativeAd? nativeAd;
 
   int page = 5;
 
   double height = 125;
 
-  bool loadingMore = false;
+  bool loadingMore = true;
 
   ScrollController scrollController = ScrollController();
+
+  List<String> followingAccounts = [];
+
+  Map<String, dynamic>? hashTags;
 
   @override
   void initState() {
@@ -51,6 +57,10 @@ class _FeedsPageState extends State<FeedsPage>{
         });
       }
     });
+
+    getFollowingAccounts();
+
+    getHashTags();
 
     NativeAd(
         adUnitId: adHelper.nativeAdUnitId,
@@ -463,14 +473,14 @@ class _FeedsPageState extends State<FeedsPage>{
       extendBodyBehindAppBar: false,
       extendBody: false,
       body: RefreshIndicator(
-        color: Theme.of(context).colorScheme.secondary,
+        color: Colors.purple,
         onRefresh: () => postRef.orderBy('timestamp', descending: true).limit(page).get(),
         displacement: 50,
         child: SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
+          controller: scrollController,
+          physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(
                 height: 130,
@@ -506,52 +516,111 @@ class _FeedsPageState extends State<FeedsPage>{
                   ),
                 ),
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height,
-                child: FutureBuilder(
-                  future: postRef.orderBy('timestamp', descending: true).limit(page).get(),
-                  builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.hasData) {
-                      var snap = snapshot.data;
-                      List docs = snap!.docs;
+              // TODO: Populate reels and threads too.
+              FutureBuilder(
+                future: postRef.orderBy('timestamp', descending: true).limit(page).get(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasData) {
+                    var snap = snapshot.data;
+                    List docs = snap!.docs;
 
-                      return ListView.builder(
-                        controller: scrollController,
-                        itemCount: docs.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          PostModel posts = PostModel.fromJson(docs[index].data());
-                          return Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: UserPost(post: posts),
-                          );
-                        },
-                      );
-                    } else if (snapshot.connectionState == ConnectionState.waiting) {
+                    return ListView.builder(
+                      itemCount: docs.length,
+                      shrinkWrap: true,
+                      primary: false,
+                      itemBuilder: (context, index) {
+                        PostModel posts = PostModel.fromJson(docs[index].data());
 
-                      return Center(
-                        child: circularProgress(context, const Color(0XFF03A9F4)),
-                      );
-                    } else {
-                      return const Center(
+                        if(docs.length == index + 1) {
+                          loadingMore = false;
+                        }
 
-                        child: Text(
-                          'Nothing to Show.',
-                          style: TextStyle(
-                            fontSize: 25.0,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      );
-                    }
-                  },
+                        if(followingAccounts.contains(posts.ownerId)) {
+
+                          return UserPost(post: posts, index: index,);
+                        } else {
+
+                          return const SizedBox();
+                        }
+                      },
+                    );
+                  }  else {
+
+                    return Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 3.2),
+                        child: circularProgress(context, Colors.blue)
+                      ),
+                    );
+                  }
+                },
+              ),
+              if (loadingMore == true && page > 5)
+                const Padding(
+                  padding: EdgeInsets.only(top: 10.0),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.blue,
+                    ),
+                  ),
                 ),
-              )
+              if (loadingMore == false && page > 5)
+                const Padding(
+                  padding: EdgeInsets.only(
+                    top: 10.0,
+                    bottom: 20.0,
+                  ),
+                  child: Center(
+                    child: Text(
+                      'No more posts to show.',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+              // get post id from hashTagsRef and get the post from postRef based on count in Map of hashTags
+              /*FutureBuilder(
+                future: hashTags != null ? hashTagsRef.doc(hashTags!.keys.first).get() : null,
+                builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                  if (snapshot.hasData) {
+                    var snap = snapshot.data;
+                    PostModel posts = PostModel.fromJson(snap!.data() as Map<String, dynamic>);
+
+                    return UserPost(post: posts, index: 0,);
+                  } else {
+
+                    return const SizedBox();
+                  }
+                },
+              )*/
+
             ],
           ),
         ),
       ),
     );
+  }
+
+  getHashTags() async {
+    DocumentSnapshot doc = await usersRef.doc(auth.currentUser!.uid).get();
+    UserModel user = UserModel.fromJson(doc.data() as Map<String, dynamic>);
+    hashTags = user.userHashtags;
+  }
+
+  getFollowingAccounts() async {
+    QuerySnapshot snapshot = await followingRef
+        .doc(auth.currentUser!.uid)
+        .collection('userFollowing')
+        .get();
+
+    setState(() {
+      for (var doc in snapshot.docs) {
+        followingAccounts.add(doc.id);
+      }
+    });
   }
 
   bool get wantKeepAlive => true;

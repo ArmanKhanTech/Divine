@@ -16,7 +16,8 @@ class UserModel{
   Timestamp? signedUpAt;
   Timestamp? lastSeen;
 
-  UserHashtags? userHashtags;
+  // feild hashtags is map of tag name and its count
+  Map<String, dynamic>? userHashtags;
 
   bool? isOnline;
   bool? isVerified;
@@ -54,8 +55,8 @@ class UserModel{
     profession = json['profession'];
     name = json['name'];
     isVerified = json['isVerified'];
-    userHashtags = UserHashtags.fromJson(json['hashtags']);
     gender = json['gender'];
+    userHashtags = json['hashtags'];
   }
 
   Map<String, dynamic> toJson() {
@@ -74,30 +75,8 @@ class UserModel{
     data['profession'] = profession;
     data['name'] = name;
     data['isVerified'] = isVerified;
-    data['hashtags'] = userHashtags?.toJson();
+    data['hashtags'] = userHashtags;
     data['gender'] = gender;
-
-    return data;
-  }
-}
-
-class UserHashtags {
-  String? tag = '';
-  int? count = 0;
-
-  UserHashtags({
-    this.tag,
-    this.count});
-
-  UserHashtags.fromJson(Map<String, dynamic> json) {
-    tag = json['tag'];
-    count = json['count'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['tag'] = tag;
-    data['count'] = count;
 
     return data;
   }

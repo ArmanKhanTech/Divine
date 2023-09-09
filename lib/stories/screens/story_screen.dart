@@ -129,30 +129,40 @@ class _StoryScreenState extends State<StoryScreen> {
                                           color: Colors.transparent,
                                           borderRadius:
                                           BorderRadius.circular(
-                                              10.0),
+                                              10.0
+                                          ),
                                         ),
                                         child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              user.username!.toLowerCase(),
-                                              textAlign: TextAlign.start,
-                                              style: TextStyle(
-                                                fontSize: 18.0,
-                                                fontWeight: FontWeight.bold,
-                                                background: Paint()
-                                                  ..color = Colors.transparent,
-                                                color: Colors.white,
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                user.username!.toLowerCase(),
+                                                textAlign: TextAlign.start,
+                                                style: TextStyle(
+                                                  fontSize: 18.0,
+                                                  fontWeight: FontWeight.bold,
+                                                  background: Paint()
+                                                    ..color = Colors.transparent,
+                                                  color: Colors.white,
+                                                ),
                                               ),
                                             ),
-                                            Text(
-                                              timeago.format(
-                                                  stats.time!.toDate()),
-                                              style: TextStyle(
-                                                fontSize: 15.0,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                                background: Paint()
-                                                  ..color = Colors.transparent,
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                timeago.format(
+                                                    stats.time!.toDate()),
+                                                textAlign: TextAlign.start,
+                                                style: TextStyle(
+                                                  fontSize: 15.0,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                  background: Paint()
+                                                    ..color = Colors.transparent,
+                                                ),
                                               ),
                                             ),
                                           ],

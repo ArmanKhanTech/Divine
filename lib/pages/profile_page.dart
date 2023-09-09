@@ -1,24 +1,26 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:divine/profile/screens/user_info_screen.dart';
-import 'package:divine/components/custom_text.dart';
 import 'package:divine/widgets/progress_indicators.dart';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../components/stream_grid_wrapper.dart';
+import '../models/post_model.dart';
 import '../models/user_model.dart';
 import '../profile/screens/edit_profile_screen.dart';
 import '../profile/screens/settings_screen.dart';
 import '../screens/splash_screen.dart';
 import '../utilities/firebase.dart';
+import '../widgets/post_tile.dart';
 
 class ProfilePage extends StatefulWidget {
-  final profileId;
+  final String profileId;
 
-  const ProfilePage({super.key, this.profileId});
+  const ProfilePage({super.key, required this.profileId});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -27,13 +29,13 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   User? user;
 
-  late UserModel currentUser;
+  UserModel currentUser = UserModel();
 
-  int postCount = 0;
+  int postCount = -1;
   int followersCount = 0;
   int followingCount = 0;
 
-  bool isFollowing = false, requested = false, isLoading = false;
+  bool isFollowing = false, requested = false, isLoaded = false;
 
   UserModel? users;
 
@@ -42,6 +44,8 @@ class _ProfilePageState extends State<ProfilePage> {
   ScrollController controller = ScrollController();
 
   GlobalKey<ScaffoldState> profileScaffoldKey = GlobalKey<ScaffoldState>();
+
+  String? name = '';
 
   currentUserId() {
     return auth.currentUser?.uid;
@@ -57,6 +61,14 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void dispose() {
     controller.dispose();
+    name = '';
+    postCount = 0;
+    followersCount = 0;
+    followingCount = 0;
+    isFollowing = false;
+    requested = false;
+    users = null;
+    currentUser = UserModel();
     super.dispose();
   }
 
@@ -267,6 +279,12 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        name = currentUser.username;
+        isLoaded = true;
+      });
+    });
 
     return Scaffold(
       key: profileScaffoldKey,
@@ -285,9 +303,9 @@ class _ProfilePageState extends State<ProfilePage> {
               Colors.purple,
             ],
         ) : Text(
-          currentUser.username.toString(),
+          name.toString(),
           style: TextStyle(
-            fontSize: 20,
+            fontSize: 25,
             fontWeight: FontWeight.w300,
             color: Theme.of(context).colorScheme.secondary,
           ),
@@ -380,6 +398,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         if (snapshot.hasData) {
                           QuerySnapshot<Object?>? snap = snapshot.data;
                           List<DocumentSnapshot> docs = snap!.docs;
+                          postCount = docs.length;
 
                           return buildCount("Posts", docs.length);
                         } else {
@@ -467,12 +486,35 @@ class _ProfilePageState extends State<ProfilePage> {
                     width: 0.0,
                   ) : SizedBox(
                     width: MediaQuery.of(context).size.width * 0.6,
-                    child: CustomText(
-                      text: currentUser.bio!,
-                      size: 18.0,
-                      weight: FontWeight.w400,
-                      color: Theme.of(context).colorScheme.secondary
-                    ),
+                    child: ExpandableText(
+                      currentUser.bio!,
+                      style: const TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      expandText: 'show more',
+                      maxLines: 5,
+                      animation: true,
+                      collapseOnTextTap: true,
+                      onHashtagTap: (name) {
+
+                      },
+                      hashtagStyle: const TextStyle(
+                        color: Colors.blue,
+                      ),
+                      onMentionTap: (username) {
+                        Navigator.of(context).push(
+                          CupertinoPageRoute(
+                            builder: (_) => ProfilePage(
+                              profileId: username,
+                            ),
+                          ),
+                        );
+                      },
+                      mentionStyle: const TextStyle(
+                        color: Colors.blue,
+                      ),
+                    )
                   ),
                 ),
                 Padding(
@@ -542,6 +584,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(height: 5.0),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.50,
+                  width: MediaQuery.of(context).size.width,
                   child: DefaultTabController(
                       length: 4,
                       child: Column(
@@ -558,7 +601,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   icon: Icon(CupertinoIcons.square_grid_2x2_fill, size: 25),
                                 ),
                                 Tab(
-                                  icon: Icon(CupertinoIcons.play_arrow_solid, size: 25),
+                                  icon: Icon(CupertinoIcons.play_circle_fill, size: 26),
                                 ),
                                 Tab(
                                   icon: Icon(CupertinoIcons.equal_circle_fill, size: 25),
@@ -587,12 +630,20 @@ class _ProfilePageState extends State<ProfilePage> {
             );
           }
 
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
-              child: circularProgress(context, const Color(0XFF03A9F4)),
-            ),
-          );
+          if(widget.profileId == auth.currentUser!.uid) {
+
+            return Center(
+              child: circularProgress(context, Colors.blue),
+            );
+          } else {
+
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: circularProgress(context, Colors.blue),
+              ),
+            );
+          }
         },
       ),
     );
@@ -794,7 +845,14 @@ class _ProfilePageState extends State<ProfilePage> {
         .doc(widget.profileId)
         .collection('followRequest')
         .doc(currentUserId())
-        .set({});
+        .set({
+      "type": "followRequest",
+      "ownerId": widget.profileId,
+      "username": users?.username,
+      "userId": users?.id,
+      "userDp": users?.photoUrl,
+      "timestamp": timestamp,
+    });
 
     notificationRef
         .doc(widget.profileId)
@@ -811,98 +869,86 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   buildPostView(UserModel currentUser) {
-    if(widget.profileId != auth.currentUser?.uid){
-      if(currentUser.type == 'private' && isFollowing == false) {
+    if(isLoaded) {
+      if(widget.profileId != auth.currentUser?.uid){
+        if(currentUser.type == 'private' && isFollowing == false) {
 
-        return const Center(
-          child: Text(
-            'This account is private.',
-            style: TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
+          return const Center(
+            child: Text(
+              'This account is private.',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-        );
+          );
+        } else {
+
+          return buildGridPost();
+        }
       } else {
 
         return buildGridPost();
       }
     } else {
 
-      return buildGridPost();
+      return const SizedBox();
     }
   }
 
   buildGridPost() {
+    if(postCount > 0 && isLoaded) {
 
-    return StreamGridWrapper(
-      shrinkWrap: true,
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-      stream: postRef
-          .where('ownerId', isEqualTo: widget.profileId)
-          .orderBy('timestamp', descending: true)
-          .snapshots(),
-      physics: const NeverScrollableScrollPhysics(),
-      itemBuilder: (_, DocumentSnapshot snapshot) {
-        return const SizedBox();
-        /*PostModel posts = PostModel.fromJson(snapshot.data() as Map<String, dynamic>);
-        return PostTile(
-          post: posts,
-        );*/
-      },
-    );
+      return StreamGridWrapper(
+        shrinkWrap: true,
+        stream: postRef
+            .where('ownerId', isEqualTo: widget.profileId)
+            .orderBy('timestamp', descending: true)
+            .snapshots(),
+        physics: const NeverScrollableScrollPhysics(),
+        padding: const EdgeInsets.all(0.0),
+        loadingPadding: widget.profileId == auth.currentUser!.uid ? const EdgeInsets.only(top: 0.0) : const EdgeInsets.only(top: 40.0),
+        itemBuilder: (_, DocumentSnapshot snapshot) {
+          PostModel posts = PostModel.fromJson(snapshot.data() as Map<String, dynamic>);
+
+          return PostTile(
+            post: posts,
+          );
+        },
+      );
+    } else {
+
+      return buildDefaultMessage(postCount);
+    }
   }
 
-  buildLikeButton() {
+  buildDefaultMessage(count) {
+    if(count == 0) {
 
-    return StreamBuilder(
-      stream: favUsersRef
-          .where('postId', isEqualTo: widget.profileId)
-          .where('userId', isEqualTo: currentUserId())
-          .snapshots(),
-      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasData) {
-          List<QueryDocumentSnapshot> docs = snapshot.data?.docs ?? [];
-
-          return GestureDetector(
-            onTap: () {
-              if (docs.isEmpty) {
-                favUsersRef.add({
-                  'userId': currentUserId(),
-                  'postId': widget.profileId,
-                  'dateCreated': Timestamp.now(),
-                });
-              } else {
-                favUsersRef.doc(docs[0].id).delete();
-              }
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    spreadRadius: 3.0,
-                    blurRadius: 5.0,
-                  )
-                ],
-                color: Colors.white,
-                shape: BoxShape.circle,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(3.0),
-                child: Icon(
-                  docs.isEmpty
-                      ? CupertinoIcons.heart
-                      : CupertinoIcons.heart_fill,
-                  color: Colors.red,
-                ),
+      return const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              CupertinoIcons.photo,
+              color: Colors.grey,
+              size: 50.0,
+            ),
+            SizedBox(height: 10.0),
+            Text(
+              'No Posts',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey,
               ),
             ),
-          );
-        }
+          ],
+        ),
+      );
+    } else {
 
-        return Container();
-      },
-    );
+      return const SizedBox();
+    }
   }
 }

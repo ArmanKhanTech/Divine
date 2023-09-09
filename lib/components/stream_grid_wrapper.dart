@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import '../widgets/progress_indicators.dart';
 
 typedef ItemBuilder<T> = Widget Function(
@@ -14,6 +14,7 @@ class StreamGridWrapper extends StatelessWidget {
   final bool shrinkWrap;
   final ScrollPhysics physics;
   final EdgeInsets padding;
+  final EdgeInsets loadingPadding;
 
   const StreamGridWrapper({
     Key? key,
@@ -23,6 +24,7 @@ class StreamGridWrapper extends StatelessWidget {
     this.shrinkWrap = false,
     this.physics = const ClampingScrollPhysics(),
     this.padding = const EdgeInsets.only(bottom: 2.0, left: 2.0),
+    required this.loadingPadding,
   }) : super(key: key);
 
   @override
@@ -60,7 +62,10 @@ class StreamGridWrapper extends StatelessWidget {
           );
         } else {
 
-          return circularProgress(context, const Color(0xFFB2BEB5));
+          return Padding(
+            padding: loadingPadding,
+            child: circularProgress(context, Colors.blue),
+          );
         }
       },
     );

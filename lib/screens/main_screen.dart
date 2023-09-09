@@ -18,7 +18,7 @@ class MainScreen extends StatefulWidget{
 }
 
 class _MainScreenState extends State<MainScreen>{
-  int _page = 0;
+  int page = 0;
 
   List pages = [
     {
@@ -55,21 +55,13 @@ class _MainScreenState extends State<MainScreen>{
       builder: (context) {
 
         return Scaffold(
-          body: PageTransitionSwitcher(
-            transitionBuilder: (
-                Widget child,
-                Animation<double> animation,
-                Animation<double> secondaryAnimation,
-                ) {
-
-              return FadeThroughTransition(
-                animation: animation,
-                secondaryAnimation: secondaryAnimation,
-                child: child,
-              );
-            },
-            child: pages[_page]['page'],
+          // dont push new page everytime do push and pop instead
+          body: IndexedStack(
+            index: page,
+            children: pages.map((e) => e['page'] as Widget).toList(),
           ),
+          extendBody: false,
+          extendBodyBehindAppBar: false,
           bottomNavigationBar: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -181,13 +173,13 @@ class _MainScreenState extends State<MainScreen>{
                   label: 'Profile',
                 ),
               ],
-              currentIndex: _page,
+              currentIndex: page,
               unselectedIconTheme: const IconThemeData(size: 35, color: Colors.blue),
               selectedIconTheme: const IconThemeData(size: 35,),
               elevation: 0,
               onTap: (int index) {
                 setState(() {
-                  _page = index;
+                  page = index;
                 });
               },
             ),

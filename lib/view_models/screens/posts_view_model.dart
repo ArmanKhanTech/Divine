@@ -187,9 +187,7 @@ class PostsViewModel extends ChangeNotifier{
       loading = true;
       notifyListeners();
       description ??= '';
-      location ??= 'Unknown';
-      hashtagsList ??= [];
-      mentionsList ??= [];
+      location ??= '';
       bool hasNudity = false;
       for(int i = 0; i < images.length; i++){
         final result = await FlutterNudeDetector.detect(path: images[i].path);

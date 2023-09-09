@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
+import 'package:shimmer/shimmer.dart';
 import '../models/story_model.dart';
 import '../models/user_model.dart';
 import '../stories/screens/confirm_story.dart';
@@ -20,6 +21,8 @@ class StoryWidget extends StatefulWidget{
 class _StoryWidgetState extends State<StoryWidget> {
   int storyCounter = 0;
 
+  bool isLoaded = false;
+
   @override
   void initState() {
     super.initState();
@@ -28,6 +31,11 @@ class _StoryWidgetState extends State<StoryWidget> {
   // TODO: Sort stories by time i.e viewed stories at last, tags in stories, location in stories, tagged stories within stories.
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      setState(() {
+        isLoaded = true;
+      });
+    });
 
     return StreamBuilder<QuerySnapshot>(
       stream: viewerListStream(auth.currentUser!.uid),
@@ -42,7 +50,6 @@ class _StoryWidgetState extends State<StoryWidget> {
               scrollDirection: Axis.horizontal,
               physics: const AlwaysScrollableScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
-                // show own story at first position
                 if(index == 0){
 
                   return buildOwnStoryAvatar();
@@ -110,7 +117,7 @@ class _StoryWidgetState extends State<StoryWidget> {
           UserModel user = UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
 
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            padding: const EdgeInsets.symmetric(horizontal: 6.0),
             child: FutureBuilder<QuerySnapshot>(
               future: storyRef.doc(storiesId).collection('stories').get(),
               builder: (context, snapshot){
@@ -166,12 +173,49 @@ class _StoryWidgetState extends State<StoryWidget> {
                             ],
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: CircleAvatar(
+                            padding: const EdgeInsets.all(3.0),
+                            child: user.photoUrl!.isNotEmpty ? CachedNetworkImage(
+                              imageUrl: user.photoUrl!,
+                              imageBuilder: (context, imageProvider) => Container(
+                                height: 90,
+                                width: 90,
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(Radius.circular(45)),
+                                  image: DecorationImage(
+                                    image: imageProvider,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              progressIndicatorBuilder: (context, url, downloadProgress) {
+
+                                return Shimmer.fromColors(
+                                  baseColor: Colors.grey[300]!,
+                                  highlightColor: Colors.white,
+                                  child: Container(
+                                    height: 90,
+                                    width: 90,
+                                    decoration: const BoxDecoration(
+                                      color: Colors.grey,
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                );
+                              },
+                              errorWidget: (context, url, error) => const Icon(Icons.error),
+                            ) : CircleAvatar(
                               radius: 45.0,
-                              backgroundColor: Colors.grey,
-                              backgroundImage: CachedNetworkImageProvider(
-                                user.photoUrl!,
+                              backgroundColor:
+                              Theme.of(context).colorScheme.secondary,
+                              child: Center(
+                                child: Text(
+                                  user.username![0].toUpperCase(),
+                                  style: TextStyle(
+                                    color: Theme.of(context).colorScheme.secondary,
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -180,6 +224,7 @@ class _StoryWidgetState extends State<StoryWidget> {
                       const SizedBox(height: 4.0),
                       Text(
                         user.username!.length > 8 ? '${user.username!.substring(0, 8).toLowerCase()}...' : user.username!.toLowerCase(),
+                        textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.w400,
@@ -209,9 +254,10 @@ class _StoryWidgetState extends State<StoryWidget> {
       children: [
         Padding(
           padding: const EdgeInsets.only(
-            left: 20.0,
+            left: 18.0,
             right: 5.0,
             bottom: 5.0,
+            top: 2.0,
           ),
           child: StreamBuilder(
               stream: usersRef.doc(auth.currentUser!.uid).snapshots(),
@@ -242,19 +288,48 @@ class _StoryWidgetState extends State<StoryWidget> {
                     child: Stack(
                       alignment: Alignment.centerRight,
                       children: [
-                        CircleAvatar(
-                          radius: 48.0,
-                          backgroundColor: Colors.grey[200],
-                          backgroundImage: profileImage.photoUrl!.isNotEmpty ? CachedNetworkImageProvider(
-                              profileImage.photoUrl!) : null,
-                          child: profileImage.photoUrl!.isEmpty ? Text(
-                            profileImage.username![0].toUpperCase(),
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary,
-                              fontSize: 30.0,
-                              fontWeight: FontWeight.bold,
+                        profileImage.photoUrl!.isNotEmpty ? CachedNetworkImage(
+                          imageUrl: profileImage.photoUrl!,
+                          imageBuilder: (context, imageProvider) => Container(
+                            height: 96,
+                            width: 96,
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.all(Radius.circular(48)),
+                              image: DecorationImage(
+                                image: imageProvider,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                          ) : null,
+                          ),
+                          progressIndicatorBuilder: (context, url, downloadProgress) {
+
+                            return Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.white,
+                              child: Container(
+                                height: 96,
+                                width: 96,
+                                decoration: const BoxDecoration(
+                                  color: Colors.grey,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                            );
+                          },
+                          errorWidget: (context, url, error) => const Icon(Icons.error),
+                      ) : CircleAvatar(
+                            radius: 48.0,
+                            backgroundColor: Colors.grey[200],
+                            child: Center(
+                              child: Text(
+                                profileImage.username![0].toUpperCase(),
+                                style: TextStyle(
+                                  color: Colors.grey[400],
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                         ),
                         Positioned(
                           bottom: 0.0,
@@ -283,19 +358,22 @@ class _StoryWidgetState extends State<StoryWidget> {
               }
           ),
         ),
-        const Row(
+        const SizedBox(
+          height: 1.0,
+        ),
+        Row(
           children: [
-            SizedBox(
+            const SizedBox(
               width: 15.0,
             ),
-            Text(
+            isLoaded ? const Text(
               'Your story',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.w400,
               ),
-            ),
+            ) : const SizedBox(),
           ],
         )
       ],

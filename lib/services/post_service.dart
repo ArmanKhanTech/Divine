@@ -61,9 +61,9 @@ class PostService extends Service{
       "description": description,
       "location": location,
       "timestamp": Timestamp.now(),
-      "likes": {'count' : 0, 'userIds' : []},
       "hashtags": hashtagsList,
       "mentions": mentionsList,
+      "type" : 'post'
     }).catchError((e) {});
 
     return ref.id;

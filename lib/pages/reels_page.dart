@@ -10,7 +10,11 @@ class ReelsPage extends StatefulWidget{
 class _ReelsPageState extends State<ReelsPage>{
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+
+    return const CupertinoPageScaffold(
+      child: Center(
+        child: Text('Activity Page'),
+      ),
+    );
   }
 }

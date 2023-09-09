@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:like_button/like_button.dart';
@@ -32,10 +33,22 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: const Icon(CupertinoIcons.chevron_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          iconSize: 30.0,
+          color: Theme.of(context).colorScheme.secondary,
+          padding: const EdgeInsets.only(bottom: 2.0),
+        ),
+      ),
       body: Center(
         child: buildImage(context),
       ),
+      backgroundColor: Theme.of(context).colorScheme.background,
       bottomNavigationBar: BottomAppBar(
         elevation: 0.0,
         color: Colors.transparent,
@@ -51,17 +64,26 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.post!.username!,
-                      style: const TextStyle(fontWeight: FontWeight.w800),
+                      widget.post!.username!.toLowerCase(),
+                      style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18.0),
                     ),
                     const SizedBox(height: 3.0),
                     Row(
                       children: [
-                        const Icon(Ionicons.alarm_outline, size: 13.0),
-                        const SizedBox(width: 3.0),
-                        Text(
-                          timeago.format(widget.post!.timestamp!.toDate()),
-                        ),
+                        const Icon(Ionicons.alarm_outline, size: 20.0),
+                        const SizedBox(width: 5.0),
+                        Column(
+                          children: [
+                            const SizedBox(
+                              height: 2,
+                            ),
+                            Text(
+                              timeago.format(widget.post!.timestamp!.toDate()),
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(fontSize: 16.0),
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   ],
@@ -78,22 +100,25 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
 
   buildImage(BuildContext context) {
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(5.0),
-        child: ListView.builder(
-            itemBuilder: (context, index) {
+    if(widget.post!.mediaUrl!.length > 1) {
+      return ListView.builder(
+        itemBuilder: (context, index) {
 
-              return CachedNetworkImage(
-                imageUrl: widget.post!.mediaUrl![index],
-                placeholder: (context, url) => circularProgress(context, Colors.grey),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-              );
-            },
-        )
-      ),
-    );
+          return CachedNetworkImage(
+            imageUrl: widget.post!.mediaUrl![index],
+            placeholder: (context, url) => circularProgress(context, Colors.grey),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+          );
+        },
+      );
+    } else {
+
+      return CachedNetworkImage(
+        imageUrl: widget.post!.mediaUrl![0],
+        placeholder: (context, url) => circularProgress(context, Colors.grey),
+        errorWidget: (context, url, error) => const Icon(Icons.error),
+      );
+    }
   }
 
   addLikesToNotification() async {
@@ -136,6 +161,7 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
   }
 
   buildLikeButton() {
+
     return StreamBuilder(
       stream: likesRef
           .where('postId', isEqualTo: widget.post!.postId)
@@ -144,30 +170,7 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasData) {
           List<QueryDocumentSnapshot> docs = snapshot.data?.docs ?? [];
-          // return IconButton(
-          //   onPressed: () {
-          //     if (docs.isEmpty) {
-          //       likesRef.add({
-          //         'userId': currentUserId(),
-          //         'postId': widget.post!.postId,
-          //         'dateCreated': Timestamp.now(),
-          //       });
-          //       addLikesToNotification();
-          //     } else {
-          //       likesRef.doc(docs[0].id).delete();
-          //       removeLikeFromNotification();
-          //     }
-          //   },
-          //   icon: docs.isEmpty
-          //       ? Icon(
-          //           CupertinoIcons.heart,
-          //         )
-          //       : Icon(
-          //           CupertinoIcons.heart_fill,
-          //           color: Colors.red,
-          //         ),
-          // );
-          ///added animated like button
+
           Future<bool> onLikeButtonTapped(bool isLiked) async {
             if (docs.isEmpty) {
               likesRef.add({
@@ -176,17 +179,19 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
                 'dateCreated': Timestamp.now(),
               });
               addLikesToNotification();
+
               return !isLiked;
             } else {
               likesRef.doc(docs[0].id).delete();
               removeLikeFromNotification();
+
               return isLiked;
             }
           }
 
           return LikeButton(
             onTap: onLikeButtonTapped,
-            size: 25.0,
+            size: 30.0,
             circleColor:
             const CircleColor(start: Color(0xffFFC0CB), end: Color(0xffff0000)),
             bubblesColor: const BubblesColor(
@@ -199,7 +204,7 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
               return Icon(
                 docs.isEmpty ? Ionicons.heart_outline : Ionicons.heart,
                 color: docs.isEmpty ? Colors.grey : Colors.red,
-                size: 25,
+                size: 30,
               );
             },
           );

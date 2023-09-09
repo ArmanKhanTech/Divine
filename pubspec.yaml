@@ -98,6 +98,8 @@ dependencies:
   flutter_nude_detector: ^0.0.4+1
   top_snackbar_flutter: ^3.1.0
   like_button: ^2.0.5
+  shimmer: ^3.0.0
+  expandable_text: ^2.3.0
   #google_mlkit_commons: ^0.5.0
   #google_mlkit_face_detection: ^0.8.0
   #google_mlkit_face_mesh_detection: ^0.0.1

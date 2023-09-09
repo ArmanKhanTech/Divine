@@ -7,14 +7,13 @@ class PostModel {
   String? username;
   String? location;
   String? description;
+  String? mediaType;
 
   List<dynamic>? mediaUrl = [];
   List<dynamic>? mentions = [];
   List<dynamic>? hashtags = [];
 
   Timestamp? timestamp;
-
-  Likes? likes;
 
   PostModel({
     this.id,
@@ -27,7 +26,7 @@ class PostModel {
     this.timestamp,
     this.mentions,
     this.hashtags,
-    this.likes,
+    this.mediaType,
   });
 
   PostModel.fromJson(Map<String, dynamic> json) {
@@ -39,13 +38,17 @@ class PostModel {
     description = json['description'];
     mediaUrl = json['mediaUrl'].cast<String>();
     timestamp = json['timestamp'];
-    if (json['tags'] != null) {
-      mentions = json['tags'].cast<String>();
+    mediaType = json['type'];
+    if (json['mentions'] != null) {
+      mentions = json['mentions'].cast<String>();
     } else {
       mentions = [];
     }
-    hashtags = json['hashtags'].cast<String>();
-    likes = Likes.fromJson(json['likes']);
+    if (json['hashtags'] != null) {
+      hashtags = json['hashtags'].cast<String>();
+    } else {
+      hashtags = [];
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -58,34 +61,9 @@ class PostModel {
     data['mediaUrl'] = mediaUrl;
     data['timestamp'] = timestamp;
     data['username'] = username;
-    data['tags'] = mentions;
+    data['mentions'] = mentions;
     data['hashtags'] = hashtags;
-    data['likes'] = likes?.toJson();
-
-    return data;
-  }
-}
-
-class Likes {
-  int? count = 0;
-  List<String>? userIds = [];
-
-  Likes({
-    this.count, this.userIds});
-
-  Likes.fromJson(Map<String, dynamic> json) {
-    count = json['count'];
-    if (json['userIds'] != null) {
-      userIds = json['userIds'].cast<String>();
-    } else {
-      userIds = [];
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['count'] = count;
-    data['userIds'] = userIds;
+    data['type'] = mediaType;
 
     return data;
   }

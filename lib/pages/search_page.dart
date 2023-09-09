@@ -10,8 +10,12 @@ class SearchPage extends StatefulWidget{
 class _SearchPageState extends State<SearchPage>{
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+
+    return const CupertinoPageScaffold(
+      child: Center(
+        child: Text('Activity Page'),
+      ),
+    );
   }
 
 }
