@@ -53,34 +53,38 @@ class _SettingsScreenState extends State<SettingsScreen>{
         child: ListView(
           shrinkWrap: true,
           children: <Widget>[
-            const ListTile(
+            ListTile(
                 title: Text(
                   "About",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 18
+                    fontSize: 18,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
                 subtitle: Text(
                   "A social media made on Flutter by Arman Khan",
                   style: TextStyle(
-                    fontSize: 15
+                    fontSize: 15,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
-                trailing: Icon(Icons.error)),
+                trailing: Icon(Icons.error, color: Theme.of(context).colorScheme.secondary)),
             const Divider(),
             ListTile(
-              title: const Text(
+              title: Text(
                 "Dark Mode",
                 style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
-              subtitle: const Text(
+              subtitle: Text(
                 "Toggle dark mode",
                 style: TextStyle(
-                  fontSize: 15
+                  fontSize: 15,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
               trailing: SizedBox(
@@ -100,17 +104,19 @@ class _SettingsScreenState extends State<SettingsScreen>{
             ),
             const Divider(),
             ListTile(
-              title: const Text(
+              title: Text(
                 "Private Account",
                 style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
-              subtitle: const Text(
+              subtitle: Text(
                 "Make your account private",
                 style: TextStyle(
-                    fontSize: 15
+                  fontSize: 15,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
               trailing: SizedBox(

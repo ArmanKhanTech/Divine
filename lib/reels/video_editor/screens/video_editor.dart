@@ -290,7 +290,7 @@ class _VideoEditorState extends State<VideoEditor> {
                           ),
                           Container(
                             padding: const EdgeInsets.only(top: 10),
-                            height: 190,
+                            height: 200,
                             child: Column(
                               children: [
                                 Container(
@@ -305,6 +305,7 @@ class _VideoEditorState extends State<VideoEditor> {
                                       borderRadius: BorderRadius.circular(20),
                                       color: Colors.white,
                                     ),
+                                    dividerColor: Colors.transparent,
                                     tabs: const [
                                       Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
@@ -315,7 +316,7 @@ class _VideoEditorState extends State<VideoEditor> {
                                             ),
                                             Text(
                                               'Trim',
-                                              style: TextStyle(fontSize: 16),
+                                              style: TextStyle(fontSize: 18),
                                             )
                                           ]),
                                       Row(
@@ -327,7 +328,7 @@ class _VideoEditorState extends State<VideoEditor> {
                                           ),
                                           Text(
                                             'Cover',
-                                            style: TextStyle(fontSize: 16),
+                                            style: TextStyle(fontSize: 18),
                                           )
                                         ],
                                       ),

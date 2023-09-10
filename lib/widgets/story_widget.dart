@@ -21,8 +21,6 @@ class StoryWidget extends StatefulWidget{
 class _StoryWidgetState extends State<StoryWidget> {
   int storyCounter = 0;
 
-  bool isLoaded = false;
-
   @override
   void initState() {
     super.initState();
@@ -31,11 +29,6 @@ class _StoryWidgetState extends State<StoryWidget> {
   // TODO: Sort stories by time i.e viewed stories at last, tags in stories, location in stories, tagged stories within stories.
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      setState(() {
-        isLoaded = true;
-      });
-    });
 
     return StreamBuilder<QuerySnapshot>(
       stream: viewerListStream(auth.currentUser!.uid),
@@ -221,14 +214,14 @@ class _StoryWidgetState extends State<StoryWidget> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 4.0),
+                      const SizedBox(height: 5.0),
                       Text(
                         user.username!.length > 8 ? '${user.username!.substring(0, 8).toLowerCase()}...' : user.username!.toLowerCase(),
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.w400,
-                          fontFamily: 'Roboto',
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       )
                     ],
@@ -358,22 +351,20 @@ class _StoryWidgetState extends State<StoryWidget> {
               }
           ),
         ),
-        const SizedBox(
-          height: 1.0,
-        ),
         Row(
           children: [
             const SizedBox(
               width: 15.0,
             ),
-            isLoaded ? const Text(
+            Text(
               'Your story',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.w400,
+                color: Theme.of(context).colorScheme.secondary,
               ),
-            ) : const SizedBox(),
+            ),
           ],
         )
       ],

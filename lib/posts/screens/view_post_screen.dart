@@ -6,20 +6,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:like_button/like_button.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-import '../models/post_model.dart';
-import '../models/user_model.dart';
-import '../utilities/firebase.dart';
-import '../widgets/progress_indicators.dart';
+import '../../models/post_model.dart';
+import '../../models/user_model.dart';
+import '../../utilities/firebase.dart';
+import '../../widgets/progress_indicators.dart';
 
-class ViewImageScreen extends StatefulWidget {
+class ViewPostScreen extends StatefulWidget {
   final PostModel? post;
 
-  const ViewImageScreen({super.key, this.post});
+  const ViewPostScreen({super.key, this.post});
 
   @override
-  State<ViewImageScreen> createState() => _ViewImageScreenState();
+  State<ViewPostScreen> createState() => _ViewPostScreenState();
 }
 
 final DateTime timestamp = DateTime.now();
@@ -30,7 +31,7 @@ currentUserId() {
 
 UserModel? user;
 
-class _ViewImageScreenState extends State<ViewImageScreen> {
+class _ViewPostScreenState extends State<ViewPostScreen> {
   @override
   Widget build(BuildContext context) {
 
@@ -55,9 +56,12 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
         elevation: 0.0,
         color: Colors.transparent,
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.only(
+            left: 10,
+            right: 10,
+            top: 10
+          ),
           child: SizedBox(
-            height: 50.0,
             width: MediaQuery.of(context).size.width,
             child: Row(
               children: [
@@ -67,25 +71,17 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
                   children: [
                     Text(
                       widget.post!.username!.toLowerCase(),
-                      style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18.0),
+                      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18.0, height: 1.3, color: Theme.of(context).colorScheme.secondary),
                     ),
-                    const SizedBox(height: 3.0),
                     Row(
                       children: [
                         const Icon(Ionicons.alarm_outline, size: 20.0),
                         const SizedBox(width: 5.0),
-                        Column(
-                          children: [
-                            const SizedBox(
-                              height: 2,
-                            ),
-                            Text(
-                              timeago.format(widget.post!.timestamp!.toDate()),
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(fontSize: 16.0),
-                            ),
-                          ],
-                        )
+                        Text(
+                          timeago.format(widget.post!.timestamp!.toDate()),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(fontSize: 16.0, height: 1.2, color: Colors.grey),
+                        ),
                       ],
                     ),
                   ],
@@ -112,7 +108,18 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
           return CachedNetworkImage(
             width: MediaQuery.of(context).size.width,
             imageUrl: widget.post!.mediaUrl![index],
-            placeholder: (context, url) => circularProgress(context, Colors.grey),
+            placeholder: (context, url) {
+
+              return Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.white,
+                child: Container(
+                  height: MediaQuery.of(context).size.width,
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.white,
+                ),
+              );
+            },
             errorWidget: (context, url, error) => const Icon(Icons.error),
           );
         },
@@ -121,7 +128,18 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
 
       return CachedNetworkImage(
         imageUrl: widget.post!.mediaUrl![0],
-        placeholder: (context, url) => circularProgress(context, Colors.grey),
+        placeholder: (context, url) {
+
+          return Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.white,
+            child: Container(
+              height: MediaQuery.of(context).size.width,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.white,
+            ),
+          );
+        },
         errorWidget: (context, url, error) => const Icon(Icons.error),
       );
     }
@@ -197,9 +215,7 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
 
           return LikeButton(
             onTap: onLikeButtonTapped,
-            size: 30.0,
-            circleColor:
-            const CircleColor(start: Color(0xffFFC0CB), end: Color(0xffff0000)),
+            circleColor: const CircleColor(start: Color(0xffFFC0CB), end: Color(0xffff0000)),
             bubblesColor: const BubblesColor(
               dotPrimaryColor: Color(0xffFFA500),
               dotSecondaryColor: Color(0xffd8392b),
@@ -207,9 +223,10 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
               dotLastColor: Color(0xffff8c00),
             ),
             likeBuilder: (bool isLiked) {
+
               return Icon(
                 docs.isEmpty ? Ionicons.heart_outline : Ionicons.heart,
-                color: docs.isEmpty ? Colors.grey : Colors.red,
+                color: docs.isEmpty ? Theme.of(context).colorScheme.background == Colors.white ? Colors.black : Colors.white : Colors.red,
                 size: 30,
               );
             },

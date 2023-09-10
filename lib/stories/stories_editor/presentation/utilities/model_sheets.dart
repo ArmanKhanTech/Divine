@@ -51,7 +51,7 @@ Future<bool> exitDialog({required context, required contentKey}) async {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: BlurryContainer(
-          height: 260,
+          height: 290,
           color: Colors.black.withOpacity(0.4),
           blur: 5,
           padding: const EdgeInsets.all(20),

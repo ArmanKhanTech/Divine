@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'custom_card.dart';
 
 class TextFormBuilder extends StatefulWidget {
@@ -38,9 +39,8 @@ class TextFormBuilder extends StatefulWidget {
       this.validateFunction,
       this.onSaved,
       this.onChange,
-      this.key,
       required this.whichPage,
-      required this.capitalization});
+      required this.capitalization, this.key});
 
   @override
   State<TextFormBuilder> createState() => _TextFormBuilderState();
@@ -73,7 +73,9 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
                   enabled: widget.enabled,
                   style: TextStyle(
                     color: Theme.of(context).textTheme.bodyLarge!.color,
-                    fontSize: 18
+                    fontSize: 18,
+                    fontFamily: GoogleFonts.ubuntu().fontFamily,
+                    height: 1.2,
                   ),
                   onChanged: (value) => {
                         error = widget.validateFunction!(value),
@@ -111,10 +113,14 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
                       size: 25.0,
                       color: widget.whichPage == "login" ? Colors.orange : Colors.blue,
                     ),
+                    fillColor: Colors.grey[200],
                     filled: true,
                     hintText: widget.hintText,
                     hintStyle: TextStyle(
                       color: Colors.grey[400],
+                      fontWeight: FontWeight.w400,
+                      fontFamily: GoogleFonts.ubuntu().fontFamily,
+                      height: 1.2,
                     ),
                     contentPadding: const EdgeInsets.all(15.0),
                     border: border(context),

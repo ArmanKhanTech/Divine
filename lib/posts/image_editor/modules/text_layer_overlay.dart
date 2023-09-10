@@ -31,7 +31,7 @@ class _TextLayerOverlayState extends State<TextLayerOverlay> {
   Widget build(BuildContext context) {
 
     return Container(
-      height: 380,
+      height: 400,
       padding: const EdgeInsets.symmetric(horizontal: 15),
       decoration: const BoxDecoration(
         color: Colors.black,

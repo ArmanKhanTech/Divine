@@ -158,10 +158,11 @@ class _StoryScreenState extends State<StoryScreen> {
                                                 textAlign: TextAlign.start,
                                                 style: TextStyle(
                                                   fontSize: 15.0,
-                                                  fontWeight: FontWeight.bold,
+                                                  fontWeight: FontWeight.w500,
                                                   color: Colors.white,
                                                   background: Paint()
                                                     ..color = Colors.transparent,
+                                                  height: 1.2,
                                                 ),
                                               ),
                                             ),

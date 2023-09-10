@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../components/stream_grid_wrapper.dart';
 import '../models/post_model.dart';
@@ -153,8 +154,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     child: const Padding(
                       padding: EdgeInsets.only(
-                        top: 15.0,
-                        bottom: 10.0,
+                        top: 10.0,
+                        bottom: 5.0,
                         left: 25.0,
                       ),
                       child:  Text(
@@ -177,7 +178,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         dense: true,
                         contentPadding: const EdgeInsets.only(
                           left: 25,
-                          top: 10,
                           bottom: 8,
                         ),
                         visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
@@ -214,7 +214,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             dense: true,
                             contentPadding: const EdgeInsets.only(
                               left: 25,
-                              top: 8,
                               bottom: 8,
                             ),
                             visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
@@ -246,7 +245,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             dense: true,
                             contentPadding: const EdgeInsets.only(
                               left: 25,
-                              top: 8,
                               bottom: 8,
                             ),
                             visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
@@ -383,15 +381,14 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                         ),
-                        progressIndicatorBuilder: (context, url, downloadProgress) =>
-                            SizedBox(
-                              height: 96,
-                              width: 96,
-                              child: CircularProgressIndicator(
-                                  value: downloadProgress.progress,
-                                  color: Colors.blue
-                              ),
-                            ),
+                        placeholder: (context, url) {
+
+                          return Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Theme.of(context).colorScheme.secondary,
+                            child: const SizedBox(),
+                          );
+                        },
                         errorWidget: (context, url, error) => const Icon(Icons.error),
                       ),
                     ),
@@ -449,16 +446,20 @@ class _ProfilePageState extends State<ProfilePage> {
                   padding: const EdgeInsets.only(left: 20.0),
                   child: currentUser.name!.isNotEmpty ? Text(
                     currentUser.name!,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
+                      height: 1.2,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                     maxLines: 1,
                   ) : Text(
                     currentUser.username!,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
+                      height: 1.2,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                     maxLines: 1,
                   ),
@@ -471,6 +472,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       fontSize: 18.0,
                       color: Colors.blue,
                       fontWeight: FontWeight.w400,
+                      height: 1.0,
                     ),
                     maxLines: 1,
                   ) : Text(
@@ -479,6 +481,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       fontSize: 18.0,
                       color: Colors.pink,
                       fontWeight: FontWeight.w400,
+                      height: 1.0,
                     ),
                     maxLines: 1,
                   ),
@@ -492,9 +495,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     width: MediaQuery.of(context).size.width * 0.6,
                     child: ExpandableText(
                       currentUser.bio!,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18.0,
                         fontWeight: FontWeight.w400,
+                        height: 1.3,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                       expandText: 'show more',
                       maxLines: 5,
@@ -540,9 +545,10 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: Text(
                               currentUser.link!,
                               style: const TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.deepPurple,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.deepPurple,
+                                height: 1.2,
                               ),
                             ),
                           )
@@ -560,21 +566,25 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: Row(
                           children: [
                             GestureDetector(
-                              child: const Text(
+                              child: Text(
                                 'Followed by ',
                                 style: TextStyle(
-                                  fontSize: 15.0,
+                                  fontSize: 16.0,
                                   fontWeight: FontWeight.w400,
                                   fontFamily: 'Ubuntu-Regular',
+                                  color: Theme.of(context).colorScheme.secondary,
+                                  height: 1.2,
                                 ),
                               ),
                             ),
                             GestureDetector(
-                              child: const Text(
+                              child: Text(
                                 'username, username',
                                 style: TextStyle(
-                                  fontSize: 15.0,
+                                  fontSize: 16.0,
                                   fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).colorScheme.secondary,
+                                  height: 1.2,
                                 ),
                               ),
                             ),
@@ -598,6 +608,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             height: 40,
                             width: MediaQuery.of(context).size.width,
                             child: TabBar(
+                              dividerColor: Colors.transparent,
                               labelColor: Colors.blue,
                               unselectedLabelColor: Colors.grey,
                               indicatorColor: Colors.blue,
@@ -623,14 +634,45 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                           Expanded(
-                            child: IndexedStack(
-                              index: tabIndex,
-                              children: [
-                                buildPostView(currentUser),
-                                Container(),
-                                Container(),
-                                Container(),
-                              ],
+                            child: Builder(
+                              builder: (BuildContext context) {
+                                switch (tabIndex) {
+                                  case 0:
+                                    return buildPostView(currentUser);
+                                  case 1:
+                                    return const Center(
+                                      child: Text(
+                                        'No Videos',
+                                        style: TextStyle(
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    );
+                                  case 2:
+                                    return const Center(
+                                      child: Text(
+                                        'No Tagged Posts',
+                                        style: TextStyle(
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    );
+                                  case 3:
+                                    return const Center(
+                                      child: Text(
+                                        'No Saved Posts',
+                                        style: TextStyle(
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    );
+                                  default:
+                                    return const SizedBox();
+                                }
+                              },
                             )
                           )
                         ],
@@ -644,7 +686,10 @@ class _ProfilePageState extends State<ProfilePage> {
           if(widget.profileId == auth.currentUser!.uid) {
 
             return Center(
-              child: circularProgress(context, Colors.blue),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: circularProgress(context, Colors.blue),
+              ),
             );
           } else {
 
@@ -677,9 +722,10 @@ class _ProfilePageState extends State<ProfilePage> {
         Text(
           count.toString(),
           textAlign: TextAlign.end,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 22.0,
             fontWeight: FontWeight.bold,
+            color: Theme.of(context).colorScheme.secondary,
           ),
         ),
         const SizedBox(height: 2.0),
@@ -689,6 +735,7 @@ class _ProfilePageState extends State<ProfilePage> {
             fontSize: 18,
             fontWeight: FontWeight.w400,
             color: Theme.of(context).colorScheme.secondary,
+            height: 1.0,
           ),
         )
       ],
@@ -905,7 +952,7 @@ class _ProfilePageState extends State<ProfilePage> {
             .snapshots(),
         physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.all(0.0),
-        loadingPadding: widget.profileId == auth.currentUser!.uid ? const EdgeInsets.only(top: 0.0) : const EdgeInsets.only(top: 40.0),
+        loadingPadding: widget.profileId == auth.currentUser!.uid ? const EdgeInsets.only(bottom: 20) : const EdgeInsets.only(top: 40.0),
         itemBuilder: (_, DocumentSnapshot snapshot) {
           PostModel posts = PostModel.fromJson(snapshot.data() as Map<String, dynamic>);
 
@@ -913,36 +960,6 @@ class _ProfilePageState extends State<ProfilePage> {
             post: posts,
           );
         },
-      );
-    } else {
-
-      return buildDefaultMessage(postCount);
-    }
-  }
-
-  buildDefaultMessage(count) {
-    if(count == 0) {
-
-      return const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              CupertinoIcons.photo,
-              color: Colors.grey,
-              size: 50.0,
-            ),
-            SizedBox(height: 10.0),
-            Text(
-              'No Posts',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey,
-              ),
-            ),
-          ],
-        ),
       );
     } else {
 

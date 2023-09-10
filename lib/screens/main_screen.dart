@@ -1,4 +1,3 @@
-import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -20,34 +19,6 @@ class MainScreen extends StatefulWidget{
 class _MainScreenState extends State<MainScreen>{
   int page = 0;
 
-  List pages = [
-    {
-      'title': 'Home',
-      'page': const FeedsPage(),
-      'index': 0,
-    },
-    {
-      'title': 'Search',
-      'page': const SearchPage(),
-      'index': 1,
-    },
-    {
-      'title': 'Reels',
-      'page': const ReelsPage(),
-      'index': 2,
-    },
-    {
-      'title': 'Notification',
-      'page': const ActivityPage(),
-      'index': 3,
-    },
-    {
-      'title': 'Profile',
-      'page': ProfilePage(profileId: auth.currentUser!.uid),
-      'index': 4,
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
 
@@ -55,10 +26,23 @@ class _MainScreenState extends State<MainScreen>{
       builder: (context) {
 
         return Scaffold(
-          // dont push new page everytime do push and pop instead
-          body: IndexedStack(
-            index: page,
-            children: pages.map((e) => e['page'] as Widget).toList(),
+          body: Builder(
+            builder: (context) {
+              switch (page) {
+                case 0:
+                  return const FeedsPage();
+                case 1:
+                  return const SearchPage();
+                case 2:
+                  return const ReelsPage();
+                case 3:
+                  return const ActivityPage();
+                case 4:
+                  return ProfilePage(profileId: auth.currentUser!.uid);
+                default:
+                  return  const SizedBox();
+              }
+            },
           ),
           extendBody: false,
           extendBodyBehindAppBar: false,

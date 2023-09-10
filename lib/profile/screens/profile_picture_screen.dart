@@ -75,8 +75,8 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                     ),
                       child: const Padding(
                         padding: EdgeInsets.only(
-                          top: 15.0,
-                          bottom: 15.0,
+                          top: 10.0,
+                          bottom: 10.0,
                           left: 25.0,
                         ),
                         child:  Text(
@@ -101,8 +101,8 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                     dense: true,
                     contentPadding: const EdgeInsets.only(
                       left: 25,
-                      top: 15,
                       bottom: 8,
+                      top: 10
                     ),
                     visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
                     leading: const Icon(CupertinoIcons.camera_fill, color: Colors.blue, size: 25),
@@ -117,7 +117,6 @@ class _ProfilePictureScreenState extends State<ProfilePictureScreen>{
                     dense: true,
                     contentPadding: const EdgeInsets.only(
                       left: 25,
-                      top: 8,
                       bottom: 8,
                     ),
                     visualDensity: const VisualDensity(horizontal: 0, vertical: -4),

@@ -12,7 +12,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import '../components/custom_card.dart';
 import '../models/post_model.dart';
 import '../models/user_model.dart';
-import '../screens/view_image_screen.dart';
+import '../posts/screens/view_post_screen.dart';
 import '../services/post_service.dart';
 import '../utilities/firebase.dart';
 
@@ -43,7 +43,7 @@ class UserPost extends StatelessWidget {
           transitionType: ContainerTransitionType.fadeThrough,
           openBuilder: (BuildContext context, VoidCallback _) {
 
-            return ViewImageScreen(post: post);
+            return ViewPostScreen(post: post);
           },
           closedElevation: 0.0,
           onClosed: (v) {},
@@ -181,9 +181,9 @@ class UserPost extends StatelessWidget {
                                   );*/
                               },
                               child: const Padding(
-                                padding: EdgeInsets.only(top: 5.0),
+                                padding: EdgeInsets.only(top: 2.0),
                                 child: Icon(
-                                  Icons.comment_outlined,
+                                  Ionicons.chatbox_ellipses_outline,
                                   size: 30.0,
                                 ),
                               )
@@ -194,7 +194,7 @@ class UserPost extends StatelessWidget {
 
                               },
                               icon: const Icon(
-                                Icons.bookmark_border,
+                                Ionicons.bookmark_outline,
                                 size: 30.0,
                               ),
                             )
@@ -220,21 +220,17 @@ class UserPost extends StatelessWidget {
                                     return buildLikesCount(context, docs.length);
                                   } else {
 
-                                    return Shimmer(
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          Colors.grey[300]!,
-                                          Colors.grey[100]!,
-                                          Colors.grey[300]!,
-                                        ],
-                                        begin: const Alignment(-1.0, -0.5),
-                                        end: const Alignment(1.0, 0.5),
-                                      ),
+                                    return Shimmer.fromColors(
+                                      baseColor: Colors.grey[300]!,
+                                      highlightColor: Colors.white,
                                       child: Container(
                                         height: 15.0,
                                         width: 65.0,
                                         decoration: const BoxDecoration(
                                           color: Colors.grey,
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(5.0),
+                                          ),
                                         ),
                                       ),
                                     );
@@ -256,21 +252,17 @@ class UserPost extends StatelessWidget {
                                 return buildCommentsCount(context, docs.length);
                               } else {
 
-                                return Shimmer(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Colors.grey[300]!,
-                                      Colors.grey[100]!,
-                                      Colors.grey[300]!,
-                                    ],
-                                    begin: const Alignment(-1.0, -0.5),
-                                    end: const Alignment(1.0, 0.5),
-                                  ),
+                                return Shimmer.fromColors(
+                                  baseColor: Colors.grey[300]!,
+                                  highlightColor: Colors.white,
                                   child: Container(
                                     height: 15.0,
                                     width: 85.0,
                                     decoration: const BoxDecoration(
                                       color: Colors.grey,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(5.0),
+                                      ),
                                     ),
                                   ),
                                 );
@@ -278,6 +270,9 @@ class UserPost extends StatelessWidget {
                             },
                           ),
                         ],
+                      ),
+                      const SizedBox(
+                        height: 5.0,
                       ),
                       Visibility(
                         visible: post!.description != null &&
@@ -291,6 +286,7 @@ class UserPost extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 18,
                               color: Theme.of(context).colorScheme.secondary,
+                              height: 1.2,
                             ),
                             linkColor: Colors.grey,
                             animation: true,
@@ -382,9 +378,9 @@ class UserPost extends StatelessWidget {
               return Icon(
                 docs.isEmpty ? Ionicons.heart_outline : Ionicons.heart,
                 color: docs.isEmpty
-                    ? Theme.of(context).brightness == Brightness.dark
-                    ? Colors.white
-                    : Colors.black
+                    ? Theme.of(context).colorScheme.background == Colors.white
+                    ? Colors.black
+                    : Colors.white
                     : Colors.red,
                 size: 30,
               );
@@ -419,9 +415,11 @@ class UserPost extends StatelessWidget {
 
     return Text(
       '$count likes',
-      style: const TextStyle(
+      style: TextStyle(
         fontWeight: FontWeight.w500,
         fontSize: 18.0,
+        height: 0.8,
+        color: Theme.of(context).colorScheme.secondary,
       ),
     );
   }
@@ -430,9 +428,11 @@ class UserPost extends StatelessWidget {
 
     return Text(
       ' -  $count comments',
-      style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.w500
+      style: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w500,
+        height: 0.8,
+        color: Theme.of(context).colorScheme.secondary,
       ),
     );
   }
@@ -506,9 +506,11 @@ class UserPost extends StatelessWidget {
                       ),
                       const SizedBox(width: 10.0),
                       Column(
-                        mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          const SizedBox(
+                            height: 2,
+                          ),
                           Text(
                             post!.username!.toLowerCase(),
                             style: TextStyle(
@@ -527,6 +529,7 @@ class UserPost extends StatelessWidget {
                                 fontWeight: FontWeight.w400,
                                 color: Theme.of(context).colorScheme.secondary,
                                 fontSize: 15.0,
+                                height: 0.8,
                               ),
                               overflow: TextOverflow.ellipsis,
                             ),

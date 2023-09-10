@@ -79,7 +79,7 @@ dependencies:
   font_awesome_flutter: ^10.5.0
   screenshot: ^2.1.0
   flutter_colorpicker: ^1.0.3
-  extended_image: ^8.0.2
+  extended_image: ^8.1.1
   image_editor: ^1.3.0
   colorfilter_generator: ^0.0.8
   hand_signature: ^3.0.1

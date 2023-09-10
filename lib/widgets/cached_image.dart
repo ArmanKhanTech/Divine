@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -11,8 +10,8 @@ Widget cachedImage(String imgUrl) {
     placeholder: (context, url) {
 
       return Shimmer.fromColors(
-        baseColor: Colors.grey[300]!,
-        highlightColor: Colors.white,
+        baseColor: Colors.grey[200]!,
+        highlightColor: Theme.of(context).colorScheme.secondary,
         child: const SizedBox(),
       );
     },

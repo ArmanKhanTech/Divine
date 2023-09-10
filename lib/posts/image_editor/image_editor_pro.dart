@@ -436,7 +436,7 @@ class SingleImageEditorState extends State<SingleImageEditor> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: BlurryContainer(
-                  height: 220,
+                  height: 250,
                   color: Colors.black.withOpacity(0.15),
                   blur: 5,
                   padding: const EdgeInsets.all(20),
@@ -742,7 +742,7 @@ class SingleImageEditorState extends State<SingleImageEditor> {
         ),
         bottomNavigationBar: Container(
           alignment: Alignment.bottomCenter,
-          height: 72 + MediaQuery.of(context).padding.bottom,
+          height: 78 + MediaQuery.of(context).padding.bottom,
           padding: const EdgeInsets.only(
             top: 15
           ),
@@ -939,7 +939,7 @@ class SingleImageEditorState extends State<SingleImageEditor> {
                                         )
                                     ),
                                     padding: const EdgeInsets.all(15),
-                                    height: 270,
+                                    height: 280,
                                     child: Column(
                                       children: [
                                         const SizedBox(height: 5.0),
@@ -1344,7 +1344,7 @@ class ImageAdjustState extends State<ImageAdjust>{
         ),
       ),
       bottomNavigationBar: SizedBox(
-        height: 97,
+        height: 105,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -1787,7 +1787,7 @@ class ImageFiltersState extends State<ImageFilters> {
       ),
       bottomNavigationBar: SafeArea(
         child: SizedBox(
-          height: 130,
+          height: 140,
           child: Column(children: [
             const SizedBox(
                 height: 10
@@ -1809,7 +1809,7 @@ class ImageFiltersState extends State<ImageFilters> {
               ),
             ),
             SizedBox(
-              height: 100,
+              height: 110,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
@@ -1850,14 +1850,14 @@ class ImageFiltersState extends State<ImageFilters> {
             bottom: 10
           ),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(15),
             border: Border.all(
               color: Colors.black,
               width: 1,
             ),
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(15),
             child: FilterAppliedImage(
               image: widget.image,
               filter: filter,

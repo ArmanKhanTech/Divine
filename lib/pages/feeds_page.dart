@@ -34,7 +34,7 @@ class _FeedsPageState extends State<FeedsPage>{
 
   NativeAd? nativeAd;
 
-  int page = 5;
+  int page = 3;
 
   double height = 125;
 
@@ -52,16 +52,13 @@ class _FeedsPageState extends State<FeedsPage>{
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
         setState(() {
-          page = page + 5;
+          page = page + 3;
           loadingMore = true;
         });
       }
     });
 
-    print('FeedsPage: initState()');
-    print('FeedsPage: initState() -> getFollowingAccounts()');
     getFollowingAccounts();
-    print('FeedsPage: initState() -> getHashTags()');
     getHashTags();
 
     NativeAd(
@@ -152,8 +149,8 @@ class _FeedsPageState extends State<FeedsPage>{
                       ),
                       child: const Padding(
                         padding: EdgeInsets.only(
-                          top: 15.0,
-                          bottom: 10.0,
+                          top: 10.0,
+                          bottom: 5.0,
                           left: 25.0,
                           right: 25.0,
                         ),
@@ -220,9 +217,10 @@ class _FeedsPageState extends State<FeedsPage>{
                                 Text(
                                     'Story',
                                     style: TextStyle(
-                                        fontSize: 25.0,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.blue
+                                      fontSize: 25.0,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.blue,
+                                      height: 0.9
                                     )
                                 )
                               ],
@@ -283,7 +281,8 @@ class _FeedsPageState extends State<FeedsPage>{
                                 style: TextStyle(
                                     fontSize: 25.0,
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.blue
+                                    color: Colors.blue,
+                                    height: 0.9
                                 )
                             )
                           ],
@@ -343,7 +342,8 @@ class _FeedsPageState extends State<FeedsPage>{
                                     style: TextStyle(
                                         fontSize: 25.0,
                                         fontWeight: FontWeight.w500,
-                                        color: Colors.blue
+                                        color: Colors.blue,
+                                        height: 0.9
                                     )
                                 )
                               ],
@@ -399,7 +399,8 @@ class _FeedsPageState extends State<FeedsPage>{
                                 style: TextStyle(
                                     fontSize: 25.0,
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.blue
+                                    color: Colors.blue,
+                                    height: 0.9
                                 )
                             )
                           ],
@@ -432,6 +433,7 @@ class _FeedsPageState extends State<FeedsPage>{
           systemNavigationBarColor: Colors.black,
           systemNavigationBarIconBrightness: Brightness.light,
         ),
+        surfaceTintColor: Colors.transparent,
         title: GradientText(
           Constants.appName,
           style: TextStyle(
@@ -478,113 +480,111 @@ class _FeedsPageState extends State<FeedsPage>{
         color: Colors.purple,
         onRefresh: () => postRef.orderBy('timestamp', descending: true).limit(page).get(),
         displacement: 50,
-        child: SingleChildScrollView(
-          controller: scrollController,
+        child: ListView(
           physics: const AlwaysScrollableScrollPhysics(),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(
-                height: 130,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(
+          children: [
+            const SizedBox(
+              height: 135,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
                       child: StoryWidget()
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-             // TODO: Fix Native Ad & implement it for iOS.
-             /* if (nativeAd != null && Platform.isAndroid == true)
+            ),
+            // TODO: Fix Native Ad & implement it for iOS.
+            /* if (nativeAd != null && Platform.isAndroid == true)
                 SizedBox(
                   height: 100,
                   child: AdWidget(ad: nativeAd!),
                 ),*/
-              const SizedBox(height: 5.0),
-              SizedBox(
-                height: 1.0,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      colors: [
-                        Colors.purple,
-                        Colors.pink,
-                        Colors.blue,
-                      ],
-                    ),
+            const SizedBox(height: 5.0),
+            SizedBox(
+              height: 1.0,
+              child: Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [
+                      Colors.purple,
+                      Colors.pink,
+                      Colors.blue,
+                    ],
                   ),
                 ),
               ),
-              // TODO: Populate reels and threads too.
-              FutureBuilder(
-                future: postRef.orderBy('timestamp', descending: true).limit(page).get(),
-                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasData) {
-                    var snap = snapshot.data;
-                    List docs = snap!.docs;
+            ),
+            // TODO: Populate reels and threads too.
+            FutureBuilder(
+              future: postRef.orderBy('timestamp', descending: true).limit(page).get(),
+              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasData) {
+                  var snap = snapshot.data;
+                  List docs = snap!.docs;
 
-                    return ListView.builder(
-                      itemCount: docs.length,
-                      shrinkWrap: true,
-                      primary: false,
-                      itemBuilder: (context, index) {
-                        PostModel posts = PostModel.fromJson(docs[index].data());
+                  return ListView.builder(
+                    controller: scrollController,
+                    itemCount: docs.length,
+                    shrinkWrap: true,
+                    primary: false,
+                    itemBuilder: (context, index) {
+                      PostModel posts = PostModel.fromJson(docs[index].data());
 
-                        if(docs.length == index + 1) {
-                          loadingMore = false;
-                        }
+                      if(docs.length == index + 1) {
+                        loadingMore = false;
+                      }
 
-                        if(followingAccounts.contains(posts.ownerId)) {
+                      if(followingAccounts.contains(posts.ownerId)) {
 
-                          return UserPost(post: posts, index: index,);
-                        } else {
+                        return UserPost(post: posts, index: index,);
+                      } else {
 
-                          return const SizedBox();
-                        }
-                      },
-                    );
-                  }  else {
+                        return const SizedBox();
+                      }
+                    },
+                  );
+                }  else {
 
-                    return Center(
-                      child: Padding(
+                  return Center(
+                    child: Padding(
                         padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 3.2),
                         child: circularProgress(context, Colors.blue)
-                      ),
-                    );
-                  }
-                },
+                    ),
+                  );
+                }
+              },
+            ),
+            if (loadingMore == true && page > 3)
+              const Padding(
+                padding: EdgeInsets.only(top: 10.0),
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.blue,
+                  ),
+                ),
               ),
-              if (loadingMore == true && page > 5)
-                const Padding(
-                  padding: EdgeInsets.only(top: 10.0),
-                  child: Center(
-                    child: CircularProgressIndicator(
+            if (loadingMore == false && page > 3)
+              const Padding(
+                padding: EdgeInsets.only(
+                  top: 20.0,
+                  bottom: 20.0,
+                ),
+                child: Center(
+                  child: Text(
+                    'No more posts to show.',
+                    style: TextStyle(
                       color: Colors.blue,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
-              if (loadingMore == false && page > 5)
-                const Padding(
-                  padding: EdgeInsets.only(
-                    top: 10.0,
-                    bottom: 20.0,
-                  ),
-                  child: Center(
-                    child: Text(
-                      'No more posts to show.',
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ),
-              // get post id from hashTagsRef and get the post from postRef based on count in Map of hashTags
-              /*FutureBuilder(
+              ),
+            // get post id from hashTagsRef and get the post from postRef based on count in Map of hashTags
+            /*FutureBuilder(
                 future: hashTags != null ? hashTagsRef.doc(hashTags!.keys.first).get() : null,
                 builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                   if (snapshot.hasData) {
@@ -598,9 +598,7 @@ class _FeedsPageState extends State<FeedsPage>{
                   }
                 },
               )*/
-
-            ],
-          ),
+          ],
         ),
       ),
     );

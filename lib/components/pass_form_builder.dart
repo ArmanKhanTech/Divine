@@ -1,5 +1,6 @@
 import 'package:divine/components/custom_card.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
 
 class PasswordFormBuilder extends StatefulWidget {
@@ -71,6 +72,8 @@ class _PasswordFormBuilderState extends State<PasswordFormBuilder> {
                   style: TextStyle(
                     color: Theme.of(context).textTheme.bodyLarge!.color,
                     fontSize: 18.0,
+                    fontFamily: GoogleFonts.ubuntu().fontFamily,
+                    height: 1.2,
                   ),
                   onChanged: (value) => {
                         error = widget.validateFunction!(value),
@@ -112,9 +115,13 @@ class _PasswordFormBuilderState extends State<PasswordFormBuilder> {
                       ),
                     ),
                     filled: true,
+                    fillColor: Colors.grey[200],
                     hintText: widget.hintText,
                     hintStyle: TextStyle(
                       color: Colors.grey[400],
+                      fontWeight: FontWeight.w400,
+                      fontFamily: GoogleFonts.ubuntu().fontFamily,
+                      height: 1.2,
                     ),
                     contentPadding: const EdgeInsets.all(15.0),
                     border: border(context),
