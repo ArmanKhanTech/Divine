@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -98,13 +100,17 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
     );
   }
 
+  // TODO: Background
   buildImage(BuildContext context) {
 
     if(widget.post!.mediaUrl!.length > 1) {
+
       return ListView.builder(
+        itemCount: widget.post!.mediaUrl!.length,
         itemBuilder: (context, index) {
 
           return CachedNetworkImage(
+            width: MediaQuery.of(context).size.width,
             imageUrl: widget.post!.mediaUrl![index],
             placeholder: (context, url) => circularProgress(context, Colors.grey),
             errorWidget: (context, url, error) => const Icon(Icons.error),

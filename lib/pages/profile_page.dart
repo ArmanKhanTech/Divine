@@ -47,6 +47,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   String? name = '';
 
+  int tabIndex = 0;
+
   currentUserId() {
     return auth.currentUser?.uid;
   }
@@ -84,13 +86,15 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   checkIfRequested() async {
-    DocumentSnapshot doc = await followingRequestRef
+    QuerySnapshot doc = await notificationRef
         .doc(widget.profileId)
-        .collection('followRequest')
-        .doc(currentUserId())
+        .collection('notifications')
+        .where('type', isEqualTo: 'follow')
+        .where('userId', isEqualTo: currentUserId())
         .get();
+
     setState(() {
-      requested = doc.exists;
+      requested = doc.docs.isNotEmpty;
     });
   }
 
@@ -587,16 +591,22 @@ class _ProfilePageState extends State<ProfilePage> {
                   width: MediaQuery.of(context).size.width,
                   child: DefaultTabController(
                       length: 4,
+                      initialIndex: tabIndex,
                       child: Column(
                         children: [
                           SizedBox(
                             height: 40,
                             width: MediaQuery.of(context).size.width,
-                            child: const TabBar(
+                            child: TabBar(
                               labelColor: Colors.blue,
                               unselectedLabelColor: Colors.grey,
                               indicatorColor: Colors.blue,
-                              tabs: [
+                              onTap: (index) {
+                                setState(() {
+                                  tabIndex = index;
+                                });
+                              },
+                              tabs: const [
                                 Tab(
                                   icon: Icon(CupertinoIcons.square_grid_2x2_fill, size: 25),
                                 ),
@@ -613,14 +623,15 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                           Expanded(
-                            child: TabBarView(
+                            child: IndexedStack(
+                              index: tabIndex,
                               children: [
                                 buildPostView(currentUser),
                                 Container(),
                                 Container(),
                                 Container(),
                               ],
-                            ),
+                            )
                           )
                         ],
                       )
@@ -839,19 +850,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
     setState(() {
       requested = true;
-    });
-
-    followingRequestRef
-        .doc(widget.profileId)
-        .collection('followRequest')
-        .doc(currentUserId())
-        .set({
-      "type": "followRequest",
-      "ownerId": widget.profileId,
-      "username": users?.username,
-      "userId": users?.id,
-      "userDp": users?.photoUrl,
-      "timestamp": timestamp,
     });
 
     notificationRef

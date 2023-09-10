@@ -58,8 +58,10 @@ class _FeedsPageState extends State<FeedsPage>{
       }
     });
 
+    print('FeedsPage: initState()');
+    print('FeedsPage: initState() -> getFollowingAccounts()');
     getFollowingAccounts();
-
+    print('FeedsPage: initState() -> getHashTags()');
     getHashTags();
 
     NativeAd(

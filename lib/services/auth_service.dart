@@ -61,11 +61,12 @@ class AuthService {
       'email': email,
       'country': country,
       'photoUrl': user.photoURL ?? '',
+      'name': '',
       'bio': '',
       'followers': 0,
       'following': 0,
       'posts': 0,
-      'favorites': 0,
+      'postList': [],
       'createdAt': Timestamp.now(),
       'gender': '',
       'type': 'public',
@@ -74,7 +75,6 @@ class AuthService {
       'verified': false,
       'profession': '',
       'link': '',
-      'name': '',
     });
   }
 

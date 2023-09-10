@@ -684,7 +684,6 @@ class SingleImageEditorState extends State<SingleImageEditor> {
             ),
             child: Stack(
               children: [
-                // backdrop filter
                 Positioned.fill(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),

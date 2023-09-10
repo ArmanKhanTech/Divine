@@ -4,7 +4,6 @@ import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_pixels/image_pixels.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
@@ -174,7 +173,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
               const SizedBox(height: 10.0),
               SizedBox(
                 height: MediaQuery.of(context).size.width,
-                child: ListView.builder(
+                child: widget.postImages.length > 1 ? ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: widget.postImages.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -186,7 +185,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image: FileImage(widget.postImages[index]),
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fitWidth,
                         ),
                         borderRadius: const BorderRadius.all(
                           Radius.circular(20.0),
@@ -209,7 +208,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                                 ),
                               ),
                             ),
-                            viewModel.mediaUrl != null ? CustomImage(
+                            viewModel.mediaUrl!.isNotEmpty ? CustomImage(
                               imageUrl: viewModel.mediaUrl![index],
                               width: MediaQuery.of(context).size.width,
                               fit: BoxFit.contain,
@@ -219,7 +218,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                               width: MediaQuery.of(context).size.width,
                               fit: BoxFit.contain,
                             ),
-                            widget.postImages.length > 1 ? Positioned(
+                            Positioned(
                               top: 0,
                               left: 0,
                               child: Container(
@@ -239,12 +238,55 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                                   ),
                                 ),
                               ),
-                            ) : const SizedBox.shrink(),
+                            ),
                           ],
                         ),
                       )
                     );
                   },
+                ) : Container(
+                    width: MediaQuery.of(context).size.width * 0.95,
+                    height: MediaQuery.of(context).size.height * 0.9,
+                    margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: FileImage(widget.postImages[0]),
+                        fit: BoxFit.cover,
+                      ),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(20.0),
+                      ),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(20.0),
+                      ),
+                      child: Stack(alignment: Alignment.center,
+                        children: [
+                          Positioned.fill(
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(
+                                sigmaX: 10.0,
+                                sigmaY: 10.0,
+                              ),
+                              child: Container(
+                                color: Colors.black.withOpacity(0.2),
+                              ),
+                            ),
+                          ),
+                          viewModel.mediaUrl!.isNotEmpty ? CustomImage(
+                            imageUrl: viewModel.mediaUrl![0],
+                            width: MediaQuery.of(context).size.width,
+                            fit: BoxFit.contain,
+                          ) :  Image.file(
+                            widget.postImages[0],
+                            key: UniqueKey(),
+                            width: MediaQuery.of(context).size.width,
+                            fit: BoxFit.contain,
+                          ),
+                        ],
+                      ),
+                    )
                 ),
               ),
               const SizedBox(height: 15.0),

@@ -43,116 +43,114 @@ class PickFromGalleryScreenPostsState extends State<PickFromGalleryScreenPosts> 
       );
     }
 
-    return LoadingOverlay(
-      isLoading: loading,
-      progressIndicator: circularProgress(
-        context,
-        Colors.blue,
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: const Icon(CupertinoIcons.chevron_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          iconSize: 30.0,
+          color: Colors.white,
+          padding: const EdgeInsets.only(bottom: 2.0),
+        ),
+        backgroundColor: Colors.transparent,
+        centerTitle: true,
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.light,
+          systemNavigationBarColor: Colors.black,
+          systemNavigationBarIconBrightness: Brightness.light,
+        ),
+        title: GradientText(
+          'Pick from Gallery',
+          style: const TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.w300,
+          ), colors: const [
+          Colors.blue,
+          Colors.purple,
+        ],
+        ),
       ),
-      opacity: 0.5,
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          leading: IconButton(
-            icon: const Icon(CupertinoIcons.chevron_back),
-            onPressed: () {
-              Navigator.pop(context);
+      backgroundColor: Colors.black,
+      body: Stack(
+        children: [
+          GalleryMediaPicker(
+            mediaPickerParams: MediaPickerParamsModel(
+              gridViewController: ScrollController(
+                initialScrollOffset: 0,
+              ),
+              maxPickImages: 5,
+              thumbnailQuality: 1000,
+              singlePick: false,
+              onlyImages: true,
+              appBarColor: Colors.black,
+              gridViewPhysics: const ScrollPhysics(),
+              appBarLeadingWidget: null,
+              appBarHeight: 45,
+              imageBackgroundColor: Colors.black,
+              selectedBackgroundColor: Colors.transparent,
+              selectedCheckColor: Colors.white,
+              selectedCheckBackgroundColor: Colors.blue,
+              stories: false,
+            ),
+            pathList: (List<PickedAssetModel> paths) {
+              setState(() {
+                pickedImages = paths;
+              });
             },
-            iconSize: 30.0,
-            color: Colors.white,
-            padding: const EdgeInsets.only(bottom: 2.0),
           ),
-          backgroundColor: Colors.transparent,
-          centerTitle: true,
-          systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
-            statusBarIconBrightness: Brightness.light,
-            systemNavigationBarColor: Colors.black,
-            systemNavigationBarIconBrightness: Brightness.light,
-          ),
-          title: GradientText(
-            'Pick from Gallery',
-            style: const TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.w300,
-            ), colors: const [
-            Colors.blue,
-            Colors.purple,
-          ],
-          ),
-        ),
-        backgroundColor: Colors.black,
-        body: Stack(
-          children: [
-            GalleryMediaPicker(
-              mediaPickerParams: MediaPickerParamsModel(
-                gridViewController: ScrollController(
-                  initialScrollOffset: 0,
-                ),
-                maxPickImages: 5,
-                thumbnailQuality: 1000,
-                singlePick: false,
-                onlyImages: true,
-                appBarColor: Colors.black,
-                gridViewPhysics: const ScrollPhysics(),
-                appBarLeadingWidget: null,
-                appBarHeight: 45,
-                imageBackgroundColor: Colors.black,
-                selectedBackgroundColor: Colors.transparent,
-                selectedCheckColor: Colors.white,
-                selectedCheckBackgroundColor: Colors.blue,
-                stories: false,
+          Positioned(
+            bottom: 5,
+            right: 15,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.0),
+                color: Colors.blue,
               ),
-              pathList: (List<PickedAssetModel> paths) {
-                setState(() {
-                  pickedImages = paths;
-                });
-              },
-            ),
-            Positioned(
-              bottom: 5,
-              right: 15,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.0),
-                  color: Colors.blue,
-                ),
-                padding: const EdgeInsets.all(12),
-                child: GestureDetector(
-                    onTap: () {
-                      if(pickedImages.isNotEmpty) {
-                        setState(() {
-                          loading = true;
-                        });
-                        if(pickedImages.length == 1){
-                          XFile file = XFile(pickedImages.first.path.toString());
-                          viewModel.uploadPostSingleImage(image: file, context: context);
-                        } else {
-                          List<XFile> images = [];
-                          for(int i = 0; i < pickedImages.length; i++){
-                            images.add(XFile(pickedImages[i].path.toString()));
-                          }
-                          viewModel.uploadPostMultipleImages(images: images, context: context);
+              padding: const EdgeInsets.all(12),
+              child: GestureDetector(
+                  onTap: () async {
+                    if(pickedImages.isNotEmpty) {
+                      setState(() {
+                        loading = true;
+                      });
+                      if(pickedImages.length == 1) {
+                        XFile file = XFile(pickedImages.first.path.toString());
+                        await viewModel.uploadPostSingleImage(image: file, context: context);
+                      } else {
+                        List<XFile> images = [];
+                        for(int i = 0; i < pickedImages.length; i++){
+                          images.add(XFile(pickedImages[i].path.toString()));
                         }
-                        setState(() {
-                          loading = false;
-                        });
-                      } else{
-                        showSnackBar('Please select an image.', context);
+                        await viewModel.uploadPostMultipleImages(images: images, context: context);
                       }
-                    },
-                    child: const Center(
-                      child: Icon(
-                        Icons.done,
-                        color: Colors.white,
-                        size: 35,
+                      setState(() {
+                        loading = false;
+                      });
+                    } else {
+                      showSnackBar('Please select an image.', context);
+                    }
+                  },
+                  child: Center(
+                    child: !loading ? const Icon(
+                      Icons.done,
+                      color: Colors.white,
+                      size: 35,
+                    ) : Center(
+                      child: SizedBox(
+                        height: 35,
+                        width: 35,
+                        child: circularProgress(context, Colors.white, size: 30.0),
                       ),
-                    )
-                ),
+                    ),
+                  )
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

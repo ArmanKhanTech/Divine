@@ -18,7 +18,6 @@ CollectionReference commentRef = firestore.collection('comments');
 CollectionReference notificationRef = firestore.collection('notifications');
 CollectionReference followersRef = firestore.collection('followers');
 CollectionReference followingRef = firestore.collection('following');
-CollectionReference followingRequestRef = firestore.collection('followingRequest');
 CollectionReference likesRef = firestore.collection('likes');
 CollectionReference chatIdRef = firestore.collection('chatIds');
 CollectionReference storyRef = firestore.collection('stories');
