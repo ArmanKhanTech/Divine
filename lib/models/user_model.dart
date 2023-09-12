@@ -13,10 +13,15 @@ class UserModel{
   String? name;
   String? gender;
 
+  int? posts;
+  int? mentionsCount;
+
+  List<String>? postsIds;
+  List<String>? mentionsIds;
+
   Timestamp? signedUpAt;
   Timestamp? lastSeen;
 
-  // feild hashtags is map of tag name and its count
   Map<String, dynamic>? userHashtags;
 
   bool? isOnline;
@@ -38,7 +43,11 @@ class UserModel{
         this.name,
         this.isVerified,
         this.gender,
-        this.userHashtags});
+        this.userHashtags,
+        this.posts,
+        this.mentionsCount,
+        this.postsIds,
+        this.mentionsIds});
 
   UserModel.fromJson(Map<String, dynamic> json) {
     username = json['username'];
@@ -57,6 +66,10 @@ class UserModel{
     isVerified = json['isVerified'];
     gender = json['gender'];
     userHashtags = json['hashtags'];
+    posts = json['posts'];
+    mentionsCount = json['mentionsCount'];
+    postsIds = json['postsIds'] != null ? json['postsIds'].cast<String>() : [];
+    mentionsIds = json['mentionsIds'] != null ? json['mentionsIds'].cast<String>() : [];
   }
 
   Map<String, dynamic> toJson() {
@@ -77,6 +90,10 @@ class UserModel{
     data['isVerified'] = isVerified;
     data['hashtags'] = userHashtags;
     data['gender'] = gender;
+    data['posts'] = posts;
+    data['mentionsCount'] = mentionsCount;
+    data['postsIds'] = postsIds;
+    data['mentionsIds'] = mentionsIds;
 
     return data;
   }

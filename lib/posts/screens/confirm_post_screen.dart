@@ -25,7 +25,6 @@ class ConfirmSinglePostScreen extends  StatefulWidget{
 class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with TickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
-    Color? topLeftColor = Colors.black, bottomRightColor = Colors.black;
 
     exitDialog({required PostsViewModel viewModel}) {
 
@@ -168,7 +167,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
             centerTitle: true,
           ),
           backgroundColor: Colors.black,
-          body:  ListView(
+          body: ListView(
             children: [
               const SizedBox(height: 10.0),
               SizedBox(
@@ -289,19 +288,19 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                     )
                 ),
               ),
-              const SizedBox(height: 15.0),
+              const SizedBox(height: 5.0),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
                 child: SizedBox(
                   height: 65.0,
                   child: TextFormField(
-                    style: const TextStyle(color: Colors.white, fontSize: 18.0),
+                    style: const TextStyle(color: Colors.white, fontSize: 18.0, height: 1.2),
                     decoration: const InputDecoration(
                       alignLabelWithHint: true,
                       labelText: 'Caption',
-                      labelStyle: TextStyle(color: Colors.blue, fontSize: 18.0),
+                      labelStyle: TextStyle(color: Colors.blue, fontSize: 18.0, height: 1.2),
                       hintText: 'Eg. This is very beautiful place!',
-                      hintStyle: TextStyle(color: Colors.white70, fontSize: 18.0),
+                      hintStyle: TextStyle(color: Colors.white70, fontSize: 18.0, height: 1.2),
                       enabled: true,
                       enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.blue),
@@ -318,7 +317,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                         left: 20,
                         right: 20,
                         top: 15,
-                        bottom: 18,
+                        bottom: 15,
                       ),
                       isCollapsed: true,
                     ),
@@ -329,9 +328,8 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                   ),
                 ),
               ),
-              const SizedBox(height: 5.0),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
                 child: SizedBox(
                   height: 65.0,
                   child: TextFormField(
@@ -339,14 +337,14 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                     controller: viewModel.locationTEC,
                     style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 18.0
+                        fontSize: 18.0, height: 1.2
                     ),
                     decoration: InputDecoration(
                       alignLabelWithHint: true,
                       labelText: 'Location',
-                      labelStyle: const TextStyle(color: Colors.blue, fontSize: 18.0),
+                      labelStyle: const TextStyle(color: Colors.blue, fontSize: 18.0, height: 1.2),
                       hintText: 'Eg. New York',
-                      hintStyle: const TextStyle(color: Colors.white70, fontSize: 18.0),
+                      hintStyle: const TextStyle(color: Colors.white70, fontSize: 18.0, height: 1.2),
                       enabled: true,
                       enabledBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.blue),
@@ -373,7 +371,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                         left: 20,
                         right: 20,
                         top: 15,
-                        bottom: 18,
+                        bottom: 15,
                       ),
                       isCollapsed: true,
                     ),
@@ -384,62 +382,88 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                   ),
                 ),
               ),
-              const SizedBox(height: 5.0),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: SizedBox(
-                  height: 65.0,
-                  child: TextFormField(
-                    style: const TextStyle(
-                        color: Colors.pink,
-                        fontSize: 18.0
-                    ),
-                    decoration: const InputDecoration(
-                      alignLabelWithHint: true,
-                      labelText: 'Mentions',
-                      labelStyle: TextStyle(color: Colors.blue, fontSize: 18.0),
-                      hintText: 'Eg. @john @jane',
-                      hintStyle: TextStyle(color: Colors.white70, fontSize: 18.0),
-                      enabled: true,
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue),
-                          borderRadius: BorderRadius.all(Radius.circular(18.0)
-                          )
-                      ),
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue, width: 0.0),
-                          borderRadius: BorderRadius.all(Radius.circular(20.0)
-                          )
-                      ),
-                      isDense: true,                      // Added this
-                      contentPadding: EdgeInsets.only(
-                        left: 20,
-                        right: 20,
-                        top: 15,
-                        bottom: 18,
-                      ),
-                      isCollapsed: true,
-                    ),
-                    textAlignVertical: TextAlignVertical.center,
-                    cursorColor: Colors.white,
-                    maxLines: null,
-                    onChanged: (val) => viewModel.setMentions(val),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.2),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(20.0),
+                  ),
+                  border: Border.all(
+                    color: Colors.blue,
+                    width: 1.0,
                   ),
                 ),
+                padding: const EdgeInsets.all(10.0),
+                margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0, left: 8, top: 5),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          viewModel.mentions.isEmpty ? 'Add all the people you want to mention in this post here.'
+                              : 'You are mentioning ${viewModel.mentions.length} ${viewModel.mentions.length == 1 ? 'person' : 'people'} in this post.',
+                          style: const TextStyle(
+                            color: Colors.blue,
+                            fontSize: 18.0,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: TextFormField(
+                        style: const TextStyle(
+                            color: Colors.blue,
+                            fontSize: 18.0,
+                            height: 1.2
+                        ),
+                        decoration: const InputDecoration(
+                          alignLabelWithHint: true,
+                          labelText: 'Mentions',
+                          labelStyle: TextStyle(color: Colors.blue, fontSize: 18.0, height: 1.2),
+                          hintText: 'Eg. @john @doe',
+                          hintStyle: TextStyle(color: Colors.white70, fontSize: 18.0, height: 1.2),
+                          enabled: true,
+                          isDense: true,                      // Added this
+                          contentPadding: EdgeInsets.only(
+                            bottom: 10,
+                            top: 10,
+                          ),
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          isCollapsed: true,
+                        ),
+                        textAlignVertical: TextAlignVertical.center,
+                        cursorColor: Colors.white,
+                        maxLines: null,
+                        onChanged: (val) {
+                          if(val.isNotEmpty){
+                            viewModel.setMentions(val);
+                          }
+                        },
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10
+                    )
+                  ],
+                ),
               ),
-              const SizedBox(height: 5.0),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
                 child: SizedBox(
                   height: 65.0,
                   child:  TextFormField(
-                    style: const TextStyle(color: Colors.blue, fontSize: 18.0),
+                    style: const TextStyle(color: Colors.blue, fontSize: 18.0, height: 1.2),
                     decoration: const InputDecoration(
                       alignLabelWithHint: true,
                       labelText: 'Hashtags',
-                      labelStyle: TextStyle(color: Colors.blue, fontSize: 18.0),
+                      labelStyle: TextStyle(color: Colors.blue, fontSize: 18.0, height: 1.2),
                       hintText: 'Eg. #nature #beauty',
-                      hintStyle: TextStyle(color: Colors.white70, fontSize: 18.0),
+                      hintStyle: TextStyle(color: Colors.white70, fontSize: 18.0, height: 1.2),
                       enabled: true,
                       enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.blue),
@@ -456,14 +480,18 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                         left: 20,
                         right: 20,
                         top: 15,
-                        bottom: 18,
+                        bottom: 15,
                       ),
                       isCollapsed: true,
                     ),
                     textAlignVertical: TextAlignVertical.center,
                     cursorColor: Colors.white,
                     maxLines: null,
-                    onChanged: (val) => viewModel.setHashtags(val),
+                    onChanged: (val) {
+                      if(val.isNotEmpty){
+                        viewModel.setHashTags(val);
+                      }
+                    },
                   ),
                 ),
               ),
@@ -513,6 +541,80 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class NewTextField extends StatelessWidget {
+  const NewTextField({
+    super.key,
+    required this.name,
+    this.onDelete, required this.viewModel,
+  });
+
+  final PostsViewModel viewModel;
+  final String name;
+  final VoidCallback? onDelete;
+
+  @override
+  Widget build(BuildContext context) {
+    TextEditingController controller = TextEditingController();
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          const SizedBox(
+            width: 10,
+          ),
+          Expanded(
+            child: TextFormField(
+              controller: controller,
+              style: const TextStyle(
+                color: Colors.blue,
+                fontSize: 18.0,
+                height: 1.2
+              ),
+              decoration: InputDecoration(
+                alignLabelWithHint: true,
+                labelText: name,
+                labelStyle: const TextStyle(color: Colors.blue, fontSize: 18.0, height: 1.2),
+                hintText: 'Eg. @john',
+                hintStyle: const TextStyle(color: Colors.white70, fontSize: 18.0, height: 1.2),
+                enabled: true,
+                isDense: true,                      // Added this
+                contentPadding: const EdgeInsets.only(
+                  bottom: 10,
+                  top: 10,
+                ),
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                isCollapsed: true,
+                suffixIcon: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // added line
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.check, color: Colors.blue, size: 25),
+                      onPressed: () {
+                        if(controller.text.isNotEmpty){
+                          viewModel.setMentions(controller.text);
+                        }
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.close, color: Colors.red, size: 25),
+                      onPressed: onDelete,
+                    ),
+                  ],
+                )
+              ),
+              textAlignVertical: TextAlignVertical.center,
+              cursorColor: Colors.white,
+              maxLines: null,
+            ),
+          ),
+        ],
       ),
     );
   }

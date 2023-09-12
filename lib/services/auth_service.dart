@@ -36,7 +36,6 @@ class AuthService {
     }
   }
 
-
   Future<bool> createUser({String? email, String? password, String? username, String? country, User? user}) async {
     var res = await auth.createUserWithEmailAndPassword(
       email: '$email',
@@ -52,8 +51,6 @@ class AuthService {
     }
   }
 
-
-
   saveUserToFirestore(String username, User user, String email, String country) async {
     await usersRef.doc(user.uid).set({
       'id': user.uid,
@@ -63,15 +60,29 @@ class AuthService {
       'photoUrl': user.photoURL ?? '',
       'name': '',
       'bio': '',
-      'followers': 0,
-      'following': 0,
       'posts': 0,
-      'postList': [],
+      'postIds' : [],
+      'postArchiveIds' : [],
+      'mentions': 0,
+      'mentionsIds': [],
       'createdAt': Timestamp.now(),
       'gender': '',
       'type': 'public',
       'saved': 0,
-      'hashtags': {'nature' : 10, 'city' : 10},
+      'hashtags': {
+        'nature' : 10,
+        'food' : 10,
+        'travel' : 10,
+        'fashion' : 10,
+        'music' : 10,
+        'art' : 10,
+        'sports' : 5,
+        'technology' : 5,
+        'health' : 5,
+        'science' : 5,
+        'religion' : 5,
+        'culture' : 5,
+      },
       'verified': false,
       'profession': '',
       'link': '',

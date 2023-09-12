@@ -14,6 +14,7 @@ class TextFormBuilder extends StatefulWidget {
   final FocusNode? focusNode, nextFocusNode;
   final VoidCallback? submitAction;
   final String? whichPage;
+  final double? iconSize;
   final FormFieldValidator<String>? validateFunction;
   final void Function(String)? onSaved, onChange;
 
@@ -40,7 +41,7 @@ class TextFormBuilder extends StatefulWidget {
       this.onSaved,
       this.onChange,
       required this.whichPage,
-      required this.capitalization, this.key});
+      required this.capitalization, this.key, this.iconSize});
 
   @override
   State<TextFormBuilder> createState() => _TextFormBuilderState();
@@ -105,7 +106,7 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
                   decoration: InputDecoration(
                     prefixIcon: Icon(
                       widget.prefix,
-                      size: 25.0,
+                      size: widget.iconSize ?? 25.0,
                       color: widget.whichPage == "login" ? Colors.orange : Colors.blue,
                     ),
                     suffixIcon: Icon(

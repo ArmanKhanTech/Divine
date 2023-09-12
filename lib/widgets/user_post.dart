@@ -357,7 +357,7 @@ class UserPost extends StatelessWidget {
             } else {
               likesRef.doc(docs[0].id).delete();
               services.removeLikeFromNotification(
-                  post!.ownerId!, post!.postId!, currentUserId());
+                  post!.ownerId!, post!.postId!, currentUserId(), post!.hashtags!);
 
               return isLiked;
             }
@@ -404,9 +404,9 @@ class UserPost extends StatelessWidget {
         user!.username!,
         currentUserId(),
         post!.postId!,
-        post!.mediaUrl!.first,
         post!.ownerId!,
         user!.photoUrl!,
+        post!.hashtags!,
       );
     }
   }

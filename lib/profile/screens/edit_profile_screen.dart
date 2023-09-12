@@ -130,6 +130,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
             const SizedBox(height: 10.0),
             TextFormBuilder(
                 capitalization: false,
+                iconSize: 20,
                 initialValue: widget.user!.link,
                 enabled: !viewModel.loading,
                 prefix: CupertinoIcons.link,

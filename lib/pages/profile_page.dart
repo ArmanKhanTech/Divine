@@ -81,6 +81,7 @@ class _ProfilePageState extends State<ProfilePage> {
         .collection('userFollowers')
         .doc(currentUserId())
         .get();
+
     setState(() {
       isFollowing = doc.exists;
     });
@@ -178,7 +179,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         dense: true,
                         contentPadding: const EdgeInsets.only(
                           left: 25,
-                          bottom: 8,
                         ),
                         visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
                         leading: Icon(
@@ -214,7 +214,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             dense: true,
                             contentPadding: const EdgeInsets.only(
                               left: 25,
-                              bottom: 8,
                             ),
                             visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
                             leading: Icon(
@@ -245,7 +244,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             dense: true,
                             contentPadding: const EdgeInsets.only(
                               left: 25,
-                              bottom: 8,
                             ),
                             visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
                             onTap: () async {
@@ -596,9 +594,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(height: 5.0),
                 buildProfileButton(currentUser),
                 const SizedBox(height: 5.0),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.50,
-                  width: MediaQuery.of(context).size.width,
+                Expanded(
                   child: DefaultTabController(
                       length: 4,
                       initialIndex: tabIndex,
@@ -819,6 +815,7 @@ class _ProfilePageState extends State<ProfilePage> {
   handleUnfollow() async {
     DocumentSnapshot doc = await usersRef.doc(currentUserId()).get();
     users = UserModel.fromJson(doc.data() as Map<String, dynamic>);
+
     setState(() {
       isFollowing = false;
     });
@@ -860,6 +857,7 @@ class _ProfilePageState extends State<ProfilePage> {
   handleFollow() async {
     DocumentSnapshot doc = await usersRef.doc(currentUserId()).get();
     users = UserModel.fromJson(doc.data() as Map<String, dynamic>);
+
     setState(() {
       isFollowing = true;
     });

@@ -22,7 +22,7 @@ CollectionReference likesRef = firestore.collection('likes');
 CollectionReference chatIdRef = firestore.collection('chatIds');
 CollectionReference storyRef = firestore.collection('stories');
 CollectionReference hashTagsRef = firestore.collection('hashTags');
-CollectionReference savedRef = firestore.collection('savedPosts');
+CollectionReference savedRef = firestore.collection('saved');
 
 Reference profilePic = storage.ref().child('profilePic');
 Reference posts = storage.ref().child('posts');

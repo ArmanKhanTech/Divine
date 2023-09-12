@@ -100,6 +100,7 @@ dependencies:
   like_button: ^2.0.5
   shimmer: ^3.0.0
   expandable_text: ^2.3.0
+  flutter_form_builder: ^9.1.0
   #google_mlkit_commons: ^0.5.0
   #google_mlkit_face_detection: ^0.8.0
   #google_mlkit_face_mesh_detection: ^0.0.1

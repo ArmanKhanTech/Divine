@@ -31,12 +31,12 @@ class PostsViewModel extends ChangeNotifier{
   bool loading = false;
   bool edit = false;
 
-  String? username, location, bio, description, email, commentData, ownerId, userId, type, id, hashtags, mentions;
+  String? username, location, bio, description, email, commentData, ownerId, userId, type, id, hashTag, mention;
 
   List<dynamic>? mediaUrl = [];
 
-  List<String> hashtagsList = [];
-  List<String> mentionsList = [];
+  List<String> hashTags = [];
+  List<String> mentions = [];
 
   File? media;
 
@@ -145,15 +145,12 @@ class PostsViewModel extends ChangeNotifier{
     media = null;
     description = null;
     location = null;
-    hashtags = null;
-    mentions = null;
-    hashtagsList = [];
-    mentionsList = [];
+    hashTags = [];
+    mentions = [];
     edit = false;
     notifyListeners();
   }
 
-  // TODO: Set initial values for editing post.
   setPost(PostModel post) {
     description = post.description;
     mediaUrl = post.mediaUrl;
@@ -201,12 +198,19 @@ class PostsViewModel extends ChangeNotifier{
         showSnackBar('NSFW content detected.', context, error: true);
         loading = false;
         notifyListeners();
-      } else{
-        await postService.uploadPost(images, location!, description!, hashtagsList, mentionsList)
-            .then((value) {
-          if(hashtagsList.isNotEmpty) postService.addPostToHashtagsCollection(value, hashtagsList);
+      } else {
+        await postService.uploadPost(images, location!, description!, hashTags, mentions)
+            .then((value) async {
+          postService.incrementUserPostCount();
+          if(hashTags.isNotEmpty) {
+            await postService.addPostToHashtagsCollection(value, hashTags);
+          }
+          if(mentions.isNotEmpty){
+            await postService.addMentionToNotification(mentions, value);
+          }
         });
         showSnackBar('Post uploaded successfully!', context, error: false);
+        resetPost();
         loading = false;
         notifyListeners();
       }
@@ -300,15 +304,15 @@ class PostsViewModel extends ChangeNotifier{
     notifyListeners();
   }
 
-  setHashtags(String val) {
-    hashtags = val;
-    hashtagsList = hashtags!.split(" ");
+  setHashTags(String val) {
+    hashTag = val;
+    hashTags = hashTag!.split(" ");
     notifyListeners();
   }
 
   setMentions(String val) {
-    mentions = val;
-    mentionsList = mentions!.split(" ");
+    mention = val;
+    mentions = mention!.split(" ");
     notifyListeners();
   }
 

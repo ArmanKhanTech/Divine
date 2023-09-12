@@ -356,15 +356,18 @@ class _StoryWidgetState extends State<StoryWidget> {
             const SizedBox(
               width: 15.0,
             ),
-            Text(
-              'Your story',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.w400,
-                color: Theme.of(context).colorScheme.secondary,
+            Padding(
+              padding: const EdgeInsets.only(top: 1.0),
+              child: Text(
+                'Your story',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w400,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
               ),
-            ),
+            )
           ],
         )
       ],
