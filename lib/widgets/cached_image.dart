@@ -10,9 +10,13 @@ Widget cachedImage(String imgUrl) {
     placeholder: (context, url) {
 
       return Shimmer.fromColors(
-        baseColor: Colors.grey[200]!,
-        highlightColor: Theme.of(context).colorScheme.secondary,
-        child: const SizedBox(),
+        baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
+        highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
+        child: Container(
+          height: 100,
+          width: 150,
+          color: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
+        ),
       );
     },
     errorWidget: (context, url, error) => const Center(

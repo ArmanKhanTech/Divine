@@ -73,8 +73,6 @@ class PostService extends Service{
         "type" : 'post'
       }).catchError((e) {});
 
-      await addPostIdToUserCollection(ref.id);
-
       return ref.id;
     }
 
@@ -125,24 +123,6 @@ class PostService extends Service{
     }
   }
 
-  addPostIdToUserCollection(String postId) async {
-    DocumentSnapshot doc = await usersRef.doc(auth.currentUser!.uid).get();
-
-    if(doc.exists) {
-      UserModel user = UserModel.fromJson(doc.data() as Map<String, dynamic>);
-
-      if (user.postsIds!.isNotEmpty) {
-        await usersRef.doc(auth.currentUser!.uid).update({
-          "postsIds": FieldValue.arrayUnion([postId]),
-        });
-      } else {
-        await usersRef.doc(auth.currentUser!.uid).update({
-          "postsIds": [postId],
-        });
-      }
-    }
-  }
-
   incrementUserPostCount() async {
     var ref = usersRef.doc(auth.currentUser!.uid);
 
@@ -156,22 +136,6 @@ class PostService extends Service{
 
     ref.update({
       "posts": FieldValue.increment(-1),
-    });
-  }
-
-  incrementMentionsCount(String userId) async {
-    var ref = usersRef.doc(userId);
-
-    ref.update({
-      "mentionsCount": FieldValue.increment(1),
-    });
-  }
-
-  decrementMentionsCount(String userId) async {
-    var ref = usersRef.doc(userId);
-
-    ref.update({
-      "mentionsCount": FieldValue.increment(-1),
     });
   }
 
@@ -225,32 +189,12 @@ class PostService extends Service{
             "postId": postId,
             "timestamp": Timestamp.now(),
           });
-          await addMentionedPostIdToUserCollection(postId, userId);
         } else {
 
           continue;
         }
       }
     }
-  }
-
-  addMentionedPostIdToUserCollection(String postId, String userId) async {
-    DocumentSnapshot doc = await usersRef.doc(userId).get();
-
-    if (doc.exists) {
-      var user = UserModel.fromJson(doc.data() as Map<String, dynamic>);
-
-      if(user.mentionsIds!.isNotEmpty) {
-        await usersRef.doc(userId).update({
-          "mentionsIds": FieldValue.arrayUnion([postId]),
-        });
-      } else {
-        await usersRef.doc(userId).update({
-          "mentionsIds": [postId],
-        });
-      }
-    }
-    await incrementMentionsCount(userId);
   }
 
   addCommentToNotification(

@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
-import '../components/stream_grid_wrapper.dart';
 import '../models/post_model.dart';
 import '../models/user_model.dart';
 import '../profile/screens/edit_profile_screen.dart';
@@ -32,11 +31,11 @@ class _ProfilePageState extends State<ProfilePage> {
 
   UserModel currentUser = UserModel();
 
-  int postCount = -1;
+  int postCount = 0;
   int followersCount = 0;
   int followingCount = 0;
 
-  bool isFollowing = false, requested = false, isLoaded = false;
+  bool isFollowing = false, requested = false;
 
   UserModel? users;
 
@@ -59,6 +58,11 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     checkIfFollowing();
     checkIfRequested();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        name = currentUser.username;
+      });
+    });
   }
 
   @override
@@ -279,12 +283,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        name = currentUser.username;
-        isLoaded = true;
-      });
-    });
 
     return Scaffold(
       key: profileScaffoldKey,
@@ -382,9 +380,16 @@ class _ProfilePageState extends State<ProfilePage> {
                         placeholder: (context, url) {
 
                           return Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Theme.of(context).colorScheme.secondary,
-                            child: const SizedBox(),
+                            baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
+                            highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
+                            child: Container(
+                              height: 96,
+                              width: 96,
+                              decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.all(Radius.circular(48)),
+                                color: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!
+                              ),
+                            ),
                           );
                         },
                         errorWidget: (context, url, error) => const Icon(Icons.error),
@@ -634,8 +639,10 @@ class _ProfilePageState extends State<ProfilePage> {
                               builder: (BuildContext context) {
                                 switch (tabIndex) {
                                   case 0:
+
                                     return buildPostView(currentUser);
                                   case 1:
+
                                     return const Center(
                                       child: Text(
                                         'No Videos',
@@ -646,6 +653,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       ),
                                     );
                                   case 2:
+
                                     return const Center(
                                       child: Text(
                                         'No Tagged Posts',
@@ -656,6 +664,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       ),
                                     );
                                   case 3:
+
                                     return const Center(
                                       child: Text(
                                         'No Saved Posts',
@@ -665,8 +674,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         ),
                                       ),
                                     );
-                                  default:
-                                    return const SizedBox();
+                                  default: return const SizedBox();
                                 }
                               },
                             )
@@ -715,13 +723,15 @@ class _ProfilePageState extends State<ProfilePage> {
         const SizedBox(
           height: 5.0,
         ),
-        Text(
-          count.toString(),
-          textAlign: TextAlign.end,
-          style: TextStyle(
-            fontSize: 22.0,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.secondary,
+        Align(
+          alignment: Alignment.center,
+          child: Text(
+            count.toString(),
+            style: TextStyle(
+              fontSize: 22.0,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
           ),
         ),
         const SizedBox(height: 2.0),
@@ -738,7 +748,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // TODO: Implement private profile button
   buildProfileButton(user) {
     bool isMe = widget.profileId == auth.currentUser!.uid;
 
@@ -866,13 +875,21 @@ class _ProfilePageState extends State<ProfilePage> {
         .doc(widget.profileId)
         .collection('userFollowers')
         .doc(currentUserId())
-        .set({});
+        .set({
+      'username': users?.username,
+      'userId': users?.id,
+      'profilePic': users?.photoUrl,
+    });
 
     followingRef
         .doc(currentUserId())
         .collection('userFollowing')
         .doc(widget.profileId)
-        .set({});
+        .set({
+      'username': currentUser.username,
+      'userId': currentUser.id,
+      'profilePic': currentUser.photoUrl,
+    });
 
     notificationRef
         .doc(widget.profileId)
@@ -912,56 +929,90 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   buildPostView(UserModel currentUser) {
-    if(isLoaded) {
-      if(widget.profileId != auth.currentUser?.uid){
-        if(currentUser.type == 'private' && isFollowing == false) {
+    if(widget.profileId != auth.currentUser?.uid) {
+      if(currentUser.type == 'private' && isFollowing == false) {
 
-          return const Center(
-            child: Text(
-              'This account is private.',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-              ),
+        return const Center(
+          child: Text(
+            'This account is private.',
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
             ),
-          );
-        } else {
-
-          return buildGridPost();
-        }
+          ),
+        );
       } else {
 
         return buildGridPost();
       }
     } else {
 
-      return const SizedBox();
+      return buildGridPost();
     }
   }
 
   buildGridPost() {
-    if(postCount > 0 && isLoaded) {
 
-      return StreamGridWrapper(
-        shrinkWrap: true,
-        stream: postRef
-            .where('ownerId', isEqualTo: widget.profileId)
-            .orderBy('timestamp', descending: true)
-            .snapshots(),
-        physics: const NeverScrollableScrollPhysics(),
-        padding: const EdgeInsets.all(0.0),
-        loadingPadding: widget.profileId == auth.currentUser!.uid ? const EdgeInsets.only(bottom: 20) : const EdgeInsets.only(top: 40.0),
-        itemBuilder: (_, DocumentSnapshot snapshot) {
-          PostModel posts = PostModel.fromJson(snapshot.data() as Map<String, dynamic>);
+    return FutureBuilder(
+      future: postRef.where('ownerId', isEqualTo: widget.profileId)
+      .orderBy('timestamp', descending: true).get(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
 
-          return PostTile(
-            post: posts,
+          return gridShimmer();
+        }
+
+        if(snapshot.hasData) {
+
+          return GridView.builder(
+            shrinkWrap: true,
+            itemCount: (snapshot.data! as dynamic).docs.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 0.5,
+              mainAxisSpacing: 0.5,
+              childAspectRatio: 1,
+            ),
+            itemBuilder: (context, index) {
+              DocumentSnapshot snap =
+              (snapshot.data! as dynamic).docs[index];
+
+              return PostTile(
+                post: PostModel.fromJson(snap.data() as Map<String, dynamic>),
+              );
+            },
           );
-        },
-      );
-    } else {
+        } else {
 
-      return const SizedBox();
-    }
+          return gridShimmer();
+        }
+      },
+    );
+  }
+
+  Widget gridShimmer() {
+
+    return GridView.builder(
+      shrinkWrap: true,
+      itemCount: 10,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        crossAxisSpacing: 0.5,
+        mainAxisSpacing: 0.5,
+        childAspectRatio: 1,
+      ),
+      itemBuilder: (context, index) {
+
+        return Shimmer.fromColors(
+          baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
+          highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
+          child: Container(
+            height: 100,
+            width: 150,
+            color: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
+          ),
+        );
+      },
+    );
   }
 }

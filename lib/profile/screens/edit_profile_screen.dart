@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../../components/text_form_builder.dart';
 import '../../models/user_model.dart';
@@ -212,6 +213,8 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20.0),
                       child: Container(
+                        height: 120,
+                        width: 120,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           shape: BoxShape.circle,
@@ -243,25 +246,27 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                           child: CachedNetworkImage(
                             imageUrl: viewModel.imgLink!,
                             imageBuilder: (context, imageProvider) => Container(
-                              height: 100,
-                              width: 100,
+                              height: 120,
+                              width: 120,
                               decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.all(Radius.circular(50)),
+                                borderRadius: const BorderRadius.all(Radius.circular(60)),
                                 image: DecorationImage(
                                   image: imageProvider,
                                   fit: BoxFit.cover,
                                 ),
                               ),
                             ),
-                            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                SizedBox(
-                                  height: 100,
-                                  width: 100,
-                                  child: CircularProgressIndicator(
-                                      value: downloadProgress.progress,
-                                      color: Colors.blue
-                                  ),
+                            progressIndicatorBuilder: (context, url, downloadProgress) {
+                              return Shimmer.fromColors(
+                                baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
+                                highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
+                                child: Container(
+                                  height: 120,
+                                  width: 120,
+                                  color: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
                                 ),
+                              );
+                            },
                             errorWidget: (context, url, error) => const Icon(Icons.error),
                           ),
                         ) : viewModel.image == null ? Padding(
@@ -269,31 +274,33 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                           child: CachedNetworkImage(
                             imageUrl: widget.user!.photoUrl!,
                             imageBuilder: (context, imageProvider) => Container(
-                              height: 100,
-                              width: 100,
+                              height: 120,
+                              width: 120,
                               decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.all(Radius.circular(50)),
+                                borderRadius: const BorderRadius.all(Radius.circular(60)),
                                 image: DecorationImage(
                                   image: imageProvider,
                                   fit: BoxFit.cover,
                                 ),
                               ),
                             ),
-                            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                SizedBox(
-                                  height: 100,
-                                  width: 100,
-                                  child: CircularProgressIndicator(
-                                      value: downloadProgress.progress,
-                                      color: Colors.blue
-                                  ),
+                            progressIndicatorBuilder: (context, url, downloadProgress) {
+                              return Shimmer.fromColors(
+                                baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
+                                highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
+                                child: Container(
+                                  height: 120,
+                                  width: 120,
+                                  color: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
                                 ),
+                              );
+                            },
                             errorWidget: (context, url, error) => const Icon(Icons.error),
                           ),
                         ) : Padding(
                           padding: const EdgeInsets.all(1.0),
                           child: CircleAvatar(
-                            radius: 50.0,
+                            radius: 60.0,
                             backgroundImage: FileImage(viewModel.image!),
                           ),
                         ),

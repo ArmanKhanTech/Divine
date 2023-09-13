@@ -30,7 +30,7 @@ class _PostTileState extends State<PostTile> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(0.0),
           ),
-          margin: const EdgeInsets.all(1.0),
+          margin: const EdgeInsets.all(0.5),
           child: ClipRRect(
             borderRadius: const BorderRadius.all(
               Radius.circular(0.0),
