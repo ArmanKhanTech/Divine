@@ -953,6 +953,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   buildGridPost() {
 
+    // TODO: Load more data on scroll
     return FutureBuilder(
       future: postRef.where('ownerId', isEqualTo: widget.profileId)
       .orderBy('timestamp', descending: true).get(),

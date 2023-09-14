@@ -26,7 +26,7 @@ class _StoryWidgetState extends State<StoryWidget> {
     super.initState();
   }
 
-  // TODO: Sort stories by time i.e viewed stories at last, tags in stories, location in stories, tagged stories within stories.
+  // TODO: Sort stories by time i.e viewed stories at last, tags in stories, location in stories, tagged stories within stories, post & threads within stories.
   @override
   Widget build(BuildContext context) {
 
@@ -109,6 +109,11 @@ class _StoryWidgetState extends State<StoryWidget> {
           DocumentSnapshot documentSnapshot = snapshot.data as DocumentSnapshot<Object?>;
           UserModel user = UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
 
+          if (snapshot.connectionState == ConnectionState.waiting) {
+
+            return storyShimmer();
+          }
+
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6.0),
             child: FutureBuilder<QuerySnapshot>(
@@ -119,7 +124,14 @@ class _StoryWidgetState extends State<StoryWidget> {
                   StoryModel stats = StoryModel.fromJson(stories.toList()[stories.length - 1].data());
                   List<dynamic>? allViewers = stats.viewers;
 
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+
+                    return storyShimmer();
+                  }
+
                   return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       GestureDetector(
                         onTap: () {
@@ -183,13 +195,13 @@ class _StoryWidgetState extends State<StoryWidget> {
                               progressIndicatorBuilder: (context, url, downloadProgress) {
 
                                 return Shimmer.fromColors(
-                                  baseColor: Colors.grey[300]!,
-                                  highlightColor: Colors.white,
+                                  baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
+                                  highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
                                   child: Container(
                                     height: 90,
                                     width: 90,
-                                    decoration: const BoxDecoration(
-                                      color: Colors.grey,
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
                                       shape: BoxShape.circle,
                                     ),
                                   ),
@@ -198,8 +210,7 @@ class _StoryWidgetState extends State<StoryWidget> {
                               errorWidget: (context, url, error) => const Icon(Icons.error),
                             ) : CircleAvatar(
                               radius: 45.0,
-                              backgroundColor:
-                              Theme.of(context).colorScheme.secondary,
+                              backgroundColor: Theme.of(context).colorScheme.secondary,
                               child: Center(
                                 child: Text(
                                   user.username![0].toUpperCase(),
@@ -214,7 +225,7 @@ class _StoryWidgetState extends State<StoryWidget> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 5.0),
+                      const SizedBox(height: 3.0),
                       Text(
                         user.username!.length > 8 ? '${user.username!.substring(0, 8).toLowerCase()}...' : user.username!.toLowerCase(),
                         textAlign: TextAlign.center,
@@ -228,14 +239,14 @@ class _StoryWidgetState extends State<StoryWidget> {
                   );
                 } else{
 
-                  return const SizedBox();
+                  return storyShimmer();
                 }
               },
             )
           );
         } else {
 
-            return const SizedBox();
+          return storyShimmer();
           }
       },
     );
@@ -243,24 +254,30 @@ class _StoryWidgetState extends State<StoryWidget> {
 
   buildOwnStoryAvatar() {
 
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            left: 18.0,
-            right: 5.0,
-            bottom: 5.0,
-            top: 2.0,
-          ),
-          child: StreamBuilder(
-              stream: usersRef.doc(auth.currentUser!.uid).snapshots(),
-              builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                if (snapshot.hasData) {
-                  UserModel profileImage = UserModel.fromJson(
-                      snapshot.data!.data() as Map<String,
-                          dynamic>);
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 18.0,
+        right: 7.0,
+        top: 1
+      ),
+      child: StreamBuilder(
+          stream: usersRef.doc(auth.currentUser!.uid).snapshots(),
+          builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            if (snapshot.hasData) {
+              UserModel profileImage = UserModel.fromJson(snapshot.data!.data() as Map<String, dynamic>);
 
-                  return GestureDetector(
+              if (snapshot.connectionState == ConnectionState.waiting) {
+
+                return storyShimmer(
+                  padding: const EdgeInsets.all(0),
+                );
+              }
+
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  GestureDetector(
                     onTap: () {
                       Navigator.push(context, CupertinoPageRoute(builder: (context) => StoriesEditor(
                         giphyKey: 'C4dMA7Q19nqEGdpfj82T8ssbOeZIylD4',
@@ -284,8 +301,8 @@ class _StoryWidgetState extends State<StoryWidget> {
                         profileImage.photoUrl!.isNotEmpty ? CachedNetworkImage(
                           imageUrl: profileImage.photoUrl!,
                           imageBuilder: (context, imageProvider) => Container(
-                            height: 96,
-                            width: 96,
+                            height: 98,
+                            width: 98,
                             decoration: BoxDecoration(
                               borderRadius: const BorderRadius.all(Radius.circular(48)),
                               image: DecorationImage(
@@ -297,32 +314,32 @@ class _StoryWidgetState extends State<StoryWidget> {
                           progressIndicatorBuilder: (context, url, downloadProgress) {
 
                             return Shimmer.fromColors(
-                              baseColor: Colors.grey[300]!,
-                              highlightColor: Colors.white,
+                              baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
+                              highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
                               child: Container(
                                 height: 96,
                                 width: 96,
-                                decoration: const BoxDecoration(
-                                  color: Colors.grey,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
                                   shape: BoxShape.circle,
                                 ),
                               ),
                             );
                           },
                           errorWidget: (context, url, error) => const Icon(Icons.error),
-                      ) : CircleAvatar(
-                            radius: 48.0,
-                            backgroundColor: Colors.grey[200],
-                            child: Center(
-                              child: Text(
-                                profileImage.username![0].toUpperCase(),
-                                style: TextStyle(
-                                  color: Colors.grey[400],
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                        ) : CircleAvatar(
+                          radius: 48.0,
+                          backgroundColor: Theme.of(context).colorScheme.secondary,
+                          child: Center(
+                            child: Text(
+                              profileImage.username![0].toUpperCase(),
+                              style: TextStyle(
+                                color: Colors.grey[400],
+                                fontSize: 30.0,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
+                          ),
                         ),
                         Positioned(
                           bottom: 0.0,
@@ -342,36 +359,66 @@ class _StoryWidgetState extends State<StoryWidget> {
                           ),
                         ),
                       ],
-                    )
-                  );
-                } else{
+                    ),
+                  ),
+                  const SizedBox(height: 4.0),
+                  Text(
+                    'Your story',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w400,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                ],
+              );
+            } else{
 
-                  return const SizedBox();
-                }
-              }
-          ),
-        ),
-        Row(
-          children: [
-            const SizedBox(
-              width: 15.0,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 1.0),
-              child: Text(
-                'Your story',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.w400,
-                  color: Theme.of(context).colorScheme.secondary,
+              return storyShimmer(
+                padding: const EdgeInsets.all(0),
+              );
+            }
+          }
+      ),
+    );
+  }
+
+  Widget storyShimmer({EdgeInsetsGeometry? padding}) {
+
+      return Column(
+        children: [
+          Padding(
+            padding: padding ?? const EdgeInsets.symmetric(horizontal: 9),
+            child: Shimmer.fromColors(
+              baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
+              highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
+              child: Container(
+                height: 98,
+                width: 98,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
+                  shape: BoxShape.circle,
                 ),
               ),
-            )
-          ],
-        )
-      ],
-    );
+            ),
+          ),
+          const SizedBox(height: 12.0),
+          Shimmer.fromColors(
+            baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
+            highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
+            child: Container(
+              height: 12,
+              width: 75,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
+                shape: BoxShape.rectangle,
+                borderRadius: const BorderRadius.all(Radius.circular(5)),
+              ),
+            ),
+          ),
+        ],
+      );
   }
 
   Stream<QuerySnapshot> viewerListStream(String uid) {

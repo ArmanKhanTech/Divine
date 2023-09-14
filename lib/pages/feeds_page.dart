@@ -46,8 +46,11 @@ class _FeedsPageState extends State<FeedsPage>{
 
   Map<String, dynamic>? hashTags;
 
+  bool get wantKeepAlive => true;
+
   @override
   void initState() {
+    super.initState();
     scrollController.addListener(() async {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
@@ -58,8 +61,7 @@ class _FeedsPageState extends State<FeedsPage>{
       }
     });
 
-    getFollowingAccounts();
-    getHashTags();
+    initPage();
 
     NativeAd(
         adUnitId: adHelper.nativeAdUnitId,
@@ -77,7 +79,14 @@ class _FeedsPageState extends State<FeedsPage>{
         factoryId: 'listTile',
     ).load();
 
-    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {});
+    });
+  }
+
+  initPage() async {
+    await getHashTags();
+    await getFollowingAccounts();
   }
 
   @override
@@ -89,10 +98,6 @@ class _FeedsPageState extends State<FeedsPage>{
   @override
   Widget build(BuildContext context) {
     StoryViewModel viewModel = Provider.of<StoryViewModel>(context);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {});
-    });
 
     chooseUpload(BuildContext context, StoryViewModel viewModel) {
 
@@ -519,7 +524,7 @@ class _FeedsPageState extends State<FeedsPage>{
             ),
             // TODO: Populate reels and threads too.
             FutureBuilder(
-              future: postRef.orderBy('timestamp', descending: true).limit(page).get(),
+              future: postRef.where('ownerId', whereIn: followingAccounts).orderBy('timestamp', descending: true).limit(page).get(),
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasData) {
                   var snap = snapshot.data;
@@ -616,12 +621,8 @@ class _FeedsPageState extends State<FeedsPage>{
         .collection('userFollowing')
         .get();
 
-    setState(() {
-      for (var doc in snapshot.docs) {
-        followingAccounts.add(doc.id);
-      }
-    });
+    for (var doc in snapshot.docs) {
+      followingAccounts.add(doc.id);
+    }
   }
-
-  bool get wantKeepAlive => true;
 }
