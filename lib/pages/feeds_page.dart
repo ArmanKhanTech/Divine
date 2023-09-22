@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../chats/screens/chat_screen.dart';
 import '../models/post_model.dart';
@@ -18,7 +19,6 @@ import '../stories/stories_editor/stories_editor.dart';
 import '../utilities/constants.dart';
 import '../utilities/firebase.dart';
 import '../view_models/user/story_view_model.dart';
-import '../widgets/progress_indicators.dart';
 import '../widgets/story_widget.dart';
 import '../widgets/user_post.dart';
 
@@ -36,15 +36,12 @@ class _FeedsPageState extends State<FeedsPage>{
 
   int page = 3;
 
-  double height = 125;
-
-  bool loadingMore = true;
+  bool loadingMorePosts = true, loadingMoreTrends = true;
 
   ScrollController scrollController = ScrollController();
 
   List<String> followingAccounts = [];
-
-  Map<String, dynamic>? hashTags;
+  List<String> hashTags = [];
 
   bool get wantKeepAlive => true;
 
@@ -56,7 +53,6 @@ class _FeedsPageState extends State<FeedsPage>{
           scrollController.position.maxScrollExtent) {
         setState(() {
           page = page + 3;
-          loadingMore = true;
         });
       }
     });
@@ -78,21 +74,38 @@ class _FeedsPageState extends State<FeedsPage>{
         request: const AdRequest(),
         factoryId: 'listTile',
     ).load();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {});
-    });
   }
 
   initPage() async {
     await getHashTags();
     await getFollowingAccounts();
+    setState(() {});
   }
 
   @override
   void dispose() {
     nativeAd?.dispose();
     super.dispose();
+  }
+
+  getHashTags() async {
+    DocumentSnapshot doc = await usersRef.doc(auth.currentUser!.uid).get();
+    UserModel user = UserModel.fromJson(doc.data() as Map<String, dynamic>);
+    
+    var mapEntries = user.userHashtags!.entries.toList()
+      ..sort((b, a) => a.value.compareTo(b.value));
+
+    for(var entry in mapEntries) {
+      hashTags.add(entry.key);
+    }
+  }
+
+  getFollowingAccounts() async {
+    QuerySnapshot snapshot = await followingRef.doc(auth.currentUser!.uid).collection('userFollowing').get();
+
+    for(var doc in snapshot.docs) {
+      followingAccounts.add(doc.id);
+    }
   }
 
   @override
@@ -523,9 +536,14 @@ class _FeedsPageState extends State<FeedsPage>{
               ),
             ),
             // TODO: Populate reels and threads too.
-            FutureBuilder(
+            followingAccounts.isNotEmpty ? FutureBuilder(
               future: postRef.where('ownerId', whereIn: followingAccounts).orderBy('timestamp', descending: true).limit(page).get(),
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+
+                  return postShimmer();
+                }
+
                 if (snapshot.hasData) {
                   var snap = snapshot.data;
                   List docs = snap!.docs;
@@ -536,47 +554,111 @@ class _FeedsPageState extends State<FeedsPage>{
                     shrinkWrap: true,
                     primary: false,
                     itemBuilder: (context, index) {
-                      PostModel posts = PostModel.fromJson(docs[index].data());
+                      if(loadingMorePosts == false && docs.length == index + 1) {
 
-                      if(docs.length == index + 1) {
-                        loadingMore = false;
-                      }
-
-                      if(followingAccounts.contains(posts.ownerId)) {
-
-                        return UserPost(post: posts, index: index,);
+                        return const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10.0),
+                          child: Center(
+                            child: Text(
+                              'You have all caught up.',
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        );
                       } else {
+                        PostModel posts = PostModel.fromJson(docs[index].data());
 
-                        return const SizedBox();
+                        if(docs.length == index + 1) {
+                          loadingMorePosts = false;
+                        }
+
+                        return UserPost(post: posts, index: index);
                       }
                     },
                   );
                 }  else {
 
-                  return Center(
-                    child: Padding(
-                        padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 3.2),
-                        child: circularProgress(context, Colors.blue)
-                    ),
-                  );
+                  return postShimmer();
                 }
               },
+            ) : const Padding(
+              padding: EdgeInsets.symmetric(vertical: 10.0),
+              child: Center(
+                child: Text(
+                  'No posts to show.',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
             ),
-            if (loadingMore == true && page > 3)
+            if (loadingMorePosts == true && page > 3)
               const Padding(
-                padding: EdgeInsets.only(top: 10.0),
+                padding: EdgeInsets.symmetric(vertical: 10.0),
                 child: Center(
                   child: CircularProgressIndicator(
                     color: Colors.blue,
                   ),
                 ),
               ),
-            if (loadingMore == false && page > 3)
+            hashTags.isNotEmpty ? FutureBuilder(
+              future: postRef.where('hashtags', arrayContains: hashTags.take(hashTags.length > 10 ? 10 : hashTags.length))
+                  .orderBy('timestamp', descending: true).limit(page).get(),
+              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+
+                  return postShimmer();
+                }
+
+                if (snapshot.hasData) {
+                  var snap = snapshot.data;
+                  List docs = snap!.docs;
+
+                  return ListView.builder(
+                    controller: scrollController,
+                    itemCount: docs.length,
+                    shrinkWrap: true,
+                    primary: false,
+                    itemBuilder: (context, index) {
+                      if(index == 0) {
+
+                        return  const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child:  Text(
+                            'Suggested Posts',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 25.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        );
+                      } else {
+                        PostModel posts = PostModel.fromJson(docs[index - 1].data());
+
+                        if(docs.length == index + 1) {
+                          loadingMoreTrends = false;
+                        }
+
+                        return UserPost(post: posts, index: index);
+                      }
+                    },
+                  );
+                }  else {
+
+                  return postShimmer();
+                }
+              },
+            ) : const SizedBox(),
+            if (loadingMoreTrends == false && page > 3)
               const Padding(
-                padding: EdgeInsets.only(
-                  top: 20.0,
-                  bottom: 20.0,
-                ),
+                padding: EdgeInsets.symmetric(vertical: 10.0),
                 child: Center(
                   child: Text(
                     'No more posts to show.',
@@ -588,41 +670,41 @@ class _FeedsPageState extends State<FeedsPage>{
                   ),
                 ),
               ),
-            // get post id from hashTagsRef and get the post from postRef based on count in Map of hashTags
-            /*FutureBuilder(
-                future: hashTags != null ? hashTagsRef.doc(hashTags!.keys.first).get() : null,
-                builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  if (snapshot.hasData) {
-                    var snap = snapshot.data;
-                    PostModel posts = PostModel.fromJson(snap!.data() as Map<String, dynamic>);
-
-                    return UserPost(post: posts, index: 0,);
-                  } else {
-
-                    return const SizedBox();
-                  }
-                },
-              )*/
           ],
         ),
       ),
     );
   }
 
-  getHashTags() async {
-    DocumentSnapshot doc = await usersRef.doc(auth.currentUser!.uid).get();
-    UserModel user = UserModel.fromJson(doc.data() as Map<String, dynamic>);
-    hashTags = user.userHashtags;
-  }
+  Widget postShimmer() {
 
-  getFollowingAccounts() async {
-    QuerySnapshot snapshot = await followingRef
-        .doc(auth.currentUser!.uid)
-        .collection('userFollowing')
-        .get();
-
-    for (var doc in snapshot.docs) {
-      followingAccounts.add(doc.id);
-    }
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: ListView.builder(
+        controller: scrollController,
+        itemCount: 3,
+        shrinkWrap: true,
+        primary: false,
+        itemBuilder: (context, index) {
+          return Column(
+            children: [
+              Container(
+                height: 50.0,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.white,
+              ),
+              const SizedBox(height: 10.0),
+              Container(
+                height: 200.0,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.white,
+              ),
+              const SizedBox(height: 10.0),
+            ],
+          );
+        },
+      ),
+    );
   }
 }

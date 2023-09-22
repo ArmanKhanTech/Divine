@@ -43,6 +43,11 @@ class _StoryWidgetState extends State<StoryWidget> {
               scrollDirection: Axis.horizontal,
               physics: const AlwaysScrollableScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+
+                  return storyShimmer();
+                }
+
                 if(index == 0){
 
                   return buildOwnStoryAvatar();

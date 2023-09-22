@@ -45,8 +45,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   GlobalKey<ScaffoldState> profileScaffoldKey = GlobalKey<ScaffoldState>();
 
-  String? name = '';
-
   int tabIndex = 0;
 
   currentUserId() {
@@ -58,24 +56,15 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     checkIfFollowing();
     checkIfRequested();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        name = currentUser.username;
-      });
+      setState(() {});
     });
   }
 
   @override
   void dispose() {
     controller.dispose();
-    name = '';
-    postCount = 0;
-    followersCount = 0;
-    followingCount = 0;
-    isFollowing = false;
-    requested = false;
-    users = null;
-    currentUser = UserModel();
     super.dispose();
   }
 
@@ -284,409 +273,475 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      key: profileScaffoldKey,
-      appBar: AppBar(
-        centerTitle: true,
-        systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-        ),
-        title: widget.profileId == auth.currentUser!.uid ? GradientText(
-          'Your Profile',
-          style: const TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.w300,
-          ), colors: const [
-              Colors.blue,
-              Colors.purple,
-            ],
-        ) : Text(
-          name.toString(),
-          style: TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.w300,
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-        ),
-        automaticallyImplyLeading: false,
-        leading: widget.profileId == auth.currentUser!.uid ? null : IconButton(
-          icon: const Icon(CupertinoIcons.chevron_back),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          iconSize: 30.0,
-          color: Theme.of(context).colorScheme.secondary,
-          padding: const EdgeInsets.only(bottom: 2.0),
-        ),
-        actions: [
-          Row(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.menu),
-                onPressed: () {
-                  openMenu(context);
-                },
-                iconSize: 30.0,
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-              const SizedBox(width: 10.0),
-            ],
-          )
-        ],
-      ),
-      body: StreamBuilder(
-        stream: usersRef.doc(widget.profileId).snapshots(),
-        builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (snapshot.hasData) {
-            currentUser = UserModel.fromJson(snapshot.data!.data() as Map<String, dynamic>);
+    return  StreamBuilder(
+      stream: usersRef.doc(widget.profileId).snapshots(),
+      builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (snapshot.hasData) {
+          currentUser =
+              UserModel.fromJson(snapshot.data!.data() as Map<String, dynamic>);
 
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    const SizedBox(
-                      width: 18.0,
-                    ),
-                    // TODO: Implement user story widget & view profile picture.
-                    Padding(
-                      padding: const EdgeInsets.only(top: 5.0),
-                      child: currentUser.photoUrl!.isEmpty ? CircleAvatar(
-                        radius: 48.0,
-                        backgroundColor: Theme.of(context).colorScheme.secondary,
-                        child: Center(
-                          child: Text(
-                            currentUser.username![0].toUpperCase(),
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary,
-                              fontSize: 30.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ) : CachedNetworkImage(
-                        imageUrl: '${currentUser.photoUrl}',
-                        imageBuilder: (context, imageProvider) => Container(
-                          height: 96,
-                          width: 96,
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.all(Radius.circular(48)),
-                            image: DecorationImage(
-                              image: imageProvider,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        placeholder: (context, url) {
-
-                          return Shimmer.fromColors(
-                            baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
-                            highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
-                            child: Container(
-                              height: 96,
-                              width: 96,
-                              decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.all(Radius.circular(48)),
-                                color: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!
-                              ),
-                            ),
-                          );
-                        },
-                        errorWidget: (context, url, error) => const Icon(Icons.error),
-                      ),
-                    ),
-                    const Spacer(),
-                    StreamBuilder(
-                      stream: postRef.where('ownerId', isEqualTo: widget.profileId).snapshots(),
-                      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (snapshot.hasData) {
-                          QuerySnapshot<Object?>? snap = snapshot.data;
-                          List<DocumentSnapshot> docs = snap!.docs;
-                          postCount = docs.length;
-
-                          return buildCount("Posts", docs.length);
-                        } else {
-
-                          return buildCount("Posts", 0);
-                        }
-                      },
-                    ),
-                    const Spacer(),
-                    StreamBuilder(
-                      stream: followersRef.doc(widget.profileId).collection('userFollowers').snapshots(),
-                      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (snapshot.hasData) {
-                          QuerySnapshot<Object?>? snap = snapshot.data;
-                          List<DocumentSnapshot> docs = snap!.docs;
-
-                          return buildCount("Followers", docs.length);
-                        } else {
-
-                          return buildCount("Followers", 0);
-                        }
-                      },
-                    ),
-                    const Spacer(),
-                    StreamBuilder(
-                      stream: followingRef.doc(widget.profileId).collection('userFollowing').snapshots(),
-                      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (snapshot.hasData) {
-                          QuerySnapshot<Object?>? snap = snapshot.data;
-                          List<DocumentSnapshot> docs = snap!.docs;
-
-                          return buildCount("Following", docs.length);
-                        } else {
-
-                          return buildCount("Following", 0);
-                        }
-                      },
-                    ),
-                    const Spacer(),
-                  ],
+          return Scaffold(
+              key: profileScaffoldKey,
+              appBar: AppBar(
+                centerTitle: true,
+                systemOverlayStyle: const SystemUiOverlayStyle(
+                  statusBarColor: Colors.transparent,
                 ),
-                const SizedBox(height: 10.0),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: currentUser.name!.isNotEmpty ? Text(
-                    currentUser.name!,
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                      height: 1.2,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                    maxLines: 1,
-                  ) : Text(
-                    currentUser.username!,
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                      height: 1.2,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                    maxLines: 1,
+                title: widget.profileId == auth.currentUser!.uid ? GradientText(
+                  'Your Profile',
+                  style: const TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w300,
+                  ), colors: const [
+                  Colors.blue,
+                  Colors.purple,
+                ],
+                ) : Text(
+                  currentUser.username!.length > 8 ? '${currentUser.username!.substring(
+                      0, 8)}...' : currentUser.username!,
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w300,
+                    color: Theme
+                        .of(context)
+                        .colorScheme
+                        .secondary,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0, top: 2),
-                  child: currentUser.profession!.isEmpty ? Text(
-                    currentUser.country!,
-                    style: const TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.blue,
-                      fontWeight: FontWeight.w400,
-                      height: 1.0,
-                    ),
-                    maxLines: 1,
-                  ) : Text(
-                    currentUser.profession![0].toUpperCase() + currentUser.profession!.substring(1),
-                    style: const TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.pink,
-                      fontWeight: FontWeight.w400,
-                      height: 1.0,
-                    ),
-                    maxLines: 1,
-                  ),
+                surfaceTintColor: Colors.transparent,
+                automaticallyImplyLeading: false,
+                leading: widget.profileId == auth.currentUser!.uid ? null : IconButton(
+                  icon: const Icon(CupertinoIcons.chevron_back),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  iconSize: 30.0,
+                  color: Theme
+                      .of(context)
+                      .colorScheme
+                      .secondary,
+                  padding: const EdgeInsets.only(bottom: 2.0),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0, top: 2),
-                  child: currentUser.bio!.isEmpty ? const SizedBox(
-                    height: 0.0,
-                    width: 0.0,
-                  ) : SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.6,
-                    child: ExpandableText(
-                      currentUser.bio!,
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w400,
-                        height: 1.3,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                      expandText: 'show more',
-                      maxLines: 5,
-                      animation: true,
-                      collapseOnTextTap: true,
-                      onHashtagTap: (name) {
-
-                      },
-                      hashtagStyle: const TextStyle(
-                        color: Colors.blue,
-                      ),
-                      onMentionTap: (username) {
-                        Navigator.of(context).push(
-                          CupertinoPageRoute(
-                            builder: (_) => ProfilePage(
-                              profileId: username,
-                            ),
-                          ),
-                        );
-                      },
-                      mentionStyle: const TextStyle(
-                        color: Colors.blue,
-                      ),
-                    )
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0, top: 2),
-                  child: currentUser.link!.isEmpty ? const SizedBox(
-                    height: 0.0,
-                    width: 0.0,
-                  ) : Row(
+                actions: [
+                  Row(
                     children: [
-                      const Icon(
-                        CupertinoIcons.link,
-                        color: Colors.deepPurple,
-                        size: 15,
+                      IconButton(
+                        icon: const Icon(Icons.menu),
+                        onPressed: () {
+                          openMenu(context);
+                        },
+                        iconSize: 30.0,
+                        color: Theme
+                            .of(context)
+                            .colorScheme
+                            .secondary,
                       ),
-                      const SizedBox(width: 4.0),
-                      SizedBox(
-                          width: 200,
-                          child: GestureDetector(
-                            child: Text(
-                              currentUser.link!,
-                              style: const TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.deepPurple,
-                                height: 1.2,
-                              ),
-                            ),
-                          )
-                      ),
+                      const SizedBox(width: 10.0),
                     ],
                   )
-                ),
-                // TODO: Show mutual followers
-                Visibility(
-                  visible: true,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20.0, top: 5, bottom: 5),
-                    child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        child: Row(
-                          children: [
-                            GestureDetector(
-                              child: Text(
-                                'Followed by ',
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: 'Ubuntu-Regular',
-                                  color: Theme.of(context).colorScheme.secondary,
-                                  height: 1.2,
-                                ),
+                ],
+              ),
+              body: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const SizedBox(
+                        width: 18.0,
+                      ),
+                      // TODO: Implement user story widget & view profile picture.
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5.0),
+                        child: currentUser.photoUrl!.isEmpty ? CircleAvatar(
+                          radius: 48.0,
+                          backgroundColor: Theme
+                              .of(context)
+                              .colorScheme
+                              .secondary,
+                          child: Center(
+                            child: Text(
+                              currentUser.username![0].toUpperCase(),
+                              style: TextStyle(
+                                color: Theme
+                                    .of(context)
+                                    .colorScheme
+                                    .primary,
+                                fontSize: 30.0,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                            GestureDetector(
-                              child: Text(
-                                'username, username',
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).colorScheme.secondary,
-                                  height: 1.2,
+                          ),
+                        ) : CachedNetworkImage(
+                          imageUrl: '${currentUser.photoUrl}',
+                          imageBuilder: (context, imageProvider) =>
+                              Container(
+                                height: 96,
+                                width: 96,
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(48)),
+                                  image: DecorationImage(
+                                    image: imageProvider,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                          placeholder: (context, url) {
+                            return Shimmer.fromColors(
+                              baseColor: Theme
+                                  .of(context)
+                                  .colorScheme
+                                  .background == Colors.white ? Colors
+                                  .grey[300]! : Colors.grey[700]!,
+                              highlightColor: Theme
+                                  .of(context)
+                                  .colorScheme
+                                  .background == Colors.white ? Colors
+                                  .grey[100]! : Colors.grey[800]!,
+                              child: Container(
+                                height: 96,
+                                width: 96,
+                                decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(48)),
+                                    color: Theme
+                                        .of(context)
+                                        .colorScheme
+                                        .background == Colors.white ? Colors
+                                        .grey[300]! : Colors.grey[700]!
+                                ),
+                              ),
+                            );
+                          },
+                          errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                        ),
+                      ),
+                      const Spacer(),
+                      StreamBuilder(
+                        stream: postRef.where(
+                            'ownerId', isEqualTo: widget.profileId).snapshots(),
+                        builder: (context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.hasData) {
+                            QuerySnapshot<Object?>? snap = snapshot.data;
+                            List<DocumentSnapshot> docs = snap!.docs;
+                            postCount = docs.length;
+
+                            return buildCount("Posts", docs.length);
+                          } else {
+                            return buildCount("Posts", 0);
+                          }
+                        },
+                      ),
+                      const Spacer(),
+                      StreamBuilder(
+                        stream: followersRef.doc(widget.profileId).collection(
+                            'userFollowers').snapshots(),
+                        builder: (context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.hasData) {
+                            QuerySnapshot<Object?>? snap = snapshot.data;
+                            List<DocumentSnapshot> docs = snap!.docs;
+
+                            return buildCount("Followers", docs.length);
+                          } else {
+                            return buildCount("Followers", 0);
+                          }
+                        },
+                      ),
+                      const Spacer(),
+                      StreamBuilder(
+                        stream: followingRef.doc(widget.profileId).collection(
+                            'userFollowing').snapshots(),
+                        builder: (context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.hasData) {
+                            QuerySnapshot<Object?>? snap = snapshot.data;
+                            List<DocumentSnapshot> docs = snap!.docs;
+
+                            return buildCount("Following", docs.length);
+                          } else {
+                            return buildCount("Following", 0);
+                          }
+                        },
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
+                  const SizedBox(height: 10.0),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: currentUser.name!.isNotEmpty ? Text(
+                      currentUser.name!,
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                        height: 1.2,
+                        color: Theme
+                            .of(context)
+                            .colorScheme
+                            .secondary,
+                      ),
+                      maxLines: 1,
+                    ) : Text(
+                      currentUser.username!,
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                        height: 1.2,
+                        color: Theme
+                            .of(context)
+                            .colorScheme
+                            .secondary,
+                      ),
+                      maxLines: 1,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0, top: 2),
+                    child: currentUser.profession!.isEmpty ? Text(
+                      currentUser.country!,
+                      style: const TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.blue,
+                        fontWeight: FontWeight.w400,
+                        height: 1.0,
+                      ),
+                      maxLines: 1,
+                    ) : Text(
+                      currentUser.profession![0].toUpperCase() +
+                          currentUser.profession!.substring(1),
+                      style: const TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.pink,
+                        fontWeight: FontWeight.w400,
+                        height: 1.0,
+                      ),
+                      maxLines: 1,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0, top: 2),
+                    child: currentUser.bio!.isEmpty ? const SizedBox(
+                      height: 0.0,
+                      width: 0.0,
+                    ) : SizedBox(
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width * 0.6,
+                        child: ExpandableText(
+                          currentUser.bio!,
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w400,
+                            height: 1.3,
+                            color: Theme
+                                .of(context)
+                                .colorScheme
+                                .secondary,
+                          ),
+                          expandText: 'show more',
+                          maxLines: 5,
+                          animation: true,
+                          collapseOnTextTap: true,
+                          onHashtagTap: (name) {
+
+                          },
+                          hashtagStyle: const TextStyle(
+                            color: Colors.blue,
+                          ),
+                          onMentionTap: (username) {
+                            Navigator.of(context).push(
+                              CupertinoPageRoute(
+                                builder: (_) =>
+                                    ProfilePage(
+                                      profileId: username,
+                                    ),
+                              ),
+                            );
+                          },
+                          mentionStyle: const TextStyle(
+                            color: Colors.blue,
+                          ),
                         )
                     ),
                   ),
-                ),
-                const SizedBox(height: 5.0),
-                buildProfileButton(currentUser),
-                const SizedBox(height: 5.0),
-                Expanded(
-                  child: DefaultTabController(
-                      length: 4,
-                      initialIndex: tabIndex,
-                      child: Column(
+                  Padding(
+                      padding: const EdgeInsets.only(left: 20.0, top: 2),
+                      child: currentUser.link!.isEmpty ? const SizedBox(
+                        height: 0.0,
+                        width: 0.0,
+                      ) : Row(
                         children: [
-                          SizedBox(
-                            height: 40,
-                            width: MediaQuery.of(context).size.width,
-                            child: TabBar(
-                              dividerColor: Colors.transparent,
-                              labelColor: Colors.blue,
-                              unselectedLabelColor: Colors.grey,
-                              indicatorColor: Colors.blue,
-                              onTap: (index) {
-                                setState(() {
-                                  tabIndex = index;
-                                });
-                              },
-                              tabs: const [
-                                Tab(
-                                  icon: Icon(CupertinoIcons.square_grid_2x2_fill, size: 25),
-                                ),
-                                Tab(
-                                  icon: Icon(CupertinoIcons.play_circle_fill, size: 26),
-                                ),
-                                Tab(
-                                  icon: Icon(CupertinoIcons.equal_circle_fill, size: 25),
-                                ),
-                                Tab(
-                                  icon: Icon(CupertinoIcons.rectangle_grid_1x2_fill, size: 22),
-                                ),
-                              ],
-                            ),
+                          const Icon(
+                            CupertinoIcons.link,
+                            color: Colors.deepPurple,
+                            size: 15,
                           ),
-                          Expanded(
-                            child: Builder(
-                              builder: (BuildContext context) {
-                                switch (tabIndex) {
-                                  case 0:
-
-                                    return buildPostView(currentUser);
-                                  case 1:
-
-                                    return const Center(
-                                      child: Text(
-                                        'No Videos',
-                                        style: TextStyle(
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    );
-                                  case 2:
-
-                                    return const Center(
-                                      child: Text(
-                                        'No Tagged Posts',
-                                        style: TextStyle(
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    );
-                                  case 3:
-
-                                    return const Center(
-                                      child: Text(
-                                        'No Saved Posts',
-                                        style: TextStyle(
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    );
-                                  default: return const SizedBox();
-                                }
-                              },
-                            )
-                          )
+                          const SizedBox(width: 4.0),
+                          SizedBox(
+                              width: 200,
+                              child: GestureDetector(
+                                child: Text(
+                                  currentUser.link!,
+                                  style: const TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.deepPurple,
+                                    height: 1.2,
+                                  ),
+                                ),
+                              )
+                          ),
                         ],
                       )
                   ),
-                )
-              ],
-            );
-          }
-
+                  // TODO: Show mutual followers
+                  Visibility(
+                    visible: true,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20.0, top: 5, bottom: 5),
+                      child: SizedBox(
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width * 0.8,
+                          child: Row(
+                            children: [
+                              GestureDetector(
+                                child: Text(
+                                  'Followed by ',
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: 'Ubuntu-Regular',
+                                    color: Theme
+                                        .of(context)
+                                        .colorScheme
+                                        .secondary,
+                                    height: 1.2,
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                child: Text(
+                                  'username, username',
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme
+                                        .of(context)
+                                        .colorScheme
+                                        .secondary,
+                                    height: 1.2,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 5.0),
+                  buildProfileButton(currentUser),
+                  const SizedBox(height: 5.0),
+                  Expanded(
+                    child: DefaultTabController(
+                        length: 4,
+                        initialIndex: tabIndex,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 40,
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width,
+                              child: TabBar(
+                                dividerColor: Colors.transparent,
+                                labelColor: Colors.blue,
+                                unselectedLabelColor: Colors.grey,
+                                indicatorColor: Colors.blue,
+                                onTap: (index) {
+                                  setState(() {
+                                    tabIndex = index;
+                                  });
+                                },
+                                tabs: const [
+                                  Tab(
+                                    icon: Icon(
+                                        CupertinoIcons.square_grid_2x2_fill,
+                                        size: 25),
+                                  ),
+                                  Tab(
+                                    icon: Icon(CupertinoIcons.play_circle_fill,
+                                        size: 26),
+                                  ),
+                                  Tab(
+                                    icon: Icon(CupertinoIcons.equal_circle_fill,
+                                        size: 25),
+                                  ),
+                                  Tab(
+                                    icon: Icon(
+                                        CupertinoIcons.rectangle_grid_1x2_fill,
+                                        size: 22),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                                child: Builder(
+                                  builder: (BuildContext context) {
+                                    switch (tabIndex) {
+                                      case 0:
+                                        return buildPostView(currentUser);
+                                      case 1:
+                                        return const Center(
+                                          child: Text(
+                                            'No Videos',
+                                            style: TextStyle(
+                                              fontSize: 20.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        );
+                                      case 2:
+                                        return const Center(
+                                          child: Text(
+                                            'No Tagged Posts',
+                                            style: TextStyle(
+                                              fontSize: 20.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        );
+                                      case 3:
+                                        return const Center(
+                                          child: Text(
+                                            'No Saved Posts',
+                                            style: TextStyle(
+                                              fontSize: 20.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        );
+                                      default:
+                                        return const SizedBox();
+                                    }
+                                  },
+                                )
+                            )
+                          ],
+                        )
+                    ),
+                  )
+                ],
+              )
+          );
+        } else {
           if(widget.profileId == auth.currentUser!.uid) {
 
             return Center(
@@ -704,8 +759,8 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             );
           }
-        },
-      ),
+        }
+      }
     );
   }
 
@@ -955,8 +1010,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     // TODO: Load more data on scroll
     return FutureBuilder(
-      future: postRef.where('ownerId', isEqualTo: widget.profileId)
-      .orderBy('timestamp', descending: true).get(),
+      future: postRef.where('ownerId', isEqualTo: widget.profileId).orderBy('timestamp', descending: true).get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
 

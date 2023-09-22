@@ -52,7 +52,7 @@ class UserPost extends StatelessWidget {
 
             return Column(
               children: [
-                index != 1 ? Container(
+                index != 0 ? Container(
                   height: .5,
                   width: MediaQuery.of(context).size.width,
                   color: Theme.of(context).colorScheme.secondary,
@@ -506,11 +506,9 @@ class UserPost extends StatelessWidget {
                       ),
                       const SizedBox(width: 10.0),
                       Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const SizedBox(
-                            height: 2,
-                          ),
                           Text(
                             post!.username!.toLowerCase(),
                             style: TextStyle(
@@ -520,20 +518,19 @@ class UserPost extends StatelessWidget {
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
-                          Visibility(
-                            visible: post!.location != null &&
-                                post!.location.toString().isNotEmpty,
-                            child: Text(
-                              post!.location ?? ' ',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                color: Theme.of(context).colorScheme.secondary,
-                                fontSize: 15.0,
-                                height: 0.8,
-                              ),
-                              overflow: TextOverflow.ellipsis,
+                          post!.location != null &&
+                              post!.location.toString().isNotEmpty ? Text(
+                            post!.location ?? ' ',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: Theme.of(context).colorScheme.secondary,
+                              fontSize: 15.0,
+                              height: 0.8,
                             ),
-                          )
+                            overflow: TextOverflow.ellipsis,
+                          ) : const SizedBox(
+                            height: 5,
+                          ),
                         ],
                       ),
                       const Spacer(),
