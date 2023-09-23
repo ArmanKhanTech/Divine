@@ -36,7 +36,7 @@ class UserPost extends StatelessWidget {
     bool isMe = currentUserId() == post!.ownerId;
 
     return Visibility(
-      visible: post!.mediaUrl!.isNotEmpty && !isMe,
+      visible: true,
       child: CustomCard(
         onTap: () {},
         child: OpenContainer(

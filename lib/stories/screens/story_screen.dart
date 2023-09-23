@@ -247,6 +247,19 @@ class _StoryScreenState extends State<StoryScreen> {
             child: circularProgress(context, const Color(0xffffffff)),
           );
         },
+        errorBuilder: (context, error, stackTrace) {
+
+          return const Center(
+            child: Text(
+              'Error loading story.',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          );
+        }
       ),
     );
   }

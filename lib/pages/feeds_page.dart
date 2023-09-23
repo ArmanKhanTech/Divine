@@ -66,53 +66,23 @@ class _FeedsPageState extends State<FeedsPage>{
   @override
   void initState() {
     super.initState();
-    scrollControllerPosts.addListener(() async {
-      if (scrollControllerPosts.position.pixels ==
-          scrollControllerPosts.position.maxScrollExtent && loadingMorePosts == false) {
-        setState(() {
-          loadingMorePosts = true;
-          pagePosts += 3;
-        });
-
-        await loadMorePosts();
-
-        setState(() {
-          loadingMorePosts = false;
-        });
-      }
-    });
-    scrollControllerSuggested.addListener(() async {
-      if (scrollControllerSuggested.position.pixels ==
-          scrollControllerSuggested.position.maxScrollExtent && loadingMoreSuggested == false) {
-        setState(() {
-          loadingMoreSuggested = true;
-          pageSuggested += 3;
-        });
-
-        await loadMoreSuggested();
-
-        setState(() {
-          loadingMoreSuggested = false;
-        });
-      }
-    });
 
     initPage();
 
     NativeAd(
-        adUnitId: adHelper.nativeAdUnitId,
-        listener: NativeAdListener(
-          onAdLoaded: (Ad ad) {
-            setState(() {
-              nativeAd = ad as NativeAd?;
-            });
-          },
-          onAdFailedToLoad: (Ad ad, LoadAdError error) {
-            ad.dispose();
-          },
-        ),
-        request: const AdRequest(),
-        factoryId: 'listTile',
+      adUnitId: adHelper.nativeAdUnitId,
+      listener: NativeAdListener(
+        onAdLoaded: (Ad ad) {
+          setState(() {
+            nativeAd = ad as NativeAd?;
+          });
+        },
+        onAdFailedToLoad: (Ad ad, LoadAdError error) {
+          ad.dispose();
+        },
+      ),
+      request: const AdRequest(),
+      factoryId: 'listTile',
     ).load();
   }
 
@@ -147,6 +117,34 @@ class _FeedsPageState extends State<FeedsPage>{
     for(var doc in snapshot.docs) {
       followingAccounts.add(doc.id);
     }
+  }
+
+  void onScrollEndPosts() async {
+    print('onScrollEndPosts');
+    setState(() {
+      loadingMorePosts = true;
+      pagePosts += 3;
+    });
+
+    await loadMorePosts();
+
+    setState(() {
+      loadingMorePosts = false;
+    });
+  }
+
+  void onScrollSuggested() async {
+    print('onScrollSuggested');
+    setState(() {
+      loadingMoreSuggested = true;
+      pageSuggested += 3;
+    });
+
+    await loadMoreSuggested();
+
+    setState(() {
+      loadingMoreSuggested = false;
+    });
   }
 
   @override
@@ -538,169 +536,185 @@ class _FeedsPageState extends State<FeedsPage>{
         color: Colors.purple,
         onRefresh: () => postRef.orderBy('timestamp', descending: true).limit(pagePosts).get(),
         displacement: 50,
-        child: ListView(
-          children: [
-            const SizedBox(
-              height: 135,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                      child: StoryWidget()
-                  ),
-                ],
-              ),
-            ),
-            // TODO: Fix Native Ad & implement it for iOS.
-            /* if (nativeAd != null && Platform.isAndroid == true)
+        child: SingleChildScrollView(
+         child: Column(
+           children: [
+             const SizedBox(
+               height: 135,
+               child: Row(
+                 mainAxisAlignment: MainAxisAlignment.start,
+                 children: [
+                   Expanded(
+                       child: StoryWidget()
+                   ),
+                 ],
+               ),
+             ),
+             // TODO: Fix Native Ad & implement it for iOS.
+             /* if (nativeAd != null && Platform.isAndroid == true)
                 SizedBox(
                   height: 100,
                   child: AdWidget(ad: nativeAd!),
                 ),*/
-            const SizedBox(height: 5.0),
-            SizedBox(
-              height: 1.0,
-              child: Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: [
-                      Colors.purple,
-                      Colors.pink,
-                      Colors.blue,
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            // TODO: Populate reels and threads too.
-            followingAccounts.isNotEmpty ? FutureBuilder(
-              future: loadMorePosts(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
+             const SizedBox(height: 5.0),
+             SizedBox(
+               height: 1.0,
+               child: Container(
+                 decoration: const BoxDecoration(
+                   gradient: LinearGradient(
+                     begin: Alignment.centerLeft,
+                     end: Alignment.centerRight,
+                     colors: [
+                       Colors.purple,
+                       Colors.pink,
+                       Colors.blue,
+                     ],
+                   ),
+                 ),
+               ),
+             ),
+             // TODO: Populate reels and threads too.
+             followingAccounts.isNotEmpty ? Column(
+               children: [
+                 FutureBuilder(
+                   future: loadMorePosts(),
+                   builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                     if (snapshot.connectionState == ConnectionState.waiting) {
 
-                  return postShimmer();
-                } else {
-                  if (snapshot.hasData) {
-                    if(snapshot.data!.docs.isNotEmpty) {
-                      List docs = snapshot.data!.docs;
+                       return postShimmer();
+                     } else {
+                       if (snapshot.hasData) {
+                         if(snapshot.data!.docs.isNotEmpty) {
+                           List docs = snapshot.data!.docs;
 
-                      return PostsListView(scrollController: scrollControllerPosts, docs: docs);
-                    } else {
+                           return PostsListView(
+                             scrollController: scrollControllerPosts,
+                             onScrollEnd: onScrollEndPosts,
+                             docs: docs,
+                           );
+                         } else {
 
-                        return const Padding(
-                          padding: EdgeInsets.only(
-                            top: 10.0,
-                            bottom: 20.0,
-                          ),
-                          child: Center(
-                            child: Text(
-                              'No posts to show.',
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        );
-                    }
-                  } else {
+                           return const Padding(
+                             padding: EdgeInsets.only(
+                               top: 10.0,
+                               bottom: 20.0,
+                             ),
+                             child: Center(
+                               child: Text(
+                                 'You have all caught up.',
+                                 style: TextStyle(
+                                   color: Colors.blue,
+                                   fontSize: 20.0,
+                                   fontWeight: FontWeight.w500,
+                                 ),
+                               ),
+                             ),
+                           );
+                         }
+                       } else {
 
-                    return postShimmer();
-                  }
-                }
-              },
-            ) : const Padding(
-              padding: EdgeInsets.only(
-                top: 10.0,
-                bottom: 20.0,
-              ),
-              child: Center(
-                child: Text(
-                  'Follow some accounts to see their posts.',
-                  style: TextStyle(
-                    color: Colors.blue,
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ),
-            loadingMorePosts == true ? Padding(
-              padding: const EdgeInsets.only(
-                top: 10.0,
-                bottom: 20.0,
-              ),
-              child: Center(
-                  child: circularProgress(context, Colors.blue)
-              ),
-            ) : const SizedBox(),
-            /*const Padding(
-              padding: EdgeInsets.only(
-                top: 10.0,
-                bottom: 20.0,
-              ),
-              child: Center(
-                child: Text(
-                  'You have all caught up.',
-                  style: TextStyle(
-                    color: Colors.blue,
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ),*/
-            hashTags.isNotEmpty && loadingMorePosts == false ? FutureBuilder(
-              future: loadMoreSuggested(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
+                         return postShimmer();
+                       }
+                     }
+                   },
+                 )
+               ],
+             ) : const Padding(
+               padding: EdgeInsets.only(
+                 top: 10.0,
+                 bottom: 20.0,
+               ),
+               child: Center(
+                 child: Text(
+                   'Follow some accounts to see their posts.',
+                   style: TextStyle(
+                     color: Colors.blue,
+                     fontSize: 20.0,
+                     fontWeight: FontWeight.w500,
+                   ),
+                 ),
+               ),
+             ),
+             loadingMorePosts == true ? Padding(
+               padding: const EdgeInsets.only(
+                 top: 10.0,
+                 bottom: 20.0,
+               ),
+               child: Center(
+                   child: circularProgress(context, Colors.blue)
+               ),
+             ) : const SizedBox(),
+             hashTags.isNotEmpty ? Column(
+               children: [
+                 const Padding(
+                   padding: EdgeInsets.only(
+                       bottom: 10.0,
+                       left: 10
+                   ),
+                   child: Text(
+                     'Suggested Posts',
+                     style: TextStyle(
+                       color: Colors.blue,
+                       fontSize: 22.0,
+                       fontWeight: FontWeight.w500,
+                     ),
+                   ),
+                 ),
+                 FutureBuilder(
+                   future: loadMoreSuggested(),
+                   builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                     if (snapshot.connectionState == ConnectionState.waiting) {
 
-                  return postShimmer();
-                } else {
-                  if (snapshot.hasData) {
-                    if(snapshot.data!.docs.isNotEmpty) {
-                      List docs = snapshot.data!.docs;
+                       return postShimmer();
+                     } else {
+                       if (snapshot.hasData) {
+                         if(snapshot.data!.docs.isNotEmpty) {
+                           List docs = snapshot.data!.docs;
 
-                      return SuggestedListView(scrollController: scrollControllerSuggested, docs: docs);
-                    } else {
+                           return SuggestedListView(
+                             scrollController: scrollControllerSuggested,
+                             onScrollEnd: onScrollSuggested,
+                             docs: docs,
+                           );
+                         } else {
 
-                      return const Padding(
-                        padding: EdgeInsets.only(
-                          top: 10.0,
-                          bottom: 20.0,
-                        ),
-                        child: Center(
-                          child: Text(
-                            'No more posts to show.',
-                            style: TextStyle(
-                              color: Colors.blue,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      );
-                    }
-                  } else {
+                           return const Padding(
+                             padding: EdgeInsets.only(
+                               top: 10.0,
+                               bottom: 20.0,
+                             ),
+                             child: Center(
+                               child: Text(
+                                 'No more posts to show.',
+                                 style: TextStyle(
+                                   color: Colors.blue,
+                                   fontSize: 20.0,
+                                   fontWeight: FontWeight.w500,
+                                 ),
+                               ),
+                             ),
+                           );
+                         }
+                       } else {
 
-                    return postShimmer();
-                  }
-                }
-              },
-            ) : const SizedBox(),
-            loadingMoreSuggested == true && pageSuggested > 3 ? Padding(
-              padding: const EdgeInsets.only(
-                top: 10.0,
-                bottom: 20.0,
-              ),
-              child: Center(
-                  child: circularProgress(context, Colors.blue)
-              ),
-            ) : const SizedBox()
-          ],
+                         return postShimmer();
+                       }
+                     }
+                   },
+                 )
+               ],
+             ) : const SizedBox(),
+             loadingMoreSuggested == true && pageSuggested > 3 ? Padding(
+               padding: const EdgeInsets.only(
+                 top: 10.0,
+                 bottom: 20.0,
+               ),
+               child: Center(
+                   child: circularProgress(context, Colors.blue)
+               ),
+             ) : const SizedBox()
+           ],
+         ),
         ),
       ),
     );
@@ -743,7 +757,14 @@ class PostsListView extends StatefulWidget {
 
   final List docs;
 
-  const PostsListView({Key? key, required this.scrollController, required this.docs}) : super(key: key);
+  final void Function() onScrollEnd;
+
+  const PostsListView({
+    Key? key,
+    required this.scrollController,
+    required this.docs,
+    required this.onScrollEnd
+  }) : super(key: key);
 
   @override
   State<PostsListView> createState() => _PostsListViewState();
@@ -753,6 +774,11 @@ class _PostsListViewState extends State<PostsListView> {
   @override
   void initState() {
     super.initState();
+    widget.scrollController.addListener(() {
+      if (widget.scrollController.position.pixels == widget.scrollController.position.maxScrollExtent) {
+        widget.onScrollEnd();
+      }
+    });
   }
 
   @override
@@ -781,7 +807,14 @@ class SuggestedListView extends StatefulWidget {
 
   final List docs;
 
-  const SuggestedListView({Key? key, required this.scrollController, required this.docs}) : super(key: key);
+  final void Function() onScrollEnd;
+
+  const SuggestedListView({
+    Key? key,
+    required this.scrollController,
+    required this.docs,
+    required this.onScrollEnd
+  }) : super(key: key);
 
   @override
   State<SuggestedListView> createState() => _SuggestedListViewState();
@@ -791,6 +824,11 @@ class _SuggestedListViewState extends State<SuggestedListView> {
   @override
   void initState() {
     super.initState();
+    widget.scrollController.addListener(() {
+      if (widget.scrollController.position.pixels == widget.scrollController.position.maxScrollExtent) {
+        widget.onScrollEnd();
+      }
+    });
   }
 
   @override
