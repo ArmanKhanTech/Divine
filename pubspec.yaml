@@ -1,5 +1,5 @@
 name: divine
-description: A new Flutter project.
+description: A social media app made on Flutter by Arman.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -100,7 +100,6 @@ dependencies:
   like_button: ^2.0.5
   shimmer: ^3.0.0
   expandable_text: ^2.3.0
-  flutter_form_builder: ^9.1.0
   #google_mlkit_commons: ^0.5.0
   #google_mlkit_face_detection: ^0.8.0
   #google_mlkit_face_mesh_detection: ^0.0.1

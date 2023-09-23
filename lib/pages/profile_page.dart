@@ -744,9 +744,11 @@ class _ProfilePageState extends State<ProfilePage> {
         } else {
           if(widget.profileId == auth.currentUser!.uid) {
 
+
+            // TODO: Fix this
             return Center(
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 20),
+                padding: const EdgeInsets.only(top: 20.0),
                 child: circularProgress(context, Colors.blue),
               ),
             );
@@ -754,7 +756,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
             return Center(
               child: Padding(
-                padding: const EdgeInsets.only(top: 20.0),
+                padding: const EdgeInsets.only(top: 40.0),
                 child: circularProgress(context, Colors.blue),
               ),
             );

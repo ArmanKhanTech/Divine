@@ -120,7 +120,7 @@ class _StoryWidgetState extends State<StoryWidget> {
           }
 
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 6.0),
+            padding: const EdgeInsets.symmetric(horizontal: 5.0),
             child: FutureBuilder<QuerySnapshot>(
               future: storyRef.doc(storiesId).collection('stories').get(),
               builder: (context, snapshot){
@@ -187,10 +187,10 @@ class _StoryWidgetState extends State<StoryWidget> {
                             child: user.photoUrl!.isNotEmpty ? CachedNetworkImage(
                               imageUrl: user.photoUrl!,
                               imageBuilder: (context, imageProvider) => Container(
-                                height: 90,
-                                width: 90,
+                                height: 92,
+                                width: 92,
                                 decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(Radius.circular(45)),
+                                  borderRadius: const BorderRadius.all(Radius.circular(46)),
                                   image: DecorationImage(
                                     image: imageProvider,
                                     fit: BoxFit.cover,
@@ -203,8 +203,8 @@ class _StoryWidgetState extends State<StoryWidget> {
                                   baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
                                   highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
                                   child: Container(
-                                    height: 90,
-                                    width: 90,
+                                    height: 92,
+                                    width: 92,
                                     decoration: BoxDecoration(
                                       color: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
                                       shape: BoxShape.circle,
@@ -214,14 +214,14 @@ class _StoryWidgetState extends State<StoryWidget> {
                               },
                               errorWidget: (context, url, error) => const Icon(Icons.error),
                             ) : CircleAvatar(
-                              radius: 45.0,
+                              radius: 46.0,
                               backgroundColor: Theme.of(context).colorScheme.secondary,
                               child: Center(
                                 child: Text(
                                   user.username![0].toUpperCase(),
                                   style: TextStyle(
                                     color: Theme.of(context).colorScheme.secondary,
-                                    fontSize: 18.0,
+                                    fontSize: 30.0,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -262,7 +262,7 @@ class _StoryWidgetState extends State<StoryWidget> {
     return Padding(
       padding: const EdgeInsets.only(
         left: 18.0,
-        right: 7.0,
+        right: 10.0,
         top: 1
       ),
       child: StreamBuilder(
@@ -306,10 +306,10 @@ class _StoryWidgetState extends State<StoryWidget> {
                         profileImage.photoUrl!.isNotEmpty ? CachedNetworkImage(
                           imageUrl: profileImage.photoUrl!,
                           imageBuilder: (context, imageProvider) => Container(
-                            height: 98,
-                            width: 98,
+                            height: 100,
+                            width: 100,
                             decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.all(Radius.circular(48)),
+                              borderRadius: const BorderRadius.all(Radius.circular(50)),
                               image: DecorationImage(
                                 image: imageProvider,
                                 fit: BoxFit.cover,
@@ -322,8 +322,8 @@ class _StoryWidgetState extends State<StoryWidget> {
                               baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
                               highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
                               child: Container(
-                                height: 96,
-                                width: 96,
+                                height: 100,
+                                width: 100,
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
                                   shape: BoxShape.circle,
@@ -331,9 +331,25 @@ class _StoryWidgetState extends State<StoryWidget> {
                               ),
                             );
                           },
-                          errorWidget: (context, url, error) => const Icon(Icons.error),
+                          errorWidget: (context, url, error) {
+
+                            return CircleAvatar(
+                              radius: 50.0,
+                              backgroundColor: Theme.of(context).colorScheme.secondary,
+                              child: Center(
+                                child: Text(
+                                  profileImage.username![0].toUpperCase(),
+                                  style: TextStyle(
+                                    color: Colors.grey[400],
+                                    fontSize: 30.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                         ) : CircleAvatar(
-                          radius: 48.0,
+                          radius: 50.0,
                           backgroundColor: Theme.of(context).colorScheme.secondary,
                           child: Center(
                             child: Text(
@@ -348,7 +364,7 @@ class _StoryWidgetState extends State<StoryWidget> {
                         ),
                         Positioned(
                           bottom: 0.0,
-                          right: 0.0,
+                          right: 5.0,
                           child: Container(
                             height: 25.0,
                             width: 25.0,
@@ -366,7 +382,7 @@ class _StoryWidgetState extends State<StoryWidget> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 4.0),
+                  const SizedBox(height: 3.0),
                   Text(
                     'Your story',
                     textAlign: TextAlign.center,
@@ -394,13 +410,13 @@ class _StoryWidgetState extends State<StoryWidget> {
       return Column(
         children: [
           Padding(
-            padding: padding ?? const EdgeInsets.symmetric(horizontal: 9),
+            padding: padding ?? const EdgeInsets.symmetric(horizontal: 5),
             child: Shimmer.fromColors(
               baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
               highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
               child: Container(
-                height: 98,
-                width: 98,
+                height: 100,
+                width: 100,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
                   shape: BoxShape.circle,
@@ -413,7 +429,7 @@ class _StoryWidgetState extends State<StoryWidget> {
             baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
             highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
             child: Container(
-              height: 12,
+              height: 15,
               width: 75,
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,

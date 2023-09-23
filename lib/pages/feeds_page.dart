@@ -1,4 +1,5 @@
 import 'package:divine/posts/screens/new_post_screen.dart';
+import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:divine/admobs/adHelper.dart';
@@ -34,25 +35,64 @@ class _FeedsPageState extends State<FeedsPage>{
 
   NativeAd? nativeAd;
 
-  int page = 3;
+  final scrollKey = GlobalKey();
 
-  bool loadingMorePosts = true, loadingMoreTrends = true;
+  int pagePosts = 3, pageSuggested = 3;
 
-  ScrollController scrollController = ScrollController();
+  bool loadingMorePosts = false, loadingMoreSuggested = false;
+
+  ScrollController scrollControllerPosts = ScrollController(
+    initialScrollOffset: 0.0,
+    keepScrollOffset: true,
+  );
+  ScrollController scrollControllerSuggested = ScrollController(
+    initialScrollOffset: 0.0,
+    keepScrollOffset: true,
+  );
 
   List<String> followingAccounts = [];
   List<String> hashTags = [];
 
-  bool get wantKeepAlive => true;
+  Future<QuerySnapshot<Object?>> loadMorePosts() async {
+    return await postRef.where('ownerId', whereIn: followingAccounts)
+        .orderBy('timestamp', descending: true).limit(pagePosts).get();
+  }
+
+  Future<QuerySnapshot<Object?>> loadMoreSuggested() async {
+    return await postRef.where('hashtags', arrayContainsAny: hashTags.take(hashTags.length > 10 ? 10 : hashTags.length))
+        .orderBy('timestamp', descending: true).limit(pageSuggested).get();
+  }
 
   @override
   void initState() {
     super.initState();
-    scrollController.addListener(() async {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
+    scrollControllerPosts.addListener(() async {
+      if (scrollControllerPosts.position.pixels ==
+          scrollControllerPosts.position.maxScrollExtent && loadingMorePosts == false) {
         setState(() {
-          page = page + 3;
+          loadingMorePosts = true;
+          pagePosts += 3;
+        });
+
+        await loadMorePosts();
+
+        setState(() {
+          loadingMorePosts = false;
+        });
+      }
+    });
+    scrollControllerSuggested.addListener(() async {
+      if (scrollControllerSuggested.position.pixels ==
+          scrollControllerSuggested.position.maxScrollExtent && loadingMoreSuggested == false) {
+        setState(() {
+          loadingMoreSuggested = true;
+          pageSuggested += 3;
+        });
+
+        await loadMoreSuggested();
+
+        setState(() {
+          loadingMoreSuggested = false;
         });
       }
     });
@@ -84,6 +124,7 @@ class _FeedsPageState extends State<FeedsPage>{
 
   @override
   void dispose() {
+    scrollControllerPosts.dispose();
     nativeAd?.dispose();
     super.dispose();
   }
@@ -382,10 +423,9 @@ class _FeedsPageState extends State<FeedsPage>{
                   ),
                   const SizedBox(height: 12.0),
                   GestureDetector(
-                    /*onTap: () async {
-                        // Navigator.pop(context);
-                        await viewModel.pickImage(context: context);
-                      },*/
+                    onTap: () async {
+                      //
+                      },
                     child: Container(
                         height: 30.0,
                         padding: const EdgeInsets.only(
@@ -496,10 +536,9 @@ class _FeedsPageState extends State<FeedsPage>{
       extendBody: false,
       body: RefreshIndicator(
         color: Colors.purple,
-        onRefresh: () => postRef.orderBy('timestamp', descending: true).limit(page).get(),
+        onRefresh: () => postRef.orderBy('timestamp', descending: true).limit(pagePosts).get(),
         displacement: 50,
         child: ListView(
-          physics: const AlwaysScrollableScrollPhysics(),
           children: [
             const SizedBox(
               height: 135,
@@ -537,30 +576,27 @@ class _FeedsPageState extends State<FeedsPage>{
             ),
             // TODO: Populate reels and threads too.
             followingAccounts.isNotEmpty ? FutureBuilder(
-              future: postRef.where('ownerId', whereIn: followingAccounts).orderBy('timestamp', descending: true).limit(page).get(),
+              future: loadMorePosts(),
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
 
                   return postShimmer();
-                }
+                } else {
+                  if (snapshot.hasData) {
+                    if(snapshot.data!.docs.isNotEmpty) {
+                      List docs = snapshot.data!.docs;
 
-                if (snapshot.hasData) {
-                  var snap = snapshot.data;
-                  List docs = snap!.docs;
-
-                  return ListView.builder(
-                    controller: scrollController,
-                    itemCount: docs.length,
-                    shrinkWrap: true,
-                    primary: false,
-                    itemBuilder: (context, index) {
-                      if(loadingMorePosts == false && docs.length == index + 1) {
+                      return PostsListView(scrollController: scrollControllerPosts, docs: docs);
+                    } else {
 
                         return const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10.0),
+                          padding: EdgeInsets.only(
+                            top: 10.0,
+                            bottom: 20.0,
+                          ),
                           child: Center(
                             child: Text(
-                              'You have all caught up.',
+                              'No posts to show.',
                               style: TextStyle(
                                 color: Colors.blue,
                                 fontSize: 20.0,
@@ -569,27 +605,21 @@ class _FeedsPageState extends State<FeedsPage>{
                             ),
                           ),
                         );
-                      } else {
-                        PostModel posts = PostModel.fromJson(docs[index].data());
+                    }
+                  } else {
 
-                        if(docs.length == index + 1) {
-                          loadingMorePosts = false;
-                        }
-
-                        return UserPost(post: posts, index: index);
-                      }
-                    },
-                  );
-                }  else {
-
-                  return postShimmer();
+                    return postShimmer();
+                  }
                 }
               },
             ) : const Padding(
-              padding: EdgeInsets.symmetric(vertical: 10.0),
+              padding: EdgeInsets.only(
+                top: 10.0,
+                bottom: 20.0,
+              ),
               child: Center(
                 child: Text(
-                  'No posts to show.',
+                  'Follow some accounts to see their posts.',
                   style: TextStyle(
                     color: Colors.blue,
                     fontSize: 20.0,
@@ -598,78 +628,78 @@ class _FeedsPageState extends State<FeedsPage>{
                 ),
               ),
             ),
-            if (loadingMorePosts == true && page > 3)
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 10.0),
-                child: Center(
-                  child: CircularProgressIndicator(
+            loadingMorePosts == true ? Padding(
+              padding: const EdgeInsets.only(
+                top: 10.0,
+                bottom: 20.0,
+              ),
+              child: Center(
+                  child: circularProgress(context, Colors.blue)
+              ),
+            ) : const SizedBox(),
+            /*const Padding(
+              padding: EdgeInsets.only(
+                top: 10.0,
+                bottom: 20.0,
+              ),
+              child: Center(
+                child: Text(
+                  'You have all caught up.',
+                  style: TextStyle(
                     color: Colors.blue,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
-            hashTags.isNotEmpty ? FutureBuilder(
-              future: postRef.where('hashtags', arrayContains: hashTags.take(hashTags.length > 10 ? 10 : hashTags.length))
-                  .orderBy('timestamp', descending: true).limit(page).get(),
+            ),*/
+            hashTags.isNotEmpty && loadingMorePosts == false ? FutureBuilder(
+              future: loadMoreSuggested(),
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
 
                   return postShimmer();
-                }
+                } else {
+                  if (snapshot.hasData) {
+                    if(snapshot.data!.docs.isNotEmpty) {
+                      List docs = snapshot.data!.docs;
 
-                if (snapshot.hasData) {
-                  var snap = snapshot.data;
-                  List docs = snap!.docs;
+                      return SuggestedListView(scrollController: scrollControllerSuggested, docs: docs);
+                    } else {
 
-                  return ListView.builder(
-                    controller: scrollController,
-                    itemCount: docs.length,
-                    shrinkWrap: true,
-                    primary: false,
-                    itemBuilder: (context, index) {
-                      if(index == 0) {
-
-                        return  const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child:  Text(
-                            'Suggested Posts',
+                      return const Padding(
+                        padding: EdgeInsets.only(
+                          top: 10.0,
+                          bottom: 20.0,
+                        ),
+                        child: Center(
+                          child: Text(
+                            'No more posts to show.',
                             style: TextStyle(
                               color: Colors.blue,
-                              fontSize: 25.0,
+                              fontSize: 20.0,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                        );
-                      } else {
-                        PostModel posts = PostModel.fromJson(docs[index - 1].data());
+                        ),
+                      );
+                    }
+                  } else {
 
-                        if(docs.length == index + 1) {
-                          loadingMoreTrends = false;
-                        }
-
-                        return UserPost(post: posts, index: index);
-                      }
-                    },
-                  );
-                }  else {
-
-                  return postShimmer();
+                    return postShimmer();
+                  }
                 }
               },
             ) : const SizedBox(),
-            if (loadingMoreTrends == false && page > 3)
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 10.0),
-                child: Center(
-                  child: Text(
-                    'No more posts to show.',
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
+            loadingMoreSuggested == true && pageSuggested > 3 ? Padding(
+              padding: const EdgeInsets.only(
+                top: 10.0,
+                bottom: 20.0,
               ),
+              child: Center(
+                  child: circularProgress(context, Colors.blue)
+              ),
+            ) : const SizedBox()
           ],
         ),
       ),
@@ -682,7 +712,6 @@ class _FeedsPageState extends State<FeedsPage>{
       baseColor: Colors.grey[300]!,
       highlightColor: Colors.grey[100]!,
       child: ListView.builder(
-        controller: scrollController,
         itemCount: 3,
         shrinkWrap: true,
         primary: false,
@@ -705,6 +734,82 @@ class _FeedsPageState extends State<FeedsPage>{
           );
         },
       ),
+    );
+  }
+}
+
+class PostsListView extends StatefulWidget {
+  final ScrollController scrollController;
+
+  final List docs;
+
+  const PostsListView({Key? key, required this.scrollController, required this.docs}) : super(key: key);
+
+  @override
+  State<PostsListView> createState() => _PostsListViewState();
+}
+
+class _PostsListViewState extends State<PostsListView> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return ListView.builder(
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: widget.docs.length,
+      shrinkWrap: true,
+      itemBuilder: (context, index) {
+        PostModel posts = PostModel.fromJson(widget.docs[index].data());
+
+        return UserPost(post: posts, index: index);
+      },
+    );
+  }
+}
+
+class SuggestedListView extends StatefulWidget {
+  final ScrollController scrollController;
+
+  final List docs;
+
+  const SuggestedListView({Key? key, required this.scrollController, required this.docs}) : super(key: key);
+
+  @override
+  State<SuggestedListView> createState() => _SuggestedListViewState();
+}
+
+class _SuggestedListViewState extends State<SuggestedListView> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return ListView.builder(
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: widget.docs.length,
+      shrinkWrap: true,
+      itemBuilder: (context, index) {
+        PostModel posts = PostModel.fromJson(widget.docs[index].data());
+
+        return UserPost(post: posts, index: index);
+      },
     );
   }
 }
