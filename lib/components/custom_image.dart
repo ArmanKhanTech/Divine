@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 
-class CustomImage extends StatelessWidget{
+class CustomImage extends StatelessWidget {
   final String? imageUrl;
 
   final double height;
@@ -22,9 +22,7 @@ class CustomImage extends StatelessWidget{
     return CachedNetworkImage(
       imageUrl: imageUrl ?? '',
       errorWidget: (context, url, error) {
-            return const Icon(
-                CupertinoIcons.person_crop_circle_badge_xmark
-            );
+        return const Icon(CupertinoIcons.person_crop_circle_badge_xmark);
       },
       height: height,
       width: width,

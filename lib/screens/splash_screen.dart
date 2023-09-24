@@ -8,7 +8,7 @@ import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../auth/login_page.dart';
 import 'main_screen.dart';
 
-class SplashScreen extends StatefulWidget{
+class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
   @override

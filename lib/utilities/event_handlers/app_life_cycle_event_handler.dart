@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AppLifeCycleEventHandler extends WidgetsBindingObserver {
-  AppLifeCycleEventHandler(
-      {required this.resumeCallBack, required this.detachedCallBack});
+  AppLifeCycleEventHandler({
+    required this.resumeCallBack,
+    required this.detachedCallBack
+  });
 
   final Function resumeCallBack;
   final Function detachedCallBack;
@@ -17,6 +19,8 @@ class AppLifeCycleEventHandler extends WidgetsBindingObserver {
         break;
       case AppLifecycleState.resumed:
         await resumeCallBack();
+        break;
+      case AppLifecycleState.hidden:
         break;
     }
   }

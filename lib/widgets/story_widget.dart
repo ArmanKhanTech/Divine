@@ -11,7 +11,7 @@ import '../stories/screens/story_screen.dart';
 import '../stories/stories_editor/stories_editor.dart';
 import '../utilities/firebase.dart';
 
-class StoryWidget extends StatefulWidget{
+class StoryWidget extends StatefulWidget {
   const StoryWidget({Key? key}) : super(key: key);
 
   @override
@@ -29,14 +29,13 @@ class _StoryWidgetState extends State<StoryWidget> {
   // TODO: Sort stories by time i.e viewed stories at last, tags in stories, location in stories, tagged stories within stories, post & threads within stories.
   @override
   Widget build(BuildContext context) {
-
     return StreamBuilder<QuerySnapshot>(
       stream: viewerListStream(auth.currentUser!.uid),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List storyList = snapshot.data!.docs;
-          if (storyList.isNotEmpty) {
 
+          if (storyList.isNotEmpty) {
             return ListView.builder(
               padding: const EdgeInsets.only(top: 4),
               itemCount: storyList.length + 1,
@@ -44,14 +43,12 @@ class _StoryWidgetState extends State<StoryWidget> {
               physics: const AlwaysScrollableScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-
                   return storyShimmer();
                 }
 
                 if(index == 0){
-
                   return buildOwnStoryAvatar();
-                } else{
+                } else {
                   DocumentSnapshot storyListSnapshot = storyList[index - 1];
 
                   return StreamBuilder<QuerySnapshot>(
@@ -59,11 +56,16 @@ class _StoryWidgetState extends State<StoryWidget> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         List stories = snapshot.data!.docs;
+
                         StoryModel story = StoryModel.fromJson(stories.first.data());
+
                         List users = storyListSnapshot.get('whoCanSee');
+
                         String uploadUserId = storyListSnapshot.get('userId') ?? '';
+
                         if(users.contains(auth.currentUser!.uid) && uploadUserId != auth.currentUser!.uid){
                           users.remove(auth.currentUser!.uid);
+
                           storyCounter++;
 
                           return buildStatusAvatar(
@@ -73,14 +75,12 @@ class _StoryWidgetState extends State<StoryWidget> {
                             index,
                           );
                         }
-                        if(storyCounter == 0){
-
+                        if(storyCounter == 0) {
                           return const SizedBox();
                         }
 
                         return const SizedBox();
                       } else {
-
                         return const SizedBox();
                       }
                     },
@@ -89,11 +89,9 @@ class _StoryWidgetState extends State<StoryWidget> {
               },
             );
           } else {
-
             return const SizedBox();
           }
         } else {
-
           return const SizedBox();
         }
       },
@@ -112,10 +110,10 @@ class _StoryWidgetState extends State<StoryWidget> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           DocumentSnapshot documentSnapshot = snapshot.data as DocumentSnapshot<Object?>;
+
           UserModel user = UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-
             return storyShimmer();
           }
 
@@ -126,11 +124,12 @@ class _StoryWidgetState extends State<StoryWidget> {
               builder: (context, snapshot){
                 if(snapshot.hasData){
                   List stories = snapshot.data!.docs;
+
                   StoryModel stats = StoryModel.fromJson(stories.toList()[stories.length - 1].data());
+
                   List<dynamic>? allViewers = stats.viewers;
 
                   if (snapshot.connectionState == ConnectionState.waiting) {
-
                     return storyShimmer();
                   }
 
@@ -198,7 +197,6 @@ class _StoryWidgetState extends State<StoryWidget> {
                                 ),
                               ),
                               progressIndicatorBuilder: (context, url, downloadProgress) {
-
                                 return Shimmer.fromColors(
                                   baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
                                   highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
@@ -242,15 +240,13 @@ class _StoryWidgetState extends State<StoryWidget> {
                       )
                     ],
                   );
-                } else{
-
+                } else {
                   return storyShimmer();
                 }
               },
             )
           );
         } else {
-
           return storyShimmer();
           }
       },
@@ -258,7 +254,6 @@ class _StoryWidgetState extends State<StoryWidget> {
   }
 
   buildOwnStoryAvatar() {
-
     return Padding(
       padding: const EdgeInsets.only(
         left: 18.0,
@@ -272,7 +267,6 @@ class _StoryWidgetState extends State<StoryWidget> {
               UserModel profileImage = UserModel.fromJson(snapshot.data!.data() as Map<String, dynamic>);
 
               if (snapshot.connectionState == ConnectionState.waiting) {
-
                 return storyShimmer(
                   padding: const EdgeInsets.all(0),
                 );
@@ -317,7 +311,6 @@ class _StoryWidgetState extends State<StoryWidget> {
                             ),
                           ),
                           progressIndicatorBuilder: (context, url, downloadProgress) {
-
                             return Shimmer.fromColors(
                               baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
                               highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
@@ -332,7 +325,6 @@ class _StoryWidgetState extends State<StoryWidget> {
                             );
                           },
                           errorWidget: (context, url, error) {
-
                             return CircleAvatar(
                               radius: 50.0,
                               backgroundColor: Theme.of(context).colorScheme.secondary,
@@ -395,7 +387,6 @@ class _StoryWidgetState extends State<StoryWidget> {
                 ],
               );
             } else{
-
               return storyShimmer(
                 padding: const EdgeInsets.all(0),
               );
@@ -406,7 +397,6 @@ class _StoryWidgetState extends State<StoryWidget> {
   }
 
   Widget storyShimmer({EdgeInsetsGeometry? padding}) {
-
       return Column(
         children: [
           Padding(
@@ -443,12 +433,10 @@ class _StoryWidgetState extends State<StoryWidget> {
   }
 
   Stream<QuerySnapshot> viewerListStream(String uid) {
-
     return storyRef.where('whoCanSee', arrayContains: uid).snapshots();
   }
 
   Stream<QuerySnapshot> storyListStream(String documentId) {
-
     return storyRef.doc(documentId).collection('stories').snapshots();
   }
 }

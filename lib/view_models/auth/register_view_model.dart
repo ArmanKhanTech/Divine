@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
@@ -25,24 +24,30 @@ class RegisterViewModel extends ChangeNotifier {
 
   register(BuildContext context) async {
     FormState form = registerFormKey.currentState!;
+
     form.save();
+
     if (!form.validate()) {
       validate = true;
+
       notifyListeners();
       showSnackBar('Kindly fix all the errors before proceeding.', context);
-    } else if (await auth.checkUsernameExists(username!)) {
+    } else if (await auth.checkUsernameExists(username!)){
       showSnackBar('Username already exists.', context);
-    } else {
+    } else{
       if (password == cPassword) {
         loading = true;
+
         notifyListeners();
-        try {
+
+        try{
           bool success = await auth.createUser(
             username: username,
             email: email,
             password: password,
             country: country,
           );
+
           if (success) {
             Navigator.of(context).pushReplacement(
               CupertinoPageRoute(
@@ -52,10 +57,12 @@ class RegisterViewModel extends ChangeNotifier {
           }
         } catch (e) {
           loading = false;
+
           notifyListeners();
           showSnackBar(auth.handleFirebaseAuthError(e.toString()), context);
         }
         loading = false;
+
         notifyListeners();
       } else {
         showSnackBar('The passwords do not match.', context);

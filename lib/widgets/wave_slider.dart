@@ -52,6 +52,7 @@ class WaveSliderState extends State<WaveSlider> {
     barEndPosition = widthSlider - selectBarWidth;
 
     Random r = Random();
+
     for (var i = 0; i < (widthSlider / barWidth); i++) {
       int number = 1 + r.nextInt(heightSlider.toInt() - 1);
       bars.add(r.nextInt(number));
@@ -59,22 +60,18 @@ class WaveSliderState extends State<WaveSlider> {
   }
 
   double _getBarStartPosition() {
-
     return ((barEndPosition) < barStartPosition) ? barEndPosition : barStartPosition;
   }
 
   double _getBarEndPosition() {
-
     return ((barStartPosition + selectBarWidth) > barEndPosition) ? (barStartPosition + selectBarWidth) : barEndPosition;
   }
 
   int _getStartTime() {
-
     return _getBarStartPosition() ~/ (widthSlider / widget.duration);
   }
 
   int _getEndTime() {
-
     return ((_getBarEndPosition() + selectBarWidth) / (widthSlider / widget.duration)).ceilToDouble().toInt();
   }
 
@@ -82,9 +79,11 @@ class WaveSliderState extends State<WaveSlider> {
     Duration duration = Duration(seconds: second);
 
     List<int> durations = [];
+
     if (duration.inHours > 0) {
       durations.add(duration.inHours);
     }
+
     durations.add(duration.inMinutes);
     durations.add(duration.inSeconds);
 
@@ -126,7 +125,7 @@ class WaveSliderState extends State<WaveSlider> {
                           ? widget.wavActiveColor
                           : widget.wavDeactiveColor;
                       if(i++ == bars.length - 1) {
-
+                        ///
                       }
 
                       return Container(
@@ -143,6 +142,7 @@ class WaveSliderState extends State<WaveSlider> {
                     side: 'left',
                     callback: (DragUpdateDetails details) {
                       var tmp = barStartPosition + details.delta.dx;
+
                       if ((barEndPosition - selectBarWidth) > tmp && (tmp >= 0)) {
                         setState(() {
                           barStartPosition += details.delta.dx;
@@ -159,6 +159,7 @@ class WaveSliderState extends State<WaveSlider> {
                     callback: (details) {
                       var tmp1 = barStartPosition + details.delta.dx;
                       var tmp2 = barEndPosition + details.delta.dx;
+
                       if ((tmp1 > 0) && ((tmp2 + selectBarWidth) < widthSlider)) {
                         setState(() {
                           barStartPosition += details.delta.dx;
@@ -178,6 +179,7 @@ class WaveSliderState extends State<WaveSlider> {
                     side: 'right',
                     callback: (DragUpdateDetails details) {
                       var tmp = barEndPosition + details.delta.dx;
+
                       if ((barStartPosition + selectBarWidth) < tmp && (tmp + selectBarWidth) <= widthSlider) {
                         setState(() {
                           barEndPosition += details.delta.dx;
@@ -204,12 +206,16 @@ class CenterBar extends StatelessWidget {
   final GestureDragUpdateCallback callback;
   final GestureDragEndCallback? callbackEnd;
 
-  const CenterBar({Key? key, required this.position, required this.width, required this.callback, required this.callbackEnd})
-      : super(key: key);
+  const CenterBar({
+    Key? key,
+    required this.position,
+    required this.width,
+    required this.callback,
+    required this.callbackEnd
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     return Padding(
       padding: EdgeInsets.only(left: position >= 0.0 ? position : 0.0),
       child: GestureDetector(
@@ -251,13 +257,18 @@ class Bar extends StatelessWidget {
   final GestureDragUpdateCallback callback;
   final GestureDragEndCallback? callbackEnd;
 
-  const Bar(
-      {Key? key, required this.side, required this.position, required this.width, required this.callback, required this.callbackEnd, this.colorBG})
-      : super(key: key);
+  const Bar({
+    Key? key,
+    required this.side,
+    required this.position,
+    required this.width,
+    required this.callback,
+    required this.callbackEnd,
+    this.colorBG
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     return Padding(
       padding: EdgeInsets.only(left: position >= 0.0 ? position : 0.0),
       child: GestureDetector(

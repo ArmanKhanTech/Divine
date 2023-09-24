@@ -4,7 +4,7 @@ import 'package:photo_manager/photo_manager.dart';
 import '../../../core/decode_image.dart';
 import '../../pages/gallery_media_picker_controller.dart';
 
-class ThumbnailWidget extends StatefulWidget{
+class ThumbnailWidget extends StatefulWidget {
   final AssetEntity asset;
 
   final int index;

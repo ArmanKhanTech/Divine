@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 Widget cachedImage(String imgUrl) {
-
   return CachedNetworkImage(
     imageUrl: imgUrl,
     fit: BoxFit.cover,
     placeholder: (context, url) {
-
       return Shimmer.fromColors(
         baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
         highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,

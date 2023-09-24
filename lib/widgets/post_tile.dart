@@ -16,7 +16,6 @@ class PostTile extends StatefulWidget {
 class _PostTileState extends State<PostTile> {
   @override
   Widget build(BuildContext context) {
-
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(CupertinoPageRoute(

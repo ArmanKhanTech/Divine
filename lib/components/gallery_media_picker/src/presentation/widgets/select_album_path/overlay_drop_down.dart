@@ -35,10 +35,9 @@ class OverlayDropDown<T> extends StatelessWidget {
         child: Builder(
           builder: (ctx) => GestureDetector(
             onTap: () => close,
-
             child: AnimatedBuilder(
               animation: animationController,
-              builder: (BuildContext context, child) {
+              builder: (BuildContext context, child){
                 return Stack(
                   children: [
                     GestureDetector(

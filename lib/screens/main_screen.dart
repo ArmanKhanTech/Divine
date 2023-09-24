@@ -9,14 +9,14 @@ import '../pages/reels_page.dart';
 import '../pages/search_page.dart';
 import '../utilities/firebase.dart';
 
-class MainScreen extends StatefulWidget{
+class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen>{
+class _MainScreenState extends State<MainScreen> {
   late List<Widget> pages;
 
   late PageController pageController;
