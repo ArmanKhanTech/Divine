@@ -3,9 +3,13 @@ import 'dropdown.dart';
 
 class OverlayDropDown<T> extends StatelessWidget {
   final double height;
+
   final Function(T? value) close;
+
   final AnimationController animationController;
+
   final DropdownWidgetBuilder<T> builder;
+
   const OverlayDropDown({
     Key? key,
     required this.height,
@@ -17,6 +21,7 @@ class OverlayDropDown<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+
     final double screenHeight = size.height;
     final double screenWidth = size.width;
     final double space = screenHeight - height;
@@ -34,7 +39,6 @@ class OverlayDropDown<T> extends StatelessWidget {
             child: AnimatedBuilder(
               animation: animationController,
               builder: (BuildContext context, child) {
-
                 return Stack(
                   children: [
                     GestureDetector(

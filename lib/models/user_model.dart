@@ -21,23 +21,24 @@ class UserModel{
   bool? isOnline;
   bool? isVerified;
 
-  UserModel(
-      {this.username,
-        this.email,
-        this.id,
-        this.photoUrl,
-        this.signedUpAt,
-        this.isOnline,
-        this.lastSeen,
-        this.bio,
-        this.country,
-        this.link,
-        this.type,
-        this.profession,
-        this.name,
-        this.isVerified,
-        this.gender,
-        this.userHashtags,});
+  UserModel({
+    this.username,
+    this.email,
+    this.id,
+    this.photoUrl,
+    this.signedUpAt,
+    this.isOnline,
+    this.lastSeen,
+    this.bio,
+    this.country,
+    this.link,
+    this.type,
+    this.profession,
+    this.name,
+    this.isVerified,
+    this.gender,
+    this.userHashtags
+  });
 
   UserModel.fromJson(Map<String, dynamic> json) {
     username = json['username'];

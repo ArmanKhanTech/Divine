@@ -6,14 +6,17 @@ import '../../pages/gallery_media_picker_controller.dart';
 
 class CoverThumbnail extends StatefulWidget {
   final int thumbnailQuality;
+
   final double thumbnailScale;
+
   final BoxFit thumbnailFit;
-  const CoverThumbnail(
-      {Key? key,
-      this.thumbnailQuality = 200,
-      this.thumbnailScale = 1.0,
-      this.thumbnailFit = BoxFit.fitWidth
-      }) : super(key: key);
+
+  const CoverThumbnail({
+    Key? key,
+    this.thumbnailQuality = 200,
+    this.thumbnailScale = 1.0,
+    this.thumbnailFit = BoxFit.fitWidth
+  }) : super(key: key);
 
   @override
   State<CoverThumbnail> createState() => _CoverThumbnailState();
@@ -35,13 +38,13 @@ class _CoverThumbnailState extends State<CoverThumbnail> {
       provider.picked.clear();
       provider.pathList.clear();
       PhotoManager.stopChangeNotify();
-      super.dispose();
     }
+
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return provider.pathList.isNotEmpty ? Image(
       image: DecodeImage(
           provider.pathList[0],

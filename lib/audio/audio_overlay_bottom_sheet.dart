@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../widgets/wave_slider.dart';
 
-
 // TODO: Continue here
 class AudioOverlayBottomSheet extends StatefulWidget {
   final Function onDone;
@@ -191,7 +190,6 @@ class _AudioOverlayBottomSheetState extends State<AudioOverlayBottomSheet> {
                                         ),
                                       )
                                     ]
-
                                 )
                             ),
                           ),
@@ -260,7 +258,6 @@ class _AudioOverlayBottomSheetState extends State<AudioOverlayBottomSheet> {
                                                       });
                                                     });
                                                   });
-
                                                 },
                                                 child: Container(
                                                   decoration: const BoxDecoration(

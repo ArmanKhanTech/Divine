@@ -9,7 +9,8 @@ class CustomCard extends StatelessWidget {
 
   final Function()? onTap;
 
-  const CustomCard({super.key,
+  const CustomCard({
+    super.key,
     required this.child,
     this.borderRadius,
     this.elevated = true,
@@ -18,7 +19,6 @@ class CustomCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       decoration: BoxDecoration(
           borderRadius: borderRadius,

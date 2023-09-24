@@ -30,9 +30,10 @@ class _GalleryMediaPickerState extends State<GalleryMediaPicker> {
 
   @override
   void initState() {
-    _getPermission();
-    provider.paramsModel = widget.mediaPickerParams;
     super.initState();
+    _getPermission();
+
+    provider.paramsModel = widget.mediaPickerParams;
   }
 
   _getPermission() {
@@ -46,6 +47,7 @@ class _GalleryMediaPickerState extends State<GalleryMediaPicker> {
       PhotoManager.stopChangeNotify();
       provider.dispose();
     }
+
     super.dispose();
   }
 
@@ -123,7 +125,8 @@ class _GalleryMediaPickerState extends State<GalleryMediaPicker> {
                 )
               )
             ],
-          )),
+          )
+      ),
     );
   }
 }

@@ -31,7 +31,6 @@ class _LoginPageState extends State<LoginPage> {
     LoginViewModel viewModel = Provider.of<LoginViewModel>(context);
 
     buildForm(BuildContext context, LoginViewModel viewModel) {
-
       return Form(
         key: viewModel.loginFormKey,
         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -113,7 +112,6 @@ class _LoginPageState extends State<LoginPage> {
 
     return FlutterWebFrame(
       builder: (context) {
-
         return LoadingOverlay(
           progressIndicator: circularProgress(context, const Color(0xFFFF9800)),
           opacity: 0.5,
@@ -201,8 +199,8 @@ class _LoginPageState extends State<LoginPage> {
           ),
         );
       },
-      maximumSize: const Size(540.0, 960.0),
       enabled: kIsWeb,
+      maximumSize: const Size(540.0, 960.0),
       backgroundColor: Theme.of(context).colorScheme.background,
     );
   }

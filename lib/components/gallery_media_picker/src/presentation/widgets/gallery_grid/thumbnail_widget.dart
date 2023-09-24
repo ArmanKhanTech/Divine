@@ -1,7 +1,5 @@
 import 'dart:typed_data';
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:image_pixels/image_pixels.dart';
 import 'package:photo_manager/photo_manager.dart';
 import '../../../core/decode_image.dart';
 import '../../pages/gallery_media_picker_controller.dart';
@@ -13,12 +11,12 @@ class ThumbnailWidget extends StatefulWidget{
 
   final GalleryMediaPickerController provider;
 
-  const ThumbnailWidget(
-      {Key? key,
-        required this.index,
-        required this.asset,
-        required this.provider
-      }) : super(key: key);
+  const ThumbnailWidget({
+    Key? key,
+    required this.index,
+    required this.asset,
+    required this.provider
+  }) : super(key: key);
 
   @override
   State<ThumbnailWidget> createState() => ThumbnailWidgetState();
@@ -37,7 +35,6 @@ class ThumbnailWidgetState extends State<ThumbnailWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -46,7 +43,6 @@ class ThumbnailWidgetState extends State<ThumbnailWidget> {
             future: widget.asset.thumbnailData,
             builder: (_, data) {
               if (data.hasData) {
-
                 return Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
@@ -73,7 +69,6 @@ class ThumbnailWidgetState extends State<ThumbnailWidget> {
                     )
                 );
               } else {
-
                 return Container(
                   color: Colors.black,
                 );
@@ -179,13 +174,10 @@ class ThumbnailWidgetState extends State<ThumbnailWidget> {
 
 parseDuration(int seconds) {
   if (seconds < 600) {
-
     return '${Duration(seconds: seconds)}'.toString().substring(3, 7);
   } else if (seconds > 600 && seconds < 3599) {
-
     return '${Duration(seconds: seconds)}'.toString().substring(2, 7);
   } else {
-
     return '${Duration(seconds: seconds)}'.toString().substring(1, 7);
   }
 }

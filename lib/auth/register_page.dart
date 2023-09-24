@@ -25,7 +25,6 @@ class _RegisterPageState extends State<RegisterPage>{
     RegisterViewModel viewModel = Provider.of<RegisterViewModel>(context);
 
     buildForm(RegisterViewModel viewModel, BuildContext context){
-
       return Form(
         key: viewModel.registerFormKey,
         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -149,81 +148,81 @@ class _RegisterPageState extends State<RegisterPage>{
 
     return FlutterWebFrame(
       builder: (context) {
-
         return LoadingOverlay(
-            isLoading: viewModel.loading,
-            progressIndicator: circularProgress(context, const Color(0XFF03A9F4)),
-            opacity: 0.5,
-            color: Theme.of(context).colorScheme.background,
-            child: Scaffold(
-                appBar: AppBar(
-                  automaticallyImplyLeading: false,
-                  leading: IconButton(
-                    icon: const Icon(CupertinoIcons.chevron_back),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    iconSize: 30.0,
-                    color: Theme.of(context).colorScheme.secondary,
-                    padding: const EdgeInsets.only(bottom: 2.0),
-                  ),
+          isLoading: viewModel.loading,
+          progressIndicator: circularProgress(context, const Color(0XFF03A9F4)),
+          opacity: 0.5,
+          color: Theme.of(context).colorScheme.background,
+          child: Scaffold(
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
+                leading: IconButton(
+                  icon: const Icon(CupertinoIcons.chevron_back),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  iconSize: 30.0,
+                  color: Theme.of(context).colorScheme.secondary,
+                  padding: const EdgeInsets.only(bottom: 2.0),
                 ),
-                extendBodyBehindAppBar: true,
-                backgroundColor: Theme.of(context).colorScheme.background,
-                key: viewModel.registerScaffoldKey,
-                body: ListView(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0),
-                  children: [
-                    SizedBox(height: MediaQuery.of(context).size.height / 10),
-                    Row(
-                      children: [
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        GradientText(
-                          'Welcome to Divine.\nCreate a new account & \nconnect with your friends.',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30.0,
-                          ), colors: const [
-                          Colors.blue,
-                          Colors.purple,
-                          Colors.pink,
-                        ],
-                        ),
+              ),
+              extendBodyBehindAppBar: true,
+              backgroundColor: Theme.of(context).colorScheme.background,
+              key: viewModel.registerScaffoldKey,
+              body: ListView(
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height / 10),
+                  Row(
+                    children: [
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      GradientText(
+                        'Welcome to Divine.\nCreate a new account & \nconnect with your friends.',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30.0,
+                        ), colors: const [
+                        Colors.blue,
+                        Colors.purple,
+                        Colors.pink,
                       ],
-                    ),
-                    const SizedBox(height: 20.0),
-                    buildForm(viewModel, context),
-                    const SizedBox(height: 10.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'Already have an account?',
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20.0),
+                  buildForm(viewModel, context),
+                  const SizedBox(height: 10.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Already have an account?',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => Navigator.of(context).pop(),
+                        child: const Text(
+                          ' Log In.',
                           style: TextStyle(
                             fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue,
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () => Navigator.of(context).pop(),
-                          child: const Text(
-                            ' Log In.',
-                            style: TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue,
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                )
-            ));
+                      ),
+                    ],
+                  )
+                ],
+              )
+          )
+        );
       },
-      maximumSize: const Size(540.0, 960.0),
       enabled: kIsWeb,
+      maximumSize: const Size(540.0, 960.0),
       backgroundColor: Theme.of(context).colorScheme.background,
     );
   }

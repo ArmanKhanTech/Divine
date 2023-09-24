@@ -36,7 +36,7 @@ class UserPost extends StatelessWidget {
     bool isMe = currentUserId() == post!.ownerId;
 
     return Visibility(
-      visible: true,
+      visible: !isMe,
       child: CustomCard(
         onTap: () {},
         child: OpenContainer(
@@ -461,7 +461,7 @@ class UserPost extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       user.photoUrl!.isEmpty ? CircleAvatar(
-                        radius: 22.0,
+                        radius: 22.5,
                         backgroundColor:
                         Theme.of(context).colorScheme.secondary,
                         child: Center(

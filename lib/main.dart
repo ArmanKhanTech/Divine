@@ -18,11 +18,9 @@ import 'options_firebase.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
   await FirebaseAppCheck.instance.activate(
     androidProvider: AndroidProvider.playIntegrity,
   );
@@ -30,8 +28,8 @@ void main() async {
   if(!kIsWeb){
     await MobileAds.instance.initialize();
   }
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(const MyApp());
 }
 
@@ -61,7 +59,6 @@ class _MyAppState extends State<MyApp> {
       providers: providers,
       child: Consumer<ThemeProvider>(
         builder: (context, ThemeProvider notifier, Widget? child) {
-
           return MaterialApp(
             title: Constants.appName,
             debugShowCheckedModeBanner: false,
@@ -72,7 +69,6 @@ class _MyAppState extends State<MyApp> {
             home: const SplashScreen(),
             scrollBehavior: NoThumbScrollBehavior().copyWith(scrollbars: false),
             builder: (context, child) {
-
               return MediaQuery(
                 data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
                 child: child!,
@@ -85,7 +81,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   ThemeData themeData(ThemeData theme) {
-
     return theme.copyWith(
       textTheme: GoogleFonts.ubuntuTextTheme(
         theme.textTheme,

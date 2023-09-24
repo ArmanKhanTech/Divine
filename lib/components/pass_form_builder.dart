@@ -5,16 +5,27 @@ import 'package:ionicons/ionicons.dart';
 
 class PasswordFormBuilder extends StatefulWidget {
   final String? initialValue;
+
   final bool? enabled;
+
   final String? hintText;
+
   final TextInputType? textInputType;
+
   final TextEditingController? controller;
+
   final TextInputAction? textInputAction;
+
   final bool obscureText;
+
   final FocusNode? focusNode, nextFocusNode;
+
   final VoidCallback? submitAction;
+
   final FormFieldValidator<String>? validateFunction;
+
   final void Function(String)? onSaved, onChange;
+
   final String? whichPage;
 
   // ignore: overridden_fields
@@ -23,24 +34,25 @@ class PasswordFormBuilder extends StatefulWidget {
   final IconData? prefix;
   final IconData? suffix;
 
-  const PasswordFormBuilder(
-      {this.prefix,
-      this.suffix,
-      this.initialValue,
-      this.enabled,
-      this.hintText,
-      this.textInputType,
-      this.controller,
-      this.textInputAction,
-      this.nextFocusNode,
-      this.focusNode,
-      this.submitAction,
-      this.obscureText = false,
-      this.validateFunction,
-      this.onSaved,
-      this.onChange,
-        required this.whichPage,
-      this.key});
+  const PasswordFormBuilder({
+    this.prefix,
+    this.suffix,
+    this.initialValue,
+    this.enabled,
+    this.hintText,
+    this.textInputType,
+    this.controller,
+    this.textInputAction,
+    this.nextFocusNode,
+    this.focusNode,
+    this.submitAction,
+    this.obscureText = false,
+    this.validateFunction,
+    this.onSaved,
+    this.onChange,
+    required this.whichPage,
+    this.key
+  }) : super(key: key);
 
   @override
   State<PasswordFormBuilder> createState() => _PasswordFormBuilderState();
@@ -48,11 +60,11 @@ class PasswordFormBuilder extends StatefulWidget {
 
 class _PasswordFormBuilderState extends State<PasswordFormBuilder> {
   String? error;
+
   bool obscureText = false;
 
   @override
   Widget build(BuildContext context) {
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
@@ -145,7 +157,6 @@ class _PasswordFormBuilderState extends State<PasswordFormBuilder> {
   }
 
   border(BuildContext context) {
-
     return const OutlineInputBorder(
       borderRadius: BorderRadius.all(
         Radius.circular(20.0),
@@ -158,7 +169,6 @@ class _PasswordFormBuilderState extends State<PasswordFormBuilder> {
   }
 
   focusBorder(BuildContext context) {
-
     return OutlineInputBorder(
       borderRadius: const BorderRadius.all(
         Radius.circular(20.0),

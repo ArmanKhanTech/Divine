@@ -3,8 +3,10 @@ import 'package:flutter/cupertino.dart';
 
 class CustomImage extends StatelessWidget{
   final String? imageUrl;
+
   final double height;
   final double width;
+
   final BoxFit fit;
 
   const CustomImage({
@@ -17,7 +19,6 @@ class CustomImage extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-
     return CachedNetworkImage(
       imageUrl: imageUrl ?? '',
       errorWidget: (context, url, error) {

@@ -4,18 +4,30 @@ import 'custom_card.dart';
 
 class TextFormBuilder extends StatefulWidget {
   final String? initialValue;
+
   final bool? enabled;
+
   final String? hintText;
+
   final TextInputType? textInputType;
+
   final TextEditingController? controller;
+
   final TextInputAction? textInputAction;
+
   final bool capitalization;
   final bool obscureText;
+
   final FocusNode? focusNode, nextFocusNode;
+
   final VoidCallback? submitAction;
+
   final String? whichPage;
+
   final double? iconSize;
+
   final FormFieldValidator<String>? validateFunction;
+
   final void Function(String)? onSaved, onChange;
 
   // ignore: overridden_fields
@@ -24,24 +36,27 @@ class TextFormBuilder extends StatefulWidget {
   final IconData? prefix;
   final IconData? suffix;
 
-  const TextFormBuilder(
-      {this.prefix,
-      this.suffix,
-      this.initialValue,
-      this.enabled,
-      this.hintText,
-      this.textInputType,
-      this.controller,
-      this.textInputAction,
-      this.nextFocusNode,
-      this.focusNode,
-      this.submitAction,
-      this.obscureText = false,
-      this.validateFunction,
-      this.onSaved,
-      this.onChange,
-      required this.whichPage,
-      required this.capitalization, this.key, this.iconSize});
+  const TextFormBuilder({
+    this.prefix,
+    this.suffix,
+    this.initialValue,
+    this.enabled,
+    this.hintText,
+    this.textInputType,
+    this.controller,
+    this.textInputAction,
+    this.nextFocusNode,
+    this.focusNode,
+    this.submitAction,
+    this.obscureText = false,
+    this.validateFunction,
+    this.onSaved,
+    this.onChange,
+    required this.whichPage,
+    required this.capitalization,
+    this.key,
+    this.iconSize
+  }) : super(key: key);
 
   @override
   State<TextFormBuilder> createState() => _TextFormBuilderState();
@@ -52,7 +67,6 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
 
   @override
   Widget build(BuildContext context) {
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       child: Column(
@@ -149,7 +163,6 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
   }
 
   border(BuildContext context) {
-
     return const OutlineInputBorder(
       borderRadius: BorderRadius.all(
         Radius.circular(20.0),
@@ -162,7 +175,6 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
   }
 
   focusBorder(BuildContext context) {
-
     return OutlineInputBorder(
       borderRadius: const BorderRadius.all(
         Radius.circular(20.0),

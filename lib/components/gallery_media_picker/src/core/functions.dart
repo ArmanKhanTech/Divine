@@ -10,23 +10,30 @@ class GalleryFunctions {
   static FeatureController<T> showDropDown<T>({
     required BuildContext context,
     required DropdownWidgetBuilder<T> builder,
-    double? height,
-    Duration animationDuration = const Duration(milliseconds: 250),
     required TickerProvider tickerProvider,
+
+    double? height,
+
+    Duration animationDuration = const Duration(milliseconds: 250),
   }) {
     final animationController = AnimationController(
       vsync: tickerProvider,
       duration: animationDuration,
     );
+
     final completer = Completer<T?>();
+
     var isReply = false;
+
     OverlayEntry? entry;
+
     void close(T? value) async {
       if (isReply) {
-
         return;
       }
+
       isReply = true;
+
       animationController.animateTo(0).whenCompleteOrCancel(() async {
         await Future.delayed(const Duration(milliseconds: 16));
         completer.complete(value);
@@ -35,16 +42,18 @@ class GalleryFunctions {
     }
 
     entry = OverlayEntry(
-        builder: (context) => GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: () => close(null),
-              child: OverlayDropDown(
-                  height: height!,
-                  close: close,
-                  animationController: animationController,
-                  builder: builder),
-            ));
+      builder: (context) => GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => close(null),
+        child: OverlayDropDown(
+            height: height!,
+            close: close,
+            animationController: animationController,
+            builder: builder),
+      )
+    );
     Overlay.of(context).insert(entry);
+
     animationController.animateTo(1);
 
     return FeatureController(
@@ -61,6 +70,7 @@ class GalleryFunctions {
     var result = await PhotoManager.requestPermissionExtend(
         requestOption: const PermissionRequestOption(
             iosAccessLevel: IosAccessLevel.readWrite));
+
     if (result.isAuth) {
       provider.setAssetCount();
       PhotoManager.startChangeNotify();

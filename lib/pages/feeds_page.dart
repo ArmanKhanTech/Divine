@@ -12,7 +12,6 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../chats/screens/chat_screen.dart';
-import '../models/post_model.dart';
 import '../models/user_model.dart';
 import '../reels/screens/new_reels_screen.dart';
 import '../stories/screens/confirm_story.dart';
@@ -21,7 +20,6 @@ import '../utilities/constants.dart';
 import '../utilities/firebase.dart';
 import '../view_models/user/story_view_model.dart';
 import '../widgets/story_widget.dart';
-import '../widgets/user_post.dart';
 
 class FeedsPage extends StatefulWidget{
   const FeedsPage({super.key});
@@ -30,44 +28,104 @@ class FeedsPage extends StatefulWidget{
   State<FeedsPage> createState() => _FeedsPageState();
 }
 
-class _FeedsPageState extends State<FeedsPage>{
+class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixin<FeedsPage>{
+  @override
+  bool get wantKeepAlive => true;
+
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   NativeAd? nativeAd;
 
   final scrollKey = GlobalKey();
 
-  int pagePosts = 3, pageSuggested = 3;
+  List<DocumentSnapshot> posts = [];
+  List<DocumentSnapshot> suggested = [];
+
+  int pagePosts = 0, pageSuggested = 0;
 
   bool loadingMorePosts = false, loadingMoreSuggested = false;
+  bool loadedPosts = false, loadedSuggested = false;
 
-  ScrollController scrollControllerPosts = ScrollController(
-    initialScrollOffset: 0.0,
-    keepScrollOffset: true,
-  );
-  ScrollController scrollControllerSuggested = ScrollController(
-    initialScrollOffset: 0.0,
-    keepScrollOffset: true,
-  );
+  final ScrollController scrollController = ScrollController();
 
   List<String> followingAccounts = [];
   List<String> hashTags = [];
 
-  Future<QuerySnapshot<Object?>> loadMorePosts() async {
-    return await postRef.where('ownerId', whereIn: followingAccounts)
-        .orderBy('timestamp', descending: true).limit(pagePosts).get();
+  late QuerySnapshot querySnapshot;
+
+  Future<void> loadMorePosts() async {
+    setState(() {
+      loadingMorePosts = true;
+      pagePosts += 3;
+    });
+
+    if(posts.isNotEmpty) {
+      querySnapshot = await postRef.where('ownerId', whereIn: followingAccounts)
+          .orderBy('timestamp', descending: true)
+          .startAfterDocument(posts.last)
+          .limit(pagePosts).get();
+    } else {
+      querySnapshot = await postRef.where('ownerId', whereIn: followingAccounts)
+          .orderBy('timestamp', descending: true)
+          .limit(pagePosts).get();
+    }
+
+    setState(() {
+      if (querySnapshot.docs.length < pagePosts || querySnapshot.docs.isEmpty) {
+        loadedPosts = true;
+        loadMoreSuggested();
+      } else {
+        posts.addAll(querySnapshot.docs);
+      }
+      loadingMorePosts = false;
+    });
   }
 
-  Future<QuerySnapshot<Object?>> loadMoreSuggested() async {
-    return await postRef.where('hashtags', arrayContainsAny: hashTags.take(hashTags.length > 10 ? 10 : hashTags.length))
-        .orderBy('timestamp', descending: true).limit(pageSuggested).get();
+  Future<void> loadMoreSuggested() async {
+    setState(() {
+      loadingMoreSuggested = true;
+      pageSuggested += 3;
+    });
+
+    if(suggested.isNotEmpty) {
+      querySnapshot = await postRef.where('hashtags', arrayContainsAny: hashTags
+          .take(hashTags.length > 10 ? 10 : hashTags.length))
+          .orderBy('timestamp', descending: true)
+          .startAfterDocument(suggested.last)
+          .limit(pageSuggested).get();
+    } else {
+      querySnapshot = await postRef.where('hashtags', arrayContainsAny: hashTags
+          .take(hashTags.length > 10 ? 10 : hashTags.length))
+          .orderBy('timestamp', descending: true)
+          .limit(pageSuggested).get();
+    }
+
+    setState(() {
+      if (querySnapshot.docs.length < pageSuggested || querySnapshot.docs.isEmpty) {
+        loadedSuggested = true;
+      } else {
+        suggested.addAll(querySnapshot.docs);
+      }
+      loadingMoreSuggested = false;
+    });
   }
 
   @override
   void initState() {
     super.initState();
 
-    initPage();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels == scrollController.position.maxScrollExtent
+          && !loadingMorePosts && !loadingMoreSuggested && posts.isNotEmpty) {
+        if (!loadedPosts) {
+          loadMorePosts();
+        } else {
+          loadMoreSuggested();
+        }
+      }
+    });
+
+    initUserData();
 
     NativeAd(
       adUnitId: adHelper.nativeAdUnitId,
@@ -86,15 +144,15 @@ class _FeedsPageState extends State<FeedsPage>{
     ).load();
   }
 
-  initPage() async {
+  initUserData() async {
     await getHashTags();
     await getFollowingAccounts();
     setState(() {});
+    await loadMorePosts();
   }
 
   @override
   void dispose() {
-    scrollControllerPosts.dispose();
     nativeAd?.dispose();
     super.dispose();
   }
@@ -119,40 +177,13 @@ class _FeedsPageState extends State<FeedsPage>{
     }
   }
 
-  void onScrollEndPosts() async {
-    print('onScrollEndPosts');
-    setState(() {
-      loadingMorePosts = true;
-      pagePosts += 3;
-    });
-
-    await loadMorePosts();
-
-    setState(() {
-      loadingMorePosts = false;
-    });
-  }
-
-  void onScrollSuggested() async {
-    print('onScrollSuggested');
-    setState(() {
-      loadingMoreSuggested = true;
-      pageSuggested += 3;
-    });
-
-    await loadMoreSuggested();
-
-    setState(() {
-      loadingMoreSuggested = false;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     StoryViewModel viewModel = Provider.of<StoryViewModel>(context);
 
     chooseUpload(BuildContext context, StoryViewModel viewModel) {
-
       return showModalBottomSheet(
         context: context,
         shape: const RoundedRectangleBorder(
@@ -534,187 +565,195 @@ class _FeedsPageState extends State<FeedsPage>{
       extendBody: false,
       body: RefreshIndicator(
         color: Colors.purple,
-        onRefresh: () => postRef.orderBy('timestamp', descending: true).limit(pagePosts).get(),
+        onRefresh: () {
+          setState(() {
+            posts.clear();
+            suggested.clear();
+            pagePosts = 0;
+            pageSuggested = 0;
+            loadedPosts = false;
+            loadedSuggested = false;
+          });
+          initUserData();
+          return Future.delayed(const Duration(seconds: 2));
+        },
         displacement: 50,
         child: SingleChildScrollView(
-         child: Column(
-           children: [
-             const SizedBox(
-               height: 135,
-               child: Row(
-                 mainAxisAlignment: MainAxisAlignment.start,
-                 children: [
-                   Expanded(
-                       child: StoryWidget()
-                   ),
-                 ],
-               ),
-             ),
-             // TODO: Fix Native Ad & implement it for iOS.
-             /* if (nativeAd != null && Platform.isAndroid == true)
+          controller: scrollController,
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 135,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        child: StoryWidget()
+                    ),
+                  ],
+                ),
+              ),
+              // TODO: Fix Native Ad & implement it for iOS.
+              /* if (nativeAd != null && Platform.isAndroid == true)
                 SizedBox(
                   height: 100,
                   child: AdWidget(ad: nativeAd!),
                 ),*/
-             const SizedBox(height: 5.0),
-             SizedBox(
-               height: 1.0,
-               child: Container(
-                 decoration: const BoxDecoration(
-                   gradient: LinearGradient(
-                     begin: Alignment.centerLeft,
-                     end: Alignment.centerRight,
-                     colors: [
-                       Colors.purple,
-                       Colors.pink,
-                       Colors.blue,
-                     ],
-                   ),
-                 ),
-               ),
-             ),
-             // TODO: Populate reels and threads too.
-             followingAccounts.isNotEmpty ? Column(
-               children: [
-                 FutureBuilder(
-                   future: loadMorePosts(),
-                   builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                     if (snapshot.connectionState == ConnectionState.waiting) {
+              const SizedBox(height: 5.0),
+              SizedBox(
+                height: 1.0,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [
+                        Colors.purple,
+                        Colors.pink,
+                        Colors.blue,
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              postShimmer()
+              /*if (posts.isEmpty && suggested.isEmpty)
+                postShimmer(),
+              // TODO: Populate reels and threads too.
+              followingAccounts.isNotEmpty ? Column(
+                children: [
+                    ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: posts.isEmpty ? posts.length : posts.length + 1,
+                      shrinkWrap: true,
+                      primary: false,
+                      itemBuilder: (context, index) {
+                        if (index == posts.length && !loadedPosts) {
 
-                       return postShimmer();
-                     } else {
-                       if (snapshot.hasData) {
-                         if(snapshot.data!.docs.isNotEmpty) {
-                           List docs = snapshot.data!.docs;
+                          return Center(
+                            child: Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 10.0,
+                                  bottom: 20.0,
+                                ),
+                                child: circularProgress(context, Colors.blue)
+                            ),
+                          );
+                        } else {
+                          PostModel model = PostModel.fromJson(posts[index].data() as Map<String, dynamic>);
 
-                           return PostsListView(
-                             scrollController: scrollControllerPosts,
-                             onScrollEnd: onScrollEndPosts,
-                             docs: docs,
-                           );
-                         } else {
+                          return UserPost(post: model, index: index);
+                        }
+                      },
+                    )
+                  ],
+                ) : followingAccounts.isEmpty && loadedPosts ? const Padding(
+                padding: EdgeInsets.only(
+                  top: 10.0,
+                  bottom: 20.0,
+                ),
+                child: Center(
+                  child: Text(
+                    'Follow some accounts to see their posts.',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ) : const SizedBox(),
+              hashTags.isNotEmpty && loadedPosts ? Column(
+                children: [
+                  const Row(
+                    children: [
+                      Icon(
+                        CupertinoIcons.check_mark_circled_solid,
+                        color: Colors.blue,
+                        size: 30.0,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            bottom: 10.0,
+                            left: 10
+                        ),
+                        child: Text(
+                          'You have all caught up.',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(
+                        bottom: 10.0,
+                        left: 10
+                    ),
+                    child: Text(
+                      'Suggested Posts',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 25.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: suggested.isEmpty ? suggested.length : suggested.length + 1,
+                    shrinkWrap: true,
+                    primary: false,
+                    itemBuilder: (context, index) {
+                      if (index == suggested.length && !loadedSuggested) {
 
-                           return const Padding(
-                             padding: EdgeInsets.only(
-                               top: 10.0,
-                               bottom: 20.0,
-                             ),
-                             child: Center(
-                               child: Text(
-                                 'You have all caught up.',
-                                 style: TextStyle(
-                                   color: Colors.blue,
-                                   fontSize: 20.0,
-                                   fontWeight: FontWeight.w500,
-                                 ),
-                               ),
-                             ),
-                           );
-                         }
-                       } else {
+                        return Center(
+                          child: Padding(
+                              padding: const EdgeInsets.only(
+                                top: 10.0,
+                                bottom: 20.0,
+                              ),
+                              child: circularProgress(context, Colors.blue)
+                          ),
+                        );
+                      }
+                      PostModel model = PostModel.fromJson(suggested[index--].data() as Map<String, dynamic>);
 
-                         return postShimmer();
-                       }
-                     }
-                   },
-                 )
-               ],
-             ) : const Padding(
-               padding: EdgeInsets.only(
-                 top: 10.0,
-                 bottom: 20.0,
-               ),
-               child: Center(
-                 child: Text(
-                   'Follow some accounts to see their posts.',
-                   style: TextStyle(
-                     color: Colors.blue,
-                     fontSize: 20.0,
-                     fontWeight: FontWeight.w500,
-                   ),
-                 ),
-               ),
-             ),
-             loadingMorePosts == true ? Padding(
-               padding: const EdgeInsets.only(
-                 top: 10.0,
-                 bottom: 20.0,
-               ),
-               child: Center(
-                   child: circularProgress(context, Colors.blue)
-               ),
-             ) : const SizedBox(),
-             hashTags.isNotEmpty ? Column(
-               children: [
-                 const Padding(
-                   padding: EdgeInsets.only(
-                       bottom: 10.0,
-                       left: 10
-                   ),
-                   child: Text(
-                     'Suggested Posts',
-                     style: TextStyle(
-                       color: Colors.blue,
-                       fontSize: 22.0,
-                       fontWeight: FontWeight.w500,
-                     ),
-                   ),
-                 ),
-                 FutureBuilder(
-                   future: loadMoreSuggested(),
-                   builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                     if (snapshot.connectionState == ConnectionState.waiting) {
-
-                       return postShimmer();
-                     } else {
-                       if (snapshot.hasData) {
-                         if(snapshot.data!.docs.isNotEmpty) {
-                           List docs = snapshot.data!.docs;
-
-                           return SuggestedListView(
-                             scrollController: scrollControllerSuggested,
-                             onScrollEnd: onScrollSuggested,
-                             docs: docs,
-                           );
-                         } else {
-
-                           return const Padding(
-                             padding: EdgeInsets.only(
-                               top: 10.0,
-                               bottom: 20.0,
-                             ),
-                             child: Center(
-                               child: Text(
-                                 'No more posts to show.',
-                                 style: TextStyle(
-                                   color: Colors.blue,
-                                   fontSize: 20.0,
-                                   fontWeight: FontWeight.w500,
-                                 ),
-                               ),
-                             ),
-                           );
-                         }
-                       } else {
-
-                         return postShimmer();
-                       }
-                     }
-                   },
-                 )
-               ],
-             ) : const SizedBox(),
-             loadingMoreSuggested == true && pageSuggested > 3 ? Padding(
-               padding: const EdgeInsets.only(
-                 top: 10.0,
-                 bottom: 20.0,
-               ),
-               child: Center(
-                   child: circularProgress(context, Colors.blue)
-               ),
-             ) : const SizedBox()
-           ],
-         ),
+                      return UserPost(post: model, index: index--);
+                    },
+                  )
+                ],
+              ) : loadedSuggested ? const Padding(
+                padding: EdgeInsets.only(
+                  top: 10.0,
+                  bottom: 20.0,
+                ),
+                child: Center(
+                  child: Text(
+                    'No more posts to show.',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ) : const SizedBox(),
+              if(loadingMoreSuggested)
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      top: 10.0,
+                      bottom: 20.0,
+                    ),
+                    child: circularProgress(context, Colors.blue)
+                  ),
+                ),*/
+            ],
+          ),
         ),
       ),
     );
@@ -722,132 +761,69 @@ class _FeedsPageState extends State<FeedsPage>{
 
   Widget postShimmer() {
 
-    return Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
-      highlightColor: Colors.grey[100]!,
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
       child: ListView.builder(
-        itemCount: 3,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: 2,
         shrinkWrap: true,
         primary: false,
         itemBuilder: (context, index) {
+          // TODO : Continue here
           return Column(
             children: [
-              Container(
-                height: 50.0,
-                width: MediaQuery.of(context).size.width,
-                color: Colors.white,
-              ),
-              const SizedBox(height: 10.0),
-              Container(
-                height: 200.0,
-                width: MediaQuery.of(context).size.width,
-                color: Colors.white,
-              ),
-              const SizedBox(height: 10.0),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  children: [
+                    Shimmer.fromColors(
+                      baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
+                      highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
+                      child: const CircleAvatar(
+                        radius: 22.5,
+                      ),
+                    ),
+                    const SizedBox(width: 10.0),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 20,
+                          width: 100,
+                          child: Shimmer.fromColors(
+                            baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
+                            highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            )
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                          width: 100,
+                          child: Shimmer.fromColors(
+                              baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
+                              highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              )
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )
             ],
           );
         },
       ),
-    );
-  }
-}
-
-class PostsListView extends StatefulWidget {
-  final ScrollController scrollController;
-
-  final List docs;
-
-  final void Function() onScrollEnd;
-
-  const PostsListView({
-    Key? key,
-    required this.scrollController,
-    required this.docs,
-    required this.onScrollEnd
-  }) : super(key: key);
-
-  @override
-  State<PostsListView> createState() => _PostsListViewState();
-}
-
-class _PostsListViewState extends State<PostsListView> {
-  @override
-  void initState() {
-    super.initState();
-    widget.scrollController.addListener(() {
-      if (widget.scrollController.position.pixels == widget.scrollController.position.maxScrollExtent) {
-        widget.onScrollEnd();
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    return ListView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: widget.docs.length,
-      shrinkWrap: true,
-      itemBuilder: (context, index) {
-        PostModel posts = PostModel.fromJson(widget.docs[index].data());
-
-        return UserPost(post: posts, index: index);
-      },
-    );
-  }
-}
-
-class SuggestedListView extends StatefulWidget {
-  final ScrollController scrollController;
-
-  final List docs;
-
-  final void Function() onScrollEnd;
-
-  const SuggestedListView({
-    Key? key,
-    required this.scrollController,
-    required this.docs,
-    required this.onScrollEnd
-  }) : super(key: key);
-
-  @override
-  State<SuggestedListView> createState() => _SuggestedListViewState();
-}
-
-class _SuggestedListViewState extends State<SuggestedListView> {
-  @override
-  void initState() {
-    super.initState();
-    widget.scrollController.addListener(() {
-      if (widget.scrollController.position.pixels == widget.scrollController.position.maxScrollExtent) {
-        widget.onScrollEnd();
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    return ListView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: widget.docs.length,
-      shrinkWrap: true,
-      itemBuilder: (context, index) {
-        PostModel posts = PostModel.fromJson(widget.docs[index].data());
-
-        return UserPost(post: posts, index: index);
-      },
     );
   }
 }

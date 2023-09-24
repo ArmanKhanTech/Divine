@@ -6,19 +6,29 @@ class PickedAssetModel {
   String id;
   String path;
   String type;
+
   Duration videoDuration;
+
   DateTime createDateTime;
+
   double? latitude;
   double? longitude;
+
   Uint8List? thumbnail;
+
   int height;
   int width;
   int orientationHeight;
   int orientationWidth;
+
   Size orientationSize;
+
   File? file;
+
   DateTime modifiedDateTime;
+
   String? title;
+
   Size size;
 
   PickedAssetModel({

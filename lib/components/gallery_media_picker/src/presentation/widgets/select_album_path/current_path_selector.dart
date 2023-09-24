@@ -10,9 +10,11 @@ class SelectedPathDropdownButton extends StatelessWidget {
 
   final MediaPickerParamsModel mediaPickerParams;
 
-  const SelectedPathDropdownButton(
-      {Key? key, required this.provider, required this.mediaPickerParams})
-      : super(key: key);
+  const SelectedPathDropdownButton({
+    Key? key,
+    required this.provider,
+    required this.mediaPickerParams
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,6 @@ class SelectedPathDropdownButton extends StatelessWidget {
             relativeKey: GlobalKey(),
             child: ((context) => buildButton(context, arrowDownNotifier))(context),
             dropdownWidgetBuilder: (BuildContext context, close) {
-
               return ChangePathWidget(
                 provider: provider,
                 close: close,
@@ -66,10 +67,8 @@ class SelectedPathDropdownButton extends StatelessWidget {
     }
 
     if (provider.currentAlbum == null) {
-
       return Container();
     } else {
-
       return Container(
         decoration: decoration,
         alignment: Alignment.center,

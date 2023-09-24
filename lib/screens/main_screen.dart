@@ -17,32 +17,35 @@ class MainScreen extends StatefulWidget{
 }
 
 class _MainScreenState extends State<MainScreen>{
-  int page = 0;
+  late List<Widget> pages;
+
+  late PageController pageController;
+
+  late int page;
+
+  @override
+  void initState() {
+    super.initState();
+
+    page = 0;
+    pages = [
+      const FeedsPage(),
+      const SearchPage(),
+      const ReelsPage(),
+      const ActivityPage(),
+      ProfilePage(profileId: auth.currentUser!.uid),
+    ];
+    pageController = PageController(initialPage: page);
+  }
 
   @override
   Widget build(BuildContext context) {
-
     return FlutterWebFrame(
       builder: (context) {
-
         return Scaffold(
-          body: Builder(
-            builder: (context) {
-              switch (page) {
-                case 0:
-                  return const FeedsPage();
-                case 1:
-                  return const SearchPage();
-                case 2:
-                  return const ReelsPage();
-                case 3:
-                  return const ActivityPage();
-                case 4:
-                  return ProfilePage(profileId: auth.currentUser!.uid);
-                default:
-                  return  const SizedBox();
-              }
-            },
+          body: PageView(
+            controller: pageController,
+            children: pages,
           ),
           extendBody: false,
           extendBodyBehindAppBar: false,
@@ -164,14 +167,15 @@ class _MainScreenState extends State<MainScreen>{
               onTap: (int index) {
                 setState(() {
                   page = index;
+                  pageController.jumpToPage(page);
                 });
               },
             ),
           )
         );
       },
-      maximumSize: const Size(540.0, 960.0),
       enabled: kIsWeb,
+      maximumSize: const Size(540.0, 960.0),
       backgroundColor: Theme.of(context).colorScheme.background,
     );
   }

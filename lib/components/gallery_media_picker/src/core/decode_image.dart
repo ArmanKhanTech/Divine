@@ -5,7 +5,9 @@ import 'package:photo_manager/photo_manager.dart';
 
 class DecodeImage extends ImageProvider<DecodeImage> {
   final AssetPathEntity entity;
+
   final double scale;
+
   final int thumbSize;
   final int index;
 
@@ -18,7 +20,6 @@ class DecodeImage extends ImageProvider<DecodeImage> {
 
   @override
   ImageStreamCompleter load(DecodeImage key, DecoderCallback decode) {
-
     return MultiFrameImageStreamCompleter(
       codec: loadAsync(key, decode),
       scale: key.scale,
@@ -30,7 +31,6 @@ class DecodeImage extends ImageProvider<DecodeImage> {
 
     final coverEntity =
         (await key.entity.getAssetListRange(start: index, end: index + 1))[0];
-
     final bytes = await coverEntity
         .thumbnailDataWithSize(ThumbnailSize(thumbSize, thumbSize));
 
@@ -39,7 +39,6 @@ class DecodeImage extends ImageProvider<DecodeImage> {
 
   @override
   Future<DecodeImage> obtainKey(ImageConfiguration configuration) async {
-
     return this;
   }
 }

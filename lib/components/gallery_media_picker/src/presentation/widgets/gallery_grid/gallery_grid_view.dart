@@ -26,7 +26,6 @@ class GalleryGridView extends StatefulWidget {
 
 class GalleryGridViewState extends State<GalleryGridView> {
   static Map<int?, AssetEntity?> _createMap() {
-
     return {};
   }
 
@@ -79,8 +78,7 @@ class GalleryGridViewState extends State<GalleryGridView> {
                 ),
               ),
             ),
-          )
-        : SizedBox(
+          ) : SizedBox(
             width: double.infinity,
             child: loaded == true ? Column(
               children: [
@@ -111,7 +109,6 @@ class GalleryGridViewState extends State<GalleryGridView> {
 
   Widget buildItem(
       BuildContext context, index, GalleryMediaPickerController provider) {
-
     return GestureDetector(
       onTap: () async {
         var asset = cacheMap[index];
@@ -124,7 +121,6 @@ class GalleryGridViewState extends State<GalleryGridView> {
           widget.onAssetItemClick?.call(asset, index);
         }
       },
-
       child: buildScrollItem(context, index, provider),
     );
   }
@@ -132,8 +128,8 @@ class GalleryGridViewState extends State<GalleryGridView> {
   Widget buildScrollItem(
       BuildContext context, int index, GalleryMediaPickerController provider) {
     final asset = cacheMap[index];
-    if (asset != null) {
 
+    if (asset != null) {
       return ThumbnailWidget(
         asset: asset,
         provider: provider,
@@ -153,7 +149,6 @@ class GalleryGridViewState extends State<GalleryGridView> {
           }
           final asset = snapshot.data![0];
           cacheMap[index] = asset;
-
           return ThumbnailWidget(
             asset: asset,
             index: index,
@@ -180,6 +175,7 @@ class GalleryGridViewState extends State<GalleryGridView> {
     if (oldWidget.path != widget.path) {
       cacheMap.clear();
       scrolling.value = false;
+
       if (mounted) {
         setState(() {});
       }
@@ -189,11 +185,9 @@ class GalleryGridViewState extends State<GalleryGridView> {
   @override
   bool operator == (Object other) {
     if (identical(this, other)) {
-
       return true;
     }
     if (other.runtimeType != runtimeType) {
-
       return false;
     }
 

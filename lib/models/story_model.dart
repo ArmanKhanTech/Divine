@@ -5,13 +5,15 @@ class StoryModel {
   String? storyId;
 
   List<dynamic>? viewers;
+
   Timestamp? time;
 
   StoryModel({
-        this.url,
-        this.storyId,
-        this.time,
-        this.viewers});
+    this.url,
+    this.storyId,
+    this.time,
+    this.viewers
+  });
 
   StoryModel.fromJson(Map<String, dynamic> json) {
     url = json['url'];

@@ -26,7 +26,10 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClientMixin<ProfilePage> {
+  @override
+  bool get wantKeepAlive => true;
+
   User? user;
 
   UserModel currentUser = UserModel();
@@ -54,6 +57,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
+
     checkIfFollowing();
     checkIfRequested();
 
@@ -94,7 +98,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   openMenu(BuildContext context) {
-
     return showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -105,7 +108,6 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
       builder: (BuildContext context) {
-
         return FractionallySizedBox(
           heightFactor: .7,
           child: Container(
@@ -272,8 +274,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
 
-    return  StreamBuilder(
+    return StreamBuilder(
       stream: usersRef.doc(widget.profileId).snapshots(),
       builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasData) {
@@ -537,10 +540,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             fontSize: 18.0,
                             fontWeight: FontWeight.w400,
                             height: 1.3,
-                            color: Theme
-                                .of(context)
-                                .colorScheme
-                                .secondary,
+                            color: Theme.of(context).colorScheme.secondary,
                           ),
                           expandText: 'show more',
                           maxLines: 5,
@@ -743,8 +743,6 @@ class _ProfilePageState extends State<ProfilePage> {
           );
         } else {
           if(widget.profileId == auth.currentUser!.uid) {
-
-
             // TODO: Fix this
             return Center(
               child: Padding(
@@ -753,7 +751,6 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             );
           } else {
-
             return Center(
               child: Padding(
                 padding: const EdgeInsets.only(top: 40.0),
@@ -822,25 +819,21 @@ class _ProfilePageState extends State<ProfilePage> {
           });
       // TODO: Implement DM button
     } else if (isFollowing) {
-
       return buildButton(
         text: "Unfollow",
         function: handleUnfollow,
       );
     } else if (!isFollowing && user.type == "public") {
-
       return buildButton(
         text: "Follow",
         function: handleFollow,
       );
     } else if(!isFollowing && user.type == "private" && !requested) {
-
       return buildButton(
         text: "Request",
         function: handleFollowRequest,
       );
     } else if(!isFollowing && user.type == "private" && requested) {
-
       return buildButton(
         text: "Requested",
         function: () {},
@@ -849,7 +842,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   buildButton({String? text, Function()? function}) {
-
     return Center(
       child: GestureDetector(
         onTap: function!,
@@ -964,7 +956,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   handleFollowRequest() async {
     DocumentSnapshot doc = await usersRef.doc(currentUserId()).get();
-
     users = UserModel.fromJson(doc.data() as Map<String, dynamic>);
 
     setState(() {
@@ -988,7 +979,6 @@ class _ProfilePageState extends State<ProfilePage> {
   buildPostView(UserModel currentUser) {
     if(widget.profileId != auth.currentUser?.uid) {
       if(currentUser.type == 'private' && isFollowing == false) {
-
         return const Center(
           child: Text(
             'This account is private.',
@@ -999,28 +989,23 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         );
       } else {
-
         return buildGridPost();
       }
     } else {
-
       return buildGridPost();
     }
   }
 
   buildGridPost() {
-
     // TODO: Load more data on scroll
     return FutureBuilder(
       future: postRef.where('ownerId', isEqualTo: widget.profileId).orderBy('timestamp', descending: true).get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-
           return gridShimmer();
         }
 
         if(snapshot.hasData) {
-
           return GridView.builder(
             shrinkWrap: true,
             itemCount: (snapshot.data! as dynamic).docs.length,
@@ -1033,14 +1018,12 @@ class _ProfilePageState extends State<ProfilePage> {
             itemBuilder: (context, index) {
               DocumentSnapshot snap =
               (snapshot.data! as dynamic).docs[index];
-
               return PostTile(
                 post: PostModel.fromJson(snap.data() as Map<String, dynamic>),
               );
             },
           );
         } else {
-
           return gridShimmer();
         }
       },
@@ -1048,7 +1031,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget gridShimmer() {
-
     return GridView.builder(
       shrinkWrap: true,
       itemCount: 10,

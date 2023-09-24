@@ -10,12 +10,12 @@ class ChangePathWidget extends StatefulWidget {
 
   final MediaPickerParamsModel mediaPickerParams;
 
-  const ChangePathWidget(
-      {Key? key,
-      required this.provider,
-      required this.close,
-      required this.mediaPickerParams})
-      : super(key: key);
+  const ChangePathWidget({
+    Key? key,
+    required this.provider,
+    required this.close,
+    required this.mediaPickerParams
+  }) : super(key: key);
 
   @override
   ChangePathWidgetState createState() => ChangePathWidgetState();
@@ -31,6 +31,7 @@ class ChangePathWidgetState extends State<ChangePathWidget> {
   void initState() {
     final index = provider.pathList.indexOf(provider.currentAlbum!);
     controller = ScrollController(initialScrollOffset: itemHeight * index);
+
     super.initState();
   }
 
@@ -90,7 +91,6 @@ class ChangePathWidgetState extends State<ChangePathWidget> {
               ),
             ),
           ),
-
           Positioned(
             height: 1,
             bottom: 0,
