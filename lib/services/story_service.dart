@@ -7,7 +7,7 @@ import 'package:uuid/uuid.dart';
 import '../models/story_model.dart';
 import '../utilities/firebase.dart';
 
-class StoryService extends Service{
+class StoryService extends Service {
   String storyId = const Uuid().v1();
 
   UserService userService = UserService();
@@ -26,11 +26,13 @@ class StoryService extends Service{
   // TODO: add only followers to ids.
   Future<String> sendFirstStory(StoryModel story) async {
     List<String> ids = [];
+
     await usersRef.get().then((QuerySnapshot snapshot) {
       for (var documentSnapshot in snapshot.docs) {
         ids.add(documentSnapshot.get('id'));
       }
     });
+
     DocumentReference ref = await storyRef.add({
       'whoCanSee': ids,
     });
@@ -40,10 +42,11 @@ class StoryService extends Service{
   }
 
   Future<String> uploadImage(File image) async {
-    Reference storageReference =
-    storage.ref().child("story").child(uuid.v1()).child(uuid.v4());
+    Reference storageReference = storage.ref().child("story").child(uuid.v1()).child(uuid.v4());
     UploadTask uploadTask = storageReference.putFile(image);
+
     await uploadTask.whenComplete(() => null);
+
     String imageUrl = await storageReference.getDownloadURL();
 
     return imageUrl;

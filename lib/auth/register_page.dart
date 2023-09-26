@@ -23,7 +23,6 @@ class _RegisterPageState extends State<RegisterPage>{
   @override
   Widget build(BuildContext context) {
     RegisterViewModel viewModel = Provider.of<RegisterViewModel>(context);
-
     buildForm(RegisterViewModel viewModel, BuildContext context){
       return Form(
         key: viewModel.registerFormKey,
@@ -145,7 +144,6 @@ class _RegisterPageState extends State<RegisterPage>{
         ),
       );
     }
-
     return FlutterWebFrame(
       builder: (context) {
         return LoadingOverlay(

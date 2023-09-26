@@ -21,7 +21,7 @@ import '../../services/post_service.dart';
 import '../../services/user_service.dart';
 import '../../utilities/firebase.dart';
 
-class PostsViewModel extends ChangeNotifier{
+class PostsViewModel extends ChangeNotifier {
   UserService userService = UserService();
   PostService postService = PostService();
 
@@ -190,7 +190,6 @@ class PostsViewModel extends ChangeNotifier{
         final result = await FlutterNudeDetector.detect(path: images[i].path);
         if(result){
           hasNudity = true;
-
           break;
         }
       }

@@ -24,12 +24,9 @@ class RegisterViewModel extends ChangeNotifier {
 
   register(BuildContext context) async {
     FormState form = registerFormKey.currentState!;
-
     form.save();
-
     if (!form.validate()) {
       validate = true;
-
       notifyListeners();
       showSnackBar('Kindly fix all the errors before proceeding.', context);
     } else if (await auth.checkUsernameExists(username!)){
@@ -37,9 +34,7 @@ class RegisterViewModel extends ChangeNotifier {
     } else{
       if (password == cPassword) {
         loading = true;
-
         notifyListeners();
-
         try{
           bool success = await auth.createUser(
             username: username,
@@ -47,7 +42,6 @@ class RegisterViewModel extends ChangeNotifier {
             password: password,
             country: country,
           );
-
           if (success) {
             Navigator.of(context).pushReplacement(
               CupertinoPageRoute(
@@ -57,7 +51,6 @@ class RegisterViewModel extends ChangeNotifier {
           }
         } catch (e) {
           loading = false;
-
           notifyListeners();
           showSnackBar(auth.handleFirebaseAuthError(e.toString()), context);
         }

@@ -25,7 +25,6 @@ class OverlayDropDown<T> extends StatelessWidget {
     final double screenHeight = size.height;
     final double screenWidth = size.width;
     final double space = screenHeight - height;
-
     return Padding(
       padding: EdgeInsets.only(
         top: space,

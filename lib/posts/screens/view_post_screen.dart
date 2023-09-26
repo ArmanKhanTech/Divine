@@ -111,8 +111,8 @@ class _ViewPostScreenState extends State<ViewPostScreen> {
             placeholder: (context, url) {
 
               return Shimmer.fromColors(
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.white,
+                baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
+                highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
                 child: Container(
                   height: MediaQuery.of(context).size.width,
                   width: MediaQuery.of(context).size.width,
@@ -131,8 +131,8 @@ class _ViewPostScreenState extends State<ViewPostScreen> {
         placeholder: (context, url) {
 
           return Shimmer.fromColors(
-            baseColor: Colors.grey[300]!,
-            highlightColor: Colors.white,
+            baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
+            highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
             child: Container(
               height: MediaQuery.of(context).size.width,
               width: MediaQuery.of(context).size.width,

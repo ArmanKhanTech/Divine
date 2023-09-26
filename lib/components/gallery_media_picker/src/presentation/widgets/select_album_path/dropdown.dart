@@ -36,20 +36,14 @@ class DropDownState<T> extends State<DropDown<T>>
       onTap: () async {
         if (controller != null) {
           controller!.close(null);
-
           return;
         }
-
         final height = MediaQuery.of(context).size.height;
         final ctx = widget.relativeKey?.currentContext ?? context;
-
         RenderBox box = ctx.findRenderObject() as RenderBox;
-
         final offsetStart = box.localToGlobal(Offset.zero);
         final dialogHeight = height - (offsetStart.dy + box.paintBounds.bottom);
-
         widget.onShow?.call(true);
-
         controller = GalleryFunctions.showDropDown<T>(
           context: context,
           height: dialogHeight,
@@ -58,11 +52,8 @@ class DropDownState<T> extends State<DropDown<T>>
           },
           tickerProvider: this,
         );
-
         var result = await controller!.closed;
-
         controller = null;
-
         widget.onResult!(result);
         widget.onShow?.call(false);
       },

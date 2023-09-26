@@ -8,7 +8,9 @@ abstract class Service {
     String ext = FileUtility.getFileExtension(file);
     Reference storageReference = ref.child("${uuid.v4()}.$ext");
     UploadTask uploadTask = storageReference.putFile(file);
+
     await uploadTask.whenComplete(() => null);
+
     String fileUrl = await storageReference.getDownloadURL();
 
     return fileUrl;

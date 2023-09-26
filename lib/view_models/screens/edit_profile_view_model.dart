@@ -33,6 +33,7 @@ class EditProfileViewModel extends ChangeNotifier{
     } else if(gender == ''){
       gender = '';
     }
+
     notifyListeners();
     if (!form.validate()) {
       validate = true;

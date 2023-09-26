@@ -16,10 +16,8 @@ class AuthService {
     );
 
     if (res.user != null) {
-
       return true;
     } else {
-
       return false;
     }
   }
@@ -28,10 +26,8 @@ class AuthService {
     var res = await usersRef.where('username', isEqualTo: username).get();
 
     if (res.docs.isEmpty) {
-
       return false;
     } else {
-
       return true;
     }
   }
@@ -46,7 +42,6 @@ class AuthService {
 
       return true;
     } else {
-
       return false;
     }
   }
@@ -97,44 +92,33 @@ class AuthService {
     var res = await usersRef.where('username', isEqualTo: username).get();
 
     if (res.docs.isEmpty) {
-
       return true;
     } else {
-
       return false;
     }
   }
 
   String handleFirebaseAuthError(String e) {
     if (e.contains("ERROR_WEAK_PASSWORD")) {
-
       return "Password is too weak.";
     } else if (e.contains("invalid-email")) {
-
       return "Invalid email.";
     } else if (e.contains("ERROR_EMAIL_ALREADY_IN_USE") ||
         e.contains('email-already-in-use')) {
-
       return "The email address is already in use by another account.";
     } else if (e.contains("ERROR_NETWORK_REQUEST_FAILED")) {
-
       return "Network error occurred!";
     } else if (e.contains("ERROR_USER_NOT_FOUND") ||
         e.contains('firebase_auth/user-not-found')) {
-
       return "Invalid credentials.";
     } else if (e.contains("ERROR_WRONG_PASSWORD") ||
         e.contains('wrong-password')) {
-
       return "Invalid credentials.";
     } else if (e.contains('firebase_auth/requires-recent-login')) {
-
       return 'This operation is sensitive and requires recent authentication.'
           ' Log in again before retrying this request again.';
     } else {
-
       return e;
     }
   }
-
 }

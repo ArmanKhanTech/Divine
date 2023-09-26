@@ -39,7 +39,6 @@ class _CoverThumbnailState extends State<CoverThumbnail> {
       provider.pathList.clear();
       PhotoManager.stopChangeNotify();
     }
-
     super.dispose();
   }
 
@@ -47,9 +46,9 @@ class _CoverThumbnailState extends State<CoverThumbnail> {
   Widget build(BuildContext context) {
     return provider.pathList.isNotEmpty ? Image(
       image: DecodeImage(
+          index: 0,
           provider.pathList[0],
           thumbSize: widget.thumbnailQuality,
-          index: 0,
           scale: widget.thumbnailScale
       ),
       fit: widget.thumbnailFit,

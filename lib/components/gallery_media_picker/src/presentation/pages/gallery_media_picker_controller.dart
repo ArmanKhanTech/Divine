@@ -10,12 +10,10 @@ mixin PhotoDataController on ChangeNotifier {
 
   set paramsModel(MediaPickerParamsModel model) {
     _paramsModel = model;
-
     notifyListeners();
   }
 
   final currentAlbumNotifier = ValueNotifier<AssetPathEntity?>(null);
-
   AssetPathEntity? _current;
   AssetPathEntity? get currentAlbum => _current;
 
@@ -27,7 +25,6 @@ mixin PhotoDataController on ChangeNotifier {
   }
 
   List<AssetPathEntity> pathList = [];
-
   final pathListNotifier = ValueNotifier<List<AssetPathEntity>>([]);
 
   static int _defaultSort(
@@ -63,12 +60,9 @@ mixin PhotoDataController on ChangeNotifier {
 
 class GalleryMediaPickerController extends ChangeNotifier with PhotoDataController {
   final maxNotifier = ValueNotifier(0);
-
   int get max => maxNotifier.value;
   set max(int value) => maxNotifier.value = value;
-
   final onPickMax = ChangeNotifier();
-
   bool get singlePickMode => _singlePickMode;
   bool _singlePickMode = false;
 
@@ -81,9 +75,7 @@ class GalleryMediaPickerController extends ChangeNotifier with PhotoDataControll
     maxNotifier.value = max;
     notifyListeners();
   }
-
   final pickedNotifier = ValueNotifier<List<AssetEntity>>([]);
-
   List<AssetEntity> picked = [];
 
   void pickEntity(AssetEntity entity) {
@@ -105,15 +97,12 @@ class GalleryMediaPickerController extends ChangeNotifier with PhotoDataControll
         picked.add(entity);
       }
     }
-
     pickedNotifier.value = picked;
-
     pickedNotifier.notifyListeners();
     notifyListeners();
   }
 
   final pickedFileNotifier = ValueNotifier<List<PickedAssetModel>>([]);
-
   List<PickedAssetModel> pickedFile = [];
 
   void pickPath(PickedAssetModel path) {
@@ -136,7 +125,6 @@ class GalleryMediaPickerController extends ChangeNotifier with PhotoDataControll
       }
     }
     pickedFileNotifier.value = pickedFile;
-
     pickedFileNotifier.notifyListeners();
     notifyListeners();
   }
@@ -147,7 +135,6 @@ class GalleryMediaPickerController extends ChangeNotifier with PhotoDataControll
 
   int _assetCount = 0;
   get assetCount => _assetCount;
-
   final assetCountNotifier = ValueNotifier<int>(0);
 
   setAssetCount() async {
@@ -155,12 +142,10 @@ class GalleryMediaPickerController extends ChangeNotifier with PhotoDataControll
       if (currentAlbum != null) {
         _assetCount = await currentAlbum!.assetCountAsync;
         assetCountNotifier.value = _assetCount;
-
         assetCountNotifier.notifyListeners();
         notifyListeners();
       } else {
         assetCountNotifier.value = _assetCount;
-
         assetCountNotifier.notifyListeners();
         notifyListeners();
       }

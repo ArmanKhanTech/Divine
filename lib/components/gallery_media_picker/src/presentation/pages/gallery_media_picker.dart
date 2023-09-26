@@ -32,7 +32,6 @@ class _GalleryMediaPickerState extends State<GalleryMediaPicker> {
   void initState() {
     super.initState();
     _getPermission();
-
     provider.paramsModel = widget.mediaPickerParams;
   }
 
@@ -47,7 +46,6 @@ class _GalleryMediaPickerState extends State<GalleryMediaPicker> {
       PhotoManager.stopChangeNotify();
       provider.dispose();
     }
-
     super.dispose();
   }
 
@@ -55,12 +53,10 @@ class _GalleryMediaPickerState extends State<GalleryMediaPicker> {
   Widget build(BuildContext context) {
     provider.max = widget.mediaPickerParams.maxPickImages;
     provider.singlePickMode = widget.mediaPickerParams.singlePick;
-
     return OKToast(
       child: NotificationListener<OverscrollIndicatorNotification>(
           onNotification: (overscroll) {
             overscroll.disallowIndicator();
-
             return false;
           },
           child: Column(

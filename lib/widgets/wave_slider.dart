@@ -6,14 +6,18 @@ typedef CallbackSelection = void Function(double duration);
 class WaveSlider extends StatefulWidget {
   final double widthWaveSlider;
   final double heightWaveSlider;
+
   final Color wavActiveColor;
   final Color wavDeactiveColor;
   final Color sliderColor;
   final Color backgroundColor;
   final Color positionTextColor;
+
   final double duration;
+
   final CallbackSelection callbackStart;
   final CallbackSelection callbackEnd;
+
   const WaveSlider({
     Key? key,
     required this.duration,
@@ -35,24 +39,23 @@ class WaveSlider extends StatefulWidget {
 class WaveSliderState extends State<WaveSlider> {
   double widthSlider = 300;
   double heightSlider = 100;
+
   static const barWidth = 5.0;
   static const selectBarWidth = 15.0;
+
   double barStartPosition = 0.0;
   double barEndPosition = 50;
+
   List<int> bars = [];
 
   @override
   void initState() {
     super.initState();
-
     var shortSize = MediaQueryData.fromView(WidgetsBinding.instance.window).size.shortestSide;
-
     widthSlider = (widget.widthWaveSlider < 50) ? (shortSize - 2 - 40) : widget.widthWaveSlider;
     heightSlider = (widget.heightWaveSlider < 50) ? 100 : widget.heightWaveSlider;
     barEndPosition = widthSlider - selectBarWidth;
-
     Random r = Random();
-
     for (var i = 0; i < (widthSlider / barWidth); i++) {
       int number = 1 + r.nextInt(heightSlider.toInt() - 1);
       bars.add(r.nextInt(number));
@@ -77,23 +80,18 @@ class WaveSliderState extends State<WaveSlider> {
 
   String _timeFormatter(int second) {
     Duration duration = Duration(seconds: second);
-
     List<int> durations = [];
-
     if (duration.inHours > 0) {
       durations.add(duration.inHours);
     }
-
     durations.add(duration.inMinutes);
     durations.add(duration.inSeconds);
-
     return durations.map((seg) => seg.remainder(60).toString().padLeft(2, '0')).join(':');
   }
 
   @override
   Widget build(BuildContext context) {
     int i = 0;
-
     return SizedBox(
       width: widthSlider,
       height: widget.heightWaveSlider,
@@ -127,7 +125,6 @@ class WaveSliderState extends State<WaveSlider> {
                       if(i++ == bars.length - 1) {
                         ///
                       }
-
                       return Container(
                         color: color,
                         height: Random().nextInt(40).toDouble() + 10,

@@ -44,12 +44,8 @@ class ThumbnailWidgetState extends State<ThumbnailWidget> {
             builder: (_, data) {
               if (data.hasData) {
                 return Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: MemoryImage(data.data!),
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
                     width: double.infinity,
                     height: double.infinity,
@@ -59,7 +55,6 @@ class ThumbnailWidgetState extends State<ThumbnailWidget> {
                       child: Image(
                         image: DecodeImage(
                             widget.provider.pathList[widget.provider.pathList.indexOf(widget.provider.currentAlbum!)],
-                            thumbSize: 200,
                             index: widget.index
                         ),
                         gaplessPlayback: true,
@@ -75,24 +70,20 @@ class ThumbnailWidgetState extends State<ThumbnailWidget> {
               }
             },
           ),
-
         AnimatedBuilder(
             animation: widget.provider,
             builder: (_, __) {
               final pickIndex = widget.provider.pickIndex(widget.asset);
               final picked = pickIndex >= 0;
-
               return AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 decoration: BoxDecoration(
                   color: picked
-                      ? widget.provider.paramsModel.selectedBackgroundColor
-                          .withOpacity(0.3)
+                      ? widget.provider.paramsModel.selectedBackgroundColor.withOpacity(0.3)
                       : Colors.transparent,
                 ),
               );
             }),
-
         Align(
           alignment: Alignment.topRight,
           child: Padding(
@@ -102,7 +93,6 @@ class ThumbnailWidgetState extends State<ThumbnailWidget> {
                 builder: (_, __) {
                   final pickIndex = widget.provider.pickIndex(widget.asset);
                   final picked = pickIndex >= 0;
-
                   return AnimatedOpacity(
                     duration: const Duration(milliseconds: 200),
                     opacity: picked ? 1 : 0,
@@ -112,8 +102,7 @@ class ThumbnailWidgetState extends State<ThumbnailWidget> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: picked
-                            ? widget.provider.paramsModel.selectedCheckBackgroundColor
-                                .withOpacity(0.6)
+                            ? widget.provider.paramsModel.selectedCheckBackgroundColor.withOpacity(0.6)
                             : Colors.transparent,
                         border: Border.all(
                             width: 1.5,
@@ -129,7 +118,6 @@ class ThumbnailWidgetState extends State<ThumbnailWidget> {
                 }),
           ),
         ),
-
         if (widget.asset.type == AssetType.video)
           Align(
             alignment: Alignment.bottomRight,
@@ -164,7 +152,8 @@ class ThumbnailWidgetState extends State<ThumbnailWidget> {
                         ),
                       ),
                     ],
-                  )),
+                  )
+              ),
             ),
           )
       ],

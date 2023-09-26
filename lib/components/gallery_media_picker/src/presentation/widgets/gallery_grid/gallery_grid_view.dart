@@ -30,9 +30,7 @@ class GalleryGridViewState extends State<GalleryGridView> {
   }
 
   bool loaded = false;
-
   var cacheMap = _createMap();
-
   final scrolling = ValueNotifier(false);
 
   @override
@@ -47,7 +45,6 @@ class GalleryGridViewState extends State<GalleryGridView> {
         loaded = true;
       });
     }
-
     return widget.path != null ? NotificationListener<ScrollNotification>(
       onNotification: onScroll,
       child: AnimatedBuilder(
@@ -57,21 +54,16 @@ class GalleryGridViewState extends State<GalleryGridView> {
           child: GridView.builder(
             key: ValueKey(widget.path),
             shrinkWrap: true,
-            padding: widget.provider.paramsModel.gridPadding ??
-                const EdgeInsets.all(0),
-            physics: widget.provider.paramsModel.gridViewPhysics ??
-                const ScrollPhysics(),
-            controller: widget.provider.paramsModel.gridViewController ??
-                ScrollController(),
+            padding: widget.provider.paramsModel.gridPadding ?? const EdgeInsets.all(0),
+            physics: widget.provider.paramsModel.gridViewPhysics ?? const ScrollPhysics(),
+            controller: widget.provider.paramsModel.gridViewController ?? ScrollController(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              childAspectRatio:
-                  widget.provider.paramsModel.childAspectRatio,
+              childAspectRatio: widget.provider.paramsModel.childAspectRatio,
               crossAxisCount: widget.provider.paramsModel.crossAxisCount,
               mainAxisSpacing: 2.5,
               crossAxisSpacing: 2.5,
             ),
-            itemBuilder: (context, index) =>
-                buildItem(context, index, widget.provider),
+            itemBuilder: (context, index) => buildItem(context, index, widget.provider),
             itemCount: widget.provider.assetCount,
             addRepaintBoundaries: true,
           ),
@@ -114,8 +106,7 @@ class GalleryGridViewState extends State<GalleryGridView> {
         if (asset != null &&
             asset.type != AssetType.audio &&
             asset.type != AssetType.other) {
-          asset = (await widget.path!
-              .getAssetListRange(start: index, end: index + 1))[0];
+          asset = (await widget.path!.getAssetListRange(start: index, end: index + 1))[0];
           cacheMap[index] = asset;
           widget.onAssetItemClick?.call(asset, index);
         }
@@ -124,10 +115,8 @@ class GalleryGridViewState extends State<GalleryGridView> {
     );
   }
 
-  Widget buildScrollItem(
-      BuildContext context, int index, GalleryMediaPickerController provider) {
+  Widget buildScrollItem(BuildContext context, int index, GalleryMediaPickerController provider) {
     final asset = cacheMap[index];
-
     if (asset != null) {
       return ThumbnailWidget(
         asset: asset,
@@ -139,7 +128,6 @@ class GalleryGridViewState extends State<GalleryGridView> {
         future: widget.path!.getAssetListRange(start: index, end: index + 1),
         builder: (ctx, snapshot) {
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
-
             return Container(
               width: double.infinity,
               height: double.infinity,
@@ -164,7 +152,6 @@ class GalleryGridViewState extends State<GalleryGridView> {
     } else if (notification is ScrollStartNotification) {
       scrolling.value = true;
     }
-
     return false;
   }
 
@@ -174,7 +161,6 @@ class GalleryGridViewState extends State<GalleryGridView> {
     if (oldWidget.path != widget.path) {
       cacheMap.clear();
       scrolling.value = false;
-
       if (mounted) {
         setState(() {});
       }
@@ -189,7 +175,6 @@ class GalleryGridViewState extends State<GalleryGridView> {
     if (other.runtimeType != runtimeType) {
       return false;
     }
-
     return other != this;
   }
 

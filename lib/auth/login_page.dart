@@ -29,7 +29,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     LoginViewModel viewModel = Provider.of<LoginViewModel>(context);
-
     buildForm(BuildContext context, LoginViewModel viewModel) {
       return Form(
         key: viewModel.loginFormKey,
@@ -109,7 +108,6 @@ class _LoginPageState extends State<LoginPage> {
         ]),
       );
     }
-
     return FlutterWebFrame(
       builder: (context) {
         return LoadingOverlay(

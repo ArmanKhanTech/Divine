@@ -40,7 +40,6 @@ class AudioViewModel extends ChangeNotifier{
       allowedExtensions: ['mp3'],
       allowMultiple: false,
     );
-
     if (result != null) {
       audioFile = File(result.files.single.path!);
       audioName = result.files.single.name;
@@ -49,7 +48,6 @@ class AudioViewModel extends ChangeNotifier{
     }
     audioLoaded = true;
     notifyListeners();
-
     return audioFile.path;
   }
 

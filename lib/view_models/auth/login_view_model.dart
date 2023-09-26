@@ -22,19 +22,14 @@ class LoginViewModel extends ChangeNotifier {
 
   loginUser(BuildContext context) async {
     FormState form = loginFormKey.currentState!;
-
     form.save();
-
     if (!form.validate()) {
       validate = true;
-
       notifyListeners();
       showSnackBar("Please fix all the errors before continuing.", context);
     } else {
       loading = true;
-
       notifyListeners();
-
       try {
         bool success = await authService.loginUser(
           email: email,
@@ -46,7 +41,6 @@ class LoginViewModel extends ChangeNotifier {
         }
       } catch (e) {
         loading = false;
-
         notifyListeners();
         showSnackBar(authService.handleFirebaseAuthError(e.toString()), context);
       }
@@ -67,13 +61,9 @@ class LoginViewModel extends ChangeNotifier {
 
   forgotPassword(BuildContext context) async {
     loading = true;
-
     notifyListeners();
-
     FormState form = loginFormKey.currentState!;
-
     form.save();
-
     if (Regex.validateEmail(email) != null) {
       showSnackBar(
           'Please input a valid email to reset your password.', context);
@@ -89,8 +79,6 @@ class LoginViewModel extends ChangeNotifier {
       }
     }
     loading = false;
-
-
     notifyListeners();
   }
 

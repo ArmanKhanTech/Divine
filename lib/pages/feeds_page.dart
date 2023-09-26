@@ -1,17 +1,18 @@
 import 'package:divine/posts/screens/new_post_screen.dart';
-import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:divine/admobs/adHelper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../chats/screens/chat_screen.dart';
+import '../models/post_model.dart';
 import '../models/user_model.dart';
 import '../reels/screens/new_reels_screen.dart';
 import '../stories/screens/confirm_story.dart';
@@ -20,6 +21,7 @@ import '../utilities/constants.dart';
 import '../utilities/firebase.dart';
 import '../view_models/user/story_view_model.dart';
 import '../widgets/story_widget.dart';
+import '../widgets/user_post.dart';
 
 class FeedsPage extends StatefulWidget{
   const FeedsPage({super.key});
@@ -58,18 +60,28 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
       loadingMorePosts = true;
       pagePosts += 3;
     });
-
-    if(posts.isNotEmpty) {
-      querySnapshot = await postRef.where('ownerId', whereIn: followingAccounts)
-          .orderBy('timestamp', descending: true)
-          .startAfterDocument(posts.last)
-          .limit(pagePosts).get();
+    if(followingAccounts.length < 30) {
+      if(posts.isNotEmpty) {
+        querySnapshot = await postRef.where('ownerId', whereIn: followingAccounts)
+            .orderBy('timestamp', descending: true)
+            .startAfterDocument(posts.last)
+            .limit(pagePosts).get();
+      } else {
+        querySnapshot = await postRef.where('ownerId', whereIn: followingAccounts)
+            .orderBy('timestamp', descending: true)
+            .limit(pagePosts).get();
+      }
     } else {
-      querySnapshot = await postRef.where('ownerId', whereIn: followingAccounts)
-          .orderBy('timestamp', descending: true)
-          .limit(pagePosts).get();
+      List<List<String>> batches = [];
+      for(int i = 0; i < followingAccounts.length; i += 30) {
+        batches.add(followingAccounts.skip(i).take(30).toList());
+      }
+      final snapshots = await getPosts(batches);
+      // TODO: Fix it
+      for(var snapshot in snapshots) {
+        querySnapshot = snapshot as QuerySnapshot;
+      }
     }
-
     setState(() {
       if (querySnapshot.docs.length < pagePosts || querySnapshot.docs.isEmpty) {
         loadedPosts = true;
@@ -81,12 +93,29 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
     });
   }
 
+  Future<List<dynamic>> getPosts(List<List<String>> batches) async {
+    final queries = batches.map((batch) async {
+      if(posts.isNotEmpty) {
+        return await postRef.where('ownerId', whereIn: batch)
+            .orderBy('timestamp', descending: true)
+            .startAfterDocument(posts.last)
+            .limit(pagePosts).get();
+      } else {
+        return await postRef.where('ownerId', whereIn: batch)
+            .orderBy('timestamp', descending: true)
+            .limit(pagePosts).get();
+      }
+    });
+    final snapshots = await Future.wait(queries);
+    final results = snapshots.map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList()).toList();
+    return results;
+  }
+
   Future<void> loadMoreSuggested() async {
     setState(() {
       loadingMoreSuggested = true;
       pageSuggested += 3;
     });
-
     if(suggested.isNotEmpty) {
       querySnapshot = await postRef.where('hashtags', arrayContainsAny: hashTags
           .take(hashTags.length > 10 ? 10 : hashTags.length))
@@ -99,7 +128,6 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
           .orderBy('timestamp', descending: true)
           .limit(pageSuggested).get();
     }
-
     setState(() {
       if (querySnapshot.docs.length < pageSuggested || querySnapshot.docs.isEmpty) {
         loadedSuggested = true;
@@ -113,20 +141,19 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
   @override
   void initState() {
     super.initState();
-
     scrollController.addListener(() {
-      if (scrollController.position.pixels == scrollController.position.maxScrollExtent
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent
           && !loadingMorePosts && !loadingMoreSuggested && posts.isNotEmpty) {
         if (!loadedPosts) {
           loadMorePosts();
-        } else {
+        } else if(!loadedSuggested) {
           loadMoreSuggested();
         }
+        return;
       }
     });
-
     initUserData();
-
     NativeAd(
       adUnitId: adHelper.nativeAdUnitId,
       listener: NativeAdListener(
@@ -160,10 +187,8 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
   getHashTags() async {
     DocumentSnapshot doc = await usersRef.doc(auth.currentUser!.uid).get();
     UserModel user = UserModel.fromJson(doc.data() as Map<String, dynamic>);
-    
     var mapEntries = user.userHashtags!.entries.toList()
       ..sort((b, a) => a.value.compareTo(b.value));
-
     for(var entry in mapEntries) {
       hashTags.add(entry.key);
     }
@@ -171,7 +196,6 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
 
   getFollowingAccounts() async {
     QuerySnapshot snapshot = await followingRef.doc(auth.currentUser!.uid).collection('userFollowing').get();
-
     for(var doc in snapshot.docs) {
       followingAccounts.add(doc.id);
     }
@@ -180,9 +204,7 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
     StoryViewModel viewModel = Provider.of<StoryViewModel>(context);
-
     chooseUpload(BuildContext context, StoryViewModel viewModel) {
       return showModalBottomSheet(
         context: context,
@@ -195,7 +217,6 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
         useSafeArea: true,
         backgroundColor: Theme.of(context).colorScheme.background,
         builder: (BuildContext context) {
-
           return FractionallySizedBox(
             heightFactor: .75,
             child: Container(
@@ -502,7 +523,6 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
         },
       );
     }
-
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
@@ -565,7 +585,7 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
       extendBody: false,
       body: RefreshIndicator(
         color: Colors.purple,
-        onRefresh: () {
+        onRefresh: () async {
           setState(() {
             posts.clear();
             suggested.clear();
@@ -574,7 +594,7 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
             loadedPosts = false;
             loadedSuggested = false;
           });
-          initUserData();
+          await loadMorePosts();
           return Future.delayed(const Duration(seconds: 2));
         },
         displacement: 50,
@@ -616,38 +636,26 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
                   ),
                 ),
               ),
-              postShimmer()
-              /*if (posts.isEmpty && suggested.isEmpty)
-                postShimmer(),
+              if (posts.isEmpty && suggested.isEmpty)
+                SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: postShimmer(),
+              ),
               // TODO: Populate reels and threads too.
               followingAccounts.isNotEmpty ? Column(
                 children: [
                     ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: posts.isEmpty ? posts.length : posts.length + 1,
+                      itemCount: posts.length,
                       shrinkWrap: true,
                       primary: false,
                       itemBuilder: (context, index) {
-                        if (index == posts.length && !loadedPosts) {
-
-                          return Center(
-                            child: Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 10.0,
-                                  bottom: 20.0,
-                                ),
-                                child: circularProgress(context, Colors.blue)
-                            ),
-                          );
-                        } else {
-                          PostModel model = PostModel.fromJson(posts[index].data() as Map<String, dynamic>);
-
-                          return UserPost(post: model, index: index);
-                        }
+                        PostModel model = PostModel.fromJson(posts[index].data() as Map<String, dynamic>);
+                        return UserPost(post: model, index: index);
                       },
                     )
                   ],
-                ) : followingAccounts.isEmpty && loadedPosts ? const Padding(
+              ) : followingAccounts.isEmpty && loadedPosts ? const Padding(
                 padding: EdgeInsets.only(
                   top: 10.0,
                   bottom: 20.0,
@@ -663,9 +671,24 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
                   ),
                 ),
               ) : const SizedBox(),
+              if (loadingMorePosts)
+                const Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      top: 10.0,
+                      bottom: 20.0,
+                    ),
+                    child: SpinKitCubeGrid(
+                      color: Colors.blue,
+                      size: 40.0,
+                    ),
+                  ),
+                ),
               hashTags.isNotEmpty && loadedPosts ? Column(
                 children: [
                   const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Icon(
                         CupertinoIcons.check_mark_circled_solid,
@@ -674,7 +697,6 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
                       ),
                       Padding(
                         padding: EdgeInsets.only(
-                            bottom: 10.0,
                             left: 10
                         ),
                         child: Text(
@@ -688,41 +710,32 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
                       ),
                     ],
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(
-                        bottom: 10.0,
-                        left: 10
-                    ),
-                    child: Text(
-                      'Suggested Posts',
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 25.0,
-                        fontWeight: FontWeight.w500,
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Text(
+                        'Suggested Posts',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ),
                   ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: suggested.isEmpty ? suggested.length : suggested.length + 1,
+                    itemCount: suggested.length,
                     shrinkWrap: true,
                     primary: false,
                     itemBuilder: (context, index) {
-                      if (index == suggested.length && !loadedSuggested) {
-
-                        return Center(
-                          child: Padding(
-                              padding: const EdgeInsets.only(
-                                top: 10.0,
-                                bottom: 20.0,
-                              ),
-                              child: circularProgress(context, Colors.blue)
-                          ),
-                        );
+                      PostModel model = PostModel.fromJson(suggested[index].data() as Map<String, dynamic>);
+                      if(followingAccounts.contains(model.ownerId)) {
+                        return const SizedBox();
+                      } else {
+                        return UserPost(post: model, index: index);
                       }
-                      PostModel model = PostModel.fromJson(suggested[index--].data() as Map<String, dynamic>);
-
-                      return UserPost(post: model, index: index--);
                     },
                   )
                 ],
@@ -743,15 +756,18 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
                 ),
               ) : const SizedBox(),
               if(loadingMoreSuggested)
-                Center(
+                const Center(
                   child: Padding(
-                    padding: const EdgeInsets.only(
+                    padding: EdgeInsets.only(
                       top: 10.0,
                       bottom: 20.0,
                     ),
-                    child: circularProgress(context, Colors.blue)
+                    child: SpinKitCubeGrid(
+                      color: Colors.blue,
+                      size: 40.0,
+                    ),
                   ),
-                ),*/
+                ),
             ],
           ),
         ),
@@ -760,70 +776,109 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
   }
 
   Widget postShimmer() {
-
-    return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: ListView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: 2,
-        shrinkWrap: true,
-        primary: false,
-        itemBuilder: (context, index) {
-          // TODO : Continue here
-          return Column(
+    return ListView.builder(
+      itemCount: 1,
+      itemBuilder: (context, index) {
+        return Shimmer.fromColors(
+          baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
+          highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Row(
-                  children: [
-                    Shimmer.fromColors(
-                      baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
-                      highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
-                      child: const CircleAvatar(
-                        radius: 22.5,
+              const SizedBox(width: 10.0),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(
+                      top: 10,
+                      left: 10,
+                    ),
+                    width: 45.0,
+                    height: 45.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.grey[300],
+                    ),
+                  ),
+                  const SizedBox(width: 10.0),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 10.0),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5.0),
+                          color: Colors.grey[300],
+                        ),
+                        width: 150.0,
+                        height: 15.0,
                       ),
-                    ),
-                    const SizedBox(width: 10.0),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 20,
-                          width: 100,
-                          child: Shimmer.fromColors(
-                            baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
-                            highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            )
-                          ),
+                      const SizedBox(height: 5.0),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5.0),
+                          color: Colors.grey[300],
                         ),
-                        SizedBox(
-                          height: 20,
-                          width: 100,
-                          child: Shimmer.fromColors(
-                              baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
-                              highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              )
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        width: 100.0,
+                        height: 15.0,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10.0),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.width,
+                color: Colors.grey[300],
+              ),
+              const SizedBox(height: 10.0),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 15),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5.0),
+                  color: Colors.grey[300],
                 ),
-              )
+                width: 100.0,
+                height: 15.0,
+              ),
+              const SizedBox(height: 12.0),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 15),
+                width: double.infinity,
+                height: 15.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5.0),
+                  color: Colors.grey[300],
+                ),
+              ),
+              const SizedBox(height: 6.0),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 15),
+                width: MediaQuery.of(context).size.width * 0.5,
+                height: 15.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5.0),
+                  color: Colors.grey[300],
+                ),
+              ),
+              const SizedBox(height: 12.0),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 15),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5.0),
+                  color: Colors.grey[300],
+                ),
+                width: 150.0,
+                height: 14.0,
+              ),
+              const SizedBox(height: 15.0),
             ],
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

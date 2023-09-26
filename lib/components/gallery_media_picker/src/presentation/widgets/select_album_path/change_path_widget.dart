@@ -31,13 +31,11 @@ class ChangePathWidgetState extends State<ChangePathWidget> {
   void initState() {
     final index = provider.pathList.indexOf(provider.currentAlbum!);
     controller = ScrollController(initialScrollOffset: itemHeight * index);
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
@@ -71,7 +69,6 @@ class ChangePathWidgetState extends State<ChangePathWidget> {
 
   Widget _buildItem(BuildContext context, int index) {
     final item = provider.pathList[index];
-
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () => widget.close.call(item),

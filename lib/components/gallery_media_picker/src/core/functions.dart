@@ -20,27 +20,20 @@ class GalleryFunctions {
       vsync: tickerProvider,
       duration: animationDuration,
     );
-
     final completer = Completer<T?>();
-
     var isReply = false;
-
     OverlayEntry? entry;
-
     void close(T? value) async {
       if (isReply) {
         return;
       }
-
       isReply = true;
-
       animationController.animateTo(0).whenCompleteOrCancel(() async {
         await Future.delayed(const Duration(milliseconds: 16));
         completer.complete(value);
         entry?.remove();
       });
     }
-
     entry = OverlayEntry(
       builder: (context) => GestureDetector(
         behavior: HitTestBehavior.translucent,
@@ -53,9 +46,7 @@ class GalleryFunctions {
       )
     );
     Overlay.of(context).insert(entry);
-
     animationController.animateTo(1);
-
     return FeatureController(
       completer,
       close,
@@ -77,7 +68,6 @@ class GalleryFunctions {
       PhotoManager.addChangeCallback((value) {
         _refreshPathList(setState, provider);
       });
-
       if (provider.pathList.isEmpty) {
         _refreshPathList(setState, provider);
       }
@@ -104,17 +94,13 @@ class GalleryFunctions {
 
   static Future getFile(AssetEntity asset) async {
     var file = await asset.file;
-
     return file!.path;
   }
 }
 
 class FeatureController<T> {
   final Completer<T?> completer;
-
   final ValueSetter<T?> close;
-
   FeatureController(this.completer, this.close);
-
   Future<T?> get closed => completer.future;
 }

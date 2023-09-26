@@ -83,7 +83,6 @@ class PickFromGalleryScreenPostsState extends State<PickFromGalleryScreenPosts> 
                 initialScrollOffset: 0,
               ),
               maxPickImages: 5,
-              thumbnailQuality: 1000,
               singlePick: false,
               onlyImages: true,
               appBarColor: Colors.black,

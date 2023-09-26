@@ -6,12 +6,12 @@ import '../../utilities/firebase.dart';
 
 class UserService extends Service {
   String currentUid() {
-
     return auth.currentUser!.uid;
   }
 
   setUserStatus(bool isUserOnline) {
     var user = auth.currentUser;
+
     if (user != null) {
       usersRef.doc(user.uid).update({'isOnline': isUserOnline, 'lastSeen': Timestamp.now()});
     }
@@ -19,6 +19,7 @@ class UserService extends Service {
 
   updateProfile({File? image, String? username, String? name, String? bio, String? country, String? link, String? profession, String? gender}) async {
     DocumentSnapshot doc = await usersRef.doc(currentUid()).get();
+
     var users = UserModel.fromJson(doc.data() as Map<String, dynamic>);
     users.username = username;
     users.bio = bio;
@@ -30,6 +31,7 @@ class UserService extends Service {
     if (image != null) {
       users.photoUrl = await uploadImage(profilePic, image);
     }
+
     await usersRef.doc(currentUid()).update({
       'username': username,
       'name': name,
@@ -48,6 +50,7 @@ class UserService extends Service {
     DocumentSnapshot doc = await usersRef.doc(currentUid()).get();
     var users = UserModel.fromJson(doc.data() as Map<String, dynamic>);
     users.type = type;
+
     await usersRef.doc(currentUid()).update({
       'type': type,
     });

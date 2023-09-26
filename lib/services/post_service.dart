@@ -19,12 +19,10 @@ class PostService extends Service{
         if (user.photoUrl != null) {
           await storage.refFromURL(user.photoUrl!).delete();
         } else {
-
           return;
         }
       }
     } catch (e) {
-
       return;
     }
   }
@@ -33,7 +31,6 @@ class PostService extends Service{
     await resetProfilePicture();
 
     String link = await uploadImage(profilePic, image);
-
     var ref = usersRef.doc(user.uid);
 
     ref.update({
@@ -58,7 +55,6 @@ class PostService extends Service{
       );
 
       var ref = postRef.doc();
-
       ref.set({
         "id": ref.id,
         "postId": ref.id,
@@ -95,6 +91,7 @@ class PostService extends Service{
         });
       }
     }
+
     await addOrIncrementHashtagsInUserCollection(hashTags);
   }
 
@@ -103,7 +100,6 @@ class PostService extends Service{
       DocumentSnapshot doc = await usersRef.doc(auth.currentUser!.uid).get();
 
       if (doc.exists) {
-
         await usersRef.doc(auth.currentUser!.uid).update({
           "hashtags.$hashTag": FieldValue.increment(1),
         });
@@ -161,7 +157,6 @@ class PostService extends Service{
     QuerySnapshot snapshot = await usersRef.where('username', isEqualTo: username).get();
 
     if(snapshot.docs.isNotEmpty){
-
       return snapshot.docs.first.id;
     }
 
@@ -190,7 +185,6 @@ class PostService extends Service{
             "timestamp": Timestamp.now(),
           });
         } else {
-
           continue;
         }
       }
@@ -236,11 +230,11 @@ class PostService extends Service{
 
     if (isNotMe) {
       notificationRef.doc(ownerId).collection('notifications').doc(postId).get().then((doc) async {
-            if (doc.exists) {
-              doc.reference.delete();
-            }
+        if (doc.exists) {
+          doc.reference.delete();
+        }
 
-            await decrementHashtagsInUserCollection(hashTags as List<String>, 1);
+        await decrementHashtagsInUserCollection(hashTags as List<String>, 1);
       });
     }
   }

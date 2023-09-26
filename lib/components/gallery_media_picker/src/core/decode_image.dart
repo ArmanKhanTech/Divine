@@ -1,6 +1,6 @@
 // ignore_for_file: deprecated_member_use
+import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'dart:ui' as ui;
 import 'package:photo_manager/photo_manager.dart';
 
 class DecodeImage extends ImageProvider<DecodeImage> {
@@ -26,13 +26,11 @@ class DecodeImage extends ImageProvider<DecodeImage> {
     );
   }
 
-  Future<ui.Codec> loadAsync(DecodeImage key, DecoderCallback decode) async {
+  Future<Codec> loadAsync(DecodeImage key, DecoderCallback decode) async {
     assert(key == this);
 
-    final coverEntity =
-        (await key.entity.getAssetListRange(start: index, end: index + 1))[0];
-    final bytes = await coverEntity
-        .thumbnailDataWithSize(ThumbnailSize(thumbSize, thumbSize));
+    final coverEntity = (await key.entity.getAssetListRange(start: index, end: index + 1))[0];
+    final bytes = await coverEntity.thumbnailDataWithSize(ThumbnailSize(thumbSize, thumbSize));
 
     return decode(bytes!);
   }

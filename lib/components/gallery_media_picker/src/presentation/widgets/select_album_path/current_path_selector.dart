@@ -19,7 +19,6 @@ class SelectedPathDropdownButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final arrowDownNotifier = ValueNotifier(false);
-
     return AnimatedBuilder(
       animation: provider.currentAlbumNotifier,
       builder: (_, __) => Padding(
@@ -65,7 +64,6 @@ class SelectedPathDropdownButton extends StatelessWidget {
     if (provider.pathList.isEmpty || provider.currentAlbum == null) {
       return Container();
     }
-
     if (provider.currentAlbum == null) {
       return Container();
     } else {

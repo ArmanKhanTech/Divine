@@ -3,13 +3,10 @@ class Regex {
     if (value!.isEmpty){
       return 'Your username is required.';
     }
-
     final RegExp nameExp = RegExp(r'^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-z0-9._]+(?<![_.])$');
-
     if (!nameExp.hasMatch(value)){
       return 'Please enter a valid username.';
     }
-
     return null;
   }
 
@@ -17,13 +14,10 @@ class Regex {
     if (value!.isEmpty && isRequired){
       return 'Your email is required.';
     }
-
     final RegExp emailExp = RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
-
     if (!emailExp.hasMatch(value) && isRequired){
       return 'Invalid email address.';
     }
-
     return null;
   }
 
@@ -31,7 +25,6 @@ class Regex {
     if (value!.isEmpty || value.length < 6){
       return 'Please enter a valid password.';
     }
-
     return null;
   }
 
@@ -39,7 +32,6 @@ class Regex {
     if (value!.isEmpty){
       return 'Please enter your country.';
     }
-
     return null;
   }
 
@@ -47,7 +39,6 @@ class Regex {
     if (value!.length > 1000){
       return 'Bio must be short.';
     }
-
     return null;
   }
 
@@ -55,7 +46,6 @@ class Regex {
     if (value!.length > 100){
       return 'Invalid name.';
     }
-
     return null;
   }
 
@@ -68,7 +58,6 @@ class Regex {
     } else if (value == ''){
       return null;
     }
-
     return null;
   }
 
@@ -78,7 +67,6 @@ class Regex {
     } else if (value == ''){
       return null;
     }
-
     return null;
   }
 
@@ -88,7 +76,6 @@ class Regex {
     } else if (value == ''){
       return null;
     }
-
     return null;
   }
 }
