@@ -209,6 +209,9 @@ class _UserPostState extends State<UserPost> {
                                                     Navigator.of(context).pop();
                                                     showProfile(context, profileId: widget.post!.mentions![index]);
                                                   },
+                                                  contentPadding: const EdgeInsets.symmetric(
+                                                    horizontal: 25.0,
+                                                  ),
                                                   leading: FutureBuilder(
                                                     future: usersRef.doc(widget.post!.mentions![index]).get(),
                                                     builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
@@ -308,9 +311,9 @@ class _UserPostState extends State<UserPost> {
                                                   ),
                                                   title: Text(
                                                     widget.post!.mentions![index],
-                                                    style: const TextStyle(
-                                                      fontSize: 18.0,
-                                                      color: Colors.black,
+                                                    style: TextStyle(
+                                                      fontSize: 20.0,
+                                                      color: Theme.of(context).colorScheme.secondary,
                                                       fontWeight: FontWeight.w600,
                                                     ),
                                                   ),

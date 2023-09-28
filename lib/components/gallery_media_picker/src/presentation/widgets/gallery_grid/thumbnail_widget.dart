@@ -48,7 +48,7 @@ class ThumbnailWidgetState extends State<ThumbnailWidget> {
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
                     width: double.infinity,
-                    height: double.infinity,
+                    height: widget.provider.paramsModel.thumbHeight,
                     padding: const EdgeInsets.all(0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
@@ -142,15 +142,18 @@ class ThumbnailWidgetState extends State<ThumbnailWidget> {
                       const SizedBox(
                         width: 2,
                       ),
-                      Text(
-                        parseDuration(widget.asset.videoDuration.inSeconds),
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 10
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 1),
+                        child: Text(
+                          parseDuration(widget.asset.videoDuration.inSeconds),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 10
+                          ),
                         ),
-                      ),
+                      )
                     ],
                   )
               ),

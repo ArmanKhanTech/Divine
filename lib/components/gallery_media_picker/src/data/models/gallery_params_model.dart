@@ -26,7 +26,8 @@ class MediaPickerParamsModel {
     this.selectedCheckBackgroundColor = Colors.white,
     this.onlyImages = true,
     this.onlyVideos = false,
-    this.thumbnailQuality = 200
+    this.thumbnailQuality = 200,
+    this.thumbHeight = 200,
   });
 
   final int maxPickImages;
@@ -46,6 +47,7 @@ class MediaPickerParamsModel {
   final int crossAxisCount;
 
   final double childAspectRatio;
+  final double? thumbHeight;
 
   final Widget? appBarLeadingWidget;
 

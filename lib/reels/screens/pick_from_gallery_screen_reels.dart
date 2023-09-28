@@ -56,11 +56,11 @@ class _PickFromGalleryScreenReelsState extends State<PickFromGalleryScreenReels>
           gridViewController: ScrollController(
             initialScrollOffset: 0,
           ),
-          thumbnailQuality: 1000,
           singlePick: true,
           onlyVideos: true,
           onlyImages: false,
           appBarColor: Colors.black,
+          thumbHeight: 380,
           gridViewPhysics: const ScrollPhysics(),
           appBarLeadingWidget: null,
           appBarHeight: 45,

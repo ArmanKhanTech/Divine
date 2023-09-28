@@ -776,109 +776,104 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
   }
 
   Widget postShimmer() {
-    return ListView.builder(
-      itemCount: 1,
-      itemBuilder: (context, index) {
-        return Shimmer.fromColors(
-          baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
-          highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Shimmer.fromColors(
+      baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
+      highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(width: 10.0),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Container(
+                margin: const EdgeInsets.only(
+                  top: 10,
+                  left: 10,
+                ),
+                width: 45.0,
+                height: 45.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.grey[300],
+                ),
+              ),
               const SizedBox(width: 10.0),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  const SizedBox(height: 10.0),
                   Container(
-                    margin: const EdgeInsets.only(
-                      top: 10,
-                      left: 10,
-                    ),
-                    width: 45.0,
-                    height: 45.0,
                     decoration: BoxDecoration(
-                      shape: BoxShape.circle,
+                      borderRadius: BorderRadius.circular(5.0),
                       color: Colors.grey[300],
                     ),
+                    width: 150.0,
+                    height: 15.0,
                   ),
-                  const SizedBox(width: 10.0),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 10.0),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5.0),
-                          color: Colors.grey[300],
-                        ),
-                        width: 150.0,
-                        height: 15.0,
-                      ),
-                      const SizedBox(height: 5.0),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5.0),
-                          color: Colors.grey[300],
-                        ),
-                        width: 100.0,
-                        height: 15.0,
-                      ),
-                    ],
+                  const SizedBox(height: 5.0),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5.0),
+                      color: Colors.grey[300],
+                    ),
+                    width: 100.0,
+                    height: 15.0,
                   ),
                 ],
               ),
-              const SizedBox(height: 10.0),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.width,
-                color: Colors.grey[300],
-              ),
-              const SizedBox(height: 10.0),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 15),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5.0),
-                  color: Colors.grey[300],
-                ),
-                width: 100.0,
-                height: 15.0,
-              ),
-              const SizedBox(height: 12.0),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 15),
-                width: double.infinity,
-                height: 15.0,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5.0),
-                  color: Colors.grey[300],
-                ),
-              ),
-              const SizedBox(height: 6.0),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 15),
-                width: MediaQuery.of(context).size.width * 0.5,
-                height: 15.0,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5.0),
-                  color: Colors.grey[300],
-                ),
-              ),
-              const SizedBox(height: 12.0),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 15),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5.0),
-                  color: Colors.grey[300],
-                ),
-                width: 150.0,
-                height: 14.0,
-              ),
-              const SizedBox(height: 15.0),
             ],
           ),
-        );
-      },
+          const SizedBox(height: 10.0),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.width,
+            color: Colors.grey[300],
+          ),
+          const SizedBox(height: 10.0),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 15),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5.0),
+              color: Colors.grey[300],
+            ),
+            width: 100.0,
+            height: 15.0,
+          ),
+          const SizedBox(height: 12.0),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 15),
+            width: double.infinity,
+            height: 15.0,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5.0),
+              color: Colors.grey[300],
+            ),
+          ),
+          const SizedBox(height: 6.0),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 15),
+            width: MediaQuery.of(context).size.width * 0.5,
+            height: 15.0,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5.0),
+              color: Colors.grey[300],
+            ),
+          ),
+          const SizedBox(height: 12.0),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 15),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5.0),
+              color: Colors.grey[300],
+            ),
+            width: 150.0,
+            height: 14.0,
+          ),
+          const SizedBox(height: 15.0),
+        ],
+      ),
     );
   }
 }

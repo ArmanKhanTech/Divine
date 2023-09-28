@@ -14,7 +14,7 @@ class DecodeImage extends ImageProvider<DecodeImage> {
   const DecodeImage(
     this.entity, {
     this.scale = 1.0,
-    this.thumbSize = 120,
+    this.thumbSize = 200,
     this.index = 0,
   });
 

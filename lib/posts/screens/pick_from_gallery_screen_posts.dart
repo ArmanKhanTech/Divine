@@ -86,6 +86,8 @@ class PickFromGalleryScreenPostsState extends State<PickFromGalleryScreenPosts> 
               singlePick: false,
               onlyImages: true,
               appBarColor: Colors.black,
+              thumbHeight: 140,
+              childAspectRatio: 1/1,
               gridViewPhysics: const ScrollPhysics(),
               appBarLeadingWidget: null,
               appBarHeight: 45,
