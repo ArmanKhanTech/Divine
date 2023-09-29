@@ -987,8 +987,8 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
   }
 
   buildPostView(UserModel currentUser) {
-    if(widget.profileId != auth.currentUser?.uid) {
-      if(currentUser.type == 'private' && isFollowing == false) {
+    if (widget.profileId != auth.currentUser?.uid) {
+      if (currentUser.type == 'private' && isFollowing == false) {
         return const Center(
           child: Text(
             'This account is private.',

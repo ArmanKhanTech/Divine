@@ -45,9 +45,8 @@ class _StoryWidgetState extends State<StoryWidget> {
                   return Padding(
                     padding: const EdgeInsets.only(
                       left: 18,
-                      top: 2,
                     ),
-                    child:  storyShimmer(),
+                    child: storyShimmer(),
                   );
                 }
                 if(index == 0){
@@ -110,7 +109,7 @@ class _StoryWidgetState extends State<StoryWidget> {
             return storyShimmer();
           }
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 0.0),
+            padding: const EdgeInsets.symmetric(horizontal: 5.0),
             child: FutureBuilder<QuerySnapshot>(
               future: storyRef.doc(storiesId).collection('stories').get(),
               builder: (context, snapshot){
@@ -232,41 +231,28 @@ class _StoryWidgetState extends State<StoryWidget> {
                         ),
                       ),
                       const SizedBox(height: 2.0),
-                      Row(
-                        children: [
-                          const SizedBox(width: 8.0),
-                          Text(
-                            user.username!.length > 8 ? '${user.username!.substring(0, 8).toLowerCase()}...' : user.username!.toLowerCase(),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.w400,
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
-                          )
-                        ],
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          user.username!.length > 8 ? '${user.username!.substring(0, 8).toLowerCase()}...' : user.username!.toLowerCase(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w400,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
                       )
                     ],
                   );
                 } else {
-                  return Padding(
-                    padding: const EdgeInsets.only(
-                      left: 10,
-                      top: 2,
-                    ),
-                    child:  storyShimmer(),
-                  );
+                  return storyShimmer();
                 }
               },
             )
           );
         } else {
-          return Padding(
-            padding: const EdgeInsets.only(
-              left: 10,
-            ),
-            child:  storyShimmer(),
-          );
+          return storyShimmer();
         }
       },
     );
@@ -276,8 +262,7 @@ class _StoryWidgetState extends State<StoryWidget> {
     return Padding(
       padding: const EdgeInsets.only(
         left: 18.0,
-        right: 10.0,
-        top: 2
+        right: 5
       ),
       child: StreamBuilder(
           stream: usersRef.doc(auth.currentUser!.uid).snapshots(),
@@ -285,13 +270,7 @@ class _StoryWidgetState extends State<StoryWidget> {
             if (snapshot.hasData) {
               UserModel profileImage = UserModel.fromJson(snapshot.data!.data() as Map<String, dynamic>);
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Padding(
-                  padding: const EdgeInsets.only(
-                    left: 5,
-                    top: 2
-                  ),
-                  child:  storyShimmer(),
-                );
+                return storyShimmer();
               }
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -395,26 +374,23 @@ class _StoryWidgetState extends State<StoryWidget> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 3.0),
-                  Text(
-                    'Your story',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w400,
-                      color: Theme.of(context).colorScheme.secondary,
+                  const SizedBox(height: 2.0),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Your story',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w400,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
                     ),
-                  ),
+                  )
                 ],
               );
             } else{
-              return Padding(
-                padding: const EdgeInsets.only(
-                    left: 5,
-                    top: 2,
-                ),
-                child:  storyShimmer(),
-              );
+              return storyShimmer();
             }
           }
       ),
@@ -423,6 +399,8 @@ class _StoryWidgetState extends State<StoryWidget> {
 
   Widget storyShimmer() {
       return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Shimmer.fromColors(
             baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
@@ -430,37 +408,34 @@ class _StoryWidgetState extends State<StoryWidget> {
             child: Container(
               height: 100,
               width: 100,
+              margin: const EdgeInsets.only(
+                top: 2,
+                left: 5,
+                right: 5,
+              ),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
                 shape: BoxShape.circle,
               ),
             ),
           ),
-          const SizedBox(height: 10.0),
-          Row(
-            children: [
-              const SizedBox(
-                width: 2,
+          Shimmer.fromColors(
+            baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
+            highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
+            child: Container(
+              alignment: Alignment.center,
+              height: 15,
+              width: 80,
+              margin: const EdgeInsets.only(
+                top: 10
               ),
-              Shimmer.fromColors(
-                baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
-                highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 15,
-                  width: 80,
-                  margin: const EdgeInsets.only(
-                    top: 2
-                  ),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
-                    shape: BoxShape.rectangle,
-                    borderRadius: const BorderRadius.all(Radius.circular(5)),
-                  ),
-                ),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
+                shape: BoxShape.rectangle,
+                borderRadius: const BorderRadius.all(Radius.circular(5)),
               ),
-            ],
-          )
+            ),
+          ),
         ],
       );
   }

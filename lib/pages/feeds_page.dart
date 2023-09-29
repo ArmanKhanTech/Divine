@@ -9,11 +9,11 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../chats/screens/chat_screen.dart';
 import '../models/post_model.dart';
-import '../models/user_model.dart';
 import '../reels/screens/new_reels_screen.dart';
 import '../stories/screens/confirm_story.dart';
 import '../stories/stories_editor/stories_editor.dart';
@@ -24,7 +24,9 @@ import '../widgets/story_widget.dart';
 import '../widgets/user_post.dart';
 
 class FeedsPage extends StatefulWidget{
-  const FeedsPage({super.key});
+  const FeedsPage({
+    super.key,
+  });
 
   @override
   State<FeedsPage> createState() => _FeedsPageState();
@@ -43,15 +45,15 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
   List<DocumentSnapshot> posts = [];
   List<DocumentSnapshot> suggested = [];
 
+  List<String> followingAccounts = [];
+  List<String> hashTags = [];
+
   int pagePosts = 0, pageSuggested = 0;
 
   bool loadingMorePosts = false, loadingMoreSuggested = false;
   bool loadedPosts = false, loadedSuggested = false;
 
   final ScrollController scrollController = ScrollController();
-
-  List<String> followingAccounts = [];
-  List<String> hashTags = [];
 
   late QuerySnapshot querySnapshot;
 
@@ -60,27 +62,36 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
       loadingMorePosts = true;
       pagePosts += 3;
     });
-    if(followingAccounts.length < 30) {
-      if(posts.isNotEmpty) {
-        querySnapshot = await postRef.where('ownerId', whereIn: followingAccounts)
-            .orderBy('timestamp', descending: true)
-            .startAfterDocument(posts.last)
-            .limit(pagePosts).get();
+    if(followingAccounts.isNotEmpty) {
+      if(followingAccounts.length < 30) {
+        if(posts.isNotEmpty) {
+          querySnapshot = await postRef.where('ownerId', whereIn: followingAccounts)
+              .orderBy('timestamp', descending: true)
+              .startAfterDocument(posts.last)
+              .limit(pagePosts).get();
+        } else {
+          querySnapshot = await postRef.where('ownerId', whereIn: followingAccounts)
+              .orderBy('timestamp', descending: true)
+              .limit(pagePosts).get();
+        }
       } else {
-        querySnapshot = await postRef.where('ownerId', whereIn: followingAccounts)
-            .orderBy('timestamp', descending: true)
-            .limit(pagePosts).get();
+        List<List<String>> batches = [];
+        for(int i = 0; i < followingAccounts.length; i += 30) {
+          batches.add(followingAccounts.skip(i).take(30).toList());
+        }
+        final snapshots = await getPosts(batches);
+        // TODO: Fix it
+        for(var snapshot in snapshots) {
+          querySnapshot = snapshot as QuerySnapshot;
+        }
       }
     } else {
-      List<List<String>> batches = [];
-      for(int i = 0; i < followingAccounts.length; i += 30) {
-        batches.add(followingAccounts.skip(i).take(30).toList());
-      }
-      final snapshots = await getPosts(batches);
-      // TODO: Fix it
-      for(var snapshot in snapshots) {
-        querySnapshot = snapshot as QuerySnapshot;
-      }
+      setState(() {
+        loadingMorePosts = false;
+        loadedPosts = true;
+        loadMoreSuggested();
+      });
+      return;
     }
     setState(() {
       if (querySnapshot.docs.length < pagePosts || querySnapshot.docs.isEmpty) {
@@ -172,8 +183,9 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
   }
 
   initUserData() async {
-    await getHashTags();
-    await getFollowingAccounts();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    followingAccounts = prefs.getStringList('followingAccounts') ?? [];
+    hashTags = prefs.getStringList('hashTags') ?? [];
     setState(() {});
     await loadMorePosts();
   }
@@ -182,23 +194,6 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
   void dispose() {
     nativeAd?.dispose();
     super.dispose();
-  }
-
-  getHashTags() async {
-    DocumentSnapshot doc = await usersRef.doc(auth.currentUser!.uid).get();
-    UserModel user = UserModel.fromJson(doc.data() as Map<String, dynamic>);
-    var mapEntries = user.userHashtags!.entries.toList()
-      ..sort((b, a) => a.value.compareTo(b.value));
-    for(var entry in mapEntries) {
-      hashTags.add(entry.key);
-    }
-  }
-
-  getFollowingAccounts() async {
-    QuerySnapshot snapshot = await followingRef.doc(auth.currentUser!.uid).collection('userFollowing').get();
-    for(var doc in snapshot.docs) {
-      followingAccounts.add(doc.id);
-    }
   }
 
   @override
@@ -569,6 +564,9 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
               CupertinoIcons.chat_bubble,
               size: 30.0,
             ),
+            padding: const EdgeInsets.only(
+              right: 10.0,
+            ),
             onPressed: () {
               Navigator.push(
                 context,
@@ -578,7 +576,6 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
               );
             },
           ),
-          const SizedBox(width: 10.0),
         ],
       ),
       extendBodyBehindAppBar: false,
@@ -636,13 +633,13 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
                   ),
                 ),
               ),
-              if (posts.isEmpty && suggested.isEmpty)
+              if (posts.isEmpty && suggested.isEmpty && !loadedPosts)
                 SizedBox(
                   height: MediaQuery.of(context).size.height,
                   child: postShimmer(),
               ),
               // TODO: Populate reels and threads too.
-              followingAccounts.isNotEmpty ? Column(
+              followingAccounts.isNotEmpty && !loadedPosts ? Column(
                 children: [
                     ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
@@ -655,10 +652,9 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
                       },
                     )
                   ],
-              ) : followingAccounts.isEmpty && loadedPosts ? const Padding(
+              ) : const Padding(
                 padding: EdgeInsets.only(
-                  top: 10.0,
-                  bottom: 20.0,
+                  top: 15.0,
                 ),
                 child: Center(
                   child: Text(
@@ -670,7 +666,8 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
                     ),
                   ),
                 ),
-              ) : const SizedBox(),
+              ),
+              // TODO: Fix it (not visible)
               if (loadingMorePosts)
                 const Center(
                   child: Padding(
@@ -678,15 +675,15 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
                       top: 10.0,
                       bottom: 20.0,
                     ),
-                    child: SpinKitCubeGrid(
+                    child: SpinKitWave(
                       color: Colors.blue,
-                      size: 40.0,
+                      size: 30.0,
                     ),
                   ),
                 ),
               hashTags.isNotEmpty && loadedPosts ? Column(
                 children: [
-                  const Row(
+                  posts.isNotEmpty ? const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -709,7 +706,7 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
                         ),
                       ),
                     ],
-                  ),
+                  ) : const SizedBox(),
                   const Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
