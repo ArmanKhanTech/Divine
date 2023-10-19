@@ -28,7 +28,6 @@ class DecodeImage extends ImageProvider<DecodeImage> {
 
   Future<Codec> loadAsync(DecodeImage key, DecoderCallback decode) async {
     assert(key == this);
-
     final coverEntity = (await key.entity.getAssetListRange(start: index, end: index + 1))[0];
     final bytes = await coverEntity.thumbnailDataWithSize(ThumbnailSize(thumbSize, thumbSize));
 

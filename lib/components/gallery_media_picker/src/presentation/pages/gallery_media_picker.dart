@@ -109,13 +109,12 @@ class _GalleryMediaPickerState extends State<GalleryMediaPicker> {
                                   title: asset.title,
                                   size: asset.size,
                                 ));
-
                                 widget.pathList(provider.pickedFile);
                               });
                             },
                           ),
                     ) : Center(
-                      child: circularProgress(context, const Color(0xFFFFFFFF)),
+                      child: circularProgress(context, Colors.white),
                     ),
                   ),
                 )

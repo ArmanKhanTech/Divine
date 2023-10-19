@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 import 'package:divine/components/gallery_media_picker/src/presentation/widgets/gallery_grid/thumbnail_widget.dart';
+import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 import '../../pages/gallery_media_picker_controller.dart';
@@ -40,18 +41,13 @@ class GalleryGridViewState extends State<GalleryGridView> {
 
   @override
   Widget build(BuildContext context) {
-    if(widget.provider.assetCount > 0) {
-      setState(() {
-        loaded = true;
-      });
-    }
-    return widget.path != null ? NotificationListener<ScrollNotification>(
+    return NotificationListener<ScrollNotification>(
       onNotification: onScroll,
       child: AnimatedBuilder(
         animation: widget.provider.assetCountNotifier,
         builder: (_, __) => Container(
           color: widget.provider.paramsModel.gridViewBackgroundColor,
-          child: GridView.builder(
+          child: widget.provider.assetCount != 0 ? GridView.builder(
             key: ValueKey(widget.path),
             shrinkWrap: true,
             padding: widget.provider.paramsModel.gridPadding ?? const EdgeInsets.all(0),
@@ -66,10 +62,15 @@ class GalleryGridViewState extends State<GalleryGridView> {
             itemBuilder: (context, index) => buildItem(context, index, widget.provider),
             itemCount: widget.provider.assetCount,
             addRepaintBoundaries: true,
+          ) : Center(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: circularProgress(context, Colors.white),
+            )
           ),
         ),
       ),
-    ) : SizedBox(
+    );/* : SizedBox(
       width: double.infinity,
       child: loaded == true ? Column(
         children: [
@@ -95,7 +96,7 @@ class GalleryGridViewState extends State<GalleryGridView> {
           )
         ],
       ) : Container()
-    );
+    );*/
   }
 
   Widget buildItem(
