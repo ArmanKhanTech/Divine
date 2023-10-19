@@ -104,9 +104,10 @@ class BottomTools extends StatelessWidget {
                           GradientText(
                             Constants.appName,
                             style: TextStyle(
-                              fontSize: 34.0,
+                              fontSize: 40.0,
                               fontWeight: FontWeight.w600,
                               fontFamily: GoogleFonts.ubuntu().fontFamily,
+                              height: 1.2,
                             ),
                             colors: const [
                               Colors.blue,
@@ -117,10 +118,11 @@ class BottomTools extends StatelessWidget {
                           const Text(
                             'Stories Creator',
                             style: TextStyle(
-                                color: Colors.grey,
-                                letterSpacing: 1,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold
+                              color: Colors.grey,
+                              letterSpacing: 1,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              height: 1.2,
                             ),
                           ),
                         ],

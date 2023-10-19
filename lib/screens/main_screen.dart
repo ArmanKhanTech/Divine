@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../pages/activity_page.dart';
 import '../pages/feeds_page.dart';
 import '../pages/profile_page.dart';
@@ -39,6 +41,7 @@ class _MainScreenState extends State<MainScreen> {
     ];
     pageController = PageController(initialPage: page);
   }
+
 
   @override
   Widget build(BuildContext context) {

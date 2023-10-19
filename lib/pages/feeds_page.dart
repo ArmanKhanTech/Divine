@@ -1,7 +1,6 @@
 import 'package:divine/posts/screens/new_post_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:divine/admobs/adHelper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,10 +9,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../chats/screens/chat_screen.dart';
 import '../models/post_model.dart';
+import '../models/user_model.dart';
 import '../reels/screens/new_reels_screen.dart';
 import '../stories/screens/confirm_story.dart';
 import '../stories/stories_editor/stories_editor.dart';
@@ -75,51 +74,36 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
               .limit(pagePosts).get();
         }
       } else {
-        List<List<String>> batches = [];
         for(int i = 0; i < followingAccounts.length; i += 30) {
-          batches.add(followingAccounts.skip(i).take(30).toList());
-        }
-        final snapshots = await getPosts(batches);
-        // TODO: Fix it
-        for(var snapshot in snapshots) {
-          querySnapshot = snapshot as QuerySnapshot;
+          if(posts.isNotEmpty) {
+            querySnapshot = await postRef.where('ownerId', whereIn: followingAccounts.skip(i).take(30).toList())
+                .orderBy('timestamp', descending: true)
+                .startAfterDocument(posts.last)
+                .limit(pagePosts).get();
+          } else {
+            querySnapshot = await postRef.where('ownerId', whereIn: followingAccounts.skip(i).take(30).toList())
+                .orderBy('timestamp', descending: true)
+                .limit(pagePosts).get();
+          }
         }
       }
     } else {
       setState(() {
         loadingMorePosts = false;
         loadedPosts = true;
-        loadMoreSuggested();
+        getHashTags();
       });
       return;
     }
     setState(() {
       if (querySnapshot.docs.length < pagePosts || querySnapshot.docs.isEmpty) {
         loadedPosts = true;
-        loadMoreSuggested();
+        getHashTags();
       } else {
         posts.addAll(querySnapshot.docs);
       }
       loadingMorePosts = false;
     });
-  }
-
-  Future<List<dynamic>> getPosts(List<List<String>> batches) async {
-    final queries = batches.map((batch) async {
-      if(posts.isNotEmpty) {
-        return await postRef.where('ownerId', whereIn: batch)
-            .orderBy('timestamp', descending: true)
-            .startAfterDocument(posts.last)
-            .limit(pagePosts).get();
-      } else {
-        return await postRef.where('ownerId', whereIn: batch)
-            .orderBy('timestamp', descending: true)
-            .limit(pagePosts).get();
-      }
-    });
-    final snapshots = await Future.wait(queries);
-    final results = snapshots.map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList()).toList();
-    return results;
   }
 
   Future<void> loadMoreSuggested() async {
@@ -149,6 +133,42 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
     });
   }
 
+  getFollowingAccounts() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    followingAccounts = prefs.getStringList('followingAccounts')!;
+    if(followingAccounts.isEmpty) {
+      QuerySnapshot snapshot = await followingRef.doc(auth.currentUser!.uid).collection('userFollowing').get();
+      for(var doc in snapshot.docs) {
+        followingAccounts.add(doc.id);
+      }
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setStringList('followingAccounts', followingAccounts);
+      //print(followingAccounts);
+    }
+    loadMorePosts();
+  }
+
+  getHashTags() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    hashTags = prefs.getStringList('hashTags')!;
+    if(hashTags.isEmpty) {
+      DocumentSnapshot doc = await usersRef.doc(auth.currentUser!.uid).get();
+      UserModel user = UserModel.fromJson(doc.data() as Map<String, dynamic>);
+      var mapEntries = user.userHashtags!.entries.toList()
+        ..sort((b, a) => a.value.compareTo(b.value));
+      for(var entry in mapEntries) {
+        hashTags.add(entry.key);
+      }
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.remove('hashTags');
+      prefs.setStringList('hashTags', hashTags);
+      //print(hashTags);
+    }
+    loadMoreSuggested();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -165,7 +185,7 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
       }
     });
     initUserData();
-    NativeAd(
+    /*NativeAd(
       adUnitId: adHelper.nativeAdUnitId,
       listener: NativeAdListener(
         onAdLoaded: (Ad ad) {
@@ -179,15 +199,11 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
       ),
       request: const AdRequest(),
       factoryId: 'listTile',
-    ).load();
+    ).load();*/
   }
 
   initUserData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    followingAccounts = prefs.getStringList('followingAccounts') ?? [];
-    hashTags = prefs.getStringList('hashTags') ?? [];
-    setState(() {});
-    await loadMorePosts();
+    await getFollowingAccounts();
   }
 
   @override
@@ -636,7 +652,7 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
               if (posts.isEmpty && suggested.isEmpty && !loadedPosts)
                 SizedBox(
                   height: MediaQuery.of(context).size.height,
-                  child: postShimmer(),
+                  child: const SizedBox(),
               ),
               // TODO: Populate reels and threads too.
               followingAccounts.isNotEmpty && !loadedPosts ? Column(
@@ -768,108 +784,6 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget postShimmer() {
-    return Shimmer.fromColors(
-      baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
-      highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(width: 10.0),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(
-                  top: 10,
-                  left: 10,
-                ),
-                width: 45.0,
-                height: 45.0,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.grey[300],
-                ),
-              ),
-              const SizedBox(width: 10.0),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 10.0),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5.0),
-                      color: Colors.grey[300],
-                    ),
-                    width: 150.0,
-                    height: 15.0,
-                  ),
-                  const SizedBox(height: 5.0),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5.0),
-                      color: Colors.grey[300],
-                    ),
-                    width: 100.0,
-                    height: 15.0,
-                  ),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(height: 10.0),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.width,
-            color: Colors.grey[300],
-          ),
-          const SizedBox(height: 10.0),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 15),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5.0),
-              color: Colors.grey[300],
-            ),
-            width: 100.0,
-            height: 15.0,
-          ),
-          const SizedBox(height: 12.0),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 15),
-            width: double.infinity,
-            height: 15.0,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5.0),
-              color: Colors.grey[300],
-            ),
-          ),
-          const SizedBox(height: 6.0),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 15),
-            width: MediaQuery.of(context).size.width * 0.5,
-            height: 15.0,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5.0),
-              color: Colors.grey[300],
-            ),
-          ),
-          const SizedBox(height: 12.0),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 15),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5.0),
-              color: Colors.grey[300],
-            ),
-            width: 150.0,
-            height: 14.0,
-          ),
-          const SizedBox(height: 15.0),
-        ],
       ),
     );
   }

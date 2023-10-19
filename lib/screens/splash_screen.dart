@@ -1,15 +1,11 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../auth/login_page.dart';
-import '../models/user_model.dart';
-import '../utilities/firebase.dart';
 import 'main_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -24,70 +20,28 @@ class _SplashScreenState extends State<SplashScreen> {
     colors: <Color>[Colors.pink, Colors.blue],
   ).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
 
-  List<String> followingAccounts = [];
-  List<String> hashTags = [];
-
   @override
   void initState() {
     super.initState();
   }
 
-  getHashTags() async {
-    DocumentSnapshot doc = await usersRef.doc(auth.currentUser!.uid).get();
-    UserModel user = UserModel.fromJson(doc.data() as Map<String, dynamic>);
-    var mapEntries = user.userHashtags!.entries.toList()
-      ..sort((b, a) => a.value.compareTo(b.value));
-    for(var entry in mapEntries) {
-      hashTags.add(entry.key);
-    }
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('hashTags');
-    prefs.setStringList('hashTags', hashTags);
-  }
-
-  getFollowingAccounts() async {
-    QuerySnapshot snapshot = await followingRef.doc(auth.currentUser!.uid).collection('userFollowing').get();
-    for(var doc in snapshot.docs) {
-      followingAccounts.add(doc.id);
-    }
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('followingAccounts');
-    prefs.setStringList('followingAccounts', followingAccounts);
-  }
-
-  init() async {
-    await getHashTags();
-    await getFollowingAccounts();
-  }
-
   @override
   Widget build(BuildContext context) {
-    Timer.periodic(
-        const Duration(seconds: 1),
-            (timer) => Navigator.of(context).pushReplacement(
-                CupertinoPageRoute(
-                    builder: (_) => StreamBuilder(
-                      stream: FirebaseAuth.instance.authStateChanges(),
-                      builder: ((BuildContext context, snapshot) {
-                        if (snapshot.hasData) {
-                          init().then((value) {
-                            timer.cancel();
-                            Navigator.of(context).pushReplacement(
-                                CupertinoPageRoute(
-                                    builder: (_) => const MainScreen()
-                                ));
-                          });
-                          // TODO: Continue here
-                          return const SplashScreen();
-                        } else {
-                          return const LoginPage();
-                        }
-                      }),
-                    )
-                )
-            )
+    Timer(
+        const Duration(seconds: 2), () => Navigator.of(context).pushReplacement(
+          CupertinoPageRoute(
+              builder: (_) => StreamBuilder(
+                stream: FirebaseAuth.instance.authStateChanges(),
+                builder: ((BuildContext context, snapshot) {
+                  if (snapshot.hasData) {
+                    return const MainScreen();
+                  } else {
+                    return const LoginPage();
+                  }
+                }),
+              )
+          )
+        )
     );
 
     return Scaffold(

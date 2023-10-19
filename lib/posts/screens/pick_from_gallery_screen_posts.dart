@@ -2,7 +2,6 @@ import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
@@ -98,9 +97,7 @@ class PickFromGalleryScreenPostsState extends State<PickFromGalleryScreenPosts> 
               stories: false,
             ),
             pathList: (List<PickedAssetModel> paths) {
-              setState(() {
-                pickedImages = paths;
-              });
+              pickedImages = paths;
             },
           ),
           Positioned(

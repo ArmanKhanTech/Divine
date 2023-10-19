@@ -108,98 +108,91 @@ class _LoginPageState extends State<LoginPage> {
         ]),
       );
     }
-    return FlutterWebFrame(
-      builder: (context) {
-        return LoadingOverlay(
-          progressIndicator: circularProgress(context, const Color(0xFFFF9800)),
-          opacity: 0.5,
-          color: Theme.of(context).colorScheme.background,
-          isLoading: viewModel.loading,
-          child: Scaffold(
-            appBar: PreferredSize(
-              preferredSize: const Size.fromHeight(0.0),
-              child: AppBar(
-                automaticallyImplyLeading: false,
+    return LoadingOverlay(
+      progressIndicator: circularProgress(context, const Color(0xFFFF9800)),
+      opacity: 0.5,
+      color: Theme.of(context).colorScheme.background,
+      isLoading: viewModel.loading,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(0.0),
+          child: AppBar(
+            automaticallyImplyLeading: false,
+          ),
+        ),
+        extendBodyBehindAppBar: true,
+        backgroundColor: Theme.of(context).colorScheme.background,
+        key: viewModel.loginScaffoldKey,
+        body: ListView(
+          padding: const EdgeInsets.symmetric(vertical: 20.0),
+          children: [
+            const SizedBox(
+                height: 20
+            ),
+            SizedBox(
+              height: kIsWeb == false ? MediaQuery.of(context).size.height * 0.45 : MediaQuery.of(context).size.height * 0.35,
+              width: MediaQuery.of(context).size.width * 0.5,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Lottie.asset(
+                    'assets/lottie/login.json',
+                    fit: BoxFit.fill
+                ),
               ),
             ),
-            extendBodyBehindAppBar: true,
-            backgroundColor: Theme.of(context).colorScheme.background,
-            key: viewModel.loginScaffoldKey,
-            body: ListView(
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
+            const SizedBox(
+                height: 20
+            ),
+            const Center(
+              child: Text(
+                'Welcome back!',
+                style: TextStyle(
+                  fontSize: 30.0,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            const Center(
+              child: Text(
+                'Login. Your fun awaits you!',
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.orange,
+                ),
+              ),
+            ),
+            const SizedBox(height: 25.0),
+            buildForm(context, viewModel),
+            const SizedBox(height: 10.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(
-                  height: 20
-                ),
-                SizedBox(
-                  height: kIsWeb == false ? MediaQuery.of(context).size.height * 0.45 : MediaQuery.of(context).size.height * 0.35,
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Lottie.asset(
-                        'assets/lottie/login.json',
-                        fit: BoxFit.fill
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20
-                ),
-                const Center(
-                  child: Text(
-                    'Welcome back!',
-                    style: TextStyle(
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                ),
-                const Center(
-                  child: Text(
-                    'Login. Your fun awaits you!',
+                const Text('Don\'t have an account yet?',
+                    style: TextStyle(fontSize: 18.0)),
+                const SizedBox(width: 5.0),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      CupertinoPageRoute(
+                        builder: (context) => const RegisterPage(),
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    'Sign Up.',
                     style: TextStyle(
                       fontSize: 18.0,
-                      fontWeight: FontWeight.w300,
+                      fontWeight: FontWeight.bold,
                       color: Colors.orange,
                     ),
                   ),
                 ),
-                const SizedBox(height: 25.0),
-                buildForm(context, viewModel),
-                const SizedBox(height: 10.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('Don\'t have an account yet?',
-                        style: TextStyle(fontSize: 18.0)),
-                    const SizedBox(width: 5.0),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          CupertinoPageRoute(
-                            builder: (context) => const RegisterPage(),
-                          ),
-                        );
-                      },
-                      child: const Text(
-                        'Sign Up.',
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.orange,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
               ],
             ),
-          ),
-        );
-      },
-      enabled: kIsWeb,
-      maximumSize: const Size(540.0, 960.0),
-      backgroundColor: Theme.of(context).colorScheme.background,
+          ],
+        ),
+      ),
     );
   }
 }

@@ -375,6 +375,7 @@ class _MainViewState extends State<MainView> {
                         ),
                         maxPickImages: 1,
                         thumbnailQuality: 1000,
+                        thumbHeight: 380,
                         singlePick: true,
                         onlyImages: true,
                         appBarColor: Colors.black,

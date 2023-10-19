@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:shimmer/shimmer.dart';
 import '../models/story_model.dart';
 import '../models/user_model.dart';
@@ -42,11 +41,11 @@ class _StoryWidgetState extends State<StoryWidget> {
               physics: const AlwaysScrollableScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Padding(
-                    padding: const EdgeInsets.only(
+                  return const Padding(
+                    padding: EdgeInsets.only(
                       left: 18,
                     ),
-                    child: storyShimmer(),
+                    child: SizedBox()
                   );
                 }
                 if(index == 0){
@@ -106,10 +105,10 @@ class _StoryWidgetState extends State<StoryWidget> {
           DocumentSnapshot documentSnapshot = snapshot.data as DocumentSnapshot<Object?>;
           UserModel user = UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return storyShimmer();
+            return const SizedBox();
           }
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: FutureBuilder<QuerySnapshot>(
               future: storyRef.doc(storiesId).collection('stories').get(),
               builder: (context, snapshot){
@@ -118,7 +117,7 @@ class _StoryWidgetState extends State<StoryWidget> {
                   StoryModel stats = StoryModel.fromJson(stories.toList()[stories.length - 1].data());
                   List<dynamic>? allViewers = stats.viewers;
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return storyShimmer();
+                    return const SizedBox();
                   }
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -230,7 +229,6 @@ class _StoryWidgetState extends State<StoryWidget> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 2.0),
                       Align(
                         alignment: Alignment.center,
                         child: Text(
@@ -246,13 +244,13 @@ class _StoryWidgetState extends State<StoryWidget> {
                     ],
                   );
                 } else {
-                  return storyShimmer();
+                  return const SizedBox();
                 }
               },
             )
           );
         } else {
-          return storyShimmer();
+          return const SizedBox();
         }
       },
     );
@@ -262,7 +260,8 @@ class _StoryWidgetState extends State<StoryWidget> {
     return Padding(
       padding: const EdgeInsets.only(
         left: 18.0,
-        right: 5
+        right: 8.0,
+        top: 2.0,
       ),
       child: StreamBuilder(
           stream: usersRef.doc(auth.currentUser!.uid).snapshots(),
@@ -270,7 +269,7 @@ class _StoryWidgetState extends State<StoryWidget> {
             if (snapshot.hasData) {
               UserModel profileImage = UserModel.fromJson(snapshot.data!.data() as Map<String, dynamic>);
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return storyShimmer();
+                return const SizedBox();
               }
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -300,8 +299,8 @@ class _StoryWidgetState extends State<StoryWidget> {
                         profileImage.photoUrl!.isNotEmpty ? CachedNetworkImage(
                           imageUrl: profileImage.photoUrl!,
                           imageBuilder: (context, imageProvider) => Container(
-                            height: 100,
-                            width: 100,
+                            height: 98,
+                            width: 98,
                             decoration: BoxDecoration(
                               borderRadius: const BorderRadius.all(Radius.circular(50)),
                               image: DecorationImage(
@@ -315,8 +314,8 @@ class _StoryWidgetState extends State<StoryWidget> {
                               baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
                               highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
                               child: Container(
-                                height: 100,
-                                width: 100,
+                                height: 98,
+                                width: 98,
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
                                   shape: BoxShape.circle,
@@ -326,7 +325,7 @@ class _StoryWidgetState extends State<StoryWidget> {
                           },
                           errorWidget: (context, url, error) {
                             return CircleAvatar(
-                              radius: 50.0,
+                              radius: 49,
                               backgroundColor: Theme.of(context).colorScheme.secondary,
                               child: Center(
                                 child: Text(
@@ -341,7 +340,7 @@ class _StoryWidgetState extends State<StoryWidget> {
                             );
                           },
                         ) : CircleAvatar(
-                          radius: 50.0,
+                          radius: 49,
                           backgroundColor: Theme.of(context).colorScheme.secondary,
                           child: Center(
                             child: Text(
@@ -358,23 +357,28 @@ class _StoryWidgetState extends State<StoryWidget> {
                           bottom: 0.0,
                           right: 5.0,
                           child: Container(
-                            height: 25.0,
-                            width: 25.0,
-                            decoration: const BoxDecoration(
-                              color: Colors.blue,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.background,
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(
-                              Icons.add,
-                              color: Colors.white,
-                              size: 15.0,
-                            ),
+                            padding: const EdgeInsets.all(2.0),
+                            child: const CircleAvatar(
+                              radius: 12,
+                              backgroundColor: Colors.blue,
+                              child: Icon(
+                                Icons.add,
+                                color: Colors.white,
+                                size: 20.0,
+                              ),
+                            )
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 2.0),
+                  const SizedBox(
+                    height: 2.0,
+                  ),
                   Align(
                     alignment: Alignment.center,
                     child: Text(
@@ -389,55 +393,12 @@ class _StoryWidgetState extends State<StoryWidget> {
                   )
                 ],
               );
-            } else{
-              return storyShimmer();
+            } else {
+              return const SizedBox();
             }
           }
       ),
     );
-  }
-
-  Widget storyShimmer() {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Shimmer.fromColors(
-            baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
-            highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
-            child: Container(
-              height: 100,
-              width: 100,
-              margin: const EdgeInsets.only(
-                top: 2,
-                left: 5,
-                right: 5,
-              ),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
-                shape: BoxShape.circle,
-              ),
-            ),
-          ),
-          Shimmer.fromColors(
-            baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
-            highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
-            child: Container(
-              alignment: Alignment.center,
-              height: 15,
-              width: 80,
-              margin: const EdgeInsets.only(
-                top: 10
-              ),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
-                shape: BoxShape.rectangle,
-                borderRadius: const BorderRadius.all(Radius.circular(5)),
-              ),
-            ),
-          ),
-        ],
-      );
   }
 
   Stream<QuerySnapshot> viewerListStream(String uid) {
