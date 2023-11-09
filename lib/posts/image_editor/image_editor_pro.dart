@@ -116,22 +116,92 @@ class MultiImageEditor extends StatefulWidget {
 
 class MultiImageEditorState extends State<MultiImageEditor> {
   List<ImageItem> images = [];
-  List<String> savePaths = [];
   List<File> saveImages = [];
   
   int index = 0;
 
-  late Color topLeftColor, bottomRightColor;
+  final List<AspectRatioOption> availableRatios = const [
+    AspectRatioOption(title: '1:1', ratio: 1),
+    AspectRatioOption(title: '4:3', ratio: 4 / 3),
+    AspectRatioOption(title: '5:4', ratio: 5 / 4),
+    AspectRatioOption(title: '7:5', ratio: 7 / 5),
+    AspectRatioOption(title: '16:9', ratio: 16 / 9),
+  ];
+
+  double? aspectRatio;
+  double? aspectRatioOriginal;
+
+  bool isLandscape = true;
+
+  int rotateAngle = 0;
 
   @override
   void initState() {
     images = widget.images.map((e) => ImageItem(e)).toList();
+    aspectRatio = aspectRatioOriginal = 1;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    viewportSize = MediaQuery.of(context).size;
+
+    Widget imageRatioButton(double? ratio, String title) {
+      return TextButton(
+        onPressed: () {
+          aspectRatioOriginal = ratio;
+
+          if (aspectRatioOriginal != null && isLandscape == false) {
+            aspectRatio = 1 / aspectRatioOriginal!;
+          } else {
+            aspectRatio = aspectRatioOriginal;
+          }
+
+          setState(() {});
+        },
+        child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            child: Text(
+              i18n(title),
+              style: TextStyle(
+                fontSize: 20,
+                color: aspectRatioOriginal == ratio ? Colors.white : Colors.grey,
+              ),
+            )),
+      );
+    }
+
+    Future<Uint8List?> cropImageDataWithNativeLibrary(
+        {required ExtendedImageEditorState state}) async {
+      final Rect? cropRect = state.getCropRect();
+      final EditActionDetails action = state.editAction!;
+
+      final int rotateAngle = action.rotateAngle.toInt();
+      final bool flipHorizontal = action.flipY;
+      final bool flipVertical = action.flipX;
+      final Uint8List img = state.rawImageData;
+
+      final option = image_editor.ImageEditorOption();
+
+      if (action.needCrop) {
+        option.addOption(image_editor.ClipOption.fromRect(cropRect!));
+      }
+
+      if (action.needFlip) {
+        option.addOption(image_editor.FlipOption(
+            horizontal: flipHorizontal, vertical: flipVertical));
+      }
+
+      if (action.hasRotateAngle) {
+        option.addOption(image_editor.RotateOption(rotateAngle));
+      }
+
+      final Uint8List? result = await image_editor.ImageEditor.editImage(
+        image: img,
+        imageEditorOption: option,
+      );
+
+      return result;
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -198,29 +268,16 @@ class MultiImageEditorState extends State<MultiImageEditor> {
                       margin: const EdgeInsets.only(
                           top: 32, right: 32, bottom: 32),
                       width: MediaQuery.of(context).size.width * 0.8,
-                      height: MediaQuery.of(context).size.height * 0.8,
+                      height: MediaQuery.of(context).size.height * 0.5,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                          image: MemoryImage(image.image),
-                          fit: BoxFit.cover,
+                        border: Border.all(
+                          width: 1,
+                          color: Colors.white,
                         ),
+                        color: Colors.black,
                       ),
                       child: Stack(alignment: Alignment.center, children: [
-                        Positioned.fill(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(
-                                sigmaX: 10,
-                                sigmaY: 10,
-                              ),
-                              child: Container(
-                                color: Colors.black.withOpacity(0.2),
-                              ),
-                            ),
-                          ),
-                        ),
                         GestureDetector(
                           onTap: () async {
                             var img = await Navigator.push(
@@ -237,10 +294,28 @@ class MultiImageEditorState extends State<MultiImageEditor> {
                               setState(() {});
                             }
                           },
-                          child: Image.memory(
-                            image.image,
-                            fit: BoxFit.contain,
-                          ),
+                          child: SizedBox(
+                            width: double.infinity, height: double.infinity,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: ExtendedImage.memory(
+                                image.image,
+                                cacheRawData: true,
+                                fit: BoxFit.contain,
+                                mode: ExtendedImageMode.editor,
+                                initEditorConfigHandler: (state) {
+                                  return EditorConfig(
+                                    cornerColor: Colors.white,
+                                    cropAspectRatio: aspectRatio,
+                                    lineColor: Colors.white,
+                                    editorMaskColorHandler: (context, pointerDown) {
+                                      return Colors.transparent;
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          )
                         ),
                         Positioned(
                           top: 5,
@@ -257,7 +332,6 @@ class MultiImageEditorState extends State<MultiImageEditor> {
                               iconSize: 20,
                               padding: const EdgeInsets.all(0),
                               onPressed: () {
-                                savePaths.removeAt(images.indexOf(image));
                                 images.remove(image);
                                 setState(() {});
                               },
@@ -266,8 +340,8 @@ class MultiImageEditorState extends State<MultiImageEditor> {
                           ),
                         ),
                         Positioned(
-                          bottom: 0,
-                          left: 0,
+                          bottom: 1,
+                          left: 1,
                           child: Container(
                             height: 50,
                             width: 50,
@@ -276,6 +350,7 @@ class MultiImageEditorState extends State<MultiImageEditor> {
                               color: Colors.black.withAlpha(100),
                               borderRadius: const BorderRadius.only(
                                 topRight: Radius.circular(20),
+                                bottomLeft: Radius.circular(20),
                               ),
                             ),
                             child: IconButton(
@@ -291,7 +366,6 @@ class MultiImageEditorState extends State<MultiImageEditor> {
                                   ),
                                 );
                                 if (editedImage != null) {
-
                                   image.load(editedImage);
                                 }
                                 setState(() {});
@@ -307,6 +381,74 @@ class MultiImageEditorState extends State<MultiImageEditor> {
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: SafeArea(
+        child: SizedBox(
+          height: 80,
+          child: Column(
+            children: [
+              Container(
+                height: 80,
+                decoration: const BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black,
+                      blurRadius: 10,
+                    ),
+                  ],
+                ),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      if (aspectRatioOriginal != null &&
+                          aspectRatioOriginal != 1)
+                        IconButton(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          icon: Icon(
+                            Icons.portrait,
+                            size: 25,
+                            color: isLandscape ? Colors.grey : Colors.white,
+                          ),
+                          onPressed: () {
+                            isLandscape = false;
+                            if (aspectRatioOriginal != null) {
+                              aspectRatio = 1 / aspectRatioOriginal!;
+                            }
+                            setState(() {});
+                          },
+                        ),
+                      if (aspectRatioOriginal != null &&
+                          aspectRatioOriginal != 1)
+                        IconButton(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          icon: Icon(
+                            Icons.landscape,
+                            size: 25,
+                            color: isLandscape ? Colors.white : Colors.grey,
+                          ),
+                          onPressed: () {
+                            isLandscape = true;
+                            aspectRatio = aspectRatioOriginal!;
+                            setState(() {});
+                          },
+                        ),
+                      for (var ratio in availableRatios)
+                        imageRatioButton(ratio.ratio, i18n(ratio.title)),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -843,38 +985,6 @@ class SingleImageEditorState extends State<SingleImageEditor> {
                         setState(() {});
                       },
                     ),
-                  /*if (widget.features.brush)
-                    BottomButton(
-                      icon: Icons.brush,
-                      text: 'Brush',
-                      onTap: () async {
-                        var drawing = await Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => ImageEditorDrawing(
-                              image: currentImage,
-                            ),
-                          ),
-                        );
-
-                        if (drawing != null) {
-                          undoLayers.clear();
-                          removedLayers.clear();
-
-                          layers.add(
-                            ImageLayerData(
-                              image: ImageItem(drawing),
-                              offset: Offset(
-                                -currentImage.width / 4,
-                                -currentImage.height / 4,
-                              ),
-                            ),
-                          );
-
-                          setState(() {});
-                        }
-                      },
-                    ),*/
                   if (widget.features.flip)
                     BottomButton(
                       icon: Icons.flip,
@@ -1477,16 +1587,11 @@ class ImageCropperState extends State<ImageCropper> {
       aspectRatio = aspectRatioOriginal = 1;
     }
     _controller.currentState?.rotate(right: true);
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_controller.currentState != null) {
-      // do nothing
-    }
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,

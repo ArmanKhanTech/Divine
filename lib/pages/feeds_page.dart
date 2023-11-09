@@ -59,7 +59,9 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
   Future<void> loadMorePosts() async {
     setState(() {
       loadingMorePosts = true;
-      pagePosts += 3;
+      if (followingAccounts.isNotEmpty) {
+        pagePosts += 3;
+      }
     });
     if(followingAccounts.isNotEmpty) {
       if(followingAccounts.length < 30) {
@@ -99,6 +101,7 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
       if (querySnapshot.docs.length < pagePosts || querySnapshot.docs.isEmpty) {
         loadedPosts = true;
         getHashTags();
+        return;
       } else {
         posts.addAll(querySnapshot.docs);
       }
