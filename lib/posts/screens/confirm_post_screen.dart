@@ -25,9 +25,7 @@ class ConfirmSinglePostScreen extends  StatefulWidget{
 class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with TickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
-
     exitDialog({required PostsViewModel viewModel}) {
-
       return showDialog(
         context: context,
         barrierColor: Colors.black38,
@@ -41,7 +39,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: BlurryContainer(
-                height: 220,
+                height: 250,
                 color: Colors.black.withOpacity(0.15),
                 blur: 5,
                 padding: const EdgeInsets.all(20),
@@ -147,6 +145,7 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
               color: Colors.white,
               padding: const EdgeInsets.only(bottom: 2.0),
             ),
+            scrolledUnderElevation: 0,
             systemOverlayStyle: const SystemUiOverlayStyle(
               systemNavigationBarColor: Colors.black,
               systemNavigationBarIconBrightness: Brightness.light,
@@ -176,79 +175,65 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                   scrollDirection: Axis.horizontal,
                   itemCount: widget.postImages.length,
                   itemBuilder: (BuildContext context, int index) {
-
                     return Container(
-                      width: MediaQuery.of(context).size.width * 0.95,
-                      height: MediaQuery.of(context).size.height * 0.9,
-                      margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: FileImage(widget.postImages[index]),
-                          fit: BoxFit.fitWidth,
+                        width: MediaQuery.of(context).size.width * 0.95,
+                        height: double.infinity,
+                        margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                        padding: const EdgeInsets.all(0),
+                        decoration: BoxDecoration(
+                          image: viewModel.mediaUrl!.isNotEmpty ? DecorationImage(
+                            image: NetworkImage(viewModel.mediaUrl![index]),
+                            fit: BoxFit.cover
+                          ) : DecorationImage(
+                            image: FileImage(widget.postImages[index]),
+                            fit: BoxFit.cover,
+                          ),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(20.0),
+                          ),
                         ),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(20.0),
-                        ),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(20.0),
-                        ),
-                        child: Stack(alignment: Alignment.center,
-                          children: [
-                            Positioned.fill(
-                              child: BackdropFilter(
-                                filter: ImageFilter.blur(
-                                  sigmaX: 10.0,
-                                  sigmaY: 10.0,
-                                ),
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(20.0),
+                          ),
+                          child: Stack(alignment: Alignment.center,
+                            children: [
+                              Positioned(
+                                top: 0,
+                                left: 0,
                                 child: Container(
-                                  color: Colors.black.withOpacity(0.2),
-                                ),
-                              ),
-                            ),
-                            viewModel.mediaUrl!.isNotEmpty ? CustomImage(
-                              imageUrl: viewModel.mediaUrl![index],
-                              width: MediaQuery.of(context).size.width,
-                              fit: BoxFit.contain,
-                            ) :  Image.file(
-                              widget.postImages[index],
-                              key: UniqueKey(),
-                              width: MediaQuery.of(context).size.width,
-                              fit: BoxFit.contain,
-                            ),
-                            Positioned(
-                              top: 0,
-                              left: 0,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.black.withOpacity(0.5),
-                                  borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(20.0),
-                                    bottomRight: Radius.circular(20.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0.5),
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(20.0),
+                                      bottomRight: Radius.circular(20.0),
+                                    ),
                                   ),
-                                ),
-                                padding: const EdgeInsets.all(10.0),
-                                child: Text(
-                                  '${index + 1}',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18.0,
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Text(
+                                    '${index + 1}',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20.0,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      )
+                            ],
+                          ),
+                        )
                     );
                   },
                 ) : Container(
                     width: MediaQuery.of(context).size.width * 0.95,
-                    height: MediaQuery.of(context).size.height * 0.9,
+                    height: double.infinity,
                     margin: const EdgeInsets.symmetric(horizontal: 10.0),
                     decoration: BoxDecoration(
-                      image: DecorationImage(
+                      image: viewModel.mediaUrl!.isNotEmpty ? DecorationImage(
+                          image: NetworkImage(viewModel.mediaUrl![0]),
+                          fit: BoxFit.cover
+                      ) : DecorationImage(
                         image: FileImage(widget.postImages[0]),
                         fit: BoxFit.cover,
                       ),
@@ -256,39 +241,10 @@ class _ConfirmSinglePostScreenState extends State<ConfirmSinglePostScreen> with 
                         Radius.circular(20.0),
                       ),
                     ),
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(20.0),
-                      ),
-                      child: Stack(alignment: Alignment.center,
-                        children: [
-                          Positioned.fill(
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(
-                                sigmaX: 10.0,
-                                sigmaY: 10.0,
-                              ),
-                              child: Container(
-                                color: Colors.black.withOpacity(0.2),
-                              ),
-                            ),
-                          ),
-                          viewModel.mediaUrl!.isNotEmpty ? CustomImage(
-                            imageUrl: viewModel.mediaUrl![0],
-                            width: MediaQuery.of(context).size.width,
-                            fit: BoxFit.contain,
-                          ) :  Image.file(
-                            widget.postImages[0],
-                            key: UniqueKey(),
-                            width: MediaQuery.of(context).size.width,
-                            fit: BoxFit.contain,
-                          ),
-                        ],
-                      ),
-                    )
+                    child: const SizedBox()
                 ),
               ),
-              const SizedBox(height: 5.0),
+              const SizedBox(height: 15.0),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
                 child: SizedBox(

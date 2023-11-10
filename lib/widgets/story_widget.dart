@@ -26,7 +26,7 @@ class _StoryWidgetState extends State<StoryWidget> {
     super.initState();
   }
 
-  /* TODO: Sort stories by time i.e viewed stories at last, tags in stories, location in stories, tagged stories within stories, post & threads within stories.*/
+  /* TODO: Sort stories by time i.e viewed stories at last, tags in stories, location in stories, stories within stories, post & threads within stories.*/
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -299,8 +299,8 @@ class _StoryWidgetState extends State<StoryWidget> {
                         profileImage.photoUrl!.isNotEmpty ? CachedNetworkImage(
                           imageUrl: profileImage.photoUrl!,
                           imageBuilder: (context, imageProvider) => Container(
-                            height: 98,
-                            width: 98,
+                            height: 100,
+                            width: 100,
                             decoration: BoxDecoration(
                               borderRadius: const BorderRadius.all(Radius.circular(50)),
                               image: DecorationImage(
@@ -314,8 +314,8 @@ class _StoryWidgetState extends State<StoryWidget> {
                               baseColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
                               highlightColor: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[100]! : Colors.grey[800]!,
                               child: Container(
-                                height: 98,
-                                width: 98,
+                                height: 100,
+                                width: 100,
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).colorScheme.background == Colors.white ? Colors.grey[300]! : Colors.grey[700]!,
                                   shape: BoxShape.circle,
@@ -325,7 +325,7 @@ class _StoryWidgetState extends State<StoryWidget> {
                           },
                           errorWidget: (context, url, error) {
                             return CircleAvatar(
-                              radius: 49,
+                              radius: 50,
                               backgroundColor: Theme.of(context).colorScheme.secondary,
                               child: Center(
                                 child: Text(

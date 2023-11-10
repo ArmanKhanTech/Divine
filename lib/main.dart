@@ -22,13 +22,9 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  await FirebaseAppCheck.instance.activate(
-    androidProvider: AndroidProvider.playIntegrity,
-  );
-
-  if(!kIsWeb){
+  /*if(!kIsWeb){
     await MobileAds.instance.initialize();
-  }
+  }*/
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(const MyApp());

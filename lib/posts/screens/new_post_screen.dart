@@ -69,7 +69,6 @@ class _NewPostScreenState extends State<NewPostScreen> with
 
     controller?.initialize().then((_) {
       if (!mounted) {
-
         return;
       }
       controller?.getMinExposureOffset().then(
@@ -90,7 +89,6 @@ class _NewPostScreenState extends State<NewPostScreen> with
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     if (controller == null || !controller!.value.isInitialized) {
-
       return;
     }
 
@@ -152,8 +150,7 @@ class _NewPostScreenState extends State<NewPostScreen> with
             ), colors: const [
             Colors.blue,
             Colors.purple,
-          ],
-          ),
+          ]),
         ),
         backgroundColor: Colors.black,
         body: isCameraInitialized == true && isLensChanging == false && pictureTaken == false ? Column(
@@ -181,16 +178,13 @@ class _NewPostScreenState extends State<NewPostScreen> with
           ],
         ) : Padding(
             padding: const EdgeInsets.only(bottom: 50.0),
-            child: Center(child: circularProgress(context, const Color(0xFF9C27B0))
-            )
-        )
-    );
+            child: Center(child: circularProgress(context, const Color(0xFF9C27B0)))
+        ));
   }
 
   Widget cameraWidget(){
 
     if(controller == null || !controller!.value.isInitialized){
-
       return Container();
     }
 
@@ -237,19 +231,16 @@ class _NewPostScreenState extends State<NewPostScreen> with
 
   Future<void> handleScaleUpdate(ScaleUpdateDetails details) async {
     if (controller == null || pointers != 2) {
-
       return;
     }
 
     currentScale = (baseScale * details.scale)
         .clamp(minAvailableZoom, maxAvailableZoom);
-
     await controller!.setZoomLevel(currentScale);
   }
 
   void onViewFinderTap(TapDownDetails details, BoxConstraints constraints) {
     if (controller == null) {
-
       return;
     }
 
@@ -259,12 +250,12 @@ class _NewPostScreenState extends State<NewPostScreen> with
       details.localPosition.dx / constraints.maxWidth,
       details.localPosition.dy / constraints.maxHeight,
     );
+
     cameraController.setExposurePoint(offset);
     cameraController.setFocusPoint(offset);
   }
 
   Widget exposureControl () {
-
     return Slider(
       value: currentExposureOffset,
       min: minAvailableExposureOffset,
@@ -286,7 +277,6 @@ class _NewPostScreenState extends State<NewPostScreen> with
   }
 
   Widget bottomControls(PostsViewModel viewModel){
-
     return SizedBox(
       height: 100,
       child: Row(
@@ -312,7 +302,6 @@ class _NewPostScreenState extends State<NewPostScreen> with
             ),
           ),
           const Spacer(),
-          // Capture Button
           GestureDetector(
             onTap: () async {
               setState(() {
@@ -368,7 +357,6 @@ class _NewPostScreenState extends State<NewPostScreen> with
           IconButton(
             onPressed: () async {
               if (cameras.length <= 2) {
-
                 return;
               }
 
@@ -403,7 +391,6 @@ class _NewPostScreenState extends State<NewPostScreen> with
   }
 
   Widget leftControls() {
-
     return Container(
       height: 160,
       decoration: BoxDecoration(
@@ -490,38 +477,32 @@ class _NewPostScreenState extends State<NewPostScreen> with
     }
 
     if (cameraController.value.isTakingPicture) {
-
       return null;
     }
 
     try {
       final XFile file = await cameraController.takePicture();
-
       return file;
     } on CameraException catch (e) {
       showSnackBar(msg: 'Error: ${e.code}\n${e.description}');
-
       return null;
     }
   }
 
   Future<void> setExposureMode(ExposureMode mode) async {
     if (controller == null) {
-
       return;
     }
 
     try {
       await controller!.setExposureMode(mode);
     } on CameraException {
-
       rethrow;
     }
   }
 
   Future<void> setExposureOffset(double offset) async {
     if (controller == null) {
-
       return;
     }
 
@@ -531,21 +512,18 @@ class _NewPostScreenState extends State<NewPostScreen> with
     try {
       offset = await controller!.setExposureOffset(offset);
     } on CameraException {
-
       rethrow;
     }
   }
 
   Future<void> setFocusMode(FocusMode mode) async {
     if (controller == null) {
-
       return;
     }
 
     try {
       await controller!.setFocusMode(mode);
     } on CameraException {
-
       rethrow;
     }
   }

@@ -22,7 +22,7 @@ class PickFromGalleryScreenPosts extends StatefulWidget {
 class PickFromGalleryScreenPostsState extends State<PickFromGalleryScreenPosts> {
   List<PickedAssetModel> pickedImages = [];
 
-  bool loading = false;
+  final ValueNotifier<bool> loading = ValueNotifier<bool>(false);
 
   @override
   void dispose() {
@@ -112,9 +112,7 @@ class PickFromGalleryScreenPostsState extends State<PickFromGalleryScreenPosts> 
               child: GestureDetector(
                   onTap: () async {
                     if(pickedImages.isNotEmpty) {
-                      setState(() {
-                        loading = true;
-                      });
+                      loading.value = true;
                       if(pickedImages.length == 1) {
                         XFile file = XFile(pickedImages.first.path.toString());
                         await viewModel.uploadPostSingleImage(image: file, context: context);
@@ -125,27 +123,30 @@ class PickFromGalleryScreenPostsState extends State<PickFromGalleryScreenPosts> 
                         }
                         await viewModel.uploadPostMultipleImages(images: images, context: context);
                       }
-                      setState(() {
-                        loading = false;
-                      });
+                      loading.value = false;
                     } else {
                       showSnackBar('Please select an image.', context);
                     }
                   },
-                  child: Center(
-                    child: !loading ? const Icon(
-                      Icons.done,
-                      color: Colors.white,
-                      size: 35,
-                    ) : Center(
-                      child: SizedBox(
-                        height: 35,
-                        width: 35,
-                        child: circularProgress(context, Colors.white, size: 30.0),
-                      ),
-                    ),
+                  child: ValueListenableBuilder<bool>(
+                    valueListenable: loading,
+                    builder: (context, value, child) {
+                      return Center(
+                        child: !value ? const Icon(
+                          Icons.done,
+                          color: Colors.white,
+                          size: 35,
+                        ) : Center(
+                          child: SizedBox(
+                            height: 35,
+                            width: 35,
+                            child: circularProgress(context, Colors.white, size: 30.0),
+                          ),
+                        ),
+                      );
+                    },
                   )
-              ),
+              )
             ),
           ),
         ],
