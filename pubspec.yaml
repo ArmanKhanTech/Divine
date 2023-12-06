@@ -85,7 +85,7 @@ dependencies:
   fluttertoast: ^8.2.2
   camera: ^0.10.5+2
   video_player: 2.7.0
-  photo_manager: ^2.6.0
+  photo_manager: ^3.0.0-dev.2
   oktoast: ^3.3.1
   transparent_image: ^2.0.1
   video_thumbnail: ^0.5.3
@@ -112,6 +112,10 @@ dependencies:
   #google_mlkit_translation: ^0.8.0
   #google_mlkit_smart_reply: ^0.8.0
   #google_mlkit_entity_extraction: ^0.9.0
+
+
+dependency_overrides:
+  photo_manager: ^3.0.0-dev.2
 
 
 dev_dependencies:
