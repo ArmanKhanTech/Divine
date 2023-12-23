@@ -188,21 +188,6 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
       }
     });
     initUserData();
-    /*NativeAd(
-      adUnitId: adHelper.nativeAdUnitId,
-      listener: NativeAdListener(
-        onAdLoaded: (Ad ad) {
-          setState(() {
-            nativeAd = ad as NativeAd?;
-          });
-        },
-        onAdFailedToLoad: (Ad ad, LoadAdError error) {
-          ad.dispose();
-        },
-      ),
-      request: const AdRequest(),
-      factoryId: 'listTile',
-    ).load();*/
   }
 
   initUserData() async {
@@ -218,7 +203,9 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
     StoryViewModel viewModel = Provider.of<StoryViewModel>(context);
+
     chooseUpload(BuildContext context, StoryViewModel viewModel) {
       return showModalBottomSheet(
         context: context,
@@ -370,7 +357,8 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
                           CupertinoPageRoute(
                               builder: (context) => const NewPostScreen(
                                 title: 'Create a Post',
-                              ))
+                              )
+                          )
                       );
                     },
                     child: Container(
@@ -537,6 +525,7 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
         },
       );
     }
+
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
@@ -629,12 +618,6 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
                   ],
                 ),
               ),
-              // TODO: Fix Native Ad & implement it for iOS.
-              /* if (nativeAd != null && Platform.isAndroid == true)
-                SizedBox(
-                  height: 100,
-                  child: AdWidget(ad: nativeAd!),
-                ),*/
               const SizedBox(height: 5.0),
               SizedBox(
                 height: 1.0,

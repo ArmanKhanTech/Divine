@@ -14,15 +14,13 @@ import 'options_firebase.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  /*if(!kIsWeb){
-    await MobileAds.instance.initialize();
-  }*/
-
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   runApp(const MyApp());
 }
 
