@@ -1,21 +1,17 @@
-import 'package:divine/posts/screens/new_post_screen.dart';
-import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
+
 import '../chats/screens/chat_screen.dart';
 import '../models/post_model.dart';
 import '../models/user_model.dart';
-import '../reels/screens/new_reels_screen.dart';
-import '../stories/screens/confirm_story.dart';
-import '../stories/stories_editor/stories_editor.dart';
+import '../utilities/choose_upload.dart';
 import '../utilities/constants.dart';
 import '../utilities/firebase.dart';
 import '../view_models/user/story_view_model.dart';
@@ -36,8 +32,6 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
   bool get wantKeepAlive => true;
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
-  NativeAd? nativeAd;
 
   final scrollKey = GlobalKey();
 
@@ -66,26 +60,34 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
     if(followingAccounts.isNotEmpty) {
       if(followingAccounts.length < 30) {
         if(posts.isNotEmpty) {
-          querySnapshot = await postRef.where('ownerId', whereIn: followingAccounts)
+          querySnapshot = await postRef
+              .where('ownerId', whereIn: followingAccounts)
               .orderBy('timestamp', descending: true)
               .startAfterDocument(posts.last)
-              .limit(pagePosts).get();
+              .limit(pagePosts)
+              .get();
         } else {
-          querySnapshot = await postRef.where('ownerId', whereIn: followingAccounts)
+          querySnapshot = await postRef
+              .where('ownerId', whereIn: followingAccounts)
               .orderBy('timestamp', descending: true)
-              .limit(pagePosts).get();
+              .limit(pagePosts)
+              .get();
         }
       } else {
         for(int i = 0; i < followingAccounts.length; i += 30) {
           if(posts.isNotEmpty) {
-            querySnapshot = await postRef.where('ownerId', whereIn: followingAccounts.skip(i).take(30).toList())
+            querySnapshot = await postRef
+                .where('ownerId', whereIn: followingAccounts.skip(i).take(30).toList())
                 .orderBy('timestamp', descending: true)
                 .startAfterDocument(posts.last)
-                .limit(pagePosts).get();
+                .limit(pagePosts)
+                .get();
           } else {
-            querySnapshot = await postRef.where('ownerId', whereIn: followingAccounts.skip(i).take(30).toList())
+            querySnapshot = await postRef
+                .where('ownerId', whereIn: followingAccounts.skip(i).take(30).toList())
                 .orderBy('timestamp', descending: true)
-                .limit(pagePosts).get();
+                .limit(pagePosts)
+                .get();
           }
         }
       }
@@ -115,16 +117,20 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
       pageSuggested += 3;
     });
     if(suggested.isNotEmpty) {
-      querySnapshot = await postRef.where('hashtags', arrayContainsAny: hashTags
+      querySnapshot = await postRef
+          .where('hashtags', arrayContainsAny: hashTags
           .take(hashTags.length > 10 ? 10 : hashTags.length))
           .orderBy('timestamp', descending: true)
           .startAfterDocument(suggested.last)
-          .limit(pageSuggested).get();
+          .limit(pageSuggested)
+          .get();
     } else {
-      querySnapshot = await postRef.where('hashtags', arrayContainsAny: hashTags
+      querySnapshot = await postRef
+          .where('hashtags', arrayContainsAny: hashTags
           .take(hashTags.length > 10 ? 10 : hashTags.length))
           .orderBy('timestamp', descending: true)
-          .limit(pageSuggested).get();
+          .limit(pageSuggested)
+          .get();
     }
     setState(() {
       if (querySnapshot.docs.length < pageSuggested || querySnapshot.docs.isEmpty) {
@@ -139,15 +145,19 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
   getFollowingAccounts() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     followingAccounts = prefs.getStringList('followingAccounts')!;
+
     if(followingAccounts.isEmpty) {
-      QuerySnapshot snapshot = await followingRef.doc(auth.currentUser!.uid).collection('userFollowing').get();
+      QuerySnapshot snapshot = await followingRef
+          .doc(auth.currentUser!.uid)
+          .collection('userFollowing')
+          .get();
       for(var doc in snapshot.docs) {
         followingAccounts.add(doc.id);
       }
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setStringList('followingAccounts', followingAccounts);
-      //print(followingAccounts);
+      print(followingAccounts);
     }
     loadMorePosts();
   }
@@ -155,8 +165,11 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
   getHashTags() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     hashTags = prefs.getStringList('hashTags')!;
+
     if(hashTags.isEmpty) {
-      DocumentSnapshot doc = await usersRef.doc(auth.currentUser!.uid).get();
+      DocumentSnapshot doc = await usersRef
+          .doc(auth.currentUser!.uid)
+          .get();
       UserModel user = UserModel.fromJson(doc.data() as Map<String, dynamic>);
       var mapEntries = user.userHashtags!.entries.toList()
         ..sort((b, a) => a.value.compareTo(b.value));
@@ -167,7 +180,7 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.remove('hashTags');
       prefs.setStringList('hashTags', hashTags);
-      //print(hashTags);
+      print(hashTags);
     }
     loadMoreSuggested();
   }
@@ -175,6 +188,7 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
   @override
   void initState() {
     super.initState();
+
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent
@@ -187,6 +201,7 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
         return;
       }
     });
+
     initUserData();
   }
 
@@ -196,7 +211,6 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
 
   @override
   void dispose() {
-    nativeAd?.dispose();
     super.dispose();
   }
 
@@ -205,326 +219,6 @@ class _FeedsPageState extends State<FeedsPage> with AutomaticKeepAliveClientMixi
     super.build(context);
 
     StoryViewModel viewModel = Provider.of<StoryViewModel>(context);
-
-    chooseUpload(BuildContext context, StoryViewModel viewModel) {
-      return showModalBottomSheet(
-        context: context,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(20),
-            topLeft: Radius.circular(20)
-          ),
-        ),
-        useSafeArea: true,
-        backgroundColor: Theme.of(context).colorScheme.background,
-        builder: (BuildContext context) {
-          return FractionallySizedBox(
-            heightFactor: .75,
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.background,
-                  border: const Border(
-                    left: BorderSide(
-                      color: Colors.blue,
-                      width: 0.0,
-                    ),
-                    top: BorderSide(
-                      color: Colors.blue,
-                      width: 1.0,
-                    ),
-                    right: BorderSide(
-                      color: Colors.blue,
-                      width: 0.0,
-                    ),
-                    bottom: BorderSide(
-                      color: Colors.blue,
-                      width: 0.0,
-                    ),
-                  ),
-                  borderRadius: const BorderRadius.only(
-                      topRight: Radius.circular(20),
-                      topLeft: Radius.circular(20)
-                  )
-              ),
-              child: Column(
-                children: [
-                  Container(
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.background,
-                        borderRadius: const BorderRadius.only(
-                            topRight: Radius.circular(20),
-                            topLeft: Radius.circular(20)
-                        ),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.only(
-                          top: 10.0,
-                          bottom: 5.0,
-                          left: 25.0,
-                          right: 25.0,
-                        ),
-                        child:  Text(
-                          'Create a new',
-                          style: TextStyle(
-                            fontSize: 30.0,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.blue,
-                          ),
-                        ),
-                      )
-                  ),
-                  const Divider(
-                    color: Colors.blue,
-                    thickness: 1,
-                  ),
-                  const SizedBox(height: 10.0),
-                  Visibility(
-                      visible: !kIsWeb,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => StoriesEditor(
-                            giphyKey: 'C4dMA7Q19nqEGdpfj82T8ssbOeZIylD4',
-                            fontFamilyList: const ['Shizuru', 'Aladin', 'TitilliumWeb', 'Varela',
-                              'Vollkorn', 'Rakkas', 'B612', 'YatraOne', 'Tangerine',
-                              'OldStandardTT', 'DancingScript', 'SedgwickAve', 'IndieFlower', 'Sacramento'],
-                            galleryThumbnailQuality: 300,
-                            isCustomFontList: true,
-                            onDone: (uri) {
-                              Navigator.of(context).push(
-                                CupertinoPageRoute(
-                                  builder: (_) => ConfirmStory(uri: uri),
-                                ),
-                              );
-                            },
-                          )));
-                        },
-                        child: Container(
-                            height: 30.0,
-                            padding: const EdgeInsets.only(
-                              left: 25.0,
-                              right: 25.0,
-                            ),
-                            width: MediaQuery.of(context).size.width,
-                            color: Theme.of(context).colorScheme.background,
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    top: 3.0,
-                                  ),
-                                  child: Icon(
-                                    CupertinoIcons.time,
-                                    color: Colors.blue,
-                                    size: 25,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10.0,
-                                ),
-                                Text(
-                                    'Story',
-                                    style: TextStyle(
-                                      fontSize: 25.0,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.blue,
-                                      height: 0.9
-                                    )
-                                )
-                              ],
-                            )
-                        ),
-                      )
-                  ),
-                  const SizedBox(height: 12.0),
-                  const Padding(
-                    padding: EdgeInsets.only(
-                      left: 25.0,
-                      right: 25.0,
-                    ),
-                    child: Divider(
-                      color: Colors.blue,
-                      thickness: 1,
-                    ),
-                  ),
-                  const SizedBox(height: 12.0),
-                  GestureDetector(
-                    onTap: () async {
-                      Navigator.pushReplacement(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => const NewPostScreen(
-                                title: 'Create a Post',
-                              )
-                          )
-                      );
-                    },
-                    child: Container(
-                        height: 30.0,
-                        padding: const EdgeInsets.only(
-                          left: 25.0,
-                          right: 25.0,
-                          bottom: 2,
-                        ),
-                        width: MediaQuery.of(context).size.width,
-                        color: Theme.of(context).colorScheme.background,
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                top: 3.0,
-                              ),
-                              child: Icon(
-                                CupertinoIcons.plus_circle,
-                                color: Colors.blue,
-                                size: 25,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 10.0,
-                            ),
-                            Text(
-                                'Post',
-                                style: TextStyle(
-                                    fontSize: 25.0,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.blue,
-                                    height: 0.9
-                                )
-                            )
-                          ],
-                        )
-                    ),
-                  ),
-                  const SizedBox(height: 12.0),
-                  const Padding(
-                    padding: EdgeInsets.only(
-                      left: 25.0,
-                      right: 25.0,
-                    ),
-                    child: Divider(
-                      color: Colors.blue,
-                      thickness: 1,
-                    ),
-                  ),
-                  const SizedBox(height: 12.0),
-                  Visibility(
-                      visible: !kIsWeb,
-                      child: GestureDetector(
-                        onTap: () async {
-                          Navigator.pushReplacement(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) => const NewReelsScreen())
-                          );
-                        },
-                        child: Container(
-                            height: 30.0,
-                            padding: const EdgeInsets.only(
-                              left: 25.0,
-                              right: 25.0,
-                              bottom: 2,
-                            ),
-                            width: MediaQuery.of(context).size.width,
-                            color: Theme.of(context).colorScheme.background,
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    top: 3.0,
-                                  ),
-                                  child: Icon(
-                                    CupertinoIcons.play_circle,
-                                    color: Colors.blue,
-                                    size: 25,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10.0,
-                                ),
-                                Text(
-                                    'Reel',
-                                    style: TextStyle(
-                                        fontSize: 25.0,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.blue,
-                                        height: 0.9
-                                    )
-                                )
-                              ],
-                            )
-                        ),
-                      )
-                  ),
-                  const SizedBox(height: 12.0),
-                  const Padding(
-                    padding: EdgeInsets.only(
-                      left: 25.0,
-                      right: 25.0,
-                    ),
-                    child: Divider(
-                      color: Colors.blue,
-                      thickness: 1,
-                    ),
-                  ),
-                  const SizedBox(height: 12.0),
-                  GestureDetector(
-                    onTap: () async {
-                      //
-                      },
-                    child: Container(
-                        height: 30.0,
-                        padding: const EdgeInsets.only(
-                          left: 25.0,
-                          right: 25.0,
-                          bottom: 2,
-                        ),
-                        width: MediaQuery.of(context).size.width,
-                        color: Theme.of(context).colorScheme.background,
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                top: 3.0,
-                              ),
-                              child: Icon(
-                                CupertinoIcons.equal_circle,
-                                color: Colors.blue,
-                                size: 25,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 10.0,
-                            ),
-                            Text(
-                                'Thread',
-                                style: TextStyle(
-                                    fontSize: 25.0,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.blue,
-                                    height: 0.9
-                                )
-                            )
-                          ],
-                        )
-                    ),
-                  ),
-                  const SizedBox(height: 12.0),
-                ],
-              ),
-            )
-          );
-        },
-      );
-    }
 
     return Scaffold(
       key: scaffoldKey,

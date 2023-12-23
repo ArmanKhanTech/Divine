@@ -1,17 +1,16 @@
 import 'package:divine/auth/register_page.dart';
 import 'package:divine/widgets/progress_indicators.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+
 import '../components/pass_form_builder.dart';
 import '../components/text_form_builder.dart';
 import '../utilities/regex.dart';
 import '../view_models/auth/login_view_model.dart';
-import 'package:flutter_web_frame/flutter_web_frame.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -29,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     LoginViewModel viewModel = Provider.of<LoginViewModel>(context);
+
     buildForm(BuildContext context, LoginViewModel viewModel) {
       return Form(
         key: viewModel.loginFormKey,
@@ -108,6 +108,7 @@ class _LoginPageState extends State<LoginPage> {
         ]),
       );
     }
+
     return LoadingOverlay(
       progressIndicator: circularProgress(context, const Color(0xFFFF9800)),
       opacity: 0.5,
@@ -130,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                 height: 20
             ),
             SizedBox(
-              height: kIsWeb == false ? MediaQuery.of(context).size.height * 0.45 : MediaQuery.of(context).size.height * 0.35,
+              height: MediaQuery.of(context).size.height * 0.45,
               width: MediaQuery.of(context).size.width * 0.5,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),

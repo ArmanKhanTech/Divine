@@ -6,6 +6,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
+
 import '../components/pass_form_builder.dart';
 import '../utilities/regex.dart';
 import '../view_models/auth/register_view_model.dart';
@@ -21,6 +22,7 @@ class _RegisterPageState extends State<RegisterPage>{
   @override
   Widget build(BuildContext context) {
     RegisterViewModel viewModel = Provider.of<RegisterViewModel>(context);
+
     buildForm(RegisterViewModel viewModel, BuildContext context){
       return Form(
         key: viewModel.registerFormKey,
@@ -142,6 +144,7 @@ class _RegisterPageState extends State<RegisterPage>{
         ),
       );
     }
+
     return LoadingOverlay(
         isLoading: viewModel.loading,
         progressIndicator: circularProgress(context, const Color(0XFF03A9F4)),
