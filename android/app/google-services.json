@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "261797289611",
+    "firebase_url": "https://divine-1676975414906-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "divine-1676975414906",
+    "storage_bucket": "divine-1676975414906.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:261797289611:android:efe6cf234844b0d80bbe8e",
+        "android_client_info": {
+          "package_name": "com.android.divine"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "261797289611-trqiee2ub4imt7jgevlk3124rab1gpg3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.divine",
+            "certificate_hash": "1577767c8e492d4827981321131132ae1cf0825c"
+          }
+        },
+        {
+          "client_id": "261797289611-jdufol5s2hp3kj95km3gk5n33f86msql.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvEmMj43ZGBETQ9_IyixOw8tpf27nWEBI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "261797289611-6q35bt4p0di2lfqh2t7i3lrv1kgse4ed.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "261797289611-mcvic20bca64tg11l5til5abs2fnkvtv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ios.divine"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
