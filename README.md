@@ -107,7 +107,7 @@ Follow the below instructions to get started.
 
 ### Compatible with 
 * [![Android][Android]][Android-url]
-* [![iOS][iOS]][iOS-url]95ED
+* [![iOS][iOS]][iOS-url]
 
 
 
