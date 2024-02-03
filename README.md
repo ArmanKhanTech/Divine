@@ -21,8 +21,6 @@
     <a href="https://github.com/ArmanKhanTech/Divine"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="divine-1676975414906.web.app/#/">View Demo</a>
-    ·
     <a href="https://github.com/ArmanKhanTech/Divinee/issues">Report a Bug</a>
     ·
     <a href="https://github.com/ArmanKhanTech/Divine/issues">Request new Feature</a>
@@ -66,9 +64,7 @@
 
 * [![Flutter][Flutter]][Flutter-url]
 * [![Dart][Dart]][Dart-url]
-* [![IntellIj IDEA][IntelliJ IDEA]][IntelliJ IDEA-url]
 * [![Firebase][Firebase]][Firebase-url]
-* [![Figma][Figma]][Figma-url]
 
 
 
@@ -81,13 +77,16 @@ Follow the below instructions to get started.
 
 <ol>
   <li>
-    <p>Intellij/VS Code IDE</a>
+    <p>Android Studio IDE or VS Code</a>
   </li>
   <li>
-    <p>Flutter</a>
+    <p>Flutter v3.16.2</a>
   </li>
   <li>
-    <p>Firebase</a>
+    <p>Dart v3.2.2</a>
+  </li>
+  <li>
+    <p>Firebase Account</a>
   </li>
 </ol>
 
@@ -188,19 +187,13 @@ Project Link - [https://github.com/ArmanKhanTech/Divine](https://github.com/Arma
 [license-url]: https://github.com/ArmanKhanTech/Divine/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/arman-khan-25b624205/
-[Figma]: https://img.shields.io/badge/Figma-FFC0CB?style=for-the-badge&logo=Figma&logoColor=white
-[Figma-url]: https://www.figma.com/
 [Flutter]: https://img.shields.io/badge/Flutter-0096FF.svg?style=for-the-badge&logo=Flutter&logoColor=white
 [Flutter-url]: https://flutter.dev/
-[IntelliJ IDEA]: https://img.shields.io/badge/IntelliJIDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white
-[IntelliJ IDEA-url]: https://www.jetbrains.com/idea/
 [Dart]: https://img.shields.io/badge/dart-FF0000.svg?style=for-the-badge&logo=dart&logoColor=white
 [Dart-url]: https://dart.dev/
 [iOS]: https://img.shields.io/badge/iOS-000000?style=for-the-badge&logo=ios&logoColor=white
 [iOS-url]: https://developer.apple.com/
-[Android]: https://img.shields.io/badge/Android%20Studio-3DDC84.svg?style=for-the-badge&logo=android-studio&logoColor=white
+[Android]: https://img.shields.io/badge/Android-3DDC84.svg?style=for-the-badge&logo=android&logoColor=white
 [Android-url]: https://developer.android.com/
 [Firebase]: https://img.shields.io/badge/Firebase-ffd700?style=for-the-badge&logo=Firebase&logoColor=white
 [Firebase-url]: https://firebase.google.com/
-[Google Chrome]: https://img.shields.io/badge/Google%20Chrome-4285F4?style=for-the-badge&logo=GoogleChrome&logoColor=white
-[Chrome-url]: https://www.google.com/
