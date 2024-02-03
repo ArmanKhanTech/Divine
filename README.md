@@ -73,7 +73,7 @@
 Follow the below instructions to get started.
 
 
-### Prerequisites
+### Prerequisites95ED
 
 <ol>
   <li>
@@ -107,7 +107,7 @@ Follow the below instructions to get started.
 
 ### Compatible with 
 * [![Android][Android]][Android-url]
-* [![iOS][iOS]][iOS-url]
+* [![iOS][iOS]][iOS-url]95ED
 
 
 
@@ -195,5 +195,5 @@ Project Link - [https://github.com/ArmanKhanTech/Divine](https://github.com/Arma
 [iOS-url]: https://developer.apple.com/
 [Android]: https://img.shields.io/badge/Android-3DDC84.svg?style=for-the-badge&logo=android&logoColor=white
 [Android-url]: https://developer.android.com/
-[Firebase]: https://img.shields.io/badge/Firebase-ffd700?style=for-the-badge&logo=Firebase&logoColor=white
+[Firebase]: https://img.shields.io/badge/Firebase-6495ED?style=for-the-badge&logo=Firebase&logoColor=white
 [Firebase-url]: https://firebase.google.com/
