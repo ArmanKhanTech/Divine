@@ -94,7 +94,8 @@ Follow the below instructions to get started.
 
 ### Installation
 
-1. Clone this repo : 
+1. Clone this repo
+
    ```sh
    git clone https://github.com/ArmanKhanTech/Divine.git
    ```
@@ -104,6 +105,7 @@ Follow the below instructions to get started.
 ## Usage
 
 ....
+
 
 ### Compatible with 
 * [![Android][Android]][Android-url]
