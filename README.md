@@ -73,7 +73,7 @@
 Follow the below instructions to get started.
 
 
-### Prerequisites95ED
+### Prerequisites
 
 <ol>
   <li>
