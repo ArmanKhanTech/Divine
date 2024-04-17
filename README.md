@@ -56,11 +56,11 @@
 
 
 
-## About The Project
+## About the Project
 
 ....
 
-### Built With
+### Built with
 
 * [![Flutter][Flutter]][Flutter-url]
 * [![Dart][Dart]][Dart-url]
