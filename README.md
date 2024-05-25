@@ -104,7 +104,7 @@ Follow the below instructions to get started.
 
 ## Usage
 
-....
+...
 
 
 ### Compatible with 
