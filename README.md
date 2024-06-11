@@ -13,7 +13,7 @@
     <img src="https://github.com/ArmanKhanTech/Divine/assets/92728787/12b0765e-dc89-49ed-9915-d72481baa327" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Divine </h3>
+  <h3 align="center">Divine</h3>
 
   <p align="center">
     A social media app made with Flutter.
