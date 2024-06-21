@@ -1,20 +1,26 @@
 {
-  "hosting": {
-    "public": "build/web",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
-  },
-  "firestore": {
-    "rules": "firestore.rules",
-    "indexes": "firestore.indexes.json"
-  }
+    "firestore":{
+        "rules":"firestore.rules",
+        "indexes":"firestore.indexes.json"
+    },
+    "flutter":{
+        "platforms":{
+            "android":{
+                "default":{
+                    "projectId":"divine-1676975414906",
+                    "appId":"1:261797289611:android:efe6cf234844b0d80bbe8e",
+                    "fileOutput":"android/app/google-services.json"
+                }
+            },
+            "dart":{
+                "lib/firebase_options.dart":{
+                    "projectId":"divine-1676975414906",
+                    "configurations":{
+                        "android":"1:261797289611:android:efe6cf234844b0d80bbe8e",
+                        "ios":"1:261797289611:ios:8aeba0eae8b5b0140bbe8e"
+                    }
+                }
+            }
+        }
+    }
 }

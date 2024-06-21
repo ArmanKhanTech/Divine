@@ -35,17 +35,17 @@ class StoriesEditor extends StatefulWidget {
 
   const StoriesEditor(
       {Key? key,
-        required this.giphyKey,
-        required this.onDone,
-        this.middleBottomWidget,
-        this.colorList,
-        this.gradientColors,
-        this.fontFamilyList,
-        this.isCustomFontList,
-        this.onBackPress,
-        this.onDoneButtonStyle,
-        this.editorBackgroundColor,
-        this.galleryThumbnailQuality})
+      required this.giphyKey,
+      required this.onDone,
+      this.middleBottomWidget,
+      this.colorList,
+      this.gradientColors,
+      this.fontFamilyList,
+      this.isCustomFontList,
+      this.onBackPress,
+      this.onDoneButtonStyle,
+      this.editorBackgroundColor,
+      this.galleryThumbnailQuality})
       : super(key: key);
 
   @override
@@ -55,7 +55,7 @@ class StoriesEditor extends StatefulWidget {
 class _StoriesEditorState extends State<StoriesEditor> {
   @override
   void initState() {
-    Paint.enableDithering = true;
+    // Paint.enableDithering = true;
     WidgetsFlutterBinding.ensureInitialized();
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
@@ -74,7 +74,6 @@ class _StoriesEditorState extends State<StoriesEditor> {
 
   @override
   Widget build(BuildContext context) {
-
     return NotificationListener<OverscrollIndicatorNotification>(
       onNotification: (overscroll) {
         overscroll.disallowIndicator();
