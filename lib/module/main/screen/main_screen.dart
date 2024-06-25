@@ -3,12 +3,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
 
-import '../pages/activity_page.dart';
-import '../pages/feeds_page.dart';
-import '../pages/profile_page.dart';
-import '../pages/reels_page.dart';
-import '../pages/search_page.dart';
-import '../utility/firebase.dart';
+import 'tab/activity_tab.dart';
+import 'tab/feeds_tab.dart';
+import 'tab/profile_tab.dart';
+import 'tab/reels_tab.dart';
+import 'tab/search_tab.dart';
+
+import '../../../utility/firebase.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({
@@ -30,11 +31,11 @@ class _MainScreenState extends State<MainScreen> {
 
     page = 0;
     pages = [
-      const FeedsPage(),
-      const SearchPage(),
-      const ReelsPage(),
-      const ActivityPage(),
-      ProfilePage(profileId: auth.currentUser!.uid),
+      const FeedTab(),
+      const SearchTab(),
+      const ReelsTab(),
+      const ActivityTab(),
+      ProfileTab(profileId: auth.currentUser!.uid),
     ];
     pageController = PageController(initialPage: page);
   }

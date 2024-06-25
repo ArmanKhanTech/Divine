@@ -44,7 +44,6 @@ class GiphyFullImage {
 
   @override
   String toString() {
-
     return 'GiphyFullImage{url: $url, width: $width, height: $height, size: $size, mp4: $mp4, mp4Size: $mp4Size, webp: $webp, webpSize: $webpSize}';
   }
 
@@ -100,7 +99,6 @@ class GiphyOriginalImage {
   });
 
   factory GiphyOriginalImage.fromJson(Map<String, dynamic> json) {
-
     return GiphyOriginalImage(
         url: json['url'] as String?,
         width: json['width'] as String?,
@@ -115,7 +113,6 @@ class GiphyOriginalImage {
   }
 
   Map<String, dynamic> toJson() {
-
     return <String, dynamic>{
       'url': url,
       'width': width,
@@ -132,7 +129,6 @@ class GiphyOriginalImage {
 
   @override
   String toString() {
-
     return 'GiphyOriginalImage{url: $url, width: $width, height: $height, size: $size, frames: $frames, mp4: $mp4, mp4Size: $mp4Size, webp: $webp, webpSize: $webpSize, hash: $hash}';
   }
 
@@ -233,7 +229,6 @@ class GiphyDownsampledImage {
   });
 
   factory GiphyDownsampledImage.fromJson(Map<String, dynamic> json) {
-
     return GiphyDownsampledImage(
         url: json['url'] as String?,
         width: json['width'] as String?,
@@ -244,7 +239,6 @@ class GiphyDownsampledImage {
   }
 
   Map<String, dynamic> toJson() {
-
     return <String, dynamic>{
       'url': url,
       'width': width,
@@ -257,7 +251,6 @@ class GiphyDownsampledImage {
 
   @override
   String toString() {
-
     return 'GiphyDownsampledImage{url: $url, width: $width, height: $height, size: $size, webp: $webp, webpSize: $webpSize}';
   }
 
@@ -330,7 +323,6 @@ class GiphyPreviewImage {
   });
 
   factory GiphyPreviewImage.fromJson(Map<String, dynamic> json) {
-
     return GiphyPreviewImage(
       width: json['width'] as String?,
       height: json['height'] as String?,
@@ -340,7 +332,6 @@ class GiphyPreviewImage {
   }
 
   Map<String, dynamic> toJson() {
-
     return <String, dynamic>{
       'width': width,
       'height': height,
@@ -351,7 +342,6 @@ class GiphyPreviewImage {
 
   @override
   String toString() {
-
     return 'GiphyPreviewImage{width: $width, height: $height, mp4: $mp4, mp4Size: $mp4Size}';
   }
 
@@ -384,7 +374,6 @@ class GiphyDownsizedImage {
   });
 
   factory GiphyDownsizedImage.fromJson(Map<String, dynamic> json) {
-
     return GiphyDownsizedImage(
       url: json['url'] as String?,
       width: json['width'] as String?,
@@ -394,7 +383,6 @@ class GiphyDownsizedImage {
   }
 
   Map<String, dynamic> toJson() {
-
     return <String, dynamic>{
       'url': url,
       'width': width,
@@ -405,7 +393,6 @@ class GiphyDownsizedImage {
 
   @override
   String toString() {
-
     return 'GiphyDownsizedImage{url: $url, width: $width, height: $height, size: $size}';
   }
 
@@ -438,7 +425,6 @@ class GiphyWebPImage {
   });
 
   factory GiphyWebPImage.fromJson(Map<String, dynamic> json) {
-
     return GiphyWebPImage(
       url: json['url'] as String?,
       width: json['width'] as String?,
@@ -448,7 +434,6 @@ class GiphyWebPImage {
   }
 
   Map<String, dynamic> toJson() {
-
     return <String, dynamic>{
       'url': url,
       'width': width,
@@ -459,7 +444,6 @@ class GiphyWebPImage {
 
   @override
   String toString() {
-
     return 'GiphyWebPImage{url: $url, width: $width, height: $height, size: $size}';
   }
 

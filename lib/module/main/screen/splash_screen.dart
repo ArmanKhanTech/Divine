@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
-import '../module/auth/screen/login_page.dart';
+import '../../auth/screen/login_page.dart';
 
 import 'main_screen.dart';
 

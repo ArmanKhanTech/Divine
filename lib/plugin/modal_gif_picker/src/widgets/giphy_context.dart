@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../modal_gif_picker.dart';
 import '../model/client/gif.dart';
 import '../model/client/languages.dart';
@@ -12,18 +13,16 @@ class GiphyContext extends InheritedWidget {
   final String language;
 
   final bool sticker;
+  final bool showPreviewPage;
 
   final ValueChanged<GiphyGif>? onSelected;
 
   final ErrorListener? onError;
-
-  final bool showPreviewPage;
+  final GiphyPreviewType? previewType;
 
   final GiphyDecorator? decorator;
 
   final String searchText;
-
-  final GiphyPreviewType? previewType;
 
   final Duration searchDelay;
 

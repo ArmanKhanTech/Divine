@@ -9,7 +9,6 @@ class GiphyCollection {
       {required this.data, required this.pagination, required this.meta});
 
   factory GiphyCollection.fromJson(Map<String, dynamic> json) {
-
     return GiphyCollection(
         data: json.containsKey('data')
             ? (json['data'] as List)
@@ -31,7 +30,6 @@ class GiphyCollection {
 
   @override
   String toString() {
-
     return 'GiphyCollection{data: $data, pagination: $pagination, meta: $meta}';
   }
 
@@ -72,7 +70,6 @@ class GiphyPagination {
 
   @override
   String toString() {
-
     return 'GiphyPagination{totalCount: $totalCount, count: $count, offset: $offset}';
   }
 
@@ -104,7 +101,6 @@ class GiphyMeta {
       responseId: json['response_id'] as String? ?? '');
 
   Map<String, dynamic> toJson() {
-
     return <String, dynamic>{
       'status': status,
       'msg': msg,
@@ -114,7 +110,6 @@ class GiphyMeta {
 
   @override
   String toString() {
-
     return 'GiphyMeta{status: $status, msg: $msg, responseId: $responseId}';
   }
 

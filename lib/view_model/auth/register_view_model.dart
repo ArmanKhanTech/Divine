@@ -1,4 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
@@ -24,7 +23,7 @@ class RegisterViewModel extends ChangeNotifier {
 
   AuthService auth = AuthService();
 
-  Future<void> register(BuildContext context) async {
+  register(BuildContext context) async {
     FormState form = registerFormKey.currentState!;
     form.save();
     if (!form.validate()) {
@@ -37,7 +36,6 @@ class RegisterViewModel extends ChangeNotifier {
       if (password == cPassword) {
         loading = true;
         notifyListeners();
-
         try {
           bool success = await auth.createUser(
             username: username,
@@ -45,7 +43,6 @@ class RegisterViewModel extends ChangeNotifier {
             password: password,
             country: country,
           );
-
           if (success) {
             Navigator.of(context).pushReplacement(
               CupertinoPageRoute(
@@ -58,8 +55,8 @@ class RegisterViewModel extends ChangeNotifier {
           notifyListeners();
           showSnackBar(auth.handleFirebaseAuthError(e.toString()), context);
         }
-
         loading = false;
+
         notifyListeners();
       } else {
         showSnackBar('The passwords do not match.', context);
@@ -67,32 +64,32 @@ class RegisterViewModel extends ChangeNotifier {
     }
   }
 
-  void setEmail(val) {
+  setEmail(val) {
     email = val;
     notifyListeners();
   }
 
-  void setPassword(val) {
+  setPassword(val) {
     password = val;
     notifyListeners();
   }
 
-  void setUsername(val) {
+  setUsername(val) {
     username = val.toString().toLowerCase();
     notifyListeners();
   }
 
-  void setConfirmPass(val) {
+  setConfirmPass(val) {
     cPassword = val;
     notifyListeners();
   }
 
-  void setCountry(val) {
+  setCountry(val) {
     country = val;
     notifyListeners();
   }
 
-  void showSnackBar(String msg, context) {
+  showSnackBar(String msg, context) {
     showTopSnackBar(
       Overlay.of(context),
       CustomSnackBar.error(

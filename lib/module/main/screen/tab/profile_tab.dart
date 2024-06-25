@@ -1,3 +1,4 @@
+// ignore_for_file: use_build_context_synchronously
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:divine/module/profile/screen/user_info_screen.dart';
@@ -10,25 +11,25 @@ import 'package:flutter/services.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
-import '../model/post_model.dart';
-import '../model/user_model.dart';
-import '../module/profile/screen/edit_profile_screen.dart';
-import '../module/profile/screen/settings_screen.dart';
-import '../screens/splash_screen.dart';
-import '../utility/firebase.dart';
-import '../widget/post_tile.dart';
+import '../../../../model/post_model.dart';
+import '../../../../model/user_model.dart';
+import '../../../profile/screen/edit_profile_screen.dart';
+import '../../../profile/screen/settings_screen.dart';
+import '../splash_screen.dart';
+import '../../../../utility/firebase.dart';
+import '../../../../widget/post_tile.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfileTab extends StatefulWidget {
   final String profileId;
 
-  const ProfilePage({super.key, required this.profileId});
+  const ProfileTab({super.key, required this.profileId});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<ProfileTab> createState() => _ProfileTabState();
 }
 
-class _ProfilePageState extends State<ProfilePage>
-    with AutomaticKeepAliveClientMixin<ProfilePage> {
+class _ProfileTabState extends State<ProfileTab>
+    with AutomaticKeepAliveClientMixin<ProfileTab> {
   @override
   bool get wantKeepAlive => true;
 
@@ -383,13 +384,13 @@ class _ProfilePageState extends State<ProfilePage>
                                       return Shimmer.fromColors(
                                         baseColor: Theme.of(context)
                                                     .colorScheme
-                                                    .background ==
+                                                    .surface ==
                                                 Colors.white
                                             ? Colors.grey[300]!
                                             : Colors.grey[700]!,
                                         highlightColor: Theme.of(context)
                                                     .colorScheme
-                                                    .background ==
+                                                    .surface ==
                                                 Colors.white
                                             ? Colors.grey[100]!
                                             : Colors.grey[800]!,
@@ -402,7 +403,7 @@ class _ProfilePageState extends State<ProfilePage>
                                                       Radius.circular(48)),
                                               color: Theme.of(context)
                                                           .colorScheme
-                                                          .background ==
+                                                          .surface ==
                                                       Colors.white
                                                   ? Colors.grey[300]!
                                                   : Colors.grey[700]!),
@@ -550,7 +551,7 @@ class _ProfilePageState extends State<ProfilePage>
                                   onMentionTap: (username) {
                                     Navigator.of(context).push(
                                       CupertinoPageRoute(
-                                        builder: (_) => ProfilePage(
+                                        builder: (_) => ProfileTab(
                                           profileId: username,
                                         ),
                                       ),
@@ -1099,17 +1100,16 @@ class _ProfilePageState extends State<ProfilePage>
       ),
       itemBuilder: (context, index) {
         return Shimmer.fromColors(
-          baseColor: Theme.of(context).colorScheme.background == Colors.white
+          baseColor: Theme.of(context).colorScheme.surface == Colors.white
               ? Colors.grey[300]!
               : Colors.grey[700]!,
-          highlightColor:
-              Theme.of(context).colorScheme.background == Colors.white
-                  ? Colors.grey[100]!
-                  : Colors.grey[800]!,
+          highlightColor: Theme.of(context).colorScheme.surface == Colors.white
+              ? Colors.grey[100]!
+              : Colors.grey[800]!,
           child: Container(
             height: 100,
             width: 150,
-            color: Theme.of(context).colorScheme.background == Colors.white
+            color: Theme.of(context).colorScheme.surface == Colors.white
                 ? Colors.grey[300]!
                 : Colors.grey[700]!,
           ),

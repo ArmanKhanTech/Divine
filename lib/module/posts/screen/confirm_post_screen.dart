@@ -8,7 +8,7 @@ import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
-import '../../../screens/main_screen.dart';
+import '../../main/screen/main_screen.dart';
 import '../../../plugin/stories_editor/presentation/widgets/animated_on_tap_button.dart';
 import '../../../viewmodel/screens/posts_view_model.dart';
 import '../../../widget/progress_indicators.dart';

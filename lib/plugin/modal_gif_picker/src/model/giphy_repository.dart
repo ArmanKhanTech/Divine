@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:typed_data';
-import 'package:divine/plugin/stories_editor/modal_gif_picker/src/model/repository.dart';
+
+import 'package:divine/plugin/modal_gif_picker/src/model/repository.dart';
 import 'package:http/http.dart' as http;
+
 import '../../modal_gif_picker.dart';
 import '../widgets/giphy_render_image.dart';
+
 import 'client/client.dart';
 import 'client/collection.dart';
 import 'client/gif.dart';

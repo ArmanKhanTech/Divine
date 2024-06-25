@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../modal_gif_picker/src/model/client/gif.dart';
+import '../../../modal_gif_picker/src/model/client/gif.dart';
 import '../../presentation/utilities/constants/app_enum.dart';
 
 class EditableItem {

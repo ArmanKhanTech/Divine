@@ -76,6 +76,7 @@ dependencies:
   like_button: ^2.0.5
   shimmer: ^3.0.0
   expandable_text: ^2.3.0
+  http: ^1.2.1
 
 dependency_overrides:
   photo_manager: ^3.0.0-dev.2

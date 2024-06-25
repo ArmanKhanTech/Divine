@@ -34,7 +34,6 @@ class _GiphyImageThumbnailState extends State<GiphyImageThumbnail> {
   Widget build(BuildContext context) => FutureBuilder(
       future: _loadPreview,
       builder: (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
-
         if (!snapshot.hasData) {
           return widget.placeholder ??
               Container(
@@ -48,7 +47,6 @@ class _GiphyImageThumbnailState extends State<GiphyImageThumbnail> {
                 ),
               );
         }
-
         return Image.memory(snapshot.data!, fit: BoxFit.cover);
       });
 }

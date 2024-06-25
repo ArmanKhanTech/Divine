@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+
 import '../../modal_gif_picker.dart';
 
 abstract class Repository<T> {

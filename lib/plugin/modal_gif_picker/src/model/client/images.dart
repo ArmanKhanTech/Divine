@@ -54,7 +54,6 @@ class GiphyImages {
   });
 
   factory GiphyImages.fromJson(Map<String, dynamic> json) {
-
     return GiphyImages(
       fixedHeightStill: json['fixed_height_still'] == null
           ? null
@@ -153,7 +152,6 @@ class GiphyImages {
   }
 
   Map<String, dynamic> toJson() {
-
     return <String, dynamic>{
       'fixed_height_still': fixedHeightStill,
       'original_still': originalStill,
@@ -184,7 +182,6 @@ class GiphyImages {
 
   @override
   String toString() {
-
     return 'GiphyImages{fixedHeightStill: $fixedHeightStill, originalStill: $originalStill, fixedWidth: $fixedWidth, fixedHeightSmallStill: $fixedHeightSmallStill, fixedHeightDownsampled: $fixedHeightDownsampled, preview: $preview, fixedHeightSmall: $fixedHeightSmall, downsizedStill: $downsizedStill, downsized: $downsized, downsizedLarge: $downsizedLarge, fixedWidthSmallStill: $fixedWidthSmallStill, previewWebp: $previewWebp, fixedWidthStill: $fixedWidthStill, fixedWidthSmall: $fixedWidthSmall, downsizedSmall: $downsizedSmall, fixedWidthDownsampled: $fixedWidthDownsampled, downsizedMedium: $downsizedMedium, original: $original, fixedHeight: $fixedHeight, hd: $hd, looping: $looping, originalMp4: $originalMp4, previewGif: $previewGif, w480Still: $w480Still}';
   }
 

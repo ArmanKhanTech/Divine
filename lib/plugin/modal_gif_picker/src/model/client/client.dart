@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:divine/plugin/stories_editor/modal_gif_picker/src/model/client/rating.dart';
+
+import 'package:divine/plugin/modal_gif_picker/src/model/client/rating.dart';
 import 'package:http/http.dart';
+
 import 'collection.dart';
 import 'gif.dart';
 import 'languages.dart';

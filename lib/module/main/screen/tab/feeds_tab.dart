@@ -8,27 +8,27 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
-import '../module/chats/chat_screen.dart';
-import '../model/post_model.dart';
-import '../model/user_model.dart';
-import '../utility/choose_upload.dart';
-import '../utility/constants.dart';
-import '../utility/firebase.dart';
-import '../viewmodel/user/story_view_model.dart';
-import '../widget/story_widget.dart';
-import '../widget/user_post.dart';
+import '../../../chats/chat_screen.dart';
+import '../../../../model/post_model.dart';
+import '../../../../model/user_model.dart';
+import '../../../../utility/choose_upload.dart';
+import '../../../../utility/constants.dart';
+import '../../../../utility/firebase.dart';
+import '../../../../viewmodel/user/story_view_model.dart';
+import '../../../../widget/story_widget.dart';
+import '../../../../widget/user_post.dart';
 
-class FeedsPage extends StatefulWidget {
-  const FeedsPage({
+class FeedTab extends StatefulWidget {
+  const FeedTab({
     super.key,
   });
 
   @override
-  State<FeedsPage> createState() => _FeedsPageState();
+  State<FeedTab> createState() => _FeedTabState();
 }
 
-class _FeedsPageState extends State<FeedsPage>
-    with AutomaticKeepAliveClientMixin<FeedsPage> {
+class _FeedTabState extends State<FeedTab>
+    with AutomaticKeepAliveClientMixin<FeedTab> {
   @override
   bool get wantKeepAlive => true;
 

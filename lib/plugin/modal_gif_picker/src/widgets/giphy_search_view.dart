@@ -1,8 +1,11 @@
 // ignore_for_file: must_be_immutable
 import 'dart:async';
+
 import 'package:flutter/material.dart';
+
 import '../model/giphy_repository.dart';
 import '../utilities/debouncer.dart';
+
 import 'giphy_context.dart';
 import 'giphy_grid_view.dart';
 
@@ -110,7 +113,10 @@ class _GiphySearchViewState extends State<GiphySearchView> {
             padding: const EdgeInsets.all(8.0),
             child: Align(
                 alignment: Alignment.centerRight,
-                child: Image.asset('assets/images/giphy_logo.png', height: 20,)),
+                child: Image.asset(
+                  'assets/images/giphy_logo.png',
+                  height: 20,
+                )),
           )
         ],
       ),
@@ -120,7 +126,6 @@ class _GiphySearchViewState extends State<GiphySearchView> {
               builder: (BuildContext context,
                   AsyncSnapshot<GiphyRepository> snapshot) {
                 if (snapshot.hasData) {
-
                   return snapshot.data!.totalCount > 0
                       ? NotificationListener(
                           child: RefreshIndicator(
@@ -138,10 +143,8 @@ class _GiphySearchViewState extends State<GiphySearchView> {
                           onNotification: (n) {
                             if (n is UserScrollNotification) {
                               FocusScope.of(context).requestFocus(FocusNode());
-
                               return true;
                             }
-
                             return false;
                           },
                         )
@@ -174,7 +177,6 @@ class _GiphySearchViewState extends State<GiphySearchView> {
 
   Future _search(GiphyContext giphy, {String term = ''}) async {
     if (term != _textController.text) {
-
       return;
     }
 

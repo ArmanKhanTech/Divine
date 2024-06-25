@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../modal_gif_picker/src/model/client/gif.dart';
+import '../../../modal_gif_picker/src/model/client/gif.dart';
 import '../models/editable_item.dart';
 
 class DraggableWidgetNotifier extends ChangeNotifier {

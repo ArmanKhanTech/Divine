@@ -8,7 +8,7 @@ import 'package:like_button/like_button.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-import 'package:divine/pages/profile_page.dart';
+import 'package:divine/module/main/screen/tab/profile_tab.dart';
 
 import '../component/custom_card.dart';
 import '../model/post_model.dart';
@@ -568,7 +568,7 @@ class _UserPostState extends State<UserPost> {
                     onMentionTap: (username) {
                       Navigator.of(context).push(
                         CupertinoPageRoute(
-                          builder: (_) => ProfilePage(
+                          builder: (_) => ProfileTab(
                             profileId: username,
                           ),
                         ),
@@ -887,7 +887,7 @@ class _UserPostState extends State<UserPost> {
     Navigator.push(
       context,
       CupertinoPageRoute(
-        builder: (_) => ProfilePage(profileId: profileId!),
+        builder: (_) => ProfileTab(profileId: profileId!),
       ),
     );
   }

@@ -1,21 +1,19 @@
 import 'package:flutter/cupertino.dart';
 
-class SearchPage extends StatefulWidget{
-  const SearchPage({super.key});
+class ReelsTab extends StatefulWidget {
+  const ReelsTab({super.key});
 
   @override
-  State<SearchPage> createState() => _SearchPageState();
+  State<ReelsTab> createState() => _ReelsTabState();
 }
 
-class _SearchPageState extends State<SearchPage>{
+class _ReelsTabState extends State<ReelsTab> {
   @override
   Widget build(BuildContext context) {
-
     return const CupertinoPageScaffold(
       child: Center(
         child: Text('Activity Page'),
       ),
     );
   }
-
 }

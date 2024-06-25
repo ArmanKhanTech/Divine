@@ -1,7 +1,9 @@
 import 'dart:typed_data';
+
 import 'package:divine/widget/progress_indicators.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+
 import '../model/client/gif.dart';
 
 class GiphyRenderImage extends StatefulWidget {

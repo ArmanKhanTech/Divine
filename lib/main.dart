@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import 'package:divine/screens/splash_screen.dart';
+import 'package:divine/module/main/screen/splash_screen.dart';
 import 'package:divine/service/user_service.dart';
 import 'package:divine/utility/constants.dart';
 import 'package:divine/utility/event_handlers/app_life_cycle_event_handler.dart';

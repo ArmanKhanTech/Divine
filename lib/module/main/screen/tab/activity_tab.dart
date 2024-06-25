@@ -1,16 +1,15 @@
 import 'package:flutter/cupertino.dart';
 
-class ReelsPage extends StatefulWidget{
-  const ReelsPage({super.key});
+class ActivityTab extends StatefulWidget {
+  const ActivityTab({super.key});
 
   @override
-  State<ReelsPage> createState() => _ReelsPageState();
+  State<ActivityTab> createState() => _ActivityTabState();
 }
 
-class _ReelsPageState extends State<ReelsPage>{
+class _ActivityTabState extends State<ActivityTab> {
   @override
   Widget build(BuildContext context) {
-
     return const CupertinoPageScaffold(
       child: Center(
         child: Text('Activity Page'),

@@ -21,10 +21,9 @@ class LoginViewModel extends ChangeNotifier {
 
   AuthService authService = AuthService();
 
-  Future<void> loginUser(BuildContext context) async {
+  loginUser(BuildContext context) async {
     FormState form = loginFormKey.currentState!;
     form.save();
-
     if (!form.validate()) {
       validate = true;
       notifyListeners();
@@ -32,7 +31,6 @@ class LoginViewModel extends ChangeNotifier {
     } else {
       loading = true;
       notifyListeners();
-
       try {
         bool success = await authService.loginUser(
           email: email,
@@ -49,25 +47,23 @@ class LoginViewModel extends ChangeNotifier {
             authService.handleFirebaseAuthError(e.toString()), context);
       }
     }
-
     loading = false;
     notifyListeners();
   }
 
-  void setEmail(val) {
+  setEmail(val) {
     email = val;
     notifyListeners();
   }
 
-  void setPassword(val) {
+  setPassword(val) {
     password = val;
     notifyListeners();
   }
 
-  void forgotPassword(BuildContext context) async {
+  forgotPassword(BuildContext context) async {
     loading = true;
     notifyListeners();
-
     FormState form = loginFormKey.currentState!;
     form.save();
     if (Regex.validateEmail(email) != null) {
@@ -83,12 +79,11 @@ class LoginViewModel extends ChangeNotifier {
         showSnackBar(e.toString(), context);
       }
     }
-
     loading = false;
     notifyListeners();
   }
 
-  void showSnackBar(String msg, context) {
+  showSnackBar(String msg, context) {
     showTopSnackBar(
       Overlay.of(context),
       CustomSnackBar.error(
