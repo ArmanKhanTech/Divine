@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,7 +8,7 @@ import 'package:uuid/uuid.dart';
 import '../model/story_model.dart';
 import '../utility/firebase.dart';
 
-class StoryService extends Service {
+class StoryService {
   String storyId = const Uuid().v1();
 
   UserService userService = UserService();
