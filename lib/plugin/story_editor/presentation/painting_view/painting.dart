@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:divine/plugin/stories_editor/presentation/painting_view/widgets/sketcher.dart';
-import 'package:divine/plugin/stories_editor/presentation/painting_view/widgets/top_painting_tools.dart';
+import 'package:divine/plugin/story_editor/presentation/painting_view/widgets/sketcher.dart';
+import 'package:divine/plugin/story_editor/presentation/painting_view/widgets/top_painting_tools.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

@@ -1,7 +1,7 @@
-import 'package:divine/plugin/stories_editor/presentation/text_editor_widget/widgets/animation_selector.dart';
-import 'package:divine/plugin/stories_editor/presentation/text_editor_widget/widgets/font_selector.dart';
-import 'package:divine/plugin/stories_editor/presentation/text_editor_widget/widgets/text_feild_widget.dart';
-import 'package:divine/plugin/stories_editor/presentation/text_editor_widget/widgets/top_text_tools.dart';
+import 'package:divine/plugin/story_editor/presentation/text_editor_widget/widgets/animation_selector.dart';
+import 'package:divine/plugin/story_editor/presentation/text_editor_widget/widgets/font_selector.dart';
+import 'package:divine/plugin/story_editor/presentation/text_editor_widget/widgets/text_feild_widget.dart';
+import 'package:divine/plugin/story_editor/presentation/text_editor_widget/widgets/top_text_tools.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

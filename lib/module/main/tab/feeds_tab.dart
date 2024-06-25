@@ -8,15 +8,15 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
-import '../../../chats/chat_screen.dart';
-import '../../../../model/post_model.dart';
-import '../../../../model/user_model.dart';
-import '../../../../utility/choose_upload.dart';
-import '../../../../utility/constants.dart';
-import '../../../../utility/firebase.dart';
-import '../../../../viewmodel/user/story_view_model.dart';
-import '../../../../widget/story_widget.dart';
-import '../../../../widget/user_post.dart';
+import '../../chat/chat_screen.dart';
+import '../../../model/post_model.dart';
+import '../../../model/user_model.dart';
+import '../../../utility/choose_upload.dart';
+import '../../../utility/constants.dart';
+import '../../../utility/firebase.dart';
+import '../../../viewmodel/user/story_view_model.dart';
+import '../../../widget/story_widget.dart';
+import '../../../widget/user_post.dart';
 
 class FeedTab extends StatefulWidget {
   const FeedTab({

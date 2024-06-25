@@ -7,9 +7,9 @@ import 'package:shimmer/shimmer.dart';
 
 import '../model/story_model.dart';
 import '../model/user_model.dart';
-import '../module/stories/screen/confirm_story.dart';
-import '../module/stories/screen/story_screen.dart';
-import '../plugin/stories_editor/stories_editor.dart';
+import '../module/story/screen/confirm_story.dart';
+import '../module/story/screen/story_screen.dart';
+import '../plugin/story_editor/stories_editor.dart';
 import '../utility/firebase.dart';
 
 class StoryWidget extends StatefulWidget {

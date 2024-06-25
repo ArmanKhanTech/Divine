@@ -14,7 +14,7 @@ import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../../plugin/stories_editor/presentation/widgets/animated_on_tap_button.dart';
+import '../../../plugin/story_editor/presentation/widgets/animated_on_tap_button.dart';
 import '../../../plugin/video_editor/screens/video_editor.dart';
 
 class NewReelsScreen extends StatefulWidget {

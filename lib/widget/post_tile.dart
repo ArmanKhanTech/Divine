@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../model/post_model.dart';
-import '../module/posts/screen/view_post_screen.dart';
+import '../module/post/screen/view_post_screen.dart';
 
 import 'cached_image.dart';
 

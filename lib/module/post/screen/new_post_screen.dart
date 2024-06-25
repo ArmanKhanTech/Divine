@@ -9,8 +9,8 @@ import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
-import 'package:divine/module/posts/screen/pick_from_gallery_screen_posts.dart';
-import 'package:divine/module/posts/screen/preview_image.dart';
+import 'package:divine/module/post/screen/pick_from_gallery_screen_posts.dart';
+import 'package:divine/module/post/screen/preview_image.dart';
 import 'package:divine/widget/progress_indicators.dart';
 
 import '../../../viewmodel/screens/posts_view_model.dart';

@@ -3,11 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
 
-import 'tab/activity_tab.dart';
-import 'tab/feeds_tab.dart';
-import 'tab/profile_tab.dart';
-import 'tab/reels_tab.dart';
-import 'tab/search_tab.dart';
+import '../tab/activity_tab.dart';
+import '../tab/feeds_tab.dart';
+import '../tab/profile_tab.dart';
+import '../tab/reels_tab.dart';
+import '../tab/search_tab.dart';
 
 import '../../../utility/firebase.dart';
 

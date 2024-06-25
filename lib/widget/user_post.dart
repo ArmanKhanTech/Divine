@@ -8,12 +8,12 @@ import 'package:like_button/like_button.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-import 'package:divine/module/main/screen/tab/profile_tab.dart';
+import 'package:divine/module/main/tab/profile_tab.dart';
 
 import '../component/custom_card.dart';
 import '../model/post_model.dart';
 import '../model/user_model.dart';
-import '../module/posts/screen/view_post_screen.dart';
+import '../module/post/screen/view_post_screen.dart';
 import '../service/post_service.dart';
 import '../utility/firebase.dart';
 

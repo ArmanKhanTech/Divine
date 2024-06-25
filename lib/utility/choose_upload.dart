@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../module/posts/screen/new_post_screen.dart';
+import '../module/post/screen/new_post_screen.dart';
 import '../module/reels/screen/new_reels_screen.dart';
-import '../module/stories/screen/confirm_story.dart';
-import '../plugin/stories_editor/stories_editor.dart';
+import '../module/story/screen/confirm_story.dart';
+import '../plugin/story_editor/stories_editor.dart';
 import '../viewmodel/user/story_view_model.dart';
 
 Future<dynamic> chooseUpload(BuildContext context, StoryViewModel viewModel) {

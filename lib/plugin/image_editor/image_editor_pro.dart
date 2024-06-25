@@ -19,8 +19,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 
-import '../stories_editor/presentation/widgets/animated_on_tap_button.dart';
-import '../../module/posts/screen/confirm_post_screen.dart';
+import '../story_editor/presentation/widgets/animated_on_tap_button.dart';
+import '../../module/post/screen/confirm_post_screen.dart';
 
 import 'data/image_item.dart';
 import 'data/layer.dart';

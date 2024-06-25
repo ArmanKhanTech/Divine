@@ -11,13 +11,13 @@ import 'package:flutter/services.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
-import '../../../../model/post_model.dart';
-import '../../../../model/user_model.dart';
-import '../../../profile/screen/edit_profile_screen.dart';
-import '../../../profile/screen/settings_screen.dart';
-import '../splash_screen.dart';
-import '../../../../utility/firebase.dart';
-import '../../../../widget/post_tile.dart';
+import '../../../model/post_model.dart';
+import '../../../model/user_model.dart';
+import '../../profile/screen/edit_profile_screen.dart';
+import '../../profile/screen/settings_screen.dart';
+import '../screen/splash_screen.dart';
+import '../../../utility/firebase.dart';
+import '../../../widget/post_tile.dart';
 
 class ProfileTab extends StatefulWidget {
   final String profileId;
