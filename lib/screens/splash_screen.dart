@@ -1,11 +1,14 @@
 import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
-import '../auth/login_page.dart';
+
+import '../module/auth/screen/login_page.dart';
+
 import 'main_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -28,21 +31,18 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     Timer(
-        const Duration(seconds: 2), () => Navigator.of(context).pushReplacement(
-          CupertinoPageRoute(
-              builder: (_) => StreamBuilder(
-                stream: FirebaseAuth.instance.authStateChanges(),
-                builder: ((BuildContext context, snapshot) {
-                  if (snapshot.hasData) {
-                    return const MainScreen();
-                  } else {
-                    return const LoginPage();
-                  }
-                }),
-              )
-          )
-        )
-    );
+        const Duration(seconds: 2),
+        () => Navigator.of(context).pushReplacement(CupertinoPageRoute(
+            builder: (_) => StreamBuilder(
+                  stream: FirebaseAuth.instance.authStateChanges(),
+                  builder: ((BuildContext context, snapshot) {
+                    if (snapshot.hasData) {
+                      return const MainScreen();
+                    } else {
+                      return const LoginPage();
+                    }
+                  }),
+                ))));
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -51,17 +51,20 @@ class _SplashScreenState extends State<SplashScreen> {
         child: AppBar(
           backgroundColor: Theme.of(context).colorScheme.background,
           elevation: 0,
-          systemOverlayStyle: Theme.of(context).colorScheme.background == Colors.white ? const SystemUiOverlayStyle(
-            statusBarColor: Colors.white,
-            statusBarIconBrightness: Brightness.dark,
-            systemNavigationBarColor: Colors.white,
-            systemNavigationBarIconBrightness: Brightness.dark,
-          ) : const SystemUiOverlayStyle(
-            statusBarColor: Colors.black,
-            statusBarIconBrightness: Brightness.light,
-            systemNavigationBarColor: Colors.black,
-            systemNavigationBarIconBrightness: Brightness.light,
-          ),
+          systemOverlayStyle:
+              Theme.of(context).colorScheme.background == Colors.white
+                  ? const SystemUiOverlayStyle(
+                      statusBarColor: Colors.white,
+                      statusBarIconBrightness: Brightness.dark,
+                      systemNavigationBarColor: Colors.white,
+                      systemNavigationBarIconBrightness: Brightness.dark,
+                    )
+                  : const SystemUiOverlayStyle(
+                      statusBarColor: Colors.black,
+                      statusBarIconBrightness: Brightness.light,
+                      systemNavigationBarColor: Colors.black,
+                      systemNavigationBarIconBrightness: Brightness.light,
+                    ),
         ),
       ),
       body: Center(
@@ -76,7 +79,8 @@ class _SplashScreenState extends State<SplashScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset("assets/images/app_icon.png", width: 60, height: 60),
+                  Image.asset("assets/images/app_icon.png",
+                      width: 60, height: 60),
                   const SizedBox(
                     width: 10,
                   ),
