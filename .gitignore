@@ -41,4 +41,3 @@ app.*.map.json
 
 # Android Studio will place build artifacts here
 /android/app/debug
-android/app/google-services.json
