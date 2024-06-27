@@ -13,7 +13,7 @@
     <img src="https://github.com/ArmanKhanTech/Divine/assets/92728787/12b0765e-dc89-49ed-9915-d72481baa327" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Divine</h3>
+  <h3 align="center">Divine (on hold)</h3>
 
   <p align="center">
     A social media app made with Flutter.
@@ -130,11 +130,9 @@ Follow the below instructions to get started.
 - [x] Dark Mode
 - [x] Private Account
 - [x] Image Editor for Posts
-- [x] Custom Camera for Posts, Stories & Profile Picture
-- [x] Post & View Single/Multiple Images
-- [ ] Add or Upload Custom Music/Sound to Posts or Reels 
-- [x] Custom Camera for Reels 
-- [x] Custom Gallery Media Picker 
+- [x] Custom Camera
+- [x] Post & View Single or Multiple Images
+- [x] Gallery Media Picker 
 - [x] Video Editor for Reels
 - [x] Implicit Content Detector using ML
 - [x] View Post Screen
