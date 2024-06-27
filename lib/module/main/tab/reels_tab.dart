@@ -12,7 +12,7 @@ class _ReelsTabState extends State<ReelsTab> {
   Widget build(BuildContext context) {
     return const CupertinoPageScaffold(
       child: Center(
-        child: Text('Activity Page'),
+        child: Text('Reels Tab'),
       ),
     );
   }

@@ -77,16 +77,16 @@ Follow the below instructions to get started.
 
 <ol>
   <li>
-    <p>Android Studio IDE or VS Code</a>
+    <p>Android Studio IDE or VS Code</p>
   </li>
   <li>
-    <p>Flutter v3.16.2</a>
+    <p>Flutter v3.16.2</p>
   </li>
   <li>
-    <p>Dart v3.2.2</a>
+    <p>Dart v3.2.2</p>
   </li>
   <li>
-    <p>Firebase Account</a>
+    <p>Firebase Account</p>
   </li>
 </ol>
 

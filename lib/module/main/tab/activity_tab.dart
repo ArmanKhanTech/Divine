@@ -12,7 +12,7 @@ class _ActivityTabState extends State<ActivityTab> {
   Widget build(BuildContext context) {
     return const CupertinoPageScaffold(
       child: Center(
-        child: Text('Activity Page'),
+        child: Text('Activity Tab'),
       ),
     );
   }

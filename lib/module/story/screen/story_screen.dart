@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:story/story_page_view/story_page_view.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../model/story_model.dart';
 import '../../../model/user_model.dart';
 import '../../../utility/firebase.dart';
+import '../../../utility/system_ui.dart';
 import '../../../widget/progress_indicators.dart';
 
 // TODO: Goto next story when current story ends.
@@ -35,14 +35,7 @@ class _StoryScreenState extends State<StoryScreen> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(0.0),
         child: AppBar(
-          systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarColor: Colors.black,
-            statusBarIconBrightness: Brightness.light,
-            statusBarBrightness: Brightness.light,
-            systemNavigationBarColor: Colors.black,
-            systemNavigationBarIconBrightness: Brightness.light,
-            systemNavigationBarDividerColor: null,
-          ),
+          systemOverlayStyle: SystemUI.setDarkSystemUI(context),
           automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
         ),
@@ -111,7 +104,7 @@ class _StoryScreenState extends State<StoryScreen> {
                                     child: Row(
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.all(1.0),
+                                          padding: const EdgeInsets.all(5.0),
                                           child: CircleAvatar(
                                             radius: 25.0,
                                             backgroundColor: Colors.grey,

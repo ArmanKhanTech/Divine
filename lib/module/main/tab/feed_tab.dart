@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -19,9 +18,7 @@ import '../../../widget/story_widget.dart';
 import '../../../widget/user_post.dart';
 
 class FeedTab extends StatefulWidget {
-  const FeedTab({
-    super.key,
-  });
+  const FeedTab({super.key,});
 
   @override
   State<FeedTab> createState() => _FeedTabState();
@@ -167,7 +164,7 @@ class _FeedTabState extends State<FeedTab>
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setStringList('followingAccounts', followingAccounts);
-      print(followingAccounts);
+      debugPrint(followingAccounts as String?);
     }
     loadMorePosts();
   }
@@ -188,7 +185,7 @@ class _FeedTabState extends State<FeedTab>
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.remove('hashTags');
       prefs.setStringList('hashTags', hashTags);
-      print(hashTags);
+      debugPrint(hashTags as String?);
     }
     loadMoreSuggested();
   }
@@ -234,22 +231,6 @@ class _FeedTabState extends State<FeedTab>
       key: scaffoldKey,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        systemOverlayStyle:
-            Theme.of(context).colorScheme.background != Colors.black
-                ? const SystemUiOverlayStyle(
-                    statusBarColor: Colors.transparent,
-                    statusBarBrightness: Brightness.dark,
-                    statusBarIconBrightness: Brightness.dark,
-                    systemNavigationBarColor: Colors.white,
-                    systemNavigationBarIconBrightness: Brightness.dark,
-                  )
-                : const SystemUiOverlayStyle(
-                    statusBarColor: Colors.transparent,
-                    statusBarBrightness: Brightness.light,
-                    statusBarIconBrightness: Brightness.light,
-                    systemNavigationBarColor: Colors.black,
-                    systemNavigationBarIconBrightness: Brightness.light,
-                  ),
         surfaceTintColor: Colors.transparent,
         title: GradientText(
           Constants.appName,
@@ -292,6 +273,7 @@ class _FeedTabState extends State<FeedTab>
       extendBody: false,
       body: RefreshIndicator(
         color: Colors.purple,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         onRefresh: () async {
           setState(() {
             posts.clear();
@@ -301,6 +283,7 @@ class _FeedTabState extends State<FeedTab>
             loadedPosts = false;
             loadedSuggested = false;
           });
+
           await loadMorePosts();
           return Future.delayed(const Duration(seconds: 2));
         },
@@ -310,7 +293,7 @@ class _FeedTabState extends State<FeedTab>
           child: Column(
             children: [
               const SizedBox(
-                height: 135,
+                height: 150,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [

@@ -12,7 +12,7 @@ class _SearchTabState extends State<SearchTab> {
   Widget build(BuildContext context) {
     return const CupertinoPageScaffold(
       child: Center(
-        child: Text('Activity Page'),
+        child: Text('Search Tab'),
       ),
     );
   }

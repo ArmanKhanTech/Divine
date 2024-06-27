@@ -33,7 +33,7 @@ class _RegisterPageState extends State<RegisterPage> {
             TextFormBuilder(
               capitalization: false,
               enabled: !viewModel.loading,
-              prefix: CupertinoIcons.person_solid,
+              prefix: Ionicons.person,
               hintText: "Username",
               textInputAction: TextInputAction.next,
               validateFunction: Regex.validateUsername,
@@ -44,11 +44,11 @@ class _RegisterPageState extends State<RegisterPage> {
               nextFocusNode: viewModel.emailFocusNode,
               whichPage: "signup",
             ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 20.0),
             TextFormBuilder(
               capitalization: false,
               enabled: !viewModel.loading,
-              prefix: CupertinoIcons.mail_solid,
+              prefix: Ionicons.mail,
               hintText: "Email",
               textInputAction: TextInputAction.next,
               validateFunction: Regex.validateEmail,
@@ -59,11 +59,11 @@ class _RegisterPageState extends State<RegisterPage> {
               nextFocusNode: viewModel.countryFocusNode,
               whichPage: "signup",
             ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 20.0),
             TextFormBuilder(
               capitalization: true,
               enabled: !viewModel.loading,
-              prefix: CupertinoIcons.globe,
+              prefix: Ionicons.globe,
               hintText: "Country",
               textInputAction: TextInputAction.next,
               validateFunction: Regex.validateCountry,
@@ -74,7 +74,7 @@ class _RegisterPageState extends State<RegisterPage> {
               nextFocusNode: viewModel.passFocusNode,
               whichPage: "signup",
             ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 20.0),
             PasswordFormBuilder(
               enabled: !viewModel.loading,
               prefix: Ionicons.lock_closed,
@@ -90,7 +90,7 @@ class _RegisterPageState extends State<RegisterPage> {
               nextFocusNode: viewModel.cPassFocusNode,
               whichPage: "signup",
             ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 20.0),
             PasswordFormBuilder(
               enabled: !viewModel.loading,
               prefix: Ionicons.lock_open,
@@ -111,15 +111,15 @@ class _RegisterPageState extends State<RegisterPage> {
               textAlign: TextAlign.center,
               'By signing up you agree to our Terms of Use \n& Privacy Policy.',
               style: TextStyle(
-                fontSize: 18.0,
+                fontSize: 20.0,
                 fontWeight: FontWeight.bold,
                 color: Colors.blue,
               ),
             ),
-            const SizedBox(height: 30.0),
+            const SizedBox(height: 20.0),
             SizedBox(
-              height: 40.0,
-              width: 200.0,
+              height: 45.0,
+              width: MediaQuery.of(context).size.width * 0.9,
               child: FloatingActionButton(
                 backgroundColor: Colors.blue,
                 shape: RoundedRectangleBorder(
@@ -148,7 +148,7 @@ class _RegisterPageState extends State<RegisterPage> {
         isLoading: viewModel.loading,
         progressIndicator: circularProgress(context, const Color(0XFF03A9F4)),
         opacity: 0.5,
-        color: Theme.of(context).colorScheme.background,
+        color: Theme.of(context).colorScheme.surface,
         child: Scaffold(
             appBar: AppBar(
               automaticallyImplyLeading: false,
@@ -163,29 +163,22 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ),
             extendBodyBehindAppBar: true,
-            backgroundColor: Theme.of(context).colorScheme.background,
+            backgroundColor: Theme.of(context).colorScheme.surface,
             key: viewModel.registerScaffoldKey,
             body: ListView(
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              padding: const EdgeInsets.all(20.0),
               children: [
                 SizedBox(height: MediaQuery.of(context).size.height / 10),
-                Row(
-                  children: [
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    GradientText(
-                      'Welcome to Divine.\nCreate a new account & \nconnect with your friends.',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30.0,
-                      ),
-                      colors: const [
-                        Colors.blue,
-                        Colors.purple,
-                        Colors.pink,
-                      ],
-                    ),
+                GradientText(
+                  'Welcome to Divine.\nCreate a new account & \nconnect with your friends.',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30.0,
+                  ),
+                  colors: const [
+                    Colors.blue,
+                    Colors.purple,
+                    Colors.pink,
                   ],
                 ),
                 const SizedBox(height: 20.0),
@@ -197,7 +190,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     const Text(
                       'Already have an account?',
                       style: TextStyle(
-                        fontSize: 18.0,
+                        fontSize: 20.0,
                       ),
                     ),
                     GestureDetector(
@@ -205,7 +198,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: const Text(
                         ' Log In.',
                         style: TextStyle(
-                          fontSize: 18.0,
+                          fontSize: 20.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.blue,
                         ),

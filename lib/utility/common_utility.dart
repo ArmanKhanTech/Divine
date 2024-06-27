@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CommomUtility {
+class CommonUtility {
   InputBorder border(BuildContext context) {
     return const OutlineInputBorder(
       borderRadius: BorderRadius.all(

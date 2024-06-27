@@ -107,13 +107,13 @@ class _ProfileTabState extends State<ProfileTab>
         borderRadius: BorderRadius.only(
             topRight: Radius.circular(20), topLeft: Radius.circular(20)),
       ),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       builder: (BuildContext context) {
         return FractionallySizedBox(
             heightFactor: .7,
             child: Container(
               decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.background,
+                  color: Theme.of(context).colorScheme.surface,
                   border: const Border(
                     left: BorderSide(
                       color: Colors.blue,
@@ -141,7 +141,7 @@ class _ProfileTabState extends State<ProfileTab>
                   Container(
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.background,
+                        color: Theme.of(context).colorScheme.surface,
                         borderRadius: const BorderRadius.only(
                             topRight: Radius.circular(20),
                             topLeft: Radius.circular(20)),
@@ -729,9 +729,6 @@ class _ProfileTabState extends State<ProfileTab>
               return Scaffold(
                   appBar: AppBar(
                     centerTitle: true,
-                    systemOverlayStyle: const SystemUiOverlayStyle(
-                      statusBarColor: Colors.transparent,
-                    ),
                     surfaceTintColor: Colors.transparent,
                     automaticallyImplyLeading: false,
                     leading: IconButton(
@@ -1082,7 +1079,16 @@ class _ProfileTabState extends State<ProfileTab>
             },
           );
         } else {
-          return gridShimmer();
+          return const Center(
+            child: Text(
+              'No Posts',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
+              ),
+            ),
+          );
         }
       },
     );

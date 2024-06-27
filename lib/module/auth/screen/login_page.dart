@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
           TextFormBuilder(
             capitalization: false,
             enabled: !viewModel.loading,
-            prefix: CupertinoIcons.mail_solid,
+            prefix: Ionicons.mail,
             hintText: 'Email',
             textInputAction: TextInputAction.next,
             validateFunction: Regex.validateEmail,
@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
             nextFocusNode: viewModel.passwordFocusNode,
             whichPage: "login",
           ),
-          const SizedBox(height: 10.0),
+          const SizedBox(height: 20.0),
           PasswordFormBuilder(
             enabled: !viewModel.loading,
             prefix: Ionicons.lock_closed,
@@ -65,28 +65,24 @@ class _LoginPageState extends State<LoginPage> {
             focusNode: viewModel.passwordFocusNode,
             whichPage: "login",
           ),
+          const SizedBox(height: 10.0),
           Align(
             alignment: Alignment.centerRight,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 30.0),
-              child: InkWell(
-                onTap: () => viewModel.forgotPassword(context),
-                child: const Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    'Forgot Password?',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                  ),
+            child: InkWell(
+              onTap: () => viewModel.forgotPassword(context),
+              child: const Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  'Forgot Password?',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
               ),
             ),
           ),
-          const SizedBox(
-            height: 30.0,
-          ),
+          const SizedBox(height: 20.0),
           SizedBox(
-            height: 40.0,
-            width: 200.0,
+            height: 45.0,
+            width: MediaQuery.of(context).size.width,
             child: FloatingActionButton(
               backgroundColor: Colors.orange,
               shape: RoundedRectangleBorder(
@@ -110,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
     return LoadingOverlay(
       progressIndicator: circularProgress(context, const Color(0xFFFF9800)),
       opacity: 0.5,
-      color: Theme.of(context).colorScheme.background,
+      color: Theme.of(context).colorScheme.surface,
       isLoading: viewModel.loading,
       child: Scaffold(
         appBar: PreferredSize(
@@ -120,15 +116,15 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
         extendBodyBehindAppBar: true,
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         key: viewModel.loginScaffoldKey,
         body: ListView(
-          padding: const EdgeInsets.symmetric(vertical: 20.0),
+          padding: const EdgeInsets.all(20),
           children: [
-            const SizedBox(height: 20),
+            const SizedBox(height: 50),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.45,
-              width: MediaQuery.of(context).size.width * 0.5,
+              height: MediaQuery.of(context).size.height * 0.4,
+              width: MediaQuery.of(context).size.width * 0.4,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child:
@@ -162,7 +158,7 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text('Don\'t have an account yet?',
-                    style: TextStyle(fontSize: 18.0)),
+                    style: TextStyle(fontSize: 20.0)),
                 const SizedBox(width: 5.0),
                 GestureDetector(
                   onTap: () {
@@ -175,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: const Text(
                     'Sign Up.',
                     style: TextStyle(
-                      fontSize: 18.0,
+                      fontSize: 20.0,
                       fontWeight: FontWeight.bold,
                       color: Colors.orange,
                     ),

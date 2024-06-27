@@ -22,12 +22,7 @@ class StoryWidget extends StatefulWidget {
 class _StoryWidgetState extends State<StoryWidget> {
   int storyCounter = 0;
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  /* TODO: Sort stories by time i.e viewed stories at last, 
+  /* TODO: Sort stories by time i.e viewed stories at last,
     tags in stories, location in stories, stories within stories, 
     post & threads within stories.*/
   @override
@@ -42,14 +37,11 @@ class _StoryWidgetState extends State<StoryWidget> {
             return ListView.builder(
               itemCount: storyList.length + 1,
               scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
               physics: const AlwaysScrollableScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Padding(
-                      padding: EdgeInsets.only(
-                        left: 18,
-                      ),
-                      child: SizedBox());
+                  return const SizedBox();
                 }
 
                 if (index == 0) {
@@ -120,187 +112,188 @@ class _StoryWidgetState extends State<StoryWidget> {
             return const SizedBox();
           }
 
-          return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: FutureBuilder<QuerySnapshot>(
-                future: storyRef.doc(storiesId).collection('stories').get(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    List stories = snapshot.data!.docs;
-                    StoryModel stats = StoryModel.fromJson(
-                        stories.toList()[stories.length - 1].data());
-                    List<dynamic>? allViewers = stats.viewers;
+          return FutureBuilder<QuerySnapshot>(
+            future: storyRef.doc(storiesId).collection('stories').get(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                List stories = snapshot.data!.docs;
+                StoryModel stats = StoryModel.fromJson(
+                    stories.toList()[stories.length - 1].data());
+                List<dynamic>? allViewers = stats.viewers;
 
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const SizedBox();
-                    }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const SizedBox();
+                }
 
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (context) => StoryScreen(
-                                  storyId: storyId,
-                                  storiesId: storiesId,
-                                  userId: userId,
-                                  initPage: index,
-                                ),
+                return Container(
+                  margin: const EdgeInsets.only(right: 30),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => StoryScreen(
+                                storyId: storyId,
+                                storiesId: storiesId,
+                                userId: userId,
+                                initPage: index,
                               ),
-                            );
-                          },
-                          child: Container(
-                            decoration:
-                                !allViewers!.contains(auth.currentUser!.uid)
-                                    ? BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        border: const GradientBoxBorder(
-                                          gradient: LinearGradient(colors: [
-                                            Colors.blue,
-                                            Colors.purple,
-                                            Colors.pink
-                                          ]),
-                                          width: 2,
-                                        ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.3),
-                                            offset: const Offset(0.0, 0.0),
-                                            blurRadius: 2.0,
-                                            spreadRadius: 0.0,
-                                          ),
-                                        ],
-                                      )
-                                    : BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        border: const GradientBoxBorder(
-                                          gradient: LinearGradient(colors: [
-                                            Colors.grey,
-                                            Colors.grey,
-                                            Colors.grey
-                                          ]),
-                                          width: 2,
-                                        ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.3),
-                                            offset: const Offset(0.0, 0.0),
-                                            blurRadius: 2.0,
-                                            spreadRadius: 0.0,
-                                          ),
-                                        ],
-                                      ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(3.0),
-                              child: user.photoUrl!.isNotEmpty
-                                  ? CachedNetworkImage(
-                                      imageUrl: user.photoUrl!,
-                                      imageBuilder: (context, imageProvider) =>
-                                          Container(
-                                        height: 92,
-                                        width: 92,
-                                        decoration: BoxDecoration(
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(46)),
-                                          image: DecorationImage(
-                                            image: imageProvider,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                      progressIndicatorBuilder:
-                                          (context, url, downloadProgress) {
-                                        return Shimmer.fromColors(
-                                          baseColor: Theme.of(context)
-                                                      .colorScheme
-                                                      .surface ==
-                                                  Colors.white
-                                              ? Colors.grey[300]!
-                                              : Colors.grey[700]!,
-                                          highlightColor: Theme.of(context)
-                                                      .colorScheme
-                                                      .surface ==
-                                                  Colors.white
-                                              ? Colors.grey[100]!
-                                              : Colors.grey[800]!,
-                                          child: Container(
-                                            height: 92,
-                                            width: 92,
-                                            decoration: BoxDecoration(
-                                              color: Theme.of(context)
-                                                          .colorScheme
-                                                          .surface ==
-                                                      Colors.white
-                                                  ? Colors.grey[300]!
-                                                  : Colors.grey[700]!,
-                                              shape: BoxShape.circle,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      errorWidget: (context, url, error) {
-                                        return CircleAvatar(
-                                          radius: 46.0,
-                                          backgroundColor: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                          child: Center(
-                                            child: Text(
-                                              user.username![0].toUpperCase(),
-                                              style: const TextStyle(
-                                                color: Colors.blue,
-                                                fontSize: 30.0,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    )
-                                  : CircleAvatar(
-                                      radius: 46.0,
-                                      backgroundColor: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
-                                      child: Center(
-                                        child: Text(
-                                          user.username![0].toUpperCase(),
-                                          style: const TextStyle(
-                                            color: Colors.blue,
-                                            fontSize: 30.0,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          decoration:
+                          !allViewers!.contains(auth.currentUser!.uid)
+                              ? BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: const GradientBoxBorder(
+                              gradient: LinearGradient(colors: [
+                                Colors.blue,
+                                Colors.purple,
+                                Colors.pink
+                              ]),
+                              width: 2,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                offset: const Offset(0.0, 0.0),
+                                blurRadius: 2.0,
+                                spreadRadius: 0.0,
+                              ),
+                            ],
+                          )
+                              : BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: const GradientBoxBorder(
+                              gradient: LinearGradient(colors: [
+                                Colors.grey,
+                                Colors.grey,
+                                Colors.grey
+                              ]),
+                              width: 2,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                offset: const Offset(0.0, 0.0),
+                                blurRadius: 2.0,
+                                spreadRadius: 0.0,
+                              ),
+                            ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: user.photoUrl!.isNotEmpty
+                                ? CachedNetworkImage(
+                              imageUrl: user.photoUrl!,
+                              imageBuilder: (context, imageProvider) =>
+                                  Container(
+                                    height: 94,
+                                    width: 94,
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(50)),
+                                      image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
+                                  ),
+                              progressIndicatorBuilder:
+                                  (context, url, downloadProgress) {
+                                return Shimmer.fromColors(
+                                  baseColor: Theme.of(context)
+                                      .colorScheme
+                                      .surface ==
+                                      Colors.white
+                                      ? Colors.grey[300]!
+                                      : Colors.grey[700]!,
+                                  highlightColor: Theme.of(context)
+                                      .colorScheme
+                                      .surface ==
+                                      Colors.white
+                                      ? Colors.grey[100]!
+                                      : Colors.grey[800]!,
+                                  child: Container(
+                                    height: 94,
+                                    width: 94,
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .surface ==
+                                          Colors.white
+                                          ? Colors.grey[300]!
+                                          : Colors.grey[700]!,
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                );
+                              },
+                              errorWidget: (context, url, error) {
+                                return CircleAvatar(
+                                  radius: 50.0,
+                                  backgroundColor: Theme.of(context)
+                                      .colorScheme
+                                      .secondary,
+                                  child: Center(
+                                    child: Text(
+                                      user.username![0].toUpperCase(),
+                                      style: const TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 30.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            )
+                                : CircleAvatar(
+                              radius: 50.0,
+                              backgroundColor: Theme.of(context)
+                                  .colorScheme
+                                  .secondary,
+                              child: Center(
+                                child: Text(
+                                  user.username![0].toUpperCase(),
+                                  style: const TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 30.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            user.username!.length > 8
-                                ? '${user.username!.substring(0, 8).toLowerCase()}...'
-                                : user.username!.toLowerCase(),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.w400,
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
+                      ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          user.username!.length > 8
+                              ? '${user.username!.substring(0, 8).toLowerCase()}...'
+                              : user.username!.toLowerCase(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w400,
+                            color: Theme.of(context).colorScheme.secondary,
                           ),
-                        )
-                      ],
-                    );
-                  } else {
-                    return const SizedBox();
-                  }
-                },
-              ));
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              } else {
+                return const SizedBox();
+              }
+            },
+          );
         } else {
           return const SizedBox();
         }
@@ -309,24 +302,20 @@ class _StoryWidgetState extends State<StoryWidget> {
   }
 
   Widget buildOwnStoryAvatar() {
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: 18.0,
-        right: 8.0,
-        top: 2.0,
-      ),
-      child: StreamBuilder(
-          stream: usersRef.doc(auth.currentUser!.uid).snapshots(),
-          builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-            if (snapshot.hasData) {
-              UserModel profileImage = UserModel.fromJson(
-                  snapshot.data!.data() as Map<String, dynamic>);
+    return StreamBuilder(
+        stream: usersRef.doc(auth.currentUser!.uid).snapshots(),
+        builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasData) {
+            UserModel profileImage = UserModel.fromJson(
+                snapshot.data!.data() as Map<String, dynamic>);
 
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const SizedBox();
-              }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const SizedBox();
+            }
 
-              return Column(
+            return Container(
+              margin: const EdgeInsets.only(right: 30, top: 3),
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -336,116 +325,116 @@ class _StoryWidgetState extends State<StoryWidget> {
                           context,
                           CupertinoPageRoute(
                               builder: (context) => StoriesEditor(
-                                    giphyKey:
-                                        'C4dMA7Q19nqEGdpfj82T8ssbOeZIylD4',
-                                    fontFamilyList: const [
-                                      'Shizuru',
-                                      'Aladin',
-                                      'TitilliumWeb',
-                                      'Varela',
-                                      'Vollkorn',
-                                      'Rakkas',
-                                      'B612',
-                                      'YatraOne',
-                                      'Tangerine',
-                                      'OldStandardTT',
-                                      'DancingScript',
-                                      'SedgwickAve',
-                                      'IndieFlower',
-                                      'Sacramento'
-                                    ],
-                                    galleryThumbnailQuality: 300,
-                                    isCustomFontList: true,
-                                    onDone: (uri) {
-                                      Navigator.of(context).push(
-                                        CupertinoPageRoute(
-                                          builder: (_) =>
-                                              ConfirmStory(uri: uri),
-                                        ),
-                                      );
-                                    },
-                                  )));
+                                giphyKey:
+                                'C4dMA7Q19nqEGdpfj82T8ssbOeZIylD4',
+                                fontFamilyList: const [
+                                  'Shizuru',
+                                  'Aladin',
+                                  'TitilliumWeb',
+                                  'Varela',
+                                  'Vollkorn',
+                                  'Rakkas',
+                                  'B612',
+                                  'YatraOne',
+                                  'Tangerine',
+                                  'OldStandardTT',
+                                  'DancingScript',
+                                  'SedgwickAve',
+                                  'IndieFlower',
+                                  'Sacramento'
+                                ],
+                                galleryThumbnailQuality: 300,
+                                isCustomFontList: true,
+                                onDone: (uri) {
+                                  Navigator.of(context).push(
+                                    CupertinoPageRoute(
+                                      builder: (_) =>
+                                          ConfirmStory(uri: uri),
+                                    ),
+                                  );
+                                },
+                              )));
                     },
                     child: Stack(
                       alignment: Alignment.centerRight,
                       children: [
                         profileImage.photoUrl!.isNotEmpty
                             ? CachedNetworkImage(
-                                imageUrl: profileImage.photoUrl!,
-                                imageBuilder: (context, imageProvider) =>
-                                    Container(
-                                  height: 100,
-                                  width: 100,
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(50)),
-                                    image: DecorationImage(
-                                      image: imageProvider,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                progressIndicatorBuilder:
-                                    (context, url, downloadProgress) {
-                                  return Shimmer.fromColors(
-                                    baseColor:
-                                        Theme.of(context).colorScheme.surface ==
-                                                Colors.white
-                                            ? Colors.grey[300]!
-                                            : Colors.grey[700]!,
-                                    highlightColor:
-                                        Theme.of(context).colorScheme.surface ==
-                                                Colors.white
-                                            ? Colors.grey[100]!
-                                            : Colors.grey[800]!,
-                                    child: Container(
-                                      height: 100,
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context)
-                                                    .colorScheme
-                                                    .surface ==
-                                                Colors.white
-                                            ? Colors.grey[300]!
-                                            : Colors.grey[700]!,
-                                        shape: BoxShape.circle,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                errorWidget: (context, url, error) {
-                                  return CircleAvatar(
-                                    radius: 50,
-                                    backgroundColor:
-                                        Theme.of(context).colorScheme.secondary,
-                                    child: Center(
-                                      child: Text(
-                                        profileImage.username![0].toUpperCase(),
-                                        style: const TextStyle(
-                                          color: Colors.blue,
-                                          fontSize: 30.0,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              )
-                            : CircleAvatar(
-                                radius: 49,
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.secondary,
-                                child: Center(
-                                  child: Text(
-                                    profileImage.username![0].toUpperCase(),
-                                    style: const TextStyle(
-                                      color: Colors.blue,
-                                      fontSize: 30.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                          imageUrl: profileImage.photoUrl!,
+                          imageBuilder: (context, imageProvider) =>
+                              Container(
+                                height: 100,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(50)),
+                                  image: DecorationImage(
+                                    image: imageProvider,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
+                          progressIndicatorBuilder:
+                              (context, url, downloadProgress) {
+                            return Shimmer.fromColors(
+                              baseColor:
+                              Theme.of(context).colorScheme.surface ==
+                                  Colors.white
+                                  ? Colors.grey[300]!
+                                  : Colors.grey[700]!,
+                              highlightColor:
+                              Theme.of(context).colorScheme.surface ==
+                                  Colors.white
+                                  ? Colors.grey[100]!
+                                  : Colors.grey[800]!,
+                              child: Container(
+                                height: 100,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .surface ==
+                                      Colors.white
+                                      ? Colors.grey[300]!
+                                      : Colors.grey[700]!,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                            );
+                          },
+                          errorWidget: (context, url, error) {
+                            return CircleAvatar(
+                              radius: 50,
+                              backgroundColor:
+                              Theme.of(context).colorScheme.secondary,
+                              child: Center(
+                                child: Text(
+                                  profileImage.username![0].toUpperCase(),
+                                  style: const TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 30.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        )
+                            : CircleAvatar(
+                          radius: 50,
+                          backgroundColor:
+                          Theme.of(context).colorScheme.secondary,
+                          child: Center(
+                            child: Text(
+                              profileImage.username![0].toUpperCase(),
+                              style: const TextStyle(
+                                color: Colors.blue,
+                                fontSize: 30.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
                         Positioned(
                           bottom: 0.0,
                           right: 5.0,
@@ -477,19 +466,19 @@ class _StoryWidgetState extends State<StoryWidget> {
                       'Your story',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 18.0,
+                        fontSize: 20.0,
                         fontWeight: FontWeight.w400,
                         color: Theme.of(context).colorScheme.secondary,
                       ),
                     ),
                   )
                 ],
-              );
-            } else {
-              return const SizedBox();
-            }
-          }),
-    );
+              ),
+            );
+          } else {
+            return const SizedBox();
+          }
+        });
   }
 
   Stream<QuerySnapshot> viewerListStream(String uid) {

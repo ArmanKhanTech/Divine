@@ -1,4 +1,4 @@
-import 'package:divine/utility/commom_utility.dart';
+import 'package:divine/utility/common_utility.dart';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -27,7 +27,7 @@ class TextFormBuilder extends StatefulWidget {
 
   final void Function(String)? onSaved, onChange;
 
-  final CommomUtility commomUtility = CommomUtility();
+  final CommonUtility commonUtility = CommonUtility();
 
   // ignore: overridden_fields
   @override
@@ -66,9 +66,7 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-      child: Column(
+    return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           CustomCard(
@@ -120,7 +118,7 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
                 decoration: InputDecoration(
                   prefixIcon: Icon(
                     widget.prefix,
-                    size: widget.iconSize ?? 25.0,
+                    size: 25.0,
                     color: widget.whichPage == "login"
                         ? Colors.orange
                         : Colors.blue,
@@ -142,9 +140,9 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
                     height: 1.2,
                   ),
                   contentPadding: const EdgeInsets.all(15.0),
-                  border: widget.commomUtility.border(context),
-                  enabledBorder: widget.commomUtility.border(context),
-                  focusedBorder: widget.commomUtility.focusBorder(context),
+                  border: widget.commonUtility.border(context),
+                  enabledBorder: widget.commonUtility.border(context),
+                  focusedBorder: widget.commonUtility.focusBorder(context),
                   errorStyle: const TextStyle(height: 10.0, fontSize: 0.0),
                 ),
                 textAlignVertical: TextAlignVertical.center,
@@ -157,12 +155,11 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
               '$error',
               style: TextStyle(
                 color: Colors.red[700],
-                fontSize: 12.0,
+                fontSize: 15.0,
               ),
             ),
           ),
         ],
-      ),
-    );
+      );
   }
 }

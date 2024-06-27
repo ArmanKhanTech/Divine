@@ -31,28 +31,28 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     Timer(
-        const Duration(seconds: 2),
-        () => Navigator.of(context).pushReplacement(CupertinoPageRoute(
-            builder: (_) => StreamBuilder(
-                  stream: FirebaseAuth.instance.authStateChanges(),
-                  builder: ((BuildContext context, snapshot) {
-                    if (snapshot.hasData) {
-                      return const MainScreen();
-                    } else {
-                      return const LoginPage();
-                    }
-                  }),
-                ))));
+      const Duration(seconds: 2),
+      () => Navigator.of(context).pushReplacement(CupertinoPageRoute(
+        builder: (_) => StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: ((BuildContext context, snapshot) {
+            if (snapshot.hasData) {
+              return const MainScreen();
+            } else {
+              return const LoginPage();
+            }
+          }),
+        ))));
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(0),
         child: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           elevation: 0,
           systemOverlayStyle:
-              Theme.of(context).colorScheme.background == Colors.white
+              Theme.of(context).colorScheme.surface == Colors.white
                   ? const SystemUiOverlayStyle(
                       statusBarColor: Colors.white,
                       statusBarIconBrightness: Brightness.dark,
