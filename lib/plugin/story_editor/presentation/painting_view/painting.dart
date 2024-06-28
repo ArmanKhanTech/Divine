@@ -9,11 +9,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:perfect_freehand/perfect_freehand.dart';
 
-import '../../domain/models/painting_model.dart';
-import '../../domain/notifiers/control_notifier.dart';
-import '../../domain/notifiers/painting_notifier.dart';
-import '../widgets/color_selector.dart';
-import '../widgets/size_slider_widget.dart';
+import '../../domain/model/painting_model.dart';
+import '../../domain/notifier/control_notifier.dart';
+import '../../domain/notifier/painting_notifier.dart';
+import '../widget/color_selector.dart';
+import '../widget/size_slider_widget.dart';
 
 class Painting extends StatefulWidget {
   const Painting({Key? key}) : super(key: key);

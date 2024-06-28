@@ -8,7 +8,7 @@ import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:colorfilter_generator/addons.dart';
 import 'package:colorfilter_generator/colorfilter_generator.dart';
 import 'package:colorfilter_generator/presets.dart';
-import 'package:divine/plugin/image_editor/utilities/utilities.dart';
+import 'package:divine/plugin/image_editor/utility/utilities.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,20 +19,20 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 
-import '../story_editor/presentation/widgets/animated_on_tap_button.dart';
+import '../story_editor/presentation/widget/animated_on_tap_button.dart';
 import '../../module/post/screen/confirm_post_screen.dart';
 
 import 'data/image_item.dart';
 import 'data/layer.dart';
-import 'layers/background_blur_layer.dart';
-import 'layers/background_layer.dart';
-import 'layers/emoji_layer.dart';
-import 'layers/image_layer.dart';
-import 'layers/text_layer.dart';
-import 'widgets/loading_screen.dart';
-import 'modules/all_emojies.dart';
-import 'modules/color_picker.dart';
-import 'modules/text_overlay_screen.dart';
+import 'layer/background_blur_layer.dart';
+import 'layer/background_layer.dart';
+import 'layer/emoji_layer.dart';
+import 'layer/image_layer.dart';
+import 'layer/text_layer.dart';
+import 'widget/loading_screen.dart';
+import 'module/all_emojies.dart';
+import 'module/color_picker.dart';
+import 'module/text_overlay_screen.dart';
 
 late Size viewportSize;
 

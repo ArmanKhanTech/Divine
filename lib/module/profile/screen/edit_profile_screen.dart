@@ -15,7 +15,7 @@ import '../../../model/user_model.dart';
 import '../../../utility/regex.dart';
 import '../../../utility/firebase.dart';
 import '../../../viewmodel/screens/edit_profile_view_model.dart';
-import '../../../widget/progress_indicators.dart';
+import '../../../widget/progress_indicator.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final UserModel? user;

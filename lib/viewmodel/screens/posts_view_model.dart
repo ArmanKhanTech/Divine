@@ -18,7 +18,7 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import '../../model/post_model.dart';
 import '../../model/user_model.dart';
 import '../../plugin/image_editor/image_editor_pro.dart';
-import '../../plugin/image_editor/utilities/utilities.dart';
+import '../../plugin/image_editor/utility/utilities.dart';
 import '../../module/profile/screen/pick_from_gallery_profile_picture.dart';
 import '../../service/post_service.dart';
 import '../../service/user_service.dart';

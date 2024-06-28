@@ -9,28 +9,28 @@ import 'package:loading_overlay/loading_overlay.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 
-import '../../../gallery_media_picker/src/data/models/gallery_params_model.dart';
-import '../../../gallery_media_picker/src/presentation/pages/gallery_media_picker.dart';
-import '../../domain/models/editable_item.dart';
-import '../../domain/models/painting_model.dart';
-import '../../domain/notifiers/control_notifier.dart';
-import '../../domain/notifiers/draggable_widget_notifier.dart';
-import '../../domain/notifiers/gradient_notifier.dart';
-import '../../domain/notifiers/painting_notifier.dart';
-import '../../domain/notifiers/scroll_notifier.dart';
-import '../../domain/notifiers/text_editing_notifier.dart';
-import '../bar_tools/bottom_tools.dart';
-import '../bar_tools/top_tools.dart';
+import '../../../gallery_media_picker/src/data/model/gallery_params_model.dart';
+import '../../../gallery_media_picker/src/presentation/page/gallery_media_picker.dart';
+import '../../domain/model/editable_item.dart';
+import '../../domain/model/painting_model.dart';
+import '../../domain/notifier/control_notifier.dart';
+import '../../domain/notifier/draggable_widget_notifier.dart';
+import '../../domain/notifier/gradient_notifier.dart';
+import '../../domain/notifier/painting_notifier.dart';
+import '../../domain/notifier/scroll_notifier.dart';
+import '../../domain/notifier/text_editing_notifier.dart';
+import '../bar_tool/bottom_tools.dart';
+import '../bar_tool/top_tools.dart';
 import '../draggable_items/delete_item.dart';
 import '../draggable_items/draggable_widget.dart';
 import '../painting_view/painting.dart';
 import '../painting_view/widgets/sketcher.dart';
 import '../text_editor_widget/text_editor.dart';
-import '../utilities/constants/app_enum.dart';
+import '../utility/constants/app_enum.dart';
 // import '../utilities/model_sheets.dart';
-import '../widgets/scrollable_page_view.dart';
+import '../widget/scrollable_page_view.dart';
 
-import 'package:divine/widget/progress_indicators.dart';
+import 'package:divine/widget/progress_indicator.dart';
 
 // TODO: Save images as gifs
 class MainView extends StatefulWidget {

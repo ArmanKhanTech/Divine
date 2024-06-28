@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../../domain/notifiers/control_notifier.dart';
-import '../../../domain/notifiers/text_editing_notifier.dart';
+import '../../../domain/notifier/control_notifier.dart';
+import '../../../domain/notifier/text_editing_notifier.dart';
 
 class TextFieldWidget extends StatelessWidget {
   const TextFieldWidget({Key? key}) : super(key: key);

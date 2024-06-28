@@ -17,7 +17,7 @@ import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../../../model/story_model.dart';
 import '../../../utility/firebase.dart';
 import '../../../viewmodel/user/story_view_model.dart';
-import '../../../widget/progress_indicators.dart';
+import '../../../widget/progress_indicator.dart';
 
 class ConfirmStory extends StatefulWidget {
   final String uri;

@@ -4,7 +4,7 @@ import 'package:ionicons/ionicons.dart';
 
 // import '../../../model/post_model.dart';
 import '../../../utility/firebase.dart';
-import '../../../widget/progress_indicators.dart';
+import '../../../widget/progress_indicator.dart';
 
 class ListPosts extends StatefulWidget {
   final String userId, username;

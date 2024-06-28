@@ -6,15 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../domain/models/editable_item.dart';
-import '../../domain/notifiers/control_notifier.dart';
-import '../../domain/notifiers/draggable_widget_notifier.dart';
-import '../../domain/notifiers/gradient_notifier.dart';
-import '../../domain/notifiers/text_editing_notifier.dart';
-import '../../../modal_gif_picker/src/widgets/giphy_render_image.dart';
-import '../utilities/constants/app_enum.dart';
-import '../widgets/animated_on_tap_button.dart';
-import '../widgets/file_image_bg.dart';
+import '../../domain/model/editable_item.dart';
+import '../../domain/notifier/control_notifier.dart';
+import '../../domain/notifier/draggable_widget_notifier.dart';
+import '../../domain/notifier/gradient_notifier.dart';
+import '../../domain/notifier/text_editing_notifier.dart';
+import '../../../modal_gif_picker/src/widget/giphy_render_image.dart';
+import '../utility/constants/app_enum.dart';
+import '../widget/animated_on_tap_button.dart';
+import '../widget/file_image_bg.dart';
 
 class DraggableWidget extends StatelessWidget {
   final EditableItem draggableWidget;

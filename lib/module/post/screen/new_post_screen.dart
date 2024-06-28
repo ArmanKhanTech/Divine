@@ -11,7 +11,7 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 import 'package:divine/module/post/screen/pick_from_gallery_screen_posts.dart';
 import 'package:divine/module/post/screen/preview_image.dart';
-import 'package:divine/widget/progress_indicators.dart';
+import 'package:divine/widget/progress_indicator.dart';
 
 import '../../../viewmodel/screens/posts_view_model.dart';
 

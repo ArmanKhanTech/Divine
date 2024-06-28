@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../domain/models/editable_item.dart';
-import '../utilities/constants/app_enum.dart';
+import '../../domain/model/editable_item.dart';
+import '../utility/constants/app_enum.dart';
 
 class DeleteItem extends StatelessWidget {
   const DeleteItem(

@@ -1,5 +1,5 @@
 import 'package:divine/module/auth/screen/register_page.dart';
-import 'package:divine/widget/progress_indicators.dart';
+import 'package:divine/widget/progress_indicator.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

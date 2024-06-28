@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import '../../../domain/notifiers/control_notifier.dart';
-import '../../../domain/notifiers/text_editing_notifier.dart';
-import '../../utilities/constants/app_enum.dart';
-import '../../widgets/animated_on_tap_button.dart';
+import '../../../domain/notifier/control_notifier.dart';
+import '../../../domain/notifier/text_editing_notifier.dart';
+import '../../utility/constants/app_enum.dart';
+import '../../widget/animated_on_tap_button.dart';
 
 class AnimationSelector extends StatelessWidget {
   const AnimationSelector({Key? key}) : super(key: key);

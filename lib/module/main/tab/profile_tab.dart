@@ -1,8 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:divine/module/profile/screen/user_info_screen.dart';
-import 'package:divine/widget/progress_indicators.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
+
+import 'package:divine/module/profile/screen/user_info_screen.dart';
+import 'package:divine/widget/progress_indicator.dart';
 
 import '../../../model/post_model.dart';
 import '../../../model/user_model.dart';

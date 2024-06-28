@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../domain/notifiers/text_editing_notifier.dart';
-import '../../widgets/tool_button.dart';
+import '../../../domain/notifier/text_editing_notifier.dart';
+import '../../widget/tool_button.dart';
 
 class TopTextTools extends StatelessWidget {
   final void Function() onDone;

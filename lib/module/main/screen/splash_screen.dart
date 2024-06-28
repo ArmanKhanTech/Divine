@@ -31,18 +31,18 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     Timer(
-      const Duration(seconds: 2),
-      () => Navigator.of(context).pushReplacement(CupertinoPageRoute(
-        builder: (_) => StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: ((BuildContext context, snapshot) {
-            if (snapshot.hasData) {
-              return const MainScreen();
-            } else {
-              return const LoginPage();
-            }
-          }),
-        ))));
+        const Duration(seconds: 2),
+        () => Navigator.of(context).pushReplacement(CupertinoPageRoute(
+            builder: (_) => StreamBuilder(
+                  stream: FirebaseAuth.instance.authStateChanges(),
+                  builder: ((BuildContext context, snapshot) {
+                    if (snapshot.hasData) {
+                      return const MainScreen();
+                    } else {
+                      return const LoginPage();
+                    }
+                  }),
+                ))));
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,

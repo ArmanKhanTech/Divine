@@ -2,8 +2,8 @@ import 'package:divine/plugin/modal_gif_picker/src/model/client/gif.dart';
 import 'package:divine/plugin/modal_gif_picker/src/model/client/languages.dart';
 import 'package:divine/plugin/modal_gif_picker/src/model/client/rating.dart';
 import 'package:divine/plugin/modal_gif_picker/src/model/giphy_preview_types.dart';
-import 'package:divine/plugin/modal_gif_picker/src/widgets/giphy_context.dart';
-import 'package:divine/plugin/modal_gif_picker/src/widgets/giphy_search_view.dart';
+import 'package:divine/plugin/modal_gif_picker/src/widget/giphy_context.dart';
+import 'package:divine/plugin/modal_gif_picker/src/widget/giphy_search_view.dart';
 
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;

@@ -6,13 +6,13 @@ import 'package:divine/plugin/story_editor/presentation/text_editor_widget/widge
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../domain/models/editable_item.dart';
-import '../../domain/notifiers/control_notifier.dart';
-import '../../domain/notifiers/draggable_widget_notifier.dart';
-import '../../domain/notifiers/text_editing_notifier.dart';
-import '../utilities/constants/app_enum.dart';
-import '../widgets/color_selector.dart';
-import '../widgets/size_slider_widget.dart';
+import '../../domain/model/editable_item.dart';
+import '../../domain/notifier/control_notifier.dart';
+import '../../domain/notifier/draggable_widget_notifier.dart';
+import '../../domain/notifier/text_editing_notifier.dart';
+import '../utility/constants/app_enum.dart';
+import '../widget/color_selector.dart';
+import '../widget/size_slider_widget.dart';
 
 class TextEditor extends StatefulWidget {
   final BuildContext context;

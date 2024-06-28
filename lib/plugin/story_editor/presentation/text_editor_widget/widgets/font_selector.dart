@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../../domain/notifiers/control_notifier.dart';
-import '../../../domain/notifiers/text_editing_notifier.dart';
-import '../../widgets/animated_on_tap_button.dart';
+import '../../../domain/notifier/control_notifier.dart';
+import '../../../domain/notifier/text_editing_notifier.dart';
+import '../../widget/animated_on_tap_button.dart';
 
 class FontSelector extends StatelessWidget {
   const FontSelector({Key? key}) : super(key: key);

@@ -3,8 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
-import '../utilities/controller.dart';
-import '../models/file_format.dart';
+
+import '../utility/controller.dart';
+import '../model/file_format.dart';
 
 class FFmpegVideoEditorExecute {
   const FFmpegVideoEditorExecute({
@@ -36,7 +37,6 @@ abstract class FFmpegVideoEditorConfig {
 
   String get cropCmd {
     if (controller.minCrop <= minOffset && controller.maxCrop >= maxOffset) {
-
       return "";
     }
 
@@ -121,7 +121,8 @@ class VideoFFmpegVideoEditorConfig extends FFmpegVideoEditorConfig {
 
   String get toTrimCmd => "-t ${controller.trimmedDuration}";
 
-  String get gifCmd => format.extension == VideoExportFormat.gif.extension ? "-loop 0" : "";
+  String get gifCmd =>
+      format.extension == VideoExportFormat.gif.extension ? "-loop 0" : "";
 
   @override
   List<String> getExportFilters() {
@@ -138,7 +139,8 @@ class VideoFFmpegVideoEditorConfig extends FFmpegVideoEditorConfig {
   @override
   Future<FFmpegVideoEditorExecute> getExecuteConfig() async {
     final String videoPath = controller.file.path;
-    final String outputPath = await getOutputPath(filePath: videoPath, format: format);
+    final String outputPath =
+        await getOutputPath(filePath: videoPath, format: format);
     final List<String> filters = getExportFilters();
 
     return FFmpegVideoEditorExecute(
@@ -189,7 +191,8 @@ class CoverFFmpegVideoEditorConfig extends FFmpegVideoEditorConfig {
 
       return null;
     }
-    final String outputPath = await getOutputPath(filePath: coverPath, format: format);
+    final String outputPath =
+        await getOutputPath(filePath: coverPath, format: format);
     final List<String> filters = getExportFilters();
 
     return FFmpegVideoEditorExecute(

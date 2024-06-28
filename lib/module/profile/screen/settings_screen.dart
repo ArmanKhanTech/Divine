@@ -7,7 +7,7 @@ import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:divine/model/user_model.dart';
 import 'package:divine/utility/firebase.dart';
 import 'package:divine/viewmodel/theme/theme_provider.dart';
-import 'package:divine/widget/progress_indicators.dart';
+import 'package:divine/widget/progress_indicator.dart';
 
 import '../../../viewmodel/screens/edit_profile_view_model.dart';
 

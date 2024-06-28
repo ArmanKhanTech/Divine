@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../../domain/notifiers/control_notifier.dart';
-import '../../../domain/notifiers/painting_notifier.dart';
-import '../../utilities/constants/app_enum.dart';
-import '../../widgets/tool_button.dart';
+import '../../../domain/notifier/control_notifier.dart';
+import '../../../domain/notifier/painting_notifier.dart';
+import '../../utility/constants/app_enum.dart';
+import '../../widget/tool_button.dart';
 
 class TopPaintingTools extends StatefulWidget {
   const TopPaintingTools({Key? key}) : super(key: key);

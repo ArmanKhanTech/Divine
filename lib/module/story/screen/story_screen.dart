@@ -8,7 +8,7 @@ import '../../../model/story_model.dart';
 import '../../../model/user_model.dart';
 import '../../../utility/firebase.dart';
 import '../../../utility/system_ui.dart';
-import '../../../widget/progress_indicators.dart';
+import '../../../widget/progress_indicator.dart';
 
 // TODO: Goto next story when current story ends.
 class StoryScreen extends StatefulWidget {

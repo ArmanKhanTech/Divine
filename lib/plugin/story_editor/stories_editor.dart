@@ -1,15 +1,16 @@
 import 'package:divine/plugin/story_editor/presentation/main_view/main_view.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import 'domain/notifiers/control_notifier.dart';
-import 'domain/notifiers/draggable_widget_notifier.dart';
-import 'domain/notifiers/gradient_notifier.dart';
-import 'domain/notifiers/painting_notifier.dart';
-import 'domain/notifiers/scroll_notifier.dart';
-import 'domain/notifiers/text_editing_notifier.dart';
+import 'domain/notifier/control_notifier.dart';
+import 'domain/notifier/draggable_widget_notifier.dart';
+import 'domain/notifier/gradient_notifier.dart';
+import 'domain/notifier/painting_notifier.dart';
+import 'domain/notifier/scroll_notifier.dart';
+import 'domain/notifier/text_editing_notifier.dart';
 
 class StoriesEditor extends StatefulWidget {
   final List<String>? fontFamilyList;

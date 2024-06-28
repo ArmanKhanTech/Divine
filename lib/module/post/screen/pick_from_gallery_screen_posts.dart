@@ -7,11 +7,11 @@ import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
-import '../../../plugin/gallery_media_picker/src/data/models/gallery_params_model.dart';
-import '../../../plugin/gallery_media_picker/src/data/models/picked_asset_model.dart';
-import '../../../plugin/gallery_media_picker/src/presentation/pages/gallery_media_picker.dart';
+import '../../../plugin/gallery_media_picker/src/data/model/gallery_params_model.dart';
+import '../../../plugin/gallery_media_picker/src/data/model/picked_asset_model.dart';
+import '../../../plugin/gallery_media_picker/src/presentation/page/gallery_media_picker.dart';
 import '../../../viewmodel/screens/posts_view_model.dart';
-import '../../../widget/progress_indicators.dart';
+import '../../../widget/progress_indicator.dart';
 
 class PickFromGalleryScreenPosts extends StatefulWidget {
   const PickFromGalleryScreenPosts({super.key});

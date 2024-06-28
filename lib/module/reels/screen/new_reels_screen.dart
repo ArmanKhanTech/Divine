@@ -3,8 +3,6 @@ import 'dart:io';
 
 import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:camera/camera.dart';
-import 'package:divine/module/reels/screen/pick_from_gallery_screen_reels.dart';
-import 'package:divine/widget/progress_indicators.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,8 +12,11 @@ import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../../plugin/story_editor/presentation/widgets/animated_on_tap_button.dart';
-import '../../../plugin/video_editor/screens/video_editor.dart';
+import 'package:divine/module/reels/screen/pick_from_gallery_screen_reels.dart';
+import 'package:divine/widget/progress_indicator.dart';
+
+import '../../../plugin/story_editor/presentation/widget/animated_on_tap_button.dart';
+import '../../../plugin/video_editor/screen/video_editor.dart';
 
 class NewReelsScreen extends StatefulWidget {
   const NewReelsScreen({super.key});

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:perfect_freehand/perfect_freehand.dart';
 
-import '../../../domain/models/painting_model.dart';
-import '../../utilities/constants/app_enum.dart';
+import '../../../domain/model/painting_model.dart';
+import '../../utility/constants/app_enum.dart';
 
 class Sketcher extends CustomPainter {
   final List<PaintingModel> lines;

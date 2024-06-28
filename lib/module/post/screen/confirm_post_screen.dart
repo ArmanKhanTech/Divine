@@ -9,9 +9,9 @@ import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 import '../../main/screen/main_screen.dart';
-import '../../../plugin/story_editor/presentation/widgets/animated_on_tap_button.dart';
+import '../../../plugin/story_editor/presentation/widget/animated_on_tap_button.dart';
 import '../../../viewmodel/screens/posts_view_model.dart';
-import '../../../widget/progress_indicators.dart';
+import '../../../widget/progress_indicator.dart';
 
 class ConfirmSinglePostScreen extends StatefulWidget {
   final List<File> postImages;
