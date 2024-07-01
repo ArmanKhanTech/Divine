@@ -69,10 +69,13 @@ class PostsViewModel extends ChangeNotifier {
       try {
         loading = true;
         notifyListeners();
+
         await postService.uploadProfilePicture(media!, auth.currentUser!);
         loading = false;
+
         DocumentSnapshot doc = await usersRef.doc(auth.currentUser!.uid).get();
         var users = UserModel.fromJson(doc.data() as Map<String, dynamic>);
+
         resetProfilePicture();
         Navigator.pop(context, users.photoUrl);
         notifyListeners();
@@ -232,6 +235,7 @@ class PostsViewModel extends ChangeNotifier {
             await postService.addMentionToNotification(mentions, value);
           }
         });
+
         showSnackBar('Post uploaded successfully!', context, error: false);
         resetPost();
         loading = false;

@@ -36,8 +36,6 @@ import 'module/text_overlay_screen.dart';
 
 late Size viewportSize;
 
-double viewportRatio = 1;
-
 List<Layer> layers = [], undoLayers = [], removedLayers = [];
 Map<String, String> _translations = {};
 
