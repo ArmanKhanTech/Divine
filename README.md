@@ -10,16 +10,15 @@
 <br />
 <div align="center">
   <a href="https://github.com/ArmanKhanTech/Divine/">
-    <img src="https://github.com/ArmanKhanTech/Divine/assets/92728787/12b0765e-dc89-49ed-9915-d72481baa327" alt="Logo" width="80" height="80">
+    <img src="https://github.com/ArmanKhanTech/Divine/assets/92728787/12b0765e-dc89-49ed-9915-d72481baa327" alt="Logo" width="100" height="100">
   </a>
 
-  <h3 align="center">Divine (on hold)</h3>
+  <h3 align="center">Divine</h3>
+  <p align="center">Status: On hold</p>
+  <p align="center">A social media app made with Flutter.</p>
 
   <p align="center">
-    A social media app made with Flutter.
-    <br />
     <a href="https://github.com/ArmanKhanTech/Divine"><strong>Explore the docs »</strong></a>
-    <br />
     <br />
     <a href="https://github.com/ArmanKhanTech/Divinee/issues">Report a Bug</a>
     ·
@@ -60,6 +59,7 @@
 
 ....
 
+
 ### Built with
 
 * [![Flutter][Flutter]][Flutter-url]
@@ -76,9 +76,6 @@ Follow the below instructions to get started.
 ### Prerequisites
 
 <ol>
-  <li>
-    <p>Android Studio IDE or VS Code</p>
-  </li>
   <li>
     <p>Flutter v3.16.2</p>
   </li>
