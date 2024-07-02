@@ -10,7 +10,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/ArmanKhanTech/Divine/">
-    <img src="https://github.com/ArmanKhanTech/Divine/assets/92728787/12b0765e-dc89-49ed-9915-d72481baa327" alt="Logo" width="100" height="100">
+    <img src="https://github.com/ArmanKhanTech/Divine/assets/92728787/12b0765e-dc89-49ed-9915-d72481baa327" alt="Logo" width="90" height="90">
   </a>
 
   <h3 align="center">Divine</h3>
