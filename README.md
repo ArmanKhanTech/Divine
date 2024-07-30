@@ -46,7 +46,6 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -59,6 +58,7 @@
 ## About the Project
 
 ....
+
 
 
 ### Built with
@@ -105,38 +105,10 @@ Follow the below instructions to get started.
 ...
 
 
+
 ### Compatible with 
 * [![Android][Android]][Android-url]
 * [![iOS][iOS]][iOS-url]
-
-
-
-## Roadmap
-
-- [x] New User Signup
-- [x] Existing User Login
-- [x] Animated Splash Screen
-- [x] Image Cropper for Profile Image
-- [x] User-Profile Customization
-- [x] Main Screen
-- [x] Add & Populate Feeds Page
-- [x] Stories Editor 
-- [x] Stories Widget
-- [x] Post & View Stories
-- [x] User Profile Page
-- [x] Settings Screen
-- [x] Dark Mode
-- [x] Private Account
-- [x] Image Editor for Posts
-- [x] Custom Camera
-- [x] Post & View Single or Multiple Images
-- [x] Gallery Media Picker 
-- [x] Video Editor for Reels
-- [x] Implicit Content Detector using ML
-- [x] View Post Screen
-- [ ] Like, Comment, Save & Share a Post
-
-See the [open issues](https://github.com/ArmanKhanTech/Divine/issues) for a full list of proposed features (and known issues)
 
 
 
