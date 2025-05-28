@@ -57,7 +57,7 @@
 
 ## About the Project
 
-....
+Divine is a social media application built with Flutter, designed to offer a seamless and engaging experience on both Android and iOS platforms. The project is currently on hold but aims to provide robust social features with an intuitive user interface. <b>This project is no longer being worked on.</b>
 
 
 
