@@ -14,7 +14,7 @@
   </a>
 
   <h3 align="center">Divine</h3>
-  <p align="center">Status: On hold</p>
+  <p align="center">Status: Abandoned</p>
   <p align="center">A social media app made with Flutter.</p>
 
   <p align="center">
