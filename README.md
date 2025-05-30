@@ -45,7 +45,6 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -71,7 +70,7 @@ Divine is a social media application built with Flutter, designed to offer a sea
 
 ## Getting Started
 
-Follow the below instructions to get started.
+Follow the instructions below to get started.
 
 
 ### Prerequisites
@@ -97,12 +96,6 @@ Follow the below instructions to get started.
    ```sh
    git clone https://github.com/ArmanKhanTech/Divine.git
    ```
-
-
-
-## Usage
-
-...
 
 
 
